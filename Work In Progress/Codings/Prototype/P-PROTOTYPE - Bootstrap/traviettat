@@ -1,0 +1,13 @@
+Viết tắt tên file:
+
+1. Tên file CSS do mình đặt cần có format: myCSS_[name].css
+2. Phần [name] trong tên file viết tắt theo trang HTML mà nó đi kèm
+	Ví dụ: myCSS_u_m_e.css sẽ đi kèm trang User_manage_event.html
+
+3. Tên file JS do mình đặt cần có format: myJS_[name].js
+4. Phần [name] trong tên file viết tắt theo trang HTML mà nó đi kèm
+	Ví dụ: myJS_u_m_e.js sẽ đi kèm trang User_manage_event.html
+
+5. Class mặc định của plugin thì để mặc định, Tên Class do mình đặt cần có format: d_[tênClass]
+6. ID mặc định của plugin thì để mặc định, Tên ID do mình đặt cần có format: i_[tênClass]
+

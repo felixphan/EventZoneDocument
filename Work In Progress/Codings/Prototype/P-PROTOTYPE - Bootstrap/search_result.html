@@ -1,0 +1,180 @@
+<!-- 
+	Chưa có Modal, nhớ gắn sau nhé
+ -->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Result</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="css/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+    <link rel="stylesheet" type="text/css" href="css/myCSS_s_r.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+
+</head>
+
+<body data-spy="scroll" data-offset="500" data-target="#navbar">
+
+  <!-- Ảnh nền -->
+  <div class="d_background_image">
+    <img class="d_overlay" src="img/bird.gif"/>
+  </div>
+
+  <!-- <nav> tag by Bootstrap: using for Top Menu -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid d_white_text">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">Event Zone</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown" id="i_Cate">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="i_btn_Cate">Category
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Music</a></li>
+              <li><a href="#">Food and Drink</a></li>
+              <li><a href="#">Classes</a></li>
+              <li><a href="#">Arts</a></li>
+              <li><a href="#">Parties</a></li>
+              <li><a href="#">Sports and wellness</a></li>
+              <li><a href="#">Networking</a></li>
+            </ul>
+          </li>
+          <li id="i_search">
+            <form class="navbar-form navbar-left" role="search">
+            <div class="input-group" style="{width: 100px;}">
+              <input
+                      type="text"
+                      class="form-control"
+                      aria-label="Text input with segmented button dropdown"
+                      placeholder="Search for event, channel or user"
+                      style="width: 250px;">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default">
+                  <span class="glyphicon glyphicon-search"></span>
+                </button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#myModal">
+                  <a href="#" id="i_advanced_search"><span class="glyphicon glyphicon-chevron-down white"></span></a>
+                </button>
+              </div>
+            </div>
+          </form>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li>
+            <div class="d_create_event">
+              <a href="create_event.html">Create event!</a>
+            </div>
+          </li>
+          <li><a href="signup.html" data-toggle="modal" data-target="#myModal2">Sign In</a></li>
+           <!-- <li><a href="login.html" data-toggle="modal" data-target="#myModal2">Login</a></li> -->
+          <li><a href="help.html">Help</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- //End <nav> tag by Bootstrap -->
+
+  <div class="dsr_result_container container-fluid">
+    <nav id="navbar-example" class="navbar navbar-default navbar-static" role="navigation">
+       <div class="navbar-header">
+          <button class="navbar-toggle" type="button" data-toggle="collapse" 
+             data-target=".bs-js-navbar-scrollspy">
+             <span class="sr-only">Toggle navigation</span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+             <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Search Result</a>
+       </div>
+       <div class="collapse navbar-collapse bs-js-navbar-scrollspy">
+          <ul class="nav navbar-nav">
+             <li><a href="#event">Events</a></li>
+             <li><a href="#channel">Channel</a></li>
+             <li><a href="#user">User</a></li>
+             <li><a href="#location">Location</a></li>
+          </ul>
+       </div>
+    </nav>
+    <div data-spy="scroll" data-target="#navbar-example" data-offset="0" 
+       style="height:500px;overflow:auto; position: relative;">
+       <div class="d_each_group_result">
+         <h4 id="event">Event</h4>
+         <p>Event
+            iOS is a mobile operating system developed and distributed by Apple 
+            Inc. Originally released in 2007 for the iPhone, iPod Touch, and Apple 
+            TV. iOS is derived from OS X, with which it shares the Darwin 
+            foundation. iOS is Apple's mobile version of the OS X operating system 
+            used on Apple computers.
+            iOS is a mobile operating system developed and distributed by Apple 
+            Inc. Originally released in 2007 for the iPhone, iPod Touch, and Apple 
+            TV. iOS is derived from OS X, with which it shares the Darwin 
+            foundation. iOS is Apple's mobile version of the OS X operating system 
+            used on Apple computers.
+         </p>
+       </div>
+       <div class="d_each_group_result">
+         <h4 id="channel">Channel</h4>
+         <p>Channel
+            Apache Subversion which is often abbreviated as SVN, is a software 
+            versioning and revision control system distributed under an open source 
+            license. Subversion was created by CollabNet Inc. in 2000, but now it 
+            is developed as a project of the Apache Software Foundation, and as 
+            such is part of a rich community of developers and users.
+            Apache Subversion which is often abbreviated as SVN, is a software 
+            versioning and revision control system distributed under an open source 
+            license. Subversion was created by CollabNet Inc. in 2000, but now it 
+            is developed as a project of the Apache Software Foundation, and as 
+            such is part of a rich community of developers and users.
+         </p>
+       </div>
+       <div class="d_each_group_result">
+         <h4 id="user">User</h4>
+         <p>User
+            jMeter is an Open Source testing software. It is 100% pure Java 
+            application for load and performance testing.
+            jMeter is an Open Source testing software. It is 100% pure Java 
+            application for load and performance testing.
+            jMeter is an Open Source testing software. It is 100% pure Java 
+            application for load and performance testing.
+            jMeter is an Open Source testing software. It is 100% pure Java 
+            application for load and performance testing.
+         </p>
+       </div>
+       <div class="d_each_group_result">
+         <h4 id="location">Location</h4>
+         <p>Location
+            Enterprise Java Beans (EJB) is a development architecture for building 
+            highly scalable and robust enterprise level applications to be deployed 
+            on J2EE compliant Application Server such as JBOSS, Web Logic etc.
+            Enterprise Java Beans (EJB) is a development architecture for building 
+            highly scalable and robust enterprise level applications to be deployed 
+            on J2EE compliant Application Server such as JBOSS, Web Logic etc.
+         </p>
+       </div>
+    </div>
+  </div>
+
+  <div class="dsr_result_container">
+
+  </div>
+
+
+<!-- All script here -->
+<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>    <!-- Default JQuery -->
+<script type="text/javascript" src="js/bootstrap.min.js"></script>        <!-- Default Bootstrap, có Edited -->
+<script type="text/javascript" src="js/super-smooth.js"></script>         <!-- Plugin làm mượt scroll -->
+<script type="text/javascript" src="js/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
+<script type="text/javascript" src="js/smooth-scrollspy.js"></script>
+
+<!-- <script type="text/javascript" src="js/myJS_chung.js"></script> JS của riêng mình, có kèm OutSource -->
+<script type="text/javascript" src="js/myJS_test_script.js"></script> <!-- JS đang test -->
+
+</body>
+
+<footer>
+</footer>
+</html>
