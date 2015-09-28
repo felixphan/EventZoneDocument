@@ -1,0 +1,105 @@
+/* CSS ngoài */
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+/*** My CSS ***/
+
+/* CSS top bar */
+
+/* CSS phần Chứa Chức năng */
+
+.d_khung_nen{
+	height: 700px;
+	width: 100%;
+	position: fixed;
+	top: 80px;
+	border: 1px blue dashed;
+}
+
+.d_function_cover{
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px pink dashed;
+}
+
+.d_deco1{		/* CSS trang trí khung chứa các Tab chức năng bên trong */
+	border: 1px red solid;
+	padding: 5px 5px 5px 5px;
+	border-radius: 5px;
+	background-color: whitesmoke;
+}
+
+.d_info_container{
+	height: 500px;
+	width: 680px;
+	position: relative;
+	float: left;
+}
+
+.d_map{
+	height: 300px;
+	width: 300px;
+	position: relative;
+	float: right;
+}
+
+.d_comment_report{
+	height: 200px;
+	width: 300px;
+	position: relative;
+	float: right;
+}
+
+.d_info{
+	border: 1px red solid;
+	height: 100px;
+	width: 300px;
+	position: relative;
+	float: left;
+}
+
+.d_button_group{
+	border: 1px red solid;
+	height: 100px;
+	width: 300px;
+	position: relative;
+	float: right;
+}
+
+.d_des{
+	border: 1px red solid;
+	height: 90px;
+	width: 600px;
+	position: relative;
+	top: 120px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+
+/*** CSS cho Tab chức năng Event info ***/
+
+/* chung */
+.tab-pane{
+	padding: 5px 5px 5px 5px;
+}
+
+/* Tab GALLERY */
+.d_thumbs_cover{
+	border: 0px red solid;
+	width: 100%;
+	height: 440px;
+	overflow-y: scroll;
+	position: relative;
+}
+
+/* Tab MAP */
+#map-container {
+	height: 250px
+}
+
+/*  */
+

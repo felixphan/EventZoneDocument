@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/myCSS_chung.css">
+
+</head>
+
+<body>
+
+    <div class="container">
+        <div id="loginbox" style="margin-top:30px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-info d_margin_top" >
+                <div class="panel-heading">
+                    <div class="panel-title">Welcome to Event Zone</div>
+                    <div style="float:right; font-size: 80%; position: relative; top: -17px"><a href="#">Close</a></div>
+                </div>
+
+                <div style="padding-top:10px" class="panel-body" >
+
+                    <div class="cover_all_functions">
+                        <ul class="nav nav-tabs">   <!-- áp dụng Tab lên thanh Nút chức năng -->
+                            <li class="d_signin_tab active"><a data-toggle="tab" href="#sectionA" id="i_sign_in_tab">Sign In</a></li> <!-- #sectionA là Nút đầu tiên, mặc định là hiện đầu tiên nên có Active -->
+                            <li class="d_signup_tab"><a data-toggle="tab" href="#sectionB" id="i_sign_up_tab">Sign Up</a></li>    <!-- #sectionB là những nút tiếp theo -->
+                        </ul>
+                        <div class="tab-content">   <!-- Div chứa Nội dung của mỗi Tab nhé -->
+                            <div id="sectionA" class="tab-pane fade in active">
+                                <!-- bao toàn bộ chức năng SIGN IN, f_... để đánh dấu đó là Chức năng-->
+                                <div class="my_function_cover f_sign_in">    
+                                    <div style="padding-top: 30px" class="panel-body" >
+                                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                                        <form id="loginform" class="form-horizontal" role="form">
+                                            <div style="margin-bottom: 15px" class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">                                        
+                                            </div>
+
+                                            <div style="margin-bottom: 15px" class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                                            </div>
+
+                                            <a href="#" id="i_quen_mk">
+                                                Forget password?
+                                            </a>
+
+                                            <div class="input-group"  style="margin-bottom: 35px">
+                                              <div class="checkbox">
+                                                <label>
+                                                  <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                                                </label>
+                                              </div>
+                                            </div>
+
+                                            <div style="margin-top:10px" class="form-group">
+                                                <!-- Button -->
+                                                <div class="col-sm-12 controls">
+                                                  <a id="btn-login" href="#" class="btn btn-success">Sign In  </a>
+                                                  <a id="btn-fblogin" href="#" class="btn btn-danger">Sign In with Google+</a>
+                                                </div>
+                                            </div>  
+                                        </form>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div id="sectionB" class="tab-pane fade">
+                                <div class="my_function_cover f_statistic"> <!-- bao toàn bộ chức năng STATISTIC -->
+                                    <div style="padding-top:30px" class="panel-body" >
+                                        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                                        <form id="loginform" class="form-horizontal" role="form">
+                                                    
+                                            <div style="margin-bottom: 15px" class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username">
+                                            </div>
+
+                                            <div style="margin-bottom: 15px" class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                                                <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="email">
+                                            </div>
+                                                
+                                            <div style="margin-bottom: 15px" class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                                <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                                            </div>
+                                            
+                                            <div style="margin-bottom: 15px" class="input-group">
+                                                <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                                                <input id="login-password" type="password" class="form-control" name="password" placeholder="re-enter password">
+                                            </div>
+
+                                            <a href="#" id="i_captcha_holder">
+                                                Captcha holder!
+                                            </a>
+
+                                            <div class="input-group" style="margin-bottom: 35px">
+                                              <div class="checkbox">
+                                                <label>
+                                                  <input id="login-remember" type="checkbox" name="remember" value="1"> Tôi đã đọc và đồng ý với các <a href="policy.html" id="i_policy">Điều khoản sử dụng</a>.
+                                                </label>
+                                              </div>
+                                            </div>
+
+                                            <div style="margin-top:10px" class="form-group">
+                                                <!-- Button -->
+                                                <div class="col-sm-12 controls">
+                                                  <a id="btn-login" href="#" class="btn btn-success">Sign Up</a>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!-- All script here -->
+<script src="js/jquery-1.11.3.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/myJS_chung.js"></script> <!-- JS của riêng mình, có kèm OutSource -->
+<script type="text/javascript" src="js/myJS_test_script.js"></script> <!-- JS đang test -->
+</body>
+
+<footer>
+</footer>
+</html>

@@ -1,0 +1,99 @@
+<!-- 
+  Trang Giao diện chi tiết của mỗi Thẻ sự kiện khi show Trang chủ
+ -->
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Homepage</title>
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../css/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+</head>
+
+<body>
+    <!-- <nav> tag by Bootstrap: using for Top Menu -->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="index.html">WebSiteName</a>
+      </div>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Category
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Music</a></li>
+              <li><a href="#">Food and Drink</a></li>
+              <li><a href="#">Classes</a></li>
+              <li><a href="#">Arts</a></li>
+              <li><a href="#">Parties</a></li>
+              <li><a href="#">Sports and wellness</a></li>
+              <li><a href="#">Networking</a></li>
+            </ul>
+          </li>
+          <li>
+            <div class="col-sm-3 col-md-12 pull-left">
+              <form class="navbar-form" role="search">
+                  <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search website" name="q">
+                      <div class="input-group-btn">
+                          <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                      </div>
+                  </div>
+              </form>
+            </div>        
+          </li>
+          <li>
+              <li><a href="#" data-toggle="modal" data-target="#myModal">Advanced Search</a></li>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="signup.html"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+          <li><a href="login.html"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+          <li><a href="help.html"><span class="glyphicon glyphicon-info-sign"></span> Help</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- End <nav> tag by Bootstrap -->
+
+  <div class="container" style="margin-top: 20px;"> <!-- Bao toàn bộ phần Content -->
+
+    <div id="wrapper">  <!-- Liệt kê Cards sự kiện -->
+      <div id="columns">
+        <div class="pin">
+          <img src="http://static.bizlive.vn/uploaded/ducson/2015_01_12/vn03_acly.jpg?width=670&height=350&crop=auto&scale=both" />
+          <strong class="decorate_event_name">Event Name</strong>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+            Sed feugiat consectetur pellentesque. Nam ac elit risus, 
+            ac blandit dui. Duis rutrum porta tortor ut convallis.
+            Duis rutrum porta tortor ut convallis.
+          </p>
+          <div class="table-responsive">
+            <table class="table">
+              <tr>
+                <td class="glyphicon glyphicon-comment col-sm-2"></td>
+                <td class="glyphicon glyphicon-star-empty col-sm-2"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div> <!-- TEMPLATE Pinterest Layout --> <!-- show ra các Pin sự kiện -->
+    </div>
+  </div>
+
+<!-- All script here -->
+<script type="text/javascript" src="../js/myJS_chung.js"></script> <!-- JS của riêng mình, có kèm OutSource -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+
+</body>
+
+<footer>
+</footer>
+</html>
+
+
