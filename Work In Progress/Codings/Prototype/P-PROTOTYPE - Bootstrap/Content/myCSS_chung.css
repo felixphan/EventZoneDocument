@@ -1,0 +1,338 @@
+/* My source */
+
+/* CSS cho Modal */
+#i_sign_in_tab, #i_sign_up_tab {
+	color: #333;
+}
+
+a#i_quen_mk,
+a#i_sign_up_here,
+a#i_captcha_holder,
+a#i_policy,
+#i_close_modal{
+	color: #333;
+}
+
+/* CSS cho các phần khác */
+#i_bg_video{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	border: 0px;
+	top: 0px;
+	background-size: cover;
+}
+
+#i_bg_video_blur{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	border: 0px;
+	top: 0px;
+	-webkit-filter: blur(5px);
+}
+
+ul li {
+	text-decoration: none;
+	list-style-type: none;
+}
+
+body {
+	font-family: "Benton Sans","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+}
+
+body .navbar{
+	font-size: 15px;
+}
+
+a{
+	color: white;
+	text-decoration: none;
+}
+
+a:hover {
+	color: white;
+	text-decoration: none;
+}
+
+a:visited{
+	color: white;
+	text-decoration: none;
+}
+
+.,d_background_image{
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 0;
+}
+
+.,d_background_image_blur{
+	position: fixed;
+	top: 0px;
+	width: 100%;
+	z-index: 0;
+	-webkit-filter: blur(5px);
+}
+
+video#bgvid {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    overflow: hidden;
+}
+
+.d_overlay{
+	margin: 0;
+    padding: 0;
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.d_margin_top{
+	margin-top: 50px;
+}
+
+/* chứa CSS cho Top Menu */
+.d_create_event{
+	border: 1px solid white;
+    border-radius: 5px;
+    margin-top: 8px;
+    padding: 6px 10px 6px 10px;
+    margin-right: 10px;
+}
+
+.white, .white a {
+  color: #000;
+}
+
+.d_Cate{
+	font-size: initial;
+    position: fixed;
+    margin-top: 5px;
+    margin-left: 100px;
+    z-index: 1050;
+}
+
+#i_btn_Cate{
+	position: fixed;
+}
+
+/* Chứa Nội dung giữa màn hình */
+.d_middle_container{
+	border: 0px yellow solid;
+	height: 400px;
+	width: 100%;
+	position: fixed;
+	top: 100px;
+	text-align: center;
+	color: white;
+}
+
+.text1_container{
+	font-family: Arial;
+	font-size: 44px;
+	font-style: bold;
+	margin-top: 50px;
+}
+
+.text2_container{
+	font-size: 15px;
+}
+
+#i_learn_more{
+	text-decoration: underline;
+}
+
+.cate_container{
+	width: 50%;
+	border: 0px red solid;
+	margin-top: 100px;
+	height: 100px;
+	left:0;
+    right:0;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.d_each_cate{
+	font-size: 18px;
+	height: 40px;
+	border-radius: 5px;
+	border: 0px red solid;
+	margin-bottom: 10px;
+	padding-top: 7px;
+	background: rgba(255, 255, 255, 0.4);
+	transition: all 0.1s ease 0s;
+	margin-left: 10px;
+}
+
+.d_each_cate:hover{
+	color: gray;
+	background-color: white;
+}
+
+/* Bottom 3 columns*/
+.d_bottom_3_column_container{
+	width: 95%;
+	display: inline-flex;
+	left:0;
+    right:0;
+	margin-right: auto;
+	margin-left: auto;
+	position: absolute;
+}
+
+.d_column{
+	color: white;
+	text-align: left;
+	background: rgba(255, 255, 255, 0.35);
+	border-radius: 3px;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+	margin-left: 8px;
+	margin-right: 8px;
+	z-index: 2;
+	height: 600px;
+}
+
+.d_column .d_column_title{
+	color: white;
+}
+
+.row h2{
+	margin-top: 10px;
+	font-family: "Segoe UI Light"
+}
+
+/* Others */
+.d_white_text{
+	color: white;
+}
+
+.d_align_left{
+	text-align: left;
+}
+
+.d_checkbox{
+	text-align: left;
+}
+
+/* Chứa card info cho từng sự kiện */
+.d_card_container{
+	border: 0px red solid;
+	max-height: 530px;
+	width: 104%;
+	position: relative;
+	padding: 0;
+	overflow-x:hidden;
+    overflow-y:scroll;
+}
+
+.d_card_container::-webkit-scrollbar * {
+  background:transparent; // manage scrollbar background color here
+}
+
+.d_card_container::-webkit-scrollbar-thumb {
+  background:rgba(255,0,0,0.1) !important; 
+}
+
+.d_each_event{
+	margin-left: 0px;
+	width: 96%;
+	height: 100px;
+	padding: 5px 5px 5px 5px;
+	color: white;
+	text-align: left;
+	background: rgba(255, 255, 255, 0.35);
+	border-radius: 3px;
+	box-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+	margin-bottom: 10px;
+	transition: all 0.1s ease 0s;
+}
+
+.d_each_event:hover{
+	color: gray;
+	background-color: white;
+}
+
+/* Chứa thông tin cơ bản từng event */
+.d_event_basic_info{
+	text-align: left;
+	width: 100%;
+	height: 90px;
+	margin-left: 0;
+	padding: 0;
+}
+
+.d_thumb{
+	width: 160px;
+	height: 91px;
+	margin-left: 0;
+	float: left;
+	overflow: hidden;
+}
+
+.d_thumb_blur{
+	width: 160px;
+	height: 91px;
+	margin-left: 0;
+	float: left;
+	overflow: hidden;
+	-webkit-filter: blur(5px);
+}
+
+.d_thumb img{
+	width: 100%;
+	height: 100%;
+}
+
+.d_info_icon{
+	width: 15px;
+    margin: 0 5px 0 0;
+	float: left;
+}
+
+.d_event_name{
+	padding-top: 0px;
+	font-size: 15px;
+	font-weight: bold;
+	float: left;
+	margin-left: 10px;
+	height: 55px;
+	width: 50%;
+}
+
+.d_event_time, .d_event_date{
+	padding-top: 0px;
+	font-size: 12px;
+	width: 50%;
+	float: left;
+	margin-left: 10px;
+}
+
+/* MODAL */
+.d_modal-backdrop_2 {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1060;
+  background-color: #000;
+}
+
+/* Chứa các chức năng trong Modal */
+
+#i_email_textbox{
+	margin-bottom: 20px;
+}
+
+/* Modal Sign up */
+.d_optional{
+	width: 50%;
+    float: left;
+}
