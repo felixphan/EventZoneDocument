@@ -1,0 +1,18 @@
+.dsr_result_container{
+	margin-top: 80px;
+	position: relative;
+	border: 1px red solid;
+	width: 80%;
+	margin-bottom: 50px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.d_background_image{
+	z-index: -1;
+}
+
+.d_each_group_result{
+	height: 500px;
+	color: white;
+}
