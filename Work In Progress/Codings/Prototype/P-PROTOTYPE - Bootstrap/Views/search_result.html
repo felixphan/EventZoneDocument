@@ -7,54 +7,66 @@
 <head>
     <title>Search Result</title>
   	<meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <link rel="stylesheet" type="text/css" href="css/perfect-scrollbar.css">
-    <link rel="stylesheet" type="text/css" href="css/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OurSource -->
-    <link rel="stylesheet" type="text/css" href="css/myCSS_s_r.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../Content/uikit.css">
+    <link rel="stylesheet" type="text/css" href="../Content/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../Content/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+    <link rel="stylesheet" type="text/css" href="../Content/myCSS_s_r.css">  <!-- CSS của riêng mình, có kèm OurSource -->
 
 </head>
 
-<body data-spy="scroll" data-offset="500" data-target="#navbar">
+<body>
 
   <!-- Ảnh nền -->
   <div class="d_background_image">
-    <img class="d_overlay" src="img/bird.gif"/>
+    <img class="d_overlay" src="../img/sukien1.jpg"/>
   </div>
+
+  <ul id="i_Cate" style="margin-top: -4px;">
+    <li class="dropdown d_Cate">
+      <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="i_btn_Cate">Category
+      <span class="caret"></span></a>
+      <ul class="dropdown-menu" id="i_Cate_dropdown">
+        <li><a href="#">Music</a></li>
+        <li><a href="#">Food and Drink</a></li>
+        <li><a href="#">Classes</a></li>
+        <li><a href="#">Arts</a></li>
+        <li><a href="#">Parties</a></li>
+        <li><a href="#">Sports and wellness</a></li>
+        <li><a href="#">Networking</a></li>
+      </ul>
+    </li>
+  </ul>
 
   <!-- <nav> tag by Bootstrap: using for Top Menu -->
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid d_white_text">
       <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">Event Zone</a>
+        <div class="navbar-brand uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+          <a href="index.html" id="i_logo">Event Zone</a>
+          <div class="uk-dropdown">
+            <ul class="uk-nav uk-nav-dropdown">
+                <li><a href="#">Policy</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="dropdown" id="i_Cate">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="i_btn_Cate">Category
-            <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="#">Music</a></li>
-              <li><a href="#">Food and Drink</a></li>
-              <li><a href="#">Classes</a></li>
-              <li><a href="#">Arts</a></li>
-              <li><a href="#">Parties</a></li>
-              <li><a href="#">Sports and wellness</a></li>
-              <li><a href="#">Networking</a></li>
-            </ul>
-          </li>
-          <li id="i_search">
+          <li id="i_search" style=" margin-left: 120px;">
             <form class="navbar-form navbar-left" role="search">
             <div class="input-group" style="{width: 100px;}">
-              <input
+              <input  
                       type="text"
                       class="form-control"
                       aria-label="Text input with segmented button dropdown"
                       placeholder="Search for event, channel or user"
                       style="width: 250px;">
               <div class="input-group-btn">
-                <button type="button" class="btn btn-default">
-                  <span class="glyphicon glyphicon-search"></span>
-                </button>
+                <a class="btn btn-default" href="search_result.html" role="button">
+                  <span class="glyphicon glyphicon-search white"></span>
+                </a>
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#myModal">
                   <a href="#" id="i_advanced_search"><span class="glyphicon glyphicon-chevron-down white"></span></a>
                 </button>
@@ -69,16 +81,15 @@
               <a href="create_event.html">Create event!</a>
             </div>
           </li>
-          <li><a href="signup.html" data-toggle="modal" data-target="#myModal2">Sign In</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#myModal2" id="i_btn_signin">Sign In</a></li>
            <!-- <li><a href="login.html" data-toggle="modal" data-target="#myModal2">Login</a></li> -->
-          <li><a href="help.html">Help</a></li>
         </ul>
       </div>
     </div>
   </nav>
   <!-- //End <nav> tag by Bootstrap -->
 
-  <div class="dsr_result_container container-fluid">
+  <div class="d_result_container container-fluid">
     <nav id="navbar-example" class="navbar navbar-default navbar-static" role="navigation">
        <div class="navbar-header">
           <button class="navbar-toggle" type="button" data-toggle="collapse" 
@@ -164,14 +175,15 @@
 
 
 <!-- All script here -->
-<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>    <!-- Default JQuery -->
-<script type="text/javascript" src="js/bootstrap.min.js"></script>        <!-- Default Bootstrap, có Edited -->
-<script type="text/javascript" src="js/super-smooth.js"></script>         <!-- Plugin làm mượt scroll -->
-<script type="text/javascript" src="js/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
-<script type="text/javascript" src="js/smooth-scrollspy.js"></script>
+<script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>    <!-- Default JQuery -->
+<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>        <!-- Default Bootstrap, có Edited -->
+<script type="text/javascript" src="../Scripts/super-smooth.js"></script>         <!-- Plugin làm mượt scroll -->
+<script type="text/javascript" src="../Scripts/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
+<script type="text/javascript" src="../Scripts/smooth-scrollspy.js"></script>
 
 <!-- <script type="text/javascript" src="js/myJS_chung.js"></script> JS của riêng mình, có kèm OutSource -->
-<script type="text/javascript" src="js/myJS_test_script.js"></script> <!-- JS đang test -->
+<script type="text/javascript" src="../Scripts/myJS_s_r.js"></script> <!-- JS của riêng mình, có kèm OutSource -->
+<!-- <script type="text/javascript" src="../Scripts/myJS_test_script.js"></script> JS đang test -->
 
 </body>
 

@@ -1,34 +1,12 @@
 /* My source */
 
-/* CSS cho Modal */
-#i_sign_in_tab, #i_sign_up_tab {
-	color: #333;
-}
-
-a#i_quen_mk,
-a#i_sign_up_here,
-a#i_captcha_holder,
-a#i_policy,
-#i_close_modal{
-	color: #333;
-}
-
-/* CSS cho các phần khác */
-#i_bg_video{
-	height: 100%;
-	width: 100%;
+/* Video nền */
+.uk-cover video{
 	position: fixed;
-	border: 0px;
-	top: 0px;
-	background-size: cover;
+	width: 1200px;
 }
 
-#i_bg_video_blur{
-	height: 100%;
-	width: 100%;
-	position: fixed;
-	border: 0px;
-	top: 0px;
+.uk-cover #i_bg_video_blur{
 	-webkit-filter: blur(5px);
 }
 
@@ -98,6 +76,15 @@ video#bgvid {
 }
 
 /* chứa CSS cho Top Menu */
+#i_logo{
+	background-color: transparent;
+	border: 0px;
+}
+
+#i_logo >.uk-dropdown{
+	width: 100px;
+}
+
 .d_create_event{
 	border: 1px solid white;
     border-radius: 5px;
@@ -120,6 +107,10 @@ video#bgvid {
 
 #i_btn_Cate{
 	position: fixed;
+}
+
+.dropdown-menu{
+	margin-top: 30px;
 }
 
 /* Chứa Nội dung giữa màn hình */
@@ -199,7 +190,7 @@ video#bgvid {
 	height: 600px;
 }
 
-.d_column .d_column_title{
+.d_column h2{
 	color: white;
 }
 
@@ -331,8 +322,25 @@ video#bgvid {
 	margin-bottom: 20px;
 }
 
+#i_signin_tab, #i_signup_tab {
+	color: #333;
+}
+
+a#i_quen_mk,
+a#i_sign_up_here,
+a#i_captcha_holder,
+a#i_policy,
+#i_close_modal{
+	color: #333;
+}
+
 /* Modal Sign up */
 .d_optional{
 	width: 50%;
     float: left;
+}
+
+.d_agree_policy{
+	margin-bottom: 20px;
+	float: left;
 }

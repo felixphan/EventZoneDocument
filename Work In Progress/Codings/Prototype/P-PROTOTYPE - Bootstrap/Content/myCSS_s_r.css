@@ -1,15 +1,25 @@
-.dsr_result_container{
+/* TOP MENU */
+
+
+
+/* Background */
+.d_background_image{
+	z-index: -1;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+}
+
+/* SEARCH RESULT */
+.d_result_container{
 	margin-top: 80px;
-	position: relative;
+	position: fixed;
 	border: 1px red solid;
-	width: 80%;
+	width: 50%;
 	margin-bottom: 50px;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-.d_background_image{
-	z-index: -1;
 }
 
 .d_each_group_result{

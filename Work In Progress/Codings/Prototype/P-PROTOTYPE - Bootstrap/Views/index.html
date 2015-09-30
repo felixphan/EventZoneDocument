@@ -2,39 +2,35 @@
 <html>
 <head>
     <title>Homepage</title>
-    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css"> <!-- Plugin Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="../Content/uikit.css"> <!-- Plugin UIkit -->
     <link rel="stylesheet" type="text/css" href="../Content/perfect-scrollbar.css">
     <link rel="stylesheet" type="text/css" href="../Content/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OutSource -->
 
     <link rel="stylesheet" href="../Content/jquery.m.flip.css" type="text/css"/> <!-- Plugin Flip Effect -->
     <link rel="stylesheet" href="../Content/m.flip.css" type="text/css"/>        <!-- Plugin Flip Effect -->
-    <!--<link rel="stylesheet" type="text/css" href="../Content/daterangepicker.css">  Plugin Flip Effect -->
 
 </head>
 
 <body>
-  <!-- Video - chưa xong -->
+  <!-- Video -->
 
-  <iframe src="../img/bgvideo1080-cut.mp4" id="i_bg_video">
-  </iframe>
-  <iframe src="../img/bgvideo1080-cut.mp4" id="i_bg_video_blur">
-  </iframe>
-
-  <!-- Ảnh nền
-  <div class="d_background_image">
-    <img class="d_overlay" src="img/bird.gif"/>
-  </div> -->
-
-  <!-- Ảnh nền Blur
-  <div  class="d_background_image_blur">
-    <img class="d_overlay" src="img/bird.gif"/>
-  </div> -->
+  <div class="uk-cover">
+    <video class="uk-cover-object" autoplay loop muted>
+        <source src="../img/bgvideo1080-cut.mp4" type="">
+    </video>
+  </div>
+  <div class="uk-cover">
+    <video class="uk-cover-object" id="i_bg_video_blur" autoplay loop muted>
+        <source src="../img/bgvideo1080-cut.mp4" type="">
+    </video>
+  </div>
 
   <ul id="i_Cate">
     <li class="dropdown d_Cate">
       <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="i_btn_Cate">Category
       <span class="caret"></span></a>
-      <ul class="dropdown-menu">
+      <ul class="dropdown-menu" id="i_Cate_dropdown">
         <li><a href="#">Music</a></li>
         <li><a href="#">Food and Drink</a></li>
         <li><a href="#">Classes</a></li>
@@ -50,11 +46,18 @@
   <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid d_white_text">
       <div class="navbar-header">
-        <a class="navbar-brand" href="index.html">Event Zone</a>
+        <div class="navbar-brand uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+          <a href="index.html" id="i_logo">Event Zone</a>
+          <div class="uk-dropdown">
+            <ul class="uk-nav uk-nav-dropdown">
+                <li><a href="#">Policy</a></li>
+                <li><a href="#">Help</a></li>
+            </ul>
+          </div>
+        </div>
       </div>
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          
           <li id="i_search">
             <form class="navbar-form navbar-left" role="search">
             <div class="input-group" style="{width: 100px;}">
@@ -82,9 +85,8 @@
               <a href="create_event.html">Create event!</a>
             </div>
           </li>
-          <li><a href="signup.html" data-toggle="modal" data-target="#myModal2">Sign In</a></li>
+          <li><a href="#" data-toggle="modal" data-target="#myModal2" id="i_btn_signin">Sign In</a></li>
            <!-- <li><a href="login.html" data-toggle="modal" data-target="#myModal2">Login</a></li> -->
-          <li><a href="help.html">Help</a></li>
         </ul>
       </div>
     </div>
@@ -414,11 +416,11 @@
           <div style="padding-top:10px" class="panel-body" >
             <div class="cover_all_functions">
               <ul class="nav nav-tabs">   <!-- áp dụng Tab lên thanh Nút chức năng -->
-                  <li class="d_signin_tab active"><a data-toggle="tab" href="#sectionA" id="i_sign_in_tab">Sign In</a></li> <!-- #sectionA là Nút đầu tiên, mặc định là hiện đầu tiên nên có Active -->
-                  <li class="d_signup_tab"><a data-toggle="tab" href="#sectionB" id="i_sign_up_tab">Sign Up</a></li>    <!-- #sectionB là những nút tiếp theo -->
+                  <li class="d_signin_tab active"><a data-toggle="tab" href="#i_signin_section" id="i_signin_tab">Sign In</a></li> <!-- #sectionA là Nút đầu tiên, mặc định là hiện đầu tiên nên có Active -->
+                  <li class="d_signup_tab"><a data-toggle="tab" href="#i_signup_section" id="i_signup_tab">Sign Up</a></li>    <!-- #sectionB là những nút tiếp theo -->
               </ul>
               <div class="tab-content">   <!-- Div chứa Nội dung của mỗi Tab nhé -->
-                <div id="sectionA" class="tab-pane fade in active"><!-- bao toàn bộ chức năng SIGN IN, f_... để đánh dấu đó là Chức năng-->
+                <div id="i_signin_section"class="tab-pane fade in active"><!-- bao toàn bộ chức năng SIGN IN, f_... để đánh dấu đó là Chức năng-->
                     <div class="my_function_cover f_sign_in">    
                         <div style="padding-top: 30px" class="panel-body" >
                             <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
@@ -454,9 +456,9 @@
                                 </div>  
                             </form>
                         </div> 
-                    </div><!-- bao toàn bộ chức năng SIGN UP -->
+                    </div><!-- bao toàn bộ chức năng SIGN IN -->
                 </div>
-                <div id="sectionB" class="tab-pane fade"> <!-- bao toàn bộ chức năng SIGN UP -->
+                <div id="i_signup_section" class="tab-pane fade"> <!-- bao toàn bộ chức năng SIGN UP -->
                   <div class="my_function_cover f_sign_up"> 
                     <div style="padding-top:30px" class="panel-body" >
                         <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
@@ -484,7 +486,6 @@
                                       <input id="i_first_name" type="text" class="form-control" name="firstname"placeholder="First name">
                                     </div>
                                 </div>
-
                                 <div style="margin-bottom: 15px" class="input-group">
                                     <label class="radio-inline"><input type="radio" name="optradio">Male</label>
                                     <label class="radio-inline"><input type="radio" name="optradio">Female</label>
@@ -496,27 +497,21 @@
                                       <input id="i_first_name" type="text" class="form-control" name="lastname"placeholder="Last name">
                                     </div>
                                 </div>
-
                                 <div style="margin-bottom: 15px" class="input-group">
+                                  Birthday:
                                   <input type="date" name="start"/>
                                 </div>
                               </div>
                             </div>
-
-                            <a href="#" id="i_captcha_holder">
-                                Captcha holder!
-                            </a>
-
-                            <div class="input-group" style="margin-bottom: 35px">
+                            <div class="input-group d_agree_policy">
                               <div class="checkbox">
                                 <label>
-                                  <input id="login-remember" type="checkbox" name="remember" value="1">
+                                  <input type="checkbox" name="remember" value="1">
                                     Tôi đã đọc và đồng ý với các
-                                  <a href="policy.html" id="i_policy">Điều khoản sử dụng</a>.
+                                  <a href="policy.html" id="i_policy"><i>Điều khoản sử dụng</i></a>.
                                 </label>
                               </div>
                             </div>
-
                             <div style="margin-top:10px" class="form-group">
                                 <!-- Button -->
                                 <div class="col-sm-12 controls">
@@ -569,8 +564,10 @@
 
 <script type="text/javascript" src="../Scripts/jquery.m.flip.js"></script> <!-- Plugin Flip Effect -->
 
+<script type="text/javascript" src="../Scripts/uikit.js"></script> <!-- Plugin UIkit -->
+
 <script type="text/javascript" src="../Scripts/myJS_chung.js"></script> <!-- JS của riêng mình, có kèm OutSource -->
-<script type="text/javascript" src="../Scripts/myJS_test_script.js"></script> <!-- JS đang test -->
+<!-- <script type="text/javascript" src="../Scripts/myJS_test_script.js"></script> JS đang test -->
 
 <script type="text/javascript">
   $(document).ready(function(){
