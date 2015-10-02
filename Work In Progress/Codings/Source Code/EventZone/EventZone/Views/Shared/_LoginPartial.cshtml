@@ -1,0 +1,14 @@
+﻿
+@if (Session["authenticated"] == null || Session["authenticated"].ToString().IsEmpty()) { 
+<ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActionLink("Create Event", "CreateEvent", "Event", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Sign in", "Signin", "Account", routeValues: null, htmlAttributes: new { returnUrl = @Request.Url.AbsoluteUri })</li>
+</ul>
+}else{
+    <ul class="nav navbar-nav navbar-right">
+        <li>Hello @Session["userName"]</li>
+        <li>@Html.ActionLink("Sign in", "Signin", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+
+}
