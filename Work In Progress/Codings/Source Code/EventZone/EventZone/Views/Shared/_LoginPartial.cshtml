@@ -7,8 +7,9 @@
 </ul>
 }else{
     <ul class="nav navbar-nav navbar-right">
-        <li>Hello @Session["userName"]</li>
-        <li>@Html.ActionLink("Sign in", "Signin", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+      
+        <li>@Html.ActionLink("Hello " + @Session["userName"] + "!", "Manage", "Account", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+        <li>@Html.ActionLink("Sign out", "Signout", "Account", routeValues: null, htmlAttributes: new { id = "signoutLink" })</li>
     </ul>
 
 }

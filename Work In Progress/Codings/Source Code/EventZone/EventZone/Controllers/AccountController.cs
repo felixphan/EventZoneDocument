@@ -38,7 +38,8 @@ namespace EventZone.Controllers
                 {
                     user.TypeID = 0;// eventzone account
                     //Set all parameters for user from registerViewModel
-                    user.UserEmail = model.UserName;
+                    user.UserEmail = model.Email;
+                    user.UserName = model.UserName;
                     user.UserPassword = model.Password;
                     user.UserDOB = model.UserDOB;
                     user.UserFirstName = model.UserFirstName;
@@ -104,9 +105,9 @@ namespace EventZone.Controllers
                         ModelState.AddModelError("", "Your account is locked! Please contact with our support");
                     }
                     else {
-                        var user = dbhelp.GetUserByEmail(model.UserName);
+                        var user = dbhelp.GetUserByUserName(model.UserName);
                         Session["authenticated"] = true;
-                        Session["userName"] = user.UserFirstName;
+                        Session["userName"] = user.UserName;
                         Session["userAva"] = user.AvatarLink;
                         Session["UserId"] = user.UserID;
                         UserHelpers.SetCurrentUser(Session, user);
@@ -119,10 +120,25 @@ namespace EventZone.Controllers
             }
 
             // If we got this far, something failed, redisplay form
-            return View(returnUrl);
+            return RedirectToAction("Index", "Home");
         }
 
-
+        public ActionResult Signout()
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user.TypeID == 1)//neu la gg account thi clear connect
+            {
+                //GoogleConnect.Clear();
+            }
+            //reset session
+            Session["authenticated"] = "";
+            Session["userName"] = "";
+            Session["userAva"] = "";
+            Session["UserId"] = "";
+            Session["loginMessageError"] = "";
+            UserHelpers.SetCurrentUser(Session, null);
+            return RedirectToAction("Index", "Home");
+        }
 
     }
 }
