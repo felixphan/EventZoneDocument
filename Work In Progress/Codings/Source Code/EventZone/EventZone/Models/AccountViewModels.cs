@@ -33,6 +33,7 @@ namespace EventZone.Models
     {
         [Required]
         [Display(Name = "User name")]
+        [EmailAddress(ErrorMessage = "The email format is incorrect")]
         public string UserName { get; set; }
 
         [Required]
@@ -44,9 +45,9 @@ namespace EventZone.Models
 
     public class RegisterViewModel
     {
-        [Required(ErrorMessage = "Please enter your userName")]
-        [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 8)]
-        [Display(Name = "User Name")]
+        [Required(ErrorMessage = "Please enter your email")]
+        [EmailAddress(ErrorMessage = "The email format is incorrect")]
+        [Display(Name = "User name")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please enter your password")]
@@ -60,14 +61,11 @@ namespace EventZone.Models
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
-        [Required(ErrorMessage = "Please enter your email")]
-        [EmailAddress(ErrorMessage = "The email format is incorrect")]
-        [Display(Name = "Email")]
-        public string Email { get; set; }
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
         public Nullable<System.DateTime> UserDOB { get; set; }
+
 
         [Required(ErrorMessage="Please select gender")]
         public int Gender { get; set; }
