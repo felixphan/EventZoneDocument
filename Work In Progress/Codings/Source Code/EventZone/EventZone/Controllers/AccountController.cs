@@ -7,9 +7,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using ASPSnippets.GoogleAPI;
+using Newtonsoft.Json.Linq;
 
 namespace EventZone.Controllers
 {
+     [RequireHttps]
     public class AccountController : Controller
     {
         EventZoneEntities db = new EventZoneEntities();
@@ -32,13 +35,24 @@ namespace EventZone.Controllers
                 User user = new User();
                 List<User> listUser = new List<User>();
                 listUser = db.Users.ToList();
-                var newUser = listUser.FindAll(a => a.UserEmail.Equals(model.UserName));
-
-                if (newUser.Count == 0)
+                var newUser = listUser.FindAll(a => a.UserName.Equals(model.UserName));
+                if (newUser.Count != 0)
+                {
+                    ModelState.AddModelError("", "UserName is already exist. Please choose another.");
+                    return View();
+                }
+                newUser = listUser.FindAll(a => a.UserEmail.Equals(model.Email));
+                if (newUser.Count != 0)
+                {
+                    ModelState.AddModelError("", "Email is already registered. Please choose another.");
+                    return View();
+                }
+                else
                 {
                     user.TypeID = 0;// eventzone account
                     //Set all parameters for user from registerViewModel
-                    user.UserEmail = model.UserName;
+                    user.UserEmail = model.Email;
+                    user.UserName = model.UserName;
                     user.UserPassword = model.Password;
                     user.UserDOB = model.UserDOB;
                     user.UserFirstName = model.UserFirstName;
@@ -57,23 +71,21 @@ namespace EventZone.Controllers
                     db.SaveChanges();
                     Session["registerMessageError"] = "";
                 }
-                else {
-                    ModelState.AddModelError("", "User with the email you provided is already exist.");
-                    return View();
-                }
                 //set all session for 
+                Session["IsGoogle"] = "";
                 Session["authenticated"] = true;
-                Session["userName"] = user.UserFirstName;
+                Session["userName"] = user.UserName;
                 Session["userAva"] = user.AvatarLink;
                 Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
 
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
+                return RedirectToAction("RegisterSuccess", "Account");
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("RegisterSuccess", "Account");
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult RegisterSuccess()
         {
@@ -104,25 +116,216 @@ namespace EventZone.Controllers
                         ModelState.AddModelError("", "Your account is locked! Please contact with our support");
                     }
                     else {
-                        var user = dbhelp.GetUserByEmail(model.UserName);
+                        var user = dbhelp.GetUserByUserName(model.UserName);
+                        Session["IsGoogle"] = "";
                         Session["authenticated"] = true;
-                        Session["userName"] = user.UserFirstName;
+                        Session["userName"] = user.UserName;
                         Session["userAva"] = user.AvatarLink;
                         Session["UserId"] = user.UserID;
                         UserHelpers.SetCurrentUser(Session, user);
+                        
                     }
                 }
                 else
                 {
-                    ModelState.AddModelError("", "Email or password is invalid.");
+                    ModelState.AddModelError("", "UserName or password is invalid.");
+                    return View();
                 }
             }
 
             // If we got this far, something failed, redisplay form
-            return View(returnUrl);
+            return RedirectToAction("Index","Home");
+        }
+        public ActionResult Signout()
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (Session["IsGoogle"].ToString() != "" || Session["IsGoogle"]!=null)//check neu dang nhap bang tai khoan google thi remove connect
+            {
+                GoogleConnect.Clear();
+            }
+            
+            Session["authenticated"] = "";
+            Session["userName"] = "";
+            Session["userAva"] = "";
+            Session["UserId"] = "";
+            Session["IsGoogle"] = "";
+            Session["loginMessageError"] = "";
+            UserHelpers.SetCurrentUser(Session, null);
+
+            return RedirectToAction("Index", "Home");
         }
 
+        public ActionResult AuthenGoogle()
+        {
+            GoogleConnect.ClientId = "753316382181-58p94cof0aum06tigijhq3e1vlkqlgi8.apps.googleusercontent.com";
+            GoogleConnect.ClientSecret = "1WmJi7FEw7rxs71B5EH2aH1f";
+            GoogleConnect.RedirectUri = RedirectUriGoogle.AbsoluteUri.Split('?')[0];
+            GoogleConnect.Authorize("profile", "email");
+            return null;
+        }
 
+        private class Email
+        {
+            public string Value { get; set; }
+            public string Type { get; set; }
+        }
+
+        private class Address
+        {
+            public string Value { get; set; }
+            public bool Primary { get; set; }
+        }
+        public ActionResult GoogleCallback()
+        {
+            if (!string.IsNullOrEmpty(Request.QueryString["code"]))
+            {
+                string code = Request.QueryString["code"];
+                dynamic google = JObject.Parse(GoogleConnect.Fetch("me", code));
+                JArray emailList = new JArray(google.emails);
+                string email = "";
+                foreach (JToken x in emailList)
+                {
+                    Email e = x.ToObject<Email>();
+                    if (e.Type.Equals("account"))
+                    {
+                        email = e.Value;
+                    }
+
+                }
+                string avatar = google.image.url.Value;
+                avatar = avatar.Substring(0, avatar.LastIndexOf("?sz=") + 4) + "200";
+                JArray addressList = new JArray();
+                if (google.placesLived != null)
+                {
+                    addressList = new JArray(google.placesLived);
+                }
+                string address = "";
+                foreach (JToken x in addressList)
+                {
+                    Address a = x.ToObject<Address>();
+                    if (a.Primary)
+                    {
+                        address = a.Value;
+                    }
+                }
+                DatabaseHelpers dbhelp= new DatabaseHelpers();
+                // select from DB
+                User newUser = dbhelp.GetUserByEmail(email);
+                
+
+                //if this is first time login
+                if (newUser == null)
+                {
+                    GooleAccountModel ggModel = new GooleAccountModel { 
+                    Email= email,
+                    Place=address,
+                    UserFirstName = google.name.familyName.Value,
+                    UserLastName= google.name.givenName.Value,
+                    //Gender = google.gender == null ? 0 : google.gender.Value   
+                    };
+                    return View("ConfirmRegisterGoogle", ggModel);
+                }
+                else if (dbhelp.isLookedUser(newUser.UserName))
+                {
+                    // user is Locked
+                    GoogleConnect.Clear();
+
+                    ModelState.AddModelError("","Your account has been locked! Please contact us follow email: ËventZone.system@gmail.com");
+                    return RedirectToAction("SignIn", "Account");
+                }
+
+                // Set the auth cookie
+                Session["IsGoogle"] = "Yes";
+                Session["authenticated"] = true;
+                Session["userName"] = newUser.UserName;
+                Session["userAva"] = newUser.AvatarLink;
+                Session["UserId"] = newUser.UserID;
+                Session["loginMessageError"] = "";
+                UserHelpers.SetCurrentUser(Session, newUser);
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        private Uri RedirectUriGoogle
+        {
+            get
+            {
+                var uriBuilder = new UriBuilder(Request.Url)
+                {
+                    Query = null,
+                    Fragment = null,
+                    Path = Url.Action("GoogleCallback")
+                };
+                return uriBuilder.Uri;
+            }
+        }
+
+        public ActionResult ConfirmRegisterGoogle(GooleAccountModel model) {
+            return View(model);
+        }
+        public ActionResult ExternalLoginConfirmation(GooleAccountModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user = new User();
+                List<User> listUser = new List<User>();
+                listUser = db.Users.ToList();
+                var newUser = listUser.FindAll(a => a.UserName.Equals(model.UserName));
+                if (newUser.Count != 0)
+                {
+                    ModelState.AddModelError("", "UserName is already exist. Please choose another.");
+                    return View("ConfirmRegisterGoogle", model);
+                }
+                else
+                {
+                    user.TypeID = 1;// google account
+                    //Set all parameters for user from registerViewModel
+                    user.UserEmail = model.Email;
+                    user.UserName = model.UserName;
+                    user.UserPassword = model.Password;
+                    user.UserDOB = model.UserDOB;
+                    user.Place = model.Place;
+                    user.UserFirstName = model.UserFirstName;
+                    if (model.UserLastName != null && model.UserLastName != "")
+                    {
+                        user.UserLastName = model.UserLastName;
+                    }
+                    user.AccountStatus = EventZoneConstants.IsUserActive;//set Active account
+                    if (string.IsNullOrWhiteSpace(user.AvatarLink))//set default avatar
+                    {
+                        user.AvatarLink = "/img/default-avatar.jpg";
+                    }
+                    user.UserRoles = EventZoneConstants.IsUser;//set UserRole
+                    // insert user to Database
+                    db.Users.Add(user);
+                    db.SaveChanges();
+                    Session["registerMessageError"] = "";
+                }
+                //set all session for 
+                Session["IsGoogle"] = "Yes";
+                Session["authenticated"] = true;
+                Session["userName"] = user.UserName;
+                Session["userAva"] = user.AvatarLink;
+                Session["UserId"] = user.UserID;
+                UserHelpers.SetCurrentUser(Session, user);
+
+                //Send email confirm
+                MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
+                return RedirectToAction("RegisterSuccess", "Account");
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "Home");
+        }
+        public ActionResult ForgotAccount() {
+
+            return View();
+        }
+        public ActionResult HanldeForgotAccount(ForgotViewModel model)
+        {
+
+            return View("ForgotAccount",model);
+        }
 
     }
 }

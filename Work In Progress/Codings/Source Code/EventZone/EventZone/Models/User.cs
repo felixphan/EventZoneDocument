@@ -42,6 +42,7 @@ namespace EventZone.Models
         public bool AccountStatus { get; set; }
         public int Gender { get; set; }
         public string AvatarLink { get; set; }
+        public string UserName { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
         public virtual ICollection<Channel> Channels { get; set; }

@@ -14,7 +14,7 @@ namespace EventZone
             app.UseCookieAuthentication(new CookieAuthenticationOptions
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-                LoginPath = new PathString("/Account/Login")
+                LoginPath = new PathString("/Account/Signin")
             });
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
@@ -32,7 +32,9 @@ namespace EventZone
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication();
+            app.UseGoogleAuthentication(
+         clientId: "753316382181-58p94cof0aum06tigijhq3e1vlkqlgi8.apps.googleusercontent.com",
+         clientSecret: "1WmJi7FEw7rxs71B5EH2aH1f");
         }
     }
 }

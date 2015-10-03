@@ -9,23 +9,23 @@ namespace EventZone.Helpers
     public class DatabaseHelpers
     {
         private EventZoneEntities db = new EventZoneEntities();
-        public bool ValidateUser(string email, string password)
+        public bool ValidateUser(string userName, string password)
         {
             List<User> listUser = db.Users.ToList();
-            var user = listUser.FindAll(i => i.UserEmail == email);
+            var user = listUser.FindAll(i => i.UserName == userName);
             if (user.Count == 0)
             {
                 return false;
             }
-            if (user[0].UserPassword.Trim()!= password)
+            if (user[0].UserPassword!= password)
             {
                 return false;
             }
             return true;
         }
-        public bool isLookedUser(string email) {
+        public bool isLookedUser(string userName) {
             List<User> listUser = db.Users.ToList();
-            var user = listUser.FindAll(i => i.UserEmail == email);
+            var user = listUser.FindAll(i => i.UserName == userName);
             if (user.Count == 0)
             {
                 return false;
@@ -39,12 +39,24 @@ namespace EventZone.Helpers
         public User GetUserByEmail(string email) {
             List<User> listUser = db.Users.ToList();
             var user = listUser.FindAll(i => i.UserEmail == email);
-            if (user.Count == 0)
+            if (user.Count != 0)
             {
                 return user[0];
             }
             return null;
         
+        }
+
+        public User GetUserByUserName(string userName)
+        {
+            List<User> listUser = db.Users.ToList();
+            var user = listUser.FindAll(i => i.UserName == userName);
+            if (user.Count != 0)
+            {
+                return user[0];
+            }
+            return null;
+
         }
     }
 }
