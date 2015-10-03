@@ -1759,11 +1759,11 @@
 
         defaults: {
            'mode'       : 'hover',
-           'remaintime' : 800,
+           'remaintime' : 50,   /*default is 800*/
            'justify'    : false,
            'boundary'   : UI.$win,
            'delay'      : 0,
-           'hoverDelayIdle'  : 250
+           'hoverDelayIdle'  : 100 /*default is 250*/
         },
 
         remainIdle: false,
