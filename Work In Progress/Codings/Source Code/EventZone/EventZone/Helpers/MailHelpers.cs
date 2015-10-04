@@ -51,6 +51,21 @@ namespace EventZone.Helpers
 
             }
         }
+        public void SendMailResetPassword(string email, string newPassword)
+        {
+            try
+            {
+                var message = new MailMessage(SenderId, email, "Reset password EventZone",
+                        "Your new password: " + newPassword);
+                _smtp.Send(message);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+
+            }
+        }
        
 
     }

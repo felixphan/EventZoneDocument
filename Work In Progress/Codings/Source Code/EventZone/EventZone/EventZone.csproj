@@ -323,6 +323,7 @@
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\ConfirmRegisterGoogle.cshtml" />
     <Content Include="Views\Account\ForgotAccount.cshtml" />
+    <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
     <None Include="Views\Account\Signin.cshtml" />
   </ItemGroup>
   <ItemGroup>

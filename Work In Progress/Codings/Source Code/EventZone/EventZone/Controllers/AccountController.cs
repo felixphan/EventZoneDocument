@@ -139,9 +139,12 @@ namespace EventZone.Controllers
         public ActionResult Signout()
         {
             User user = UserHelpers.GetCurrentUser(Session);
-            if (Session["IsGoogle"].ToString() != "" || Session["IsGoogle"]!=null)//check neu dang nhap bang tai khoan google thi remove connect
+            try
             {
                 GoogleConnect.Clear();
+            }
+            catch (Exception e) { 
+            
             }
             
             Session["authenticated"] = "";
@@ -321,10 +324,40 @@ namespace EventZone.Controllers
 
             return View();
         }
-        public ActionResult HanldeForgotAccount(ForgotViewModel model)
+        public ActionResult HandleForgotPass(ForgotViewModel model)
         {
+            if (ModelState.IsValid)
+            {
+                DatabaseHelpers dbhelper = new DatabaseHelpers();
+                User user = dbhelper.GetUserByEmail(model.Email);
+                if (user != null)
+                {
+                    var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+                    var random = new Random();
+                    var newPassword = new string(
+                        Enumerable.Repeat(chars, 8)
+                                  .Select(s => s[random.Next(s.Length)])
+                                  .ToArray());
 
-            return View("ForgotAccount",model);
+                    bool isUpdated = dbhelper.ResetPassword(model.Email, newPassword);
+                    if (isUpdated)
+                    {
+                        MailHelpers.Instance.SendMailResetPassword(model.Email, newPassword);
+                        return RedirectToAction("ResetPasswordSuccess", "Account");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "There is something wrong, please try again later!");
+                    }
+                }
+
+                ModelState.AddModelError("", "Sorry we did not find your email in our database! Please try again!");
+
+            } 
+            return View("ForgotAccount", model);
+        }
+        public ActionResult ResetPasswordSuccess() {
+            return View();
         }
 
     }

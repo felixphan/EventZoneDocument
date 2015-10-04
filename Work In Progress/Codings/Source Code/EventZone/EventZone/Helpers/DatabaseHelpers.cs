@@ -1,12 +1,13 @@
 ﻿using EventZone.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
 namespace EventZone.Helpers
 {
-    public class DatabaseHelpers
+    public class DatabaseHelpers : SingletonBase<DatabaseHelpers>
     {
         private EventZoneEntities db = new EventZoneEntities();
         public bool ValidateUser(string userName, string password)
@@ -57,6 +58,16 @@ namespace EventZone.Helpers
             }
             return null;
 
+        }
+        public bool ResetPassword(string email, string password) {
+            User user = GetUserByEmail(email);
+            if (user != null) {
+                user.UserPassword = password;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            return false;
         }
     }
 }
