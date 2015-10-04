@@ -14,6 +14,18 @@ $(document).ready(function(){
 	$('.text2_container').transition({ scale: 1 }, 1000, 'ease');
 	$('.cate_container').transition({ scale: 1 }, 1800, 'ease');
 
+/***  ***/
+	$('.d_btn_follow').click(function(){
+		if($('.d_btn_follow span').hasClass('glyphicon-star-empty')){
+			$('.d_btn_follow span').removeClass('glyphicon-star-empty');
+			$('.d_btn_follow span').addClass('glyphicon-star');
+		} else {
+			$('.d_btn_follow span').addClass('glyphicon-star-empty');
+			$('.d_btn_follow span').removeClass('glyphicon-star');
+		}
+	});
+	/***  ***/
+
 /*** Xử lý tích chọn All Category thì tất cả Category khác đều được tích ***/
 	var item_All_is_checked = false;
 	$('#i_chbox_All').click(function(){

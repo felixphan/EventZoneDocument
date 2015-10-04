@@ -17,6 +17,7 @@ ul li {
 
 body {
 	font-family: "Benton Sans","Helvetica Neue",Helvetica,Roboto,Arial,sans-serif;
+	background-color: transparent;
 }
 
 body .navbar{
@@ -101,8 +102,13 @@ video#bgvid {
 	font-size: initial;
     position: fixed;
     margin-top: 5px;
-    margin-left: 100px;
+    margin-left: 120px;
     z-index: 1050;
+}
+
+.d_Cate a:hover,
+.d_Cate a:focus{
+	text-decoration: none;
 }
 
 #i_btn_Cate{
@@ -124,14 +130,14 @@ video#bgvid {
 	color: white;
 }
 
-.text1_container{
+.d_text1_container{
 	font-family: Arial;
 	font-size: 44px;
 	font-style: bold;
 	margin-top: 50px;
 }
 
-.text2_container{
+.d_text2_container{
 	font-size: 15px;
 }
 
@@ -139,7 +145,7 @@ video#bgvid {
 	text-decoration: underline;
 }
 
-.cate_container{
+.d_cate_container{
 	width: 50%;
 	border: 0px red solid;
 	margin-top: 100px;
@@ -163,8 +169,49 @@ video#bgvid {
 }
 
 .d_each_cate:hover{
-	color: gray;
 	background-color: white;
+	color: gray;
+}
+
+.d_cate_info_cover{
+	border: 1px gray solid;
+	-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .3);
+	height: 100px;
+	width: 435px;
+	padding: 5px 5px 5px 5px;
+}
+
+.d_cate_info{
+	border: 0px red solid;
+	height: 100%;
+	width: 100px;
+	float: left;
+	padding: 5px;
+	padding-top: 15px;
+}
+
+.d_solieu,
+.d_ten_solieu{
+	width: 100%;
+	text-align: center;
+}
+
+.d_solieu{
+	font-size: 25px;
+}
+
+.d_ten_solieu{
+	font-size: 13px;
+	color: darkgrey;
+}
+
+.d_cate_follow{
+	border: 0px red solid;
+	height: 100%;
+	width: 120px;
+	float: left;
+	padding-top: 25px;
+	padding-left: 5px;
 }
 
 /* Bottom 3 columns*/
