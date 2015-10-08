@@ -1,0 +1,45 @@
+/* CSS riêng cho Top Menu */
+
+.d_topmenu_bg{
+	border-radius: inherit;
+	width: 100%;
+}
+
+#i_brand_website{
+	font-size: 25px;
+}
+
+#i_create_event{
+	border: 1px white solid;
+	border-radius: 6px;
+}
+
+#i_avatar{
+	height: 35px;
+	width: 35px;
+	border-radius: 3px;
+	border: 1px white solid;
+	margin: 7px 0px 7px 20px;
+}
+
+/* Sửa Bootstrap */
+.glyphicon{
+	color: black;
+}
+
+.btn-sm{
+	margin-top: 7px;
+    height: 35px;
+}
+
+.dropdown:hover .dropdown-menu {
+display: block;
+}
+
+.dropdown-header{
+	margin-left: -10px;
+	color: lightgray;
+}
+
+/* Plugin tạo Dropdown inside Dropdown: jquery.smartmenus.bootstrap.js */
+/* https://github.com/vadikom/smartmenus/blob/master/src/addons/bootstrap/jquery.smartmenus.bootstrap.js */

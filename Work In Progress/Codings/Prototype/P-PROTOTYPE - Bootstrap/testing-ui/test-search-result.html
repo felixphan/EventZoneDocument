@@ -1,0 +1,61 @@
+<!-- Test Khung Chứa kết quả dạng Tab, bố trí dọc bên phải. Kết quả bên trái -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Result</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../Content/uikit.css">
+    <link rel="stylesheet" type="text/css" href="../Content/perfect-scrollbar.css">
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.vertical-tabs.css"> <!-- plugin tab Phải -->
+    <link rel="stylesheet" type="text/css" href="../Content/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+    <link rel="stylesheet" type="text/css" href="../Content/myCSS_s_r.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+
+</head>
+
+<body>
+<div class="d_result_container container-fluid">
+    <div class="col-sm-6">
+    <h3>Right Tabs</h3>
+    <hr>
+    <div class="col-xs-9">
+      <!-- Tab panes -->
+      <div class="tab-content">
+        <div class="tab-pane active" id="home-r">Home Tab.</div>
+        <div class="tab-pane" id="profile-r">Profile Tab.</div>
+        <div class="tab-pane" id="messages-r">Messages Tab.</div>
+        <div class="tab-pane" id="settings-r">Settings Tab.</div>
+      </div>
+    </div>
+
+    <div class="col-xs-3"> <!-- required for floating -->
+      <!-- Nav tabs -->
+      <ul class="nav nav-tabs tabs-right">
+        <li class="active"><a href="http://dbtek.github.io/bootstrap-vertical-tabs/bare-demo.html#home-r" data-toggle="tab">Home</a></li>
+        <li><a href="http://dbtek.github.io/bootstrap-vertical-tabs/bare-demo.html#profile-r" data-toggle="tab">Profile</a></li>
+        <li><a href="http://dbtek.github.io/bootstrap-vertical-tabs/bare-demo.html#messages-r" data-toggle="tab">Messages</a></li>
+        <li><a href="http://dbtek.github.io/bootstrap-vertical-tabs/bare-demo.html#settings-r" data-toggle="tab">Settings</a></li>
+      </ul>
+    </div>
+  </div>
+  </div>
+
+  
+<!-- All script here -->
+<script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>    <!-- Default JQuery -->
+<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>        <!-- Default Bootstrap, có Edited -->
+<script type="text/javascript" src="../Scripts/super-smooth.js"></script>         <!-- Plugin làm mượt scroll -->
+<script type="text/javascript" src="../Scripts/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
+<script type="text/javascript" src="../Scripts/smooth-scrollspy.js"></script>
+
+<script type="text/javascript" src="../Scripts/uikit.js"></script> <!-- Plugin UIkit -->
+
+<!-- <script type="text/javascript" src="js/myJS_chung.js"></script> JS của riêng mình, có kèm OutSource -->
+<script type="text/javascript" src="../Scripts/myJS_s_r.js"></script> <!-- JS của riêng mình, có kèm OutSource -->
+<!-- <script type="text/javascript" src="../Scripts/myJS_test_script.js"></script> JS đang test -->
+
+</body>
+
+<footer>
+</footer>
+</html>
