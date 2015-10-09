@@ -1,0 +1,18 @@
+﻿@using EventZone.Models;
+@{
+    ViewBag.Title = "ManageProfile";
+}
+@{
+    var user = Session["user"] as User;
+    var task = ViewData["ManageProfileTask"];
+}
+
+<center><h2>ManageProfile</h2></center>
+@Html.ValidationSummary()
+@Html.ActionLink("UserInfo", "UserInfo", new { id = @user.UserID }) |
+@Html.ActionLink("Schedule", "Following", "User", routeValues : null, htmlAttributes: new {title = "Schedule"})
+@if(task=="UserInfo"){
+@Html.Partial("_UserInfoPartial");
+}else if(task=="EditProfile"){
+    @Html.Partial("_EditProfilePartial")
+}

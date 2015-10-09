@@ -59,6 +59,16 @@ namespace EventZone.Helpers
             return null;
 
         }
+        public User GetUserByID(long? userID) {
+            List<User> listUser = db.Users.ToList();
+            var user = listUser.FindAll(i => i.UserID == userID);
+            if (user.Count != 0)
+            {
+                return user[0];
+            }
+            return null;
+        }
+
         public bool ResetPassword(string email, string password) {
             User user = GetUserByEmail(email);
             if (user != null) {
@@ -68,6 +78,38 @@ namespace EventZone.Helpers
                 return true;
             }
             return false;
+        }
+
+        public bool UpdateUser(User user) {
+            try
+            {
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            catch {
+                return false;
+            }
+        }
+        public List<Event> GetEventsByUser(long? userID)
+        {
+            List<Channel> listChannel= db.Channels.ToList();
+            if (listChannel.FindAll(i => i.UserID == userID).Count==0) { return null; }
+            Channel mychannel= listChannel.FindAll(i=>i.UserID==userID)[0];
+            List<Event> listEvent = db.Events.ToList();
+            List<Event> myEvent = listEvent.FindAll(i => i.ChannelID == mychannel.ChannelID);
+            return myEvent;
+        }
+        public List<Location> GetEventLocation(long EventID) {//get all locations of an event
+            List<EventPlace> listEventPlace = db.EventPlaces.ToList();//load all event place
+            List<EventPlace> listEventLocation = listEventPlace.FindAll(i => i.EventID == EventID);//select current event places
+            List<Location> listLocation= new List<Location>();
+            List<Location> result = new List<Location>();
+            foreach (var item in listEventLocation) {
+                var loc = listLocation.FindAll(i => i.LocationID == item.LocationID)[0];
+                result.Add(loc);
+            }
+            return result;
         }
     }
 }

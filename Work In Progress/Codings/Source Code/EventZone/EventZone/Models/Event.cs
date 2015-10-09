@@ -24,7 +24,6 @@ namespace EventZone.Models
             this.LikeDislikes = new HashSet<LikeDislike>();
             this.Reports = new HashSet<Report>();
             this.Shares = new HashSet<Share>();
-            this.Videos = new HashSet<Video>();
         }
     
         public long EventID { get; set; }
@@ -49,6 +48,5 @@ namespace EventZone.Models
         public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
-        public virtual ICollection<Video> Videos { get; set; }
     }
 }

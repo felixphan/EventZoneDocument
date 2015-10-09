@@ -15,14 +15,12 @@ namespace EventZone.Models
     public partial class Video
     {
         public long VideoID { get; set; }
-        public long EventID { get; set; }
+        public long EventPlaceID { get; set; }
         public string VideoLink { get; set; }
-        public long LocationID { get; set; }
         public System.DateTime StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public bool Privacy { get; set; }
     
-        public virtual Event Event { get; set; }
-        public virtual Location Location { get; set; }
+        public virtual EventPlace EventPlace { get; set; }
     }
 }

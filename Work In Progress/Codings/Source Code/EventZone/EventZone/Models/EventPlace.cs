@@ -14,11 +14,17 @@ namespace EventZone.Models
     
     public partial class EventPlace
     {
+        public EventPlace()
+        {
+            this.Videos = new HashSet<Video>();
+        }
+    
         public long EventPlaceID { get; set; }
         public long EventID { get; set; }
         public long LocationID { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual Location Location { get; set; }
+        public virtual ICollection<Video> Videos { get; set; }
     }
 }
