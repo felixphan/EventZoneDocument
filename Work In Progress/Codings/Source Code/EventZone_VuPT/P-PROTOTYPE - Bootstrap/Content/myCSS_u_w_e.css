@@ -1,0 +1,201 @@
+/* CSS ngoài */
+.col-centered{
+    float: none;
+    margin: 0 auto;
+}
+
+/*** My CSS ***/
+
+/* CSS top bar */
+
+/* CSS phần Chứa Chức năng */
+
+.d_khung_nen{
+	height: 700px;
+	width: 100%;
+	position: fixed;
+	top: 80px;
+	border: 1px blue dashed;
+}
+
+.d_function_cover{
+	width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+	border: 1px pink dashed;
+}
+
+.d_deco1{		/* CSS trang trí khung chứa các Tab chức năng bên trong */
+	border: 1px red solid;
+	padding: 5px 5px 5px 5px;
+	border-radius: 5px;
+	background-color: whitesmoke;
+}
+
+.d_info_container{
+	height: 500px;
+	width: 680px;
+	position: relative;
+	float: left;
+}
+
+
+
+
+
+/*** CSS cho Tab chức năng Event info ***/
+
+/* chung */
+.tab-pane{
+	padding: 15px 5px 5px 5px;
+}
+
+/* Tab INFO */
+
+.d_info{
+	border: 0px red solid;
+	height: 100px;
+	width: 500px;
+	position: relative;
+	float: left;
+}
+
+.d_thumb_container{
+	border: 0px blue solid;
+	width: 180px;
+	height: 200px;
+	float: left;
+}
+
+#i_info_thumb{
+	width: 100%;
+	height: auto;
+}
+
+#i_event_name{
+	text-align: justify;
+	float: left;
+	margin-left: 10px;
+	border: 0px blue solid;
+	width: 300px;
+	margin-bottom: 20px;
+}
+
+.d_info_icon{
+	float: left;
+	margin-left: 20px;
+	margin-right: 10px;
+}
+
+.d_info > .d_event_time,
+.d_info > .d_event_date,
+.d_info > .d_event_location {
+	margin-top: 3px;
+}
+
+.d_button_group{
+	border: 1px red solid;
+	height: 100px;
+	width: 150px;
+	position: relative;
+	float: right;
+}
+
+.d_des{
+	border: 1px red solid;
+	height: 90px;
+	width: 600px;
+	position: relative;
+	top: 200px;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+/* Tab GALLERY */
+.d_thumbs_cover{
+	border: 0px red solid;
+	width: 100%;
+	height: 430px;
+	overflow-y: overlay;
+	position: relative;
+}
+
+/* Tab VIDEO */
+.d_video_cover{
+	border: 0px red solid;
+	width: 100%;
+	height: 345px;
+	overflow-y: overlay;
+	position: relative;
+}
+
+.d_thumbs_video_cover{
+	border: 0px red solid;
+	width: 100%;
+	height: inherit;
+	position: relative;
+}
+
+.panel-default > .panel-heading{	/*re-edit*/
+	background-color: #ccc;
+}
+
+/* Tab MAP */
+#map-container {
+	height: 230px;
+}
+
+.d_map{
+	height: 300px;
+	width: 300px;
+	position: relative;
+	float: right;
+}
+
+/* Tab Comment */
+.d_comment_report{
+	height: 200px;
+	width: 300px;
+	position: relative;
+	float: right;
+}
+
+.d_cmt_content_cover{
+	width: 100%;
+	height: 100px;
+	position: relative;
+	overflow: auto;
+}
+
+
+.d_cmt_box_btn{
+    width: 280px;
+    position: fixed;
+    top: 550px;
+}
+
+#i_cmt_box{
+	width: 220px;
+	float: left;
+}
+#i_send_btn{
+	float: right;
+}
+
+/* ANIMATION CSS */
+.d_cmt_extend{
+    animation-name: ani_cmt_extend;
+    animation-duration: 0.9s;
+}
+
+.d_cmt_extend_2{
+	border: 0px red solid;
+	height: 400px;
+}
+
+@keyframes ani_cmt_extend {
+	0%   {height: 100px;}
+    100% {height: 400px;}
+}
+
+#d_cmt_extend {animation-timing-function: ease-in-out;}

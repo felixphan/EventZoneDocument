@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/other")
+    @Styles.Render("~/Content/myCSS")
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <!-- Video -->
+
+    <div class="uk-cover">
+        <video class="uk-cover-object" autoplay loop muted>
+            <source src="~/img/bgvideo1080-cut.mp4" type="video/mp4">
+        </video>
+    </div>
+    <div class="uk-cover">
+        <video class="uk-cover-object" id="i_bg_video_blur" autoplay loop muted>
+            <source src="~/img/bgvideo1080-cut.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid d_white_text">
+            <div class="navbar-header">
+                <div class="navbar-brand uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
+                    <a href="index.html" id="i_logo">Event Zone</a>
+                    <div class="uk-dropdown">
+                        <ul class="uk-nav uk-nav-dropdown">
+                            <li><a href="#">Policy</a></li>
+                            <li><a href="#">Help</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div>
+                    <!-- Menu Category -->
+                    <ul id="i_Cate">
+                        <li class="dropdown d_Cate">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="i_btn_Cate">
+                                Category
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu" id="i_Cate_dropdown">
+                                <li><a href="#">Music</a></li>
+                                <li><a href="#">Food and Drink</a></li>
+                                <li><a href="#">Classes</a></li>
+                                <li><a href="#">Arts</a></li>
+                                <li><a href="#">Parties</a></li>
+                                <li><a href="#">Sports and wellness</a></li>
+                                <li><a href="#">Networking</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- Chức năng Search, Create Event, Sign In -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li id="i_search" style=" margin-left: 120px;">
+                        <form class="navbar-form navbar-left" role="search">
+                            <div class="input-group" style="{width: 100px;}">
+                                <input type="text"
+                                       class="form-control"
+                                       aria-label="Text input with segmented button dropdown"
+                                       placeholder="Search for event, channel or user"
+                                       style="width: 250px;">
+                                <div class="input-group-btn">
+                                    <a class="btn btn-default" href="search_result.html" role="button">
+                                        <span class="glyphicon glyphicon-search white"></span>
+                                    </a>
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#myModal">
+                                        <a href="#" id="i_advanced_search"><span class="glyphicon glyphicon-chevron-down white"></span></a>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <div class="d_create_event">
+                            <a href="create_event.html">Create event!</a>
+                        </div>
+                    </li>
+
+                    <li>
+                        <!-- Cụm Chức năng User sau khi đăng nhập -->
+                        <div class="d_user">
+                            <div class="d_user_notification glyphicon glyphicon-bell">
+                                <div class="uk-dropdown">
+                                    <ul class="uk-nav uk-nav-dropdown">
+                                        <li><a href="#">Policy</a></li>
+                                        <li><a href="#">Help</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="d_user_avatar">
+                                <a href="#">
+                                    <img src="../img/sample_thumb.jpg" />
+                                </a>
+                            </div>
+                            <div class="dropdown d_user_name">
+                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                    DuongNN
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Manage Event</a></li>
+                                    <li><a href="#">abc</a></li>
+                                    <li role="presentation" class="divider"></li>
+                                    <li><a href="#" id="i_btn_signout">Sign Out</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    @Html.Partial("_LoginPartial")
+                    <!-- <li><a href="login.html" data-toggle="modal" data-target="#myModal2">Login</a></li> -->
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+        <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+    
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datetime")
+    @Scripts.Render("~/bundles/scroll") 
+    @Scripts.Render("~/bundles/myJS")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

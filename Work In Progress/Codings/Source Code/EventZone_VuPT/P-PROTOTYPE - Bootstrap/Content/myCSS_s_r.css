@@ -1,0 +1,77 @@
+#i_btn_ani{
+	position: fixed;
+	top: 100px;
+}
+
+/* TOP MENU */
+#i_btn_Cate{
+	margin: -4px 0 0 -15px;
+}
+
+.d_user{
+	margin-top: 14px;
+	margin-left: 15px;
+}
+
+.d_user .d_user_notification,
+.d_user .d_user_avatar,
+.d_user .dropdown{
+	float: left;
+	margin-right: 10px;
+}
+
+.d_user .d_user_notification{
+	margin-top: 5px;
+}
+
+.d_user .d_user_name{
+	margin-top: -5px;
+	margin-left: -10px;
+	background-color: transparent;
+	border: 0px;
+}
+
+.d_user_avatar img{
+    margin-top: -3px;
+    width: 30px;
+    height: 30px;
+    box-sizing: border-box;
+    border: 0;
+    vertical-align: middle;
+    border-radius: 5px;
+    border: 1px white solid;
+}
+
+/* Background */
+.d_background_image{
+	z-index: -1;
+	position: fixed;
+	height: 100%;
+	width: 100%;
+	top: 0px;
+}
+
+/* SEARCH RESULT */
+.d_result_container{
+	margin-top: 80px;
+	position: relative;
+	border: 1px red solid;
+	width: 1000px;
+	margin-bottom: 50px;
+	margin-left: auto;
+	margin-right: auto;
+	background-color: transparent;
+}
+
+.d_result_container li:hover{
+	background-color: transparent;
+}
+
+.d_result_container a:hover{
+	color: darkgrey;
+}
+
+.d_each_group_result{
+	height: 500px;
+	color: white;
+}
