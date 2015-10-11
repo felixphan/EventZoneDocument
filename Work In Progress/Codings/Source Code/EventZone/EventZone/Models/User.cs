@@ -29,7 +29,7 @@ namespace EventZone.Models
         }
     
         public long UserID { get; set; }
-        public int TypeID { get; set; }
+        public string UserName { get; set; }
         public string UserPassword { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
@@ -42,7 +42,6 @@ namespace EventZone.Models
         public bool AccountStatus { get; set; }
         public int Gender { get; set; }
         public string AvatarLink { get; set; }
-        public string UserName { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
         public virtual ICollection<Channel> Channels { get; set; }

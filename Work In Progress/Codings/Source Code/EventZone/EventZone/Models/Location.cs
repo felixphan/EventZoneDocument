@@ -17,7 +17,6 @@ namespace EventZone.Models
         public Location()
         {
             this.EventPlaces = new HashSet<EventPlace>();
-            this.Videos = new HashSet<Video>();
         }
     
         public long LocationID { get; set; }
@@ -26,6 +25,5 @@ namespace EventZone.Models
         public string LocationName { get; set; }
     
         public virtual ICollection<EventPlace> EventPlaces { get; set; }
-        public virtual ICollection<Video> Videos { get; set; }
     }
 }

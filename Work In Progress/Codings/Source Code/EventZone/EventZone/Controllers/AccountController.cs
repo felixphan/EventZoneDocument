@@ -49,8 +49,6 @@ namespace EventZone.Controllers
                 }
                 else
                 {
-                    user.TypeID = 0;// eventzone account
-                    //Set all parameters for user from registerViewModel
                     user.UserEmail = model.Email;
                     user.UserName = model.UserName;
                     user.UserPassword = model.Password;
@@ -59,7 +57,7 @@ namespace EventZone.Controllers
                     if (model.UserLastName != null && model.UserLastName != "")
                     {
                         user.UserLastName = model.UserLastName;
-                    }
+                    }   
                     user.AccountStatus = EventZoneConstants.IsUserActive;//set Active account
                     if (string.IsNullOrWhiteSpace(user.AvatarLink))//set default avatar
                     {
@@ -72,7 +70,7 @@ namespace EventZone.Controllers
                     Session["registerMessageError"] = "";
                 }
                 //set all session for 
-                Session["IsGoogle"] = "";
+                ViewData["User"] = user;
                 Session["authenticated"] = true;
                 Session["userName"] = user.UserName;
                 Session["userAva"] = user.AvatarLink;
@@ -117,7 +115,7 @@ namespace EventZone.Controllers
                     }
                     else {
                         var user = dbhelp.GetUserByUserName(model.UserName);
-                        Session["IsGoogle"] = "";
+                        ViewData["User"] = user;
                         Session["authenticated"] = true;
                         Session["userName"] = user.UserName;
                         Session["userAva"] = user.AvatarLink;
@@ -151,7 +149,7 @@ namespace EventZone.Controllers
             Session["userName"] = "";
             Session["userAva"] = "";
             Session["UserId"] = "";
-            Session["IsGoogle"] = "";
+            ViewData["User"] = "";
             Session["loginMessageError"] = "";
             UserHelpers.SetCurrentUser(Session, null);
 
@@ -238,8 +236,8 @@ namespace EventZone.Controllers
                 }
 
                 // Set the auth cookie
-                Session["IsGoogle"] = "Yes";
                 Session["authenticated"] = true;
+                ViewData["User"] = newUser;
                 Session["userName"] = newUser.UserName;
                 Session["userAva"] = newUser.AvatarLink;
                 Session["UserId"] = newUser.UserID;
@@ -281,8 +279,7 @@ namespace EventZone.Controllers
                 }
                 else
                 {
-                    user.TypeID = 1;// google account
-                    //Set all parameters for user from registerViewModel
+                   
                     user.UserEmail = model.Email;
                     user.UserName = model.UserName;
                     user.UserPassword = model.Password;
@@ -305,10 +302,10 @@ namespace EventZone.Controllers
                     Session["registerMessageError"] = "";
                 }
                 //set all session for 
-                Session["IsGoogle"] = "Yes";
                 Session["authenticated"] = true;
                 Session["userName"] = user.UserName;
                 Session["userAva"] = user.AvatarLink;
+                ViewData["User"] = user;
                 Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
 
@@ -356,9 +353,14 @@ namespace EventZone.Controllers
             } 
             return View("ForgotAccount", model);
         }
+        public ActionResult RequireSignin()
+        {
+            return View();
+        }
         public ActionResult ResetPasswordSuccess() {
             return View();
         }
+         
 
     }
 }

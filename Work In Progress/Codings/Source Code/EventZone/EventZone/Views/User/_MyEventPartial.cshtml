@@ -1,0 +1,17 @@
+﻿@using EventZone.Models
+@{
+    var myEvent = ViewData["MyEvent"] as List<Event>;
+    var eventThumbList = ViewData["ListThumbEvent"] as List<ViewThumbEventModel>;
+}
+@if (eventThumbList != null)
+{        
+    foreach (var item in eventThumbList)
+    { 
+        <div>
+        @item.eventName;
+        @Html.Partial("_EventThumb",item)    
+        </div>
+    }
+}else{
+<div>You haven't any event. Click @Html.ActionLink("Here","Create","Event") to create one! </div>
+}

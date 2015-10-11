@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admin">
           <Key>
             <PropertyRef Name="AdminID" />
@@ -152,7 +152,6 @@
           </Key>
           <Property Name="UserID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" />
-          <Property Name="TypeID" Type="int" Nullable="false" />
           <Property Name="UserPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserFirstName" Type="nvarchar" MaxLength="32" Nullable="false" />
           <Property Name="UserLastName" Type="nvarchar" MaxLength="32" />
@@ -171,9 +170,8 @@
             <PropertyRef Name="VideoID" />
           </Key>
           <Property Name="VideoID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EventID" Type="bigint" Nullable="false" />
+          <Property Name="EventPlaceID" Type="bigint" Nullable="false" />
           <Property Name="VideoLink" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="LocationID" Type="bigint" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" />
           <Property Name="Privacy" Type="bit" Nullable="false" />
@@ -442,27 +440,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Video_Event">
-          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+        <Association Name="FK_Video_EventPlace">
+          <End Role="EventPlace" Type="Self.EventPlace" Multiplicity="1" />
           <End Role="Video" Type="Self.Video" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Event">
-              <PropertyRef Name="EventID" />
+            <Principal Role="EventPlace">
+              <PropertyRef Name="EventPlaceID" />
             </Principal>
             <Dependent Role="Video">
-              <PropertyRef Name="EventID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Video_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Video" Type="Self.Video" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="LocationID" />
-            </Principal>
-            <Dependent Role="Video">
-              <PropertyRef Name="LocationID" />
+              <PropertyRef Name="EventPlaceID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -572,16 +558,13 @@
             <End Role="User" EntitySet="User" />
             <End Role="Share" EntitySet="Share" />
           </AssociationSet>
-          <AssociationSet Name="FK_Video_Event" Association="Self.FK_Video_Event">
-            <End Role="Event" EntitySet="Event" />
-            <End Role="Video" EntitySet="Video" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Video_Location" Association="Self.FK_Video_Location">
-            <End Role="Location" EntitySet="Location" />
+          <AssociationSet Name="FK_Video_EventPlace" Association="Self.FK_Video_EventPlace">
+            <End Role="EventPlace" EntitySet="EventPlace" />
             <End Role="Video" EntitySet="Video" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EventZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -671,7 +654,6 @@
           <NavigationProperty Name="LikeDislikes" Relationship="Self.FK_LikeDislike_Event1" FromRole="Event" ToRole="LikeDislike" />
           <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Event" FromRole="Event" ToRole="Report" />
           <NavigationProperty Name="Shares" Relationship="Self.FK_Share_Event1" FromRole="Event" ToRole="Share" />
-          <NavigationProperty Name="Videos" Relationship="Self.FK_Video_Event" FromRole="Event" ToRole="Video" />
         </EntityType>
         <EntityType Name="EventFollow">
           <Key>
@@ -692,6 +674,7 @@
           <Property Name="LocationID" Type="Int64" Nullable="false" />
           <NavigationProperty Name="Event" Relationship="Self.FK_EventPlace_Event1" FromRole="EventPlace" ToRole="Event" />
           <NavigationProperty Name="Location" Relationship="Self.FK_EventPlace_Location" FromRole="EventPlace" ToRole="Location" />
+          <NavigationProperty Name="Videos" Relationship="Self.FK_Video_EventPlace" FromRole="EventPlace" ToRole="Video" />
         </EntityType>
         <EntityType Name="Gallery">
           <Key>
@@ -725,7 +708,6 @@
           <Property Name="Lagitude" Type="Double" Nullable="false" />
           <Property Name="LocationName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Location" FromRole="Location" ToRole="EventPlace" />
-          <NavigationProperty Name="Videos" Relationship="Self.FK_Video_Location" FromRole="Location" ToRole="Video" />
         </EntityType>
         <EntityType Name="PeopleFollow">
           <Key>
@@ -767,7 +749,7 @@
             <PropertyRef Name="UserID" />
           </Key>
           <Property Name="UserID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserFirstName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserLastName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
@@ -790,21 +772,18 @@
           <NavigationProperty Name="PeopleFollows1" Relationship="Self.FK_PeopleFollow_User3" FromRole="User" ToRole="PeopleFollow" />
           <NavigationProperty Name="Reports" Relationship="Self.FK_Report_User" FromRole="User" ToRole="Report" />
           <NavigationProperty Name="Shares" Relationship="Self.FK_Share_User" FromRole="User" ToRole="Share" />
-          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
             <PropertyRef Name="VideoID" />
           </Key>
           <Property Name="VideoID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventID" Type="Int64" Nullable="false" />
+          <Property Name="EventPlaceID" Type="Int64" Nullable="false" />
           <Property Name="VideoLink" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="LocationID" Type="Int64" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" />
           <Property Name="Privacy" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Event" Relationship="Self.FK_Video_Event" FromRole="Video" ToRole="Event" />
-          <NavigationProperty Name="Location" Relationship="Self.FK_Video_Location" FromRole="Video" ToRole="Location" />
+          <NavigationProperty Name="EventPlace" Relationship="Self.FK_Video_EventPlace" FromRole="Video" ToRole="EventPlace" />
         </EntityType>
         <Association Name="FK_Appeal_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
@@ -974,18 +953,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Video_Event">
-          <End Role="Event" Type="Self.Event" Multiplicity="1" />
-          <End Role="Video" Type="Self.Video" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Event">
-              <PropertyRef Name="EventID" />
-            </Principal>
-            <Dependent Role="Video">
-              <PropertyRef Name="EventID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_EventFollow_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="EventFollow" Type="Self.EventFollow" Multiplicity="*" />
@@ -1010,6 +977,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Video_EventPlace">
+          <End Role="EventPlace" Type="Self.EventPlace" Multiplicity="1" />
+          <End Role="Video" Type="Self.Video" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="EventPlace">
+              <PropertyRef Name="EventPlaceID" />
+            </Principal>
+            <Dependent Role="Video">
+              <PropertyRef Name="EventPlaceID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Gallery_User">
           <End Role="User" Type="Self.User" Multiplicity="1" />
           <End Role="Gallery" Type="Self.Gallery" Multiplicity="*" />
@@ -1031,18 +1010,6 @@
             </Principal>
             <Dependent Role="LikeDislike">
               <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Video_Location">
-          <End Role="Location" Type="Self.Location" Multiplicity="1" />
-          <End Role="Video" Type="Self.Video" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Location">
-              <PropertyRef Name="LocationID" />
-            </Principal>
-            <Dependent Role="Video">
-              <PropertyRef Name="LocationID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1168,10 +1135,6 @@
             <End Role="Event" EntitySet="Events" />
             <End Role="Share" EntitySet="Shares" />
           </AssociationSet>
-          <AssociationSet Name="FK_Video_Event" Association="Self.FK_Video_Event">
-            <End Role="Event" EntitySet="Events" />
-            <End Role="Video" EntitySet="Videos" />
-          </AssociationSet>
           <AssociationSet Name="FK_EventFollow_User" Association="Self.FK_EventFollow_User">
             <End Role="User" EntitySet="Users" />
             <End Role="EventFollow" EntitySet="EventFollows" />
@@ -1180,6 +1143,10 @@
             <End Role="Location" EntitySet="Locations" />
             <End Role="EventPlace" EntitySet="EventPlaces" />
           </AssociationSet>
+          <AssociationSet Name="FK_Video_EventPlace" Association="Self.FK_Video_EventPlace">
+            <End Role="EventPlace" EntitySet="EventPlaces" />
+            <End Role="Video" EntitySet="Videos" />
+          </AssociationSet>
           <AssociationSet Name="FK_Gallery_User" Association="Self.FK_Gallery_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Gallery" EntitySet="Galleries" />
@@ -1187,10 +1154,6 @@
           <AssociationSet Name="FK_LikeDislike_User" Association="Self.FK_LikeDislike_User">
             <End Role="User" EntitySet="Users" />
             <End Role="LikeDislike" EntitySet="LikeDislikes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Video_Location" Association="Self.FK_Video_Location">
-            <End Role="Location" EntitySet="Locations" />
-            <End Role="Video" EntitySet="Videos" />
           </AssociationSet>
           <AssociationSet Name="FK_PeopleFollow_User" Association="Self.FK_PeopleFollow_User">
             <End Role="User" EntitySet="Users" />
@@ -1374,9 +1337,8 @@
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="EventZoneModel.User">
               <MappingFragment StoreEntitySet="User">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
                 <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
                 <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />
@@ -1396,9 +1358,8 @@
             <EntityTypeMapping TypeName="EventZoneModel.Video">
               <MappingFragment StoreEntitySet="Video">
                 <ScalarProperty Name="VideoID" ColumnName="VideoID" />
-                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="EventPlaceID" ColumnName="EventPlaceID" />
                 <ScalarProperty Name="VideoLink" ColumnName="VideoLink" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="Privacy" ColumnName="Privacy" />
