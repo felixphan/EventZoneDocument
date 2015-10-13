@@ -1,3 +1,6 @@
+/* Plugin tạo Dropdown inside Dropdown: jquery.smartmenus.bootstrap.js */
+/* https://github.com/vadikom/smartmenus/blob/master/src/addons/bootstrap/jquery.smartmenus.bootstrap.js */
+
 /*!
  * SmartMenus jQuery Plugin - v1.0.0-beta1 - June 1, 2015
  * http://www.smartmenus.org/

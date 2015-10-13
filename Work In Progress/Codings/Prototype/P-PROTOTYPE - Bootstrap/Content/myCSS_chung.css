@@ -352,7 +352,7 @@ video#bgvid {
 	margin-left: 10px;
 }
 
-/* MODAL */
+/*** MODAL ***/
 .d_modal-backdrop_2 {
   position: fixed;
   top: 0;
@@ -363,7 +363,11 @@ video#bgvid {
   background-color: #000;
 }
 
-/* Chứa các chức năng trong Modal */
+/* Advanced Search */
+.table > tbody > tr > td{
+	margin: 10px 0 10px 0;
+	border-top: 0px;
+}
 
 #i_email_textbox{
 	margin-bottom: 20px;
@@ -380,6 +384,7 @@ a#i_policy,
 #i_close_modal{
 	color: #333;
 }
+
 
 /* Modal Sign up */
 .d_optional{

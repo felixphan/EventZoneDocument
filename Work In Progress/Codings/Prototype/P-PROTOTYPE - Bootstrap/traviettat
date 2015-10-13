@@ -2,7 +2,7 @@ Viết tắt tên file:
 
 1. Tên file CSS do mình đặt cần có format: myCSS_[name].css, đặt trong Folder "Content"
 2. Phần [name] trong tên file viết tắt theo trang HTML mà nó đi kèm
-	Ví dụ: myCSS_u_m_e.css sẽ đi kèm trang User_manage_event.html
+	Ví dụ: myCSS_u_m_e.css sẽ đi kèm trang User_manage_event.html, viết tắt, không viết đầy đủ.
 
 3. Tên file JS do mình đặt cần có format: myJS_[name].js, đặt trong Folder "Scripts"
 4. Phần [name] trong tên file viết tắt theo trang HTML mà nó đi kèm
@@ -13,3 +13,10 @@ Viết tắt tên file:
 6. ID mặc định của plugin thì để mặc định, Tên ID do mình đặt cần có format: i_[tên]
 	Tên cần đặt sát nhất có thể với chức năng của nó
 	
+7. Không sửa trực tiếp trong file BOOTSTRAP.css và BOOTSTRAP.js
+		Sửa BOOTSTRAP bằng cách sửa trên file CSS, đưa vào 1 cụm /* sửa BOOTSTRAP */, cụm này đặt trên cùng.
+8. Khi sử dụng plugin, đặt tên mình, thêm _pl_[name]. Ví dụ: d_pl_slick (slick là plugin slider ảnh)
+9. Luôn cần ít nhất 1 ảnh trong folder img, rename ảnh thành 2 ký tự cho nhanh.
+10. Luôn Comment trong mọi file, mọi chức năng.
+11. Comment trong CSS cần chia ra các phần tương ứng trang HTML
+	Thứ tự .class, #id từ trên xuống tương ứng từ trái sang phải, từ trên xuống dưới của trang HTML
