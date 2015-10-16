@@ -8,9 +8,9 @@
                 HttpMethod = "POST",
 
                 OnBegin = "OnSignInRequestBegan",
-                OnSuccess = "OnSignInRequestSucceeded",
-                OnFailure = "OnSignInRequestFailed",
-                OnComplete = "OnSignInRequestCompleted"
+                OnSuccess = "OnSignUpRequestSucceeded",
+                OnFailure = "OnSignUpRequestFailed",
+                OnComplete = "OnSignUpRequestCompleted"
             }, new { id = "registerPanelId" }))
             {
                 @Html.AntiForgeryToken()
@@ -129,11 +129,11 @@
         return true;
     });
 
-    function OnSignInRequestBegan() {
+    function OnSignUpRequestBegan() {
         console.log('This event is fired when a request is intended to be sent');
     }
 
-    function OnSignInRequestSucceeded(data) {
+    function OnSignUpRequestSucceeded(data) {
         if (data.state === 1) {
             $('#myModal2').modal('toggle');
             alert("Thank for registering our system! We have sent you an welcome email! Return home to start looking for events.");
@@ -147,11 +147,11 @@
         console.log(data);
     }
 
-    function OnSignInRequestFailed() {
+    function OnSignUpRequestFailed() {
         console.log('This event is fired when any errors happen while request is being sent to server');
     }
 
-    function OnSignInRequestCompleted() {
+    function OnSignUpRequestCompleted() {
         console.log('No matter how request has been sent to server or not. This event is fired');
     }
 </script>
