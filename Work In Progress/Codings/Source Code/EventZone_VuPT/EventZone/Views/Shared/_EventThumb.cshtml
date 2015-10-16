@@ -1,0 +1,27 @@
+﻿@model EventZone.Models.ViewThumbEventModel
+@using EventZone.Models
+@{ 
+    var listEventThumb = ViewData["ListThumbEvent"] as List<ViewThumbEventModel>;   
+}
+<div>
+    @Model.avartarLink
+</div>
+<div>
+    Event Name : @Model.eventName
+</div>
+<div>
+    Start Time: @Model.StartTime
+</div>
+<div>
+    End Time : @Model.EndTime
+</div>
+<div>
+    Location
+    @foreach (var item in @Model.location)
+    {
+        <div>
+            @item.LocationName
+        </div>
+        
+    }
+</div>

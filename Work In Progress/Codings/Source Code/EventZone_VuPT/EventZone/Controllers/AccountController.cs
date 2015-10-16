@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using ASPSnippets.GoogleAPI;
 using Newtonsoft.Json.Linq;
@@ -38,19 +39,25 @@ namespace EventZone.Controllers
                 var newUser = listUser.FindAll(a => a.UserName.Equals(model.UserName));
                 if (newUser.Count != 0)
                 {
-                    ModelState.AddModelError("", "UserName is already exist. Please choose another.");
-                    return View();
+                    //ModelState.AddModelError("", "UserName is already exist. Please choose another.");
+                    return Json(new
+                    {
+                        state = 0,
+                        message = "UserName is already exist. Please choose another."
+                    });
                 }
                 newUser = listUser.FindAll(a => a.UserEmail.Equals(model.Email));
                 if (newUser.Count != 0)
                 {
-                    ModelState.AddModelError("", "Email is already registered. Please choose another.");
-                    return View();
+                    //ModelState.AddModelError("", "Email is already registered. Please choose another.");
+                    return Json(new
+                    {
+                        state = 0,
+                        message = "Email is already registered. Please choose another."
+                    });
                 }
                 else
                 {
-                    user.TypeID = 0;// eventzone account
-                    //Set all parameters for user from registerViewModel
                     user.UserEmail = model.Email;
                     user.UserName = model.UserName;
                     user.UserPassword = model.Password;
@@ -59,7 +66,7 @@ namespace EventZone.Controllers
                     if (model.UserLastName != null && model.UserLastName != "")
                     {
                         user.UserLastName = model.UserLastName;
-                    }
+                    }   
                     user.AccountStatus = EventZoneConstants.IsUserActive;//set Active account
                     if (string.IsNullOrWhiteSpace(user.AvatarLink))//set default avatar
                     {
@@ -72,7 +79,7 @@ namespace EventZone.Controllers
                     Session["registerMessageError"] = "";
                 }
                 //set all session for 
-                Session["IsGoogle"] = "";
+                ViewData["User"] = user;
                 Session["authenticated"] = true;
                 Session["userName"] = user.UserName;
                 Session["userAva"] = user.AvatarLink;
@@ -81,11 +88,20 @@ namespace EventZone.Controllers
 
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
-                return RedirectToAction("RegisterSuccess", "Account");
+                //return RedirectToAction("RegisterSuccess", "Account");
+                return Json(new
+                {
+                    state = 1,
+                    message = "Registered Successfully"
+                });
             }
 
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index", "Home");
+            return Json(new
+            {
+                state = 0,
+                message = "Something Wrong"
+            });
         }
         public ActionResult RegisterSuccess()
         {
@@ -94,10 +110,10 @@ namespace EventZone.Controllers
 
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Signin(string returnUrl)
+        public PartialViewResult Signin(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView();
         }
 
         //
@@ -105,36 +121,54 @@ namespace EventZone.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Signin(LoginViewModel model, string returnUrl)
+        public ActionResult Signin(LoginViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                DatabaseHelpers dbhelp= new DatabaseHelpers();
-                if (dbhelp.ValidateUser(model.UserName, model.Password)) {
-                    if (dbhelp.isLookedUser(model.UserName))
-                    {
-                        ModelState.AddModelError("", "Your account is locked! Please contact with our support");
-                    }
-                    else {
-                        var user = dbhelp.GetUserByUserName(model.UserName);
-                        Session["IsGoogle"] = "";
-                        Session["authenticated"] = true;
-                        Session["userName"] = user.UserName;
-                        Session["userAva"] = user.AvatarLink;
-                        Session["UserId"] = user.UserID;
-                        UserHelpers.SetCurrentUser(Session, user);
-                        
-                    }
-                }
-                else
+            if (!ModelState.IsValid)
+                return Json(new
                 {
-                    ModelState.AddModelError("", "UserName or password is invalid.");
-                    return View();
+                    state = 0,
+                    message = "Invalid model"
+                });
+
+            var dbhelp = new DatabaseHelpers();
+            if (dbhelp.ValidateUser(model.UserName, model.Password))
+            {
+                if (dbhelp.isLookedUser(model.UserName))
+                {
+                    ModelState.AddModelError("", "Your account is locked! Please contact with our support");
+                    return Json(new
+                    {
+                        state = 0,
+                        message = "Your account is locked! Please contact with our support"
+                    });
                 }
+
+                var user = dbhelp.GetUserByUserName(model.UserName);
+                ViewData["User"] = user;
+                Session["authenticated"] = true;
+                Session["userName"] = user.UserName;
+                Session["userAva"] = user.AvatarLink;
+                Session["UserId"] = user.UserID;
+                UserHelpers.SetCurrentUser(Session, user);
+
+            }
+            else
+            {
+                ModelState.AddModelError("", "UserName or password is invalid.");
+                return Json(new
+                {
+                    state = 0,
+                    message = "Invalid account, password"
+                });
             }
 
+
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index","Home");
+            return Json(new
+            {
+                state = 1,
+                message = "Register successfully."
+            }); ;
         }
         public ActionResult Signout()
         {
@@ -151,7 +185,7 @@ namespace EventZone.Controllers
             Session["userName"] = "";
             Session["userAva"] = "";
             Session["UserId"] = "";
-            Session["IsGoogle"] = "";
+            ViewData["User"] = "";
             Session["loginMessageError"] = "";
             UserHelpers.SetCurrentUser(Session, null);
 
@@ -238,8 +272,8 @@ namespace EventZone.Controllers
                 }
 
                 // Set the auth cookie
-                Session["IsGoogle"] = "Yes";
                 Session["authenticated"] = true;
+                ViewData["User"] = newUser;
                 Session["userName"] = newUser.UserName;
                 Session["userAva"] = newUser.AvatarLink;
                 Session["UserId"] = newUser.UserID;
@@ -281,8 +315,7 @@ namespace EventZone.Controllers
                 }
                 else
                 {
-                    user.TypeID = 1;// google account
-                    //Set all parameters for user from registerViewModel
+                   
                     user.UserEmail = model.Email;
                     user.UserName = model.UserName;
                     user.UserPassword = model.Password;
@@ -305,10 +338,10 @@ namespace EventZone.Controllers
                     Session["registerMessageError"] = "";
                 }
                 //set all session for 
-                Session["IsGoogle"] = "Yes";
                 Session["authenticated"] = true;
                 Session["userName"] = user.UserName;
                 Session["userAva"] = user.AvatarLink;
+                ViewData["User"] = user;
                 Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
 
@@ -356,9 +389,14 @@ namespace EventZone.Controllers
             } 
             return View("ForgotAccount", model);
         }
+        public ActionResult RequireSignin()
+        {
+            return View();
+        }
         public ActionResult ResetPasswordSuccess() {
             return View();
         }
+         
 
     }
 }

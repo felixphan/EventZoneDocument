@@ -166,9 +166,9 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\EventCreateController.cs" />
-    <Compile Include="Controllers\EventsController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -179,10 +179,7 @@
     <Compile Include="Helpers\SingletonBase.cs" />
     <Compile Include="Helpers\UserHelpers.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ActorAction.cs">
-      <DependentUpon>EventZone.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\Admin.cs">
+    <Compile Include="Models\Action.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Appeal.cs">
@@ -203,13 +200,13 @@
     <Compile Include="Models\Event.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\EventCreateViewModels.cs" />
     <Compile Include="Models\EventFollow.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EventPlace.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EventViewModel.cs" />
     <Compile Include="Models\EventZone.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -244,6 +241,9 @@
     <Compile Include="Models\Share.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\sysdiagram.cs">
+      <DependentUpon>EventZone.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\TrackingAction.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
@@ -264,12 +264,16 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.vertical-tabs.css" />
     <Content Include="Content\daterangepicker.css" />
     <Content Include="Content\jquery.m.flip.css" />
+    <Content Include="Content\jquery.smartmenus.bootstrap.css" />
     <Content Include="Content\m.flip.css" />
     <Content Include="Content\myCSS_chung.css" />
     <Content Include="Content\myCSS_s_r.css" />
+    <Content Include="Content\myCSS_topmenu.css" />
     <Content Include="Content\myCSS_u_w_e.css" />
+    <Content Include="Content\myCSS_u_w_e_2.css" />
     <Content Include="Content\perfect-scrollbar.css" />
     <Content Include="Content\thumbnail-gallery.css" />
     <Content Include="Content\uikit.css" />
@@ -278,17 +282,19 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="img\bgvideo1080-cut.mp4" />
+    <Content Include="img\d.jpg" />
     <Content Include="img\default-avatar.jpg" />
-    <Content Include="img\sample_thumb.jpg" />
-    <Content Include="img\sukien1.jpg" />
-    <Content Include="img\sukien2.jpg" />
-    <Content Include="img\test.gif" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <Content Include="img\gg.jpg" />
+    <Content Include="img\sample_thumb.jpg" />
+    <Content Include="img\sukien1.jpg" />
+    <Content Include="img\sukien2.jpg" />
+    <Content Include="img\test.gif" />
     <Content Include="Content\jquery.m.flip.scss" />
     <Content Include="fonts\fontawesome-webfont.eot" />
     <Content Include="fonts\fontawesome-webfont.ttf" />
@@ -312,18 +318,24 @@
       <DependentUpon>EventZone.edmx</DependentUpon>
       <LastGenOutput>EventZone.cs</LastGenOutput>
     </Content>
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery-migrate-1.2.1.js" />
+    <Content Include="Scripts\jquery.ajaxform.js" />
     <Content Include="Scripts\jquery.m.flip.js" />
+    <Content Include="Scripts\jquery.smartmenus.bootstrap.js" />
+    <Content Include="Scripts\jquery.smartmenus.js" />
     <Content Include="Scripts\jquery.transform.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
+    <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -336,7 +348,9 @@
     <Content Include="Scripts\myJS_chung.js" />
     <Content Include="Scripts\myJS_s_r.js" />
     <Content Include="Scripts\myJS_test_script.js" />
+    <Content Include="Scripts\myJS_topmenu.js" />
     <Content Include="Scripts\myJS_u_w_e.js" />
+    <Content Include="Scripts\myJS_u_w_e_2.js" />
     <Content Include="Scripts\npm.js" />
     <Content Include="Scripts\perfect-scrollbar.jquery.js" />
     <Content Include="Scripts\respond.js" />
@@ -345,7 +359,9 @@
     <Content Include="Scripts\super-smooth.js" />
     <Content Include="Scripts\uikit.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -359,23 +375,26 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_SignInSignUpPartial.cshtml" />
     <Content Include="Views\Account\Register.cshtml" />
     <Content Include="Views\Account\RegisterSuccess.cshtml" />
     <Content Include="Views\Account\ConfirmRegisterGoogle.cshtml" />
     <Content Include="Views\Account\ForgotAccount.cshtml" />
     <Content Include="Views\Account\ResetPasswordSuccess.cshtml" />
+    <Content Include="Views\Account\RequireSignin.cshtml" />
     <None Include="Views\Account\Signin.cshtml" />
-    <Content Include="Views\Events\Create.cshtml" />
-    <Content Include="Views\Events\Delete.cshtml" />
-    <Content Include="Views\Events\Details.cshtml" />
-    <Content Include="Views\Events\Edit.cshtml" />
-    <Content Include="Views\Events\Index.cshtml" />
-    <Content Include="Views\EventCreate\Create.cshtml" />
+    <Content Include="Views\User\ManageProfile.cshtml" />
+    <Content Include="Views\User\_UserInfoPartial.cshtml" />
+    <Content Include="Views\User\_EditProfilePartial.cshtml" />
+    <Content Include="Views\User\ManageEvent.cshtml" />
+    <Content Include="Views\User\_MyEventPartial.cshtml" />
+    <Content Include="Views\Shared\_EventThumb.cshtml" />
+    <Content Include="Views\Shared\_SignInPartial.cshtml" />
+    <Content Include="Views\Shared\_SignUpPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Event\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

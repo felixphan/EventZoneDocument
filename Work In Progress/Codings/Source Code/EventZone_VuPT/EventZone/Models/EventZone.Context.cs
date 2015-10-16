@@ -25,8 +25,7 @@ namespace EventZone.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<ActorAction> ActorActions { get; set; }
-        public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<Action> Actions { get; set; }
         public virtual DbSet<Appeal> Appeals { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryFollow> CategoryFollows { get; set; }
@@ -41,6 +40,7 @@ namespace EventZone.Models
         public virtual DbSet<PeopleFollow> PeopleFollows { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Share> Shares { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TrackingAction> TrackingActions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Video> Videos { get; set; }

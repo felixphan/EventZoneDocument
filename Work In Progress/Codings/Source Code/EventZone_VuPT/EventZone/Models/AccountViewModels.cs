@@ -10,25 +10,38 @@ namespace EventZone.Models
         public string UserName { get; set; }
     }
 
-    public class ManageUserViewModel
+    public class EditUserModel
     {
-        [Required]
-        [DataType(DataType.Password)]
-        [Display(Name = "Current password")]
-        public string OldPassword { get; set; }
+        public long UserID { get; set; }
+        public string IDCard { get; set; }
+        public string Phone { get; set; }
+        public string Place { get; set; }
+        public string AvatarLink { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 8)]
         [DataType(DataType.Password)]
-        [Display(Name = "New password")]
-        public string NewPassword { get; set; }
+        [Display(Name = "Password")]
+        public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm new password")]
-        [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
+        [Display(Name = "ConfirmPassword")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
-    }
 
+        [DataType(DataType.DateTime)]
+        [Display(Name = "Date of birth")]
+        public Nullable<System.DateTime> UserDOB { get; set; }
+
+
+        [Required(ErrorMessage = "Please select gender")]
+        public int Gender { get; set; }
+
+        [Required(ErrorMessage = "Please enter your first name!")]
+        [Display(Name = "First name")]
+        public string UserFirstName { get; set; }
+        public string UserLastName { get; set; }
+    }
+    
     public class LoginViewModel
     {
         [Required(ErrorMessage = "Please enter your user name")]
@@ -99,7 +112,7 @@ namespace EventZone.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
-        public Nullable<System.DateTime> UserDOB { get; set; }
+        public DateTime UserDOB { get; set; }
 
 
         [Required(ErrorMessage="Please select gender")]

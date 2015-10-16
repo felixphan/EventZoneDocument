@@ -17,11 +17,6 @@ namespace EventZone.Helpers
         public static int IsUser = 0;
         public static int IsMod = 1;
 
-        public static int IsEventZoneAccount = 0;
-        public static int IsGoogleAccount = 1;
-
-        public static int PlanGeneral = 0;
-        public static int PlanTimeline = 1;
         public static int isMale = 0;
         public static int isFemale = 1;
 

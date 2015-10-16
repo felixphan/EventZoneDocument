@@ -33,13 +33,14 @@ namespace EventZone.Models
         public System.DateTime EventEndDate { get; set; }
         public string EventDescription { get; set; }
         public System.DateTime EventRegisterDate { get; set; }
-        public long Views { get; set; }
+        public long View { get; set; }
         public long CategoryID { get; set; }
-        public string Privacy { get; set; }
+        public bool Privacy { get; set; }
         public string AvatarLink { get; set; }
         public Nullable<long> EditBy { get; set; }
         public Nullable<System.TimeSpan> EditTime { get; set; }
         public string EditContent { get; set; }
+        public bool Status { get; set; }
     
         public virtual ICollection<Appeal> Appeals { get; set; }
         public virtual Category Category { get; set; }

@@ -5,30 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/other")
+    @Styles.Render("~/Content/barAndTab")
     @Styles.Render("~/Content/myCSS")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
 <body>
-    <!-- Video -->
-
-    <div class="uk-cover">
-        <video class="uk-cover-object" autoplay loop muted>
-            <source src="~/img/bgvideo1080-cut.mp4" type="video/mp4">
-        </video>
+    <div class="d_background_image">
+        <img class="d_overlay" src="~/img/sukien1.jpg" />
     </div>
-    <div class="uk-cover">
-        <video class="uk-cover-object" id="i_bg_video_blur" autoplay loop muted>
-            <source src="~/img/bgvideo1080-cut.mp4" type="video/mp4">
-        </video>
-    </div>
-
-    <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-inverse navbar-fixed-top" id="MenuLayout">
         <div class="container-fluid d_white_text">
             <div class="navbar-header">
                 <div class="navbar-brand uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
-                    <a href="index.html" id="i_logo">Event Zone</a>
+                    @Html.ActionLink("Event Zone", "Index", "Home", null, new { @class = "navbar-brand" })
                     <div class="uk-dropdown">
                         <ul class="uk-nav uk-nav-dropdown">
                             <li><a href="#">Policy</a></li>
@@ -57,10 +46,10 @@
                     </ul>
                 </div>
             </div>
-            <!-- Chức năng Search, Create Event, Sign In -->
+
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li id="i_search" style=" margin-left: 120px;">
+                    <li id="i_search" style="margin-left: 120px;">
                         <form class="navbar-form navbar-left" role="search">
                             <div class="input-group" style="{width: 100px;}">
                                 <input type="text"
@@ -80,63 +69,60 @@
                         </form>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <div class="d_create_event">
-                            <a href="create_event.html">Create event!</a>
-                        </div>
-                    </li>
+                @if (Session["authenticated"] == null || Session["authenticated"].ToString().IsEmpty())
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="#" data-toggle="modal" data-target="#myModal2" id="i_btn_signin">Sign In/Sign Up</a></li>
+                    </ul>
+                    <div class="modal fade" id="myModal2">
+                        @Html.Partial("_SignInSignUpPartial")
+                    </div>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <!-- Cụm Chức năng User sau khi đăng nhập -->
+                            <div class="d_user">
+                                <div class="d_user_avatar">
 
-                    <li>
-                        <!-- Cụm Chức năng User sau khi đăng nhập -->
-                        <div class="d_user">
-                            <div class="d_user_notification glyphicon glyphicon-bell">
-                                <div class="uk-dropdown">
-                                    <ul class="uk-nav uk-nav-dropdown">
-                                        <li><a href="#">Policy</a></li>
-                                        <li><a href="#">Help</a></li>
+                                </div>
+                                <div class="dropdown d_user_name">
+                                    <a href="#">
+                                        <img src="~/img/default-avatar.jpg" height="20" width="20" />
+                                    </a>
+                                    @Html.ActionLink("Hello " + @Session["userName"] + "!", "ManageProfile", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li>@Html.ActionLink("Manage Profile", "ManageProfile", "User", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
+                                        <li>@Html.ActionLink("Manage event", "ManageEvent", "User")</li>
+                                        <li><a href="#">abc</a></li>
+                                        <li role="presentation" class="divider"></li>
+                                        <li>@Html.ActionLink("Sign out", "Signout", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
                                     </ul>
                                 </div>
                             </div>
-                            <div class="d_user_avatar">
-                                <a href="#">
-                                    <img src="../img/sample_thumb.jpg" />
-                                </a>
-                            </div>
-                            <div class="dropdown d_user_name">
-                                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                    DuongNN
-                                    <span class="caret"></span>
-                                </button>
-                                <ul class="dropdown-menu">
-                                    <li><a href="#">Manage Event</a></li>
-                                    <li><a href="#">abc</a></li>
-                                    <li role="presentation" class="divider"></li>
-                                    <li><a href="#" id="i_btn_signout">Sign Out</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                    @Html.Partial("_LoginPartial")
-                    <!-- <li><a href="login.html" data-toggle="modal" data-target="#myModal2">Login</a></li> -->
-                </ul>
+                        </li>
+                    </ul>
+                }
             </div>
         </div>
-    </nav>
-    
-        <div class="container body-content">
+    </div>
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-    
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/datetime")
-    @Scripts.Render("~/bundles/scroll") 
-    @Scripts.Render("~/bundles/myJS")
+    @Scripts.Render("~/bundles/unobstructive")
     @RenderSection("scripts", required: false)
 </body>
 </html>
