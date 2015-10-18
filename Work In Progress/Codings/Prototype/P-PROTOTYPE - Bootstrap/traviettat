@@ -14,9 +14,30 @@ Viết tắt tên file:
 	Tên cần đặt sát nhất có thể với chức năng của nó
 	
 7. Không sửa trực tiếp trong file BOOTSTRAP.css và BOOTSTRAP.js
-		Sửa BOOTSTRAP bằng cách sửa trên file CSS, đưa vào 1 cụm /* sửa BOOTSTRAP */, cụm này đặt trên cùng.
+		Sửa BOOTSTRAP bằng cách copy Class dó, sửa trên file CSS, đưa vào 1 cụm /* sửa BOOTSTRAP */, cụm này đặt trên cùng.
 8. Khi sử dụng plugin, đặt tên mình, thêm _pl_[name]. Ví dụ: d_pl_slick (slick là plugin slider ảnh)
 9. Luôn cần ít nhất 1 ảnh trong folder img, rename ảnh thành 2 ký tự cho nhanh.
 10. Luôn Comment trong mọi file, mọi chức năng.
 11. Comment trong CSS cần chia ra các phần tương ứng trang HTML
 	Thứ tự .class, #id từ trên xuống tương ứng từ trái sang phải, từ trên xuống dưới của trang HTML
+
+
+----- Danh sách Plugin -----
+Smooth scroll: Làm mượt trang khi lăn chuột
+	smooth-scrollspy.js
+	super-smooth.js
+
+mflip: Làm hiệu ứng lật ra mặt sau
+	jquery.m.flip.css
+	m.flip.css
+	jquery.m.flip.js
+
+perfect-scollbar: trang trí lại Thanh cuộn chuột.
+	perfect-scrollbar.jquery.js
+
+daterangepicker: Giúp chọn ngày bằng cách hiện bảng Lịch
+	daterangepicker.css
+
+Hiện khung xem ảnh
+	jquery.imagebox.js
+	jquery.imagebox_continue.js

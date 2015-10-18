@@ -2,12 +2,21 @@
 body{
 	color: white;
 	font-family: segoe ui;
+	min-width: 400px;
+}
+
+.thumbnail{
+	padding: 1px;
+	background-color: #fff;
+	border: 0px solid #ddd;
+}
+
+.thumbnail > img, .thumbnail a > img {
+	border-radius: inherit;
 }
 
 .col-md-1, .col-md-2, .col-md-4, .col-md-6, .col-md-8, .col-md-9, .col-md-11, .col-md-12{
 	border: 0px solid red;
-	height: 50px;
-	zmin-width: 400px;
 }
 
 #myTab {
@@ -118,8 +127,7 @@ body{
 
 /* Event Info tab - Title */
 #i_event_title{
-	font-size: 25px;
-    font-weight: lighter;
+	font-size: 20px;
     text-align: justify;
 }
 
@@ -250,7 +258,14 @@ body{
 }
 
 .col-md-4.thumb {
-	height: 130px;
+    height: auto;
+    margin-bottom: 0px;
+}
+
+/** CSS Map tab **/
+#map-container{
+	height: 245px;
+    border-radius: 3px;
 }
 
 /** CSS Comment tab **/
