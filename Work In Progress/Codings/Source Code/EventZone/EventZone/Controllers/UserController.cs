@@ -22,13 +22,16 @@ namespace EventZone.Controllers
                 return RedirectToAction("RequireSignin", "Account");
             }
             ViewData["UserSession"] = UserHelpers.GetCurrentUser(Session);
-            if (ViewData["ManageProfileTask"] == null)
+            if (TempData["ManageProfileTask"] == null)
             {
-                ViewData["ManageProfileTask"] = "UserInfo";
+                TempData["ManageProfileTask"] = "UserInfo";
             }
-            
+            if (TempData["editUserModel"] != null)
+            {
+                EditUserModel editUserModel = TempData["editUserModel"] as EditUserModel;
+                return View(editUserModel);
+            }
             return View();
-
         }
         public ActionResult UserInfo(long? id=0)
         {
@@ -49,7 +52,7 @@ namespace EventZone.Controllers
             }
             
             ViewData["UserSession"] = user;
-            ViewData["ManageProfileTask"] = "UserInfo";
+            TempData["ManageProfileTask"] = "UserInfo";
             return RedirectToAction("ManageProfile");
         }
 
@@ -73,10 +76,9 @@ namespace EventZone.Controllers
             editUserModel.Phone = userSession.Phone;
             editUserModel.Place = userSession.Place;
             editUserModel.IDCard = userSession.IDCard;
-            ViewData["EditUserModel"] = editUserModel;
-            ViewData["ManageProfileTask"] = "EditProfile";
-            ViewData["UserSession"] = userSession;
-            return View("ManageProfile",editUserModel);
+            TempData["ManageProfileTask"] = "EditProfile";
+            TempData["editUserModel"] = editUserModel;
+            return RedirectToAction("ManageProfile");
         }
 
         //
@@ -103,28 +105,30 @@ namespace EventZone.Controllers
                     user.IDCard = editUserModel.IDCard;
                     user.Gender = editUserModel.Gender;
                     user.AvatarLink = editUserModel.AvatarLink;
-                    user.Phone = user.Phone;
+                    user.Phone = editUserModel.Phone;
                     user.Place = editUserModel.Place;
                 
                     if (datahelp.UpdateUser(user))
                     {
                         UserHelpers.SetCurrentUser(Session, user);
-                        ViewData["ManageProfile"] = "UserInfo";
+                        TempData["ManageProfileTask"] = "UserInfo";
                         return RedirectToAction("ManageProfile");
                     }
                     else {
-                        ViewData["ManageProfile"] = "EditProfile";
-                        return RedirectToAction("ManageProfile");
+                        TempData["ManageProfileTask"] = "EditProfile";
+                        ModelState.AddModelError("", "Something went wrong! Please try again!");
+                        return RedirectToAction("EditProfile");
                     }
                 }
-                ViewData["ManageProfile"] = "EditProfile";
-                return RedirectToAction("ManageProfile");
+                TempData["ManageProfileTask"] = "EditProfile";
+                ModelState.AddModelError("", "Something went wrong! Please try again!");
+                return RedirectToAction("EditProfile");
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", ex.Message);
-                ViewData["ManageProfile"] = "EditProfile";
-                return RedirectToAction("ManageProfile");
+                TempData["ManageProfileTask"] = "EditProfile";
+                ModelState.AddModelError("", "Something went wrong! Please try again!");
+                return RedirectToAction("EditProfile");
             }
 
         }
@@ -140,26 +144,15 @@ namespace EventZone.Controllers
             {
                 return RedirectToAction("ManageEvent");
             }
-            ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
-            List<ViewThumbEventModel> listThumbEvent = new List<ViewThumbEventModel>();
-            foreach (var item in myEvent)
-            {
-                thumbEventModel.eventId = item.EventID;
-                thumbEventModel.avartarLink = item.AvatarLink;
-                thumbEventModel.eventName = item.EventName;
-                thumbEventModel.StartTime = item.EventStartDate;
-                thumbEventModel.EndTime = item.EventEndDate;
-                thumbEventModel.location = datahelp.GetEventLocation(item.EventID);
-                listThumbEvent.Add(thumbEventModel);
-            }
 
+            List<ViewThumbEventModel> listThumbEvent = datahelp.GetThumbEventListByListEvent(myEvent);
 
             if (ViewData["ManageEventTask"] == null)
             {
                 ViewData["ManageEventTask"] = "MyEvent";
             }
-            ViewData["ListThumbEvent"] = listThumbEvent;
-            ViewData["MyEvent"] = myEvent;
+            ViewData["ListThumbEvent"] = listThumbEvent;//chứa thông tin cần thiết để show 1 event
+            ViewData["MyEvent"] = myEvent;//event cua người dùng
             return View();
         
         }
@@ -174,9 +167,10 @@ namespace EventZone.Controllers
             if (myEvent == null) {
                 return RedirectToAction("ManageEvent");
             }
-            ViewThumbEventModel thumbEventModel= new ViewThumbEventModel();
+           
             List<ViewThumbEventModel> listThumbEvent= new List<ViewThumbEventModel>();
             foreach (var item in myEvent) {
+                ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
                 thumbEventModel.eventId = item.EventID;
                 thumbEventModel.avartarLink = item.AvatarLink;
                 thumbEventModel.eventName = item.EventName;
@@ -189,21 +183,10 @@ namespace EventZone.Controllers
             ViewData["MyEvent"] = myEvent;
             return RedirectToAction("ManageEvent");
         }
-        //
-        // POST: /User/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+        public ActionResult Index() {
+            return View();
         }
+        public List<Event> List() { return null; }
     }
 }
+

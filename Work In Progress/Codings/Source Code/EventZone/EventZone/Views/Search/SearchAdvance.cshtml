@@ -1,0 +1,184 @@
+﻿@using EventZone.Models
+@model SearchModel
+@{
+    ViewBag.Title = "SearchAdvance";
+    List<Category> category = ViewData["Category"] as List<Category>;
+}
+
+
+@using (Html.BeginForm("AdvanceSearch", "Search")) { 
+      @Html.AntiForgeryToken()
+    <div class="panel panel-info d_margin_top">
+    <div class="panel-heading">
+        <div class="panel-title">Advanced Search</div>
+    </div>
+    <div style="padding-top:10px" class="panel-body">
+        <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th style="width: 100px">Criteria</th>
+                        <th>Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Name</td>
+                        <td>
+                           @Html.EditorFor(m=>m.keyword)
+                        </td>
+                    </tr>
+                    <tr>                       
+                        <td>Category</td>
+                        <td>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="d_checkbox" style="width: 200px;">
+                                                <label><input type="checkbox" value="" id="i_chbox_All" class="item_checked">  All</label>
+                                            </div>
+                                        </td>
+                                        @foreach (var item in @Model.Categories)
+                                        {
+                                            <td>
+                                                <div class="d_checkbox">
+                                                    <label><input type="checkbox" value="@item.CategoryID" name="selectedCategory" class="item_checked">  @item.CategoryName</label>
+                                                </div>
+                                            </td>
+                                        }
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Location</td>
+                        <td>
+                            @Html.TextBoxFor(m => m.location.LocationName, new { @placeholder= "",id="Location",@class = "form-control" })
+                            @Html.HiddenFor(m => m.location.Latitude, new { id= "LocationLat" })
+                            @Html.HiddenFor(m => m.location.Longitude, new { id = "LocationLng" })
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Date</td>
+                        <td>
+                            <table class="table table-responsive">
+                                <tr>
+                                    <td class="d_align_left">
+                                        <div class="radio-inline">
+                                            <label><input type="radio" name="datepick" checked="checked" value="0" onclick="hideDate()">All Time</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label><input type="radio" name="datepick" value="1" onclick="hideDate()">Today</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label><input type="radio" name="datepick" value="2" onclick="hideDate()">Next 3 days</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label><input type="radio" name="datepick" value="3" onclick="hideDate()">Next 7 days</label>
+                                        </div>
+                                        <div class="radio-inline">
+                                            <label><input type="radio" name="datepick" value="4" onclick="showDate()">Select date</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr id="date">
+                                    <td>
+                                        <div class="input-daterange input-group">
+                                            @Html.TextBoxFor(m => m.startDateRange, new { @type="date", @class = "input-sm form-control" })
+                                            <span class="input-group-addon">to</span>
+                                            @Html.TextBoxFor(m => m.finishDateRange, new {@type="date", @class = "input-sm form-control" })
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    
+            <div style="text-align: right; display: inline-flexbox" class="form-group">
+                <div class="col-sm-2 controls" style="margin-top: 10px">
+                    <a id="id-lookaround-btn" href="/LookAround/LookAround?" class="btn btn-success" onclick="shareLocation()"><span>Look around</span></a>
+                </div>
+                <div class="col-sm-2 controls" style="margin-top: 10px">
+                    <button type="submit" class="btn btn-success">Search</button>
+                </div>
+                <div class="col-sm-2 controls" style="margin-top: 10px">
+                    <a href="#" class="btn btn-danger" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+
+    </div>
+</div>
+    
+}
+<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=places&callback=initAutocomplete"
+        async defer></script>
+<script>
+    document.getElementById('date').style.visibility = 'hidden';
+    
+    function showDate() {
+        document.getElementById('date').style.visibility = 'visible';
+    }
+    function hideDate() {
+        document.getElementById('date').style.visibility = 'hidden';
+    } 
+
+    var autocomplete;
+    
+    function initAutocomplete() {
+        // Create the autocomplete object, restricting the search to geographical
+        // location types.
+        autocomplete = new google.maps.places.Autocomplete(
+            (document.getElementById('Location')),
+            { types: [] });
+
+        // When the user selects an address from the dropdown, populate the address
+        // fields in the form.
+        autocomplete.addListener('place_changed', getCoordinates);
+    }
+
+    // [START region_fillform]
+    function getCoordinates() {
+        // Get the place details from the autocomplete object.
+        var place = autocomplete.getPlace();
+        document.getElementById('LocationLng').value = place.geometry.location.lng();
+        document.getElementById('LocationLat').value  = place.geometry.location.lat();
+    }
+
+
+
+    // Geolocation get current location for lookAround
+    var shareLocation = function () {
+        navigator.geolocation.getCurrentPosition(function (position) {
+            $("#id-lookaround-btn").attr("href", $("#id-lookaround-btn").attr("href") + "longitude=" + position.coords.longitude + "&latitude=" + position.coords.latitude);
+        });
+    }
+    $(function () {
+        $("#id-lookaround-btn").click(function (evt) {
+            if ($(this).attr("href").slice(-1) == '?') {
+                swal({
+                    title: "Oops...",
+                    text: "You are not allowing getting location! Please allow us to get current location.",
+                    type: "warning",
+                    showCancelButton: false,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "OK!",
+                    closeOnConfirm: true,
+                    closeOnCancel: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        shareLocation();
+                    }
+                });
+                return false;
+            }
+        });
+        shareLocation();
+    });
+</script>

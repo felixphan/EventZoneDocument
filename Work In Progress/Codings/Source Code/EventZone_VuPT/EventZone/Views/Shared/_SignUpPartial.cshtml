@@ -6,7 +6,6 @@
             @using (Ajax.BeginForm("Register", "Account", null, new AjaxOptions
             {
                 HttpMethod = "POST",
-
                 OnBegin = "OnSignInRequestBegan",
                 OnSuccess = "OnSignUpRequestSucceeded",
                 OnFailure = "OnSignUpRequestFailed",

@@ -1,0 +1,61 @@
+﻿@using EventZone.Models
+
+@{
+    List<ViewThumbEventModel> listEvent = ViewData["listEvent"] as List<ViewThumbEventModel>;
+    List<ViewThumbEventModel> listLiveStream = ViewData["listLiveStream"] as List<ViewThumbEventModel>;
+    List<User> listUser = ViewData["listUser"] as List<User>;
+}
+
+<div class="d_result_container container-fluid">
+    <div class="col-xs-9 d_overflow">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="event-r">
+                @if (listEvent != null)
+                {
+                    foreach (var item in listEvent)
+                { 
+            <div>
+            @Html.Partial("_EventThumb",item)    
+            <p>-------------------------------------------------------------</p>
+            </div>
+                }
+            }
+                
+            </div>
+            <div class="tab-pane" id="live-r">
+            </div>
+            <div class="tab-pane" id="channel-r"></div>
+            <div class="tab-pane" id="user-r"></div>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <!-- required for floating -->
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs tabs-right">
+            <li class="active"><a href="search-result.html#event-r" data-toggle="tab">Event (@listEvent.Count)</a></li>
+            <li><a href="search-result.html#live-r" data-toggle="tab">Live Streaming (@listLiveStream.Count)</a></li>
+            <li><a href="search-result.html#user-r" data-toggle="tab">User(@listUser.Count)</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+<link rel="stylesheet" type="text/css" href="../Content/uikit.css">
+<link rel="stylesheet" type="text/css" href="../Content/perfect-scrollbar.css">
+<link rel="stylesheet" type="text/css" href="../Content/bootstrap.vertical-tabs.css"> <!-- plugin tab Phải -->
+<link rel="stylesheet" type="text/css" href="../Content/myCSS_chung.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+<link rel="stylesheet" type="text/css" href="../Content/myCSS_s_r.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+<!-- All script here -->
+<script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>    <!-- Default JQuery -->
+<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>        <!-- Default Bootstrap, có Edited -->
+<script type="text/javascript" src="../Scripts/super-smooth.js"></script>         <!-- Plugin làm mượt scroll -->
+<script type="text/javascript" src="../Scripts/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
+<script type="text/javascript" src="../Scripts/smooth-scrollspy.js"></script>
+
+<script type="text/javascript" src="../Scripts/uikit.js"></script> <!-- Plugin UIkit -->
+<!-- <script type="text/javascript" src="js/myJS_chung.js"></script> JS của riêng mình, có kèm OutSource -->
+<script type="text/javascript" src="../Scripts/myJS_s_r.js"></script> <!-- JS của riêng mình, có kèm OutSource -->
+<!-- <script type="text/javascript" src="../Scripts/myJS_test_script.js"></script> JS đang test -->

@@ -168,6 +168,8 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LookAroundController.cs" />
+    <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -238,6 +240,7 @@
     <Compile Include="Models\Report.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\Share.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
@@ -258,10 +261,23 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\bootstrap.vertical-tabs.css" />
+    <Content Include="Content\daterangepicker.css" />
+    <Content Include="Content\jquery.m.flip.css" />
+    <Content Include="Content\jquery.smartmenus.bootstrap.css" />
+    <Content Include="Content\m.flip.css" />
+    <Content Include="Content\myCSS_chung.css" />
+    <Content Include="Content\myCSS_s_r.css" />
+    <Content Include="Content\myCSS_topmenu.css" />
+    <Content Include="Content\myCSS_u_w_e.css" />
+    <Content Include="Content\perfect-scrollbar.css" />
+    <Content Include="Content\thumbnail-gallery.css" />
+    <Content Include="Content\uikit.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="img\bgvideo1080-cut.mp4" />
     <Content Include="img\default-avatar.jpg" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -273,6 +289,11 @@
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EventZone.Designer.cs</LastGenOutput>
     </EntityDeploy>
+    <Content Include="img\currentMarker.png" />
+    <Content Include="img\sample_thumb.jpg" />
+    <Content Include="img\sukien1.jpg" />
+    <Content Include="img\sukien2.jpg" />
+    <Content Include="img\test.gif" />
     <Content Include="Models\EventZone.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>EventZone.edmx</DependentUpon>
@@ -286,14 +307,27 @@
       <DependentUpon>EventZone.edmx</DependentUpon>
       <LastGenOutput>EventZone.cs</LastGenOutput>
     </Content>
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Content\jquery.m.flip.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.js" />
     <Content Include="Scripts\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\common.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
+    <Content Include="Scripts\jquery.m.flip.js" />
+    <Content Include="Scripts\jquery.smartmenus.bootstrap.js" />
+    <Content Include="Scripts\jquery.smartmenus.js" />
+    <Content Include="Scripts\jquery.transform.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
@@ -303,8 +337,18 @@
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />
     <Content Include="Scripts\moment.min.js" />
+    <Content Include="Scripts\myJS_chung.js" />
+    <Content Include="Scripts\myJS_s_r.js" />
+    <Content Include="Scripts\myJS_test_script.js" />
+    <Content Include="Scripts\myJS_topmenu.js" />
+    <Content Include="Scripts\myJS_u_w_e.js" />
+    <Content Include="Scripts\npm.js" />
+    <Content Include="Scripts\perfect-scrollbar.jquery.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\smooth-scrollspy.js" />
+    <Content Include="Scripts\super-smooth.js" />
+    <Content Include="Scripts\uikit.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
@@ -335,10 +379,20 @@
     <Content Include="Views\User\ManageEvent.cshtml" />
     <Content Include="Views\User\_MyEventPartial.cshtml" />
     <Content Include="Views\Shared\_EventThumb.cshtml" />
+    <Content Include="Views\Event\FailedLoadEvent.cshtml" />
+    <Content Include="Views\Event\Details.cshtml" />
+    <Content Include="Views\Event\_EditEventPartial.cshtml" />
+    <Content Include="Views\Event\_LocationPartial.cshtml" />
+    <Content Include="Views\Search\Search.cshtml" />
+    <Content Include="Views\Search\SearchAdvance.cshtml" />
+    <Content Include="Views\LookAround\LookAround.cshtml" />
+    <None Include="Views\Shared\_PermissionDeny.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Shared\_ViewPlaceInLocation.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Event\" />
+    <Folder Include="Extensions\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

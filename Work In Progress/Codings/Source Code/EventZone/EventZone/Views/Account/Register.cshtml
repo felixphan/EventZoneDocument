@@ -49,7 +49,7 @@
         <div class="col-md-10">
             @Html.TextBoxFor(model => model.UserDOB,
                new { htmlAttributes = new { 
-                  disabled = "disabled",
+                 @disabled = "disabled",
                  @readonly = "readonly",
                  @Value = "1/1/1990",
                  @class = "form-control"

@@ -8,8 +8,8 @@
     foreach (var item in eventThumbList)
     { 
         <div>
-        @item.eventName;
         @Html.Partial("_EventThumb",item)    
+        <p>-------------------------------------------------------------</p>
         </div>
     }
 }else{

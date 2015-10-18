@@ -1,0 +1,302 @@
+﻿@model EventZone.Models.ViewDetailEventModel
+@{
+    var task = ViewData["EventDetailTask"];
+}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="~/Content/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="~/Content/perfect-scrollbar.css">
+    <!-- <link rel="stylesheet" type="text/css" href="~/Content/myCSS_chung.css">  CSS của riêng mình, có kèm OurSource -->
+    <link rel="stylesheet" type="text/css" href="~/Content/myCSS_u_w_e.css">  <!-- CSS của riêng mình, có kèm OurSource -->
+  <!-- Bao phần show Các Tab chức năng -->
+    <div class="d_khung_nen row">
+        <!-- khung nền cố định nằm ở lớp dưới, căn giữa lớp trên -->
+        <div class="d_function_cover">
+            <div class="d_info_container d_deco1 col-md-8">
+
+                <!-- Nav tabs BOOTSTRAP -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active"><a href="#i_event_info" aria-controls="i_event_info" role="tab" data-toggle="tab">Event info</a></li>
+                    <li role="presentation">
+                        <a href="#i_gallery" aria-controls="i_gallery" role="tab" data-toggle="tab">
+                        @if(Model.eventImage==null) 
+                        {
+                            <p>Gallery(0)</p>
+                        }
+                        else { 
+                            <p>Gallery(@Model.eventImage.Count)</p>
+                        }
+                                                                      
+                        </a>
+                    </li>
+                          
+                    <li role="presentation">
+                        <a href="#i_video" aria-controls="i_video" role="tab" data-toggle="tab">
+                        @if (Model.eventVideo == null)
+                            {
+                                <p>Video(0)</p>
+                            }
+                        else
+                        {
+                            <p>Video(@Model.eventVideo.Count)</p>
+                        }
+                        </a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes BOOTSTRAP -->
+                <div class="tab-content">
+                   
+                    <div role="tabpanel" class="tab-pane active" id="i_event_info">
+                        <!-- Khung chứa Basic info với Thumb, tên, ngày tạo, ai tạo~. -->
+                        @if (task == "EventDetail")
+                        {
+                            <div class="d_info">
+                            <div class="d_thumb_container">
+                                <img src="@Model.eventAvatar" id="i_info_thumb">
+                            </div>
+                            <!-- <div class="d_info_icon glyphicon glyphicon-font"></div> -->   <!-- có nên đưa Icon cho Title vào k? -->
+                            <div id="i_event_name">
+                                @Model.eventName
+                            </div>
+                            <div class="d_event_time">
+                                <div class="d_info_icon glyphicon glyphicon-time"></div>
+                                <div class="">
+                                    @Model.StartTime
+                                </div>
+                            </div>
+                            <div class="d_event_date">
+                                <div class="d_info_icon glyphicon glyphicon-calendar"></div>
+                                <div class="">
+                                    @Model.EndTime
+                                </div>
+                            </div>
+                            <div class="d_event_location">
+                                <div class="d_info_icon glyphicon glyphicon-map-marker"></div>
+                                @if (Model.eventLocation != null) { 
+                                    foreach (var item in Model.eventLocation)
+                                    {
+                                        <div>
+                                        @item.LocationName;
+                                        </div>
+                                    }                          
+                                }    
+                            </div>
+                        </div>
+                        <div class="d_button_group">
+                            <!-- Chứa Nhóm nút Follow, Like, share -->
+
+                        </div>
+                        <div class="d_des">
+                            @Model.eventDescription
+                            @Html.ActionLink("Edit", "Edit", "Event", routeValues: new { id = @Model.eventId }, htmlAttributes: null)
+
+                        </div>
+                            }
+                    else { 
+                    @Html.Partial("_EditEventPartial")
+                    }
+                    </div>
+                    
+                    <!-- Khung chứa ảnh cho Gallery -->
+                    <div role="tabpanel" class="tab-pane scrollbar" id="i_gallery">
+                        <div class="container-fluid d_thumbs_cover">
+                            <div>
+                                @if (Model.eventImage != null) { 
+                                    foreach (var item in Model.eventImage) { 
+                                    <div class=" col-md-4 thumb">
+                                        <a class="thumbnail" href=@item.ImageLink>
+                                            <img class="img-responsive" src="@item.ImageLink" alt="">
+                                        </a>
+                                    </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Khung chứa Video -->
+                    <div role="tabpanel" class="tab-pane" id="i_video">
+                        <div id="result-list" class="panel-group d_video_item_cover">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+
+                                        <a href="#i_event_video" data-toggle="collapse" data-parent="#result-list">
+                                            <div class="xxx">Video sự kiện (12)</div>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="i_event_video" class="panel-collapse collapse">
+                                    <div class="container-fluid d_video_cover">
+                                        <div class="panel-body">
+                                            <div class="container-fluid d_thumbs_video_cover">
+                                                <div>
+                                                    
+                                                    @if (Model.eventVideo != null)
+                                                    {
+                                                        foreach (var item in Model.eventVideo)
+                                                        { 
+                                                            <div class=" col-md-4 thumb">
+                                                                <iframe width="560" height="315" src="@item.VideoLink+" ></iframe>
+                                                            </div>
+                                                        }
+                                                    }
+                                                    <div class=" col-md-4 thumb">
+                                                        <a class="thumbnail" href="#">
+                                                            Add a video
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a href="#i_streaming_link" data-toggle="collapse" data-parent="#result-list">
+                                            <div class="xxx">Link xem sự kiện trực tiếp (8)</div>
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="i_streaming_link" class="panel-collapse collapse">
+                                    <div class="container-fluid d_video_cover">
+                                        <div class="panel-body">
+                                            <div class="container-fluid d_thumbs_video_cover">
+                                                <div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Create New</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                    <div class=" col-md-2 thumb">
+                                                        <a href="#">Link 1</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d_map d_deco1 col-md-4">
+                <!-- Khung chứa Map -->
+                <!-- Nav tabs BOOTSTRAP -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#i_map" aria-controls="i_map" role="tab" data-toggle="tab">Map</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes BOOTSTRAP -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="i_map">
+                        <div id="map-container"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d_comment_report d_deco1 col-md-4">
+                <!-- Khung chứa Comment, Report -->
+                <!-- Nav tabs BOOTSTRAP -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li role="presentation" class="active">
+                        <a href="#i_comment" aria-controls="i_comment" role="tab" data-toggle="tab" id="i_comment_btn">Comment (23)</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#i_report" aria-controls="i_report" role="tab" data-toggle="tab">Report</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panes BOOTSTRAP -->
+                <div class="tab-content">
+                    <div role="tabpanel" class="tab-pane active" id="i_comment">
+                        <div class="container-fluid d_cmt_content_cover">
+          
+                        </div>
+                        <div class="d_cmt_box_btn">
+                            <input id="i_cmt_box" type="textbox" placeholder="Enter your comment~." />
+                            <input id="i_send_btn" type="button" value="Send" />
+                        </div>
+                    </div>
+                    <div role="tabpanel" class="tab-pane" id="i_report"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- All script here -->
+    <script type="text/javascript" src="~/Scripts/jquery-1.11.3.min.js"></script>    <!-- Default JQuery -->
+    <script type="text/javascript" src="~/Scripts/bootstrap.min.js"></script>        <!-- Default Bootstrap, có Edited -->
+    <script type="text/javascript" src="~/Scripts/super-smooth.js"></script>         <!-- Plugin làm mượt scroll -->
+    <script type="text/javascript" src="~/Scripts/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
+    <script type="text/javascript" src="~/Scripts/jquery.transform.js"></script> 		<!-- Plugin basic Animation 2d -->
+    <script src="//maps.google.com/maps/api/js?sensor=false"></script>		<!-- Script cho Map -->
+    <!-- <script type="text/javascript" src="js/myJS_chung.js"></script> JS của riêng mình, có kèm OutSource -->
+    <script type="text/javascript" src="~/Scripts/myJS_u_w_e.js"></script> <!-- JS thuộc trang -->
+<script>
+    var index = 0;
+    /*** OUTSOURCE: Google Map ***/
+    /*** OUTSOURCE: Google Map ***/
+    function init_map() {
+        var var_location = new google.maps.LatLng(21.013629, 105.526556);
+
+        var var_mapoptions = {
+            center: var_location,
+            zoom: 7
+        };
+        var var_map = new google.maps.Map(document.getElementById("map-container"),
+           var_mapoptions);
+        @if(Model.eventLocation!=null){
+            foreach (var item in @Model.eventLocation) { 
+                <text>
+                    index = index + 1;
+                    (function (index) {
+                    var marker = new google.maps.Marker({
+                        position: new google.maps.LatLng('@item.Latitude','@item.Longitude'),
+                        map: var_map
+                    });
+                    var infoMarker = new google.maps.InfoWindow({
+                        content: '@item.LocationName'
+                    });
+                    marker.setMap(var_map);
+                    google.maps.event.addListener(marker, 'mouseover', function () {
+                        infoMarker.open(var_map, marker);
+                    });
+                    google.maps.event.addListener(marker, 'mouseout', function () {
+                        infoMarker.close();
+                    });
+
+                })(index);
+                </text>   
+            }
+        }
+    }
+    google.maps.event.addDomListener(window, 'load', init_map);
+
+   
+
+    /*** End of OUTSOURCE: Google Map ***/
+
+</script>

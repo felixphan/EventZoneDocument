@@ -13,8 +13,22 @@ namespace EventZone.Models
             public Nullable<System.DateTime> StartTime { get; set; }
             public Nullable<System.DateTime> EndTime { get; set; }
             public List<Location> location { get; set; }
-
- 
-
     }
+    public class ViewDetailEventModel
+    {
+        public long eventId { get; set; }
+        public string eventAvatar{get;set;}
+        public string eventName{get; set;}
+        public string eventDescription { get; set; }
+        public Nullable<System.DateTime> StartTime { get; set; }
+        public Nullable<System.DateTime> EndTime { get; set; }
+        public List<Location> eventLocation { get; set; } 
+        public List<Gallery> eventImage {get; set; }
+        public List<Video> eventVideo { get;set;}
+        public List<Comment> eventComment { get; set; }
+        public bool Privacy { get; set; }
+    }
+
+
+
 }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Admin">
           <Key>
             <PropertyRef Name="AdminID" />
@@ -61,8 +61,8 @@
           <Key>
             <PropertyRef Name="EventID" />
           </Key>
-          <Property Name="EventID" Type="bigint" Nullable="false" />
-          <Property Name="ChannelID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ChannelID" Type="bigint" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="EventName" Type="nvarchar" MaxLength="1024" Nullable="false" />
           <Property Name="EventStartDate" Type="date" Nullable="false" />
           <Property Name="EventEndDate" Type="date" Nullable="false" />
@@ -114,7 +114,7 @@
           </Key>
           <Property Name="LocationID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Longitude" Type="float" Nullable="false" />
-          <Property Name="Lagitude" Type="float" Nullable="false" />
+          <Property Name="Latitude" Type="float" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="PeopleFollow">
@@ -563,8 +563,7 @@
             <End Role="Video" EntitySet="Video" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EventZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -705,9 +704,9 @@
           </Key>
           <Property Name="LocationID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Longitude" Type="Double" Nullable="false" />
-          <Property Name="Lagitude" Type="Double" Nullable="false" />
           <Property Name="LocationName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Location" FromRole="Location" ToRole="EventPlace" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="PeopleFollow">
           <Key>
@@ -1295,9 +1294,9 @@
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="EventZoneModel.Location">
               <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Lagitude" ColumnName="Lagitude" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
               </MappingFragment>
             </EntityTypeMapping>
