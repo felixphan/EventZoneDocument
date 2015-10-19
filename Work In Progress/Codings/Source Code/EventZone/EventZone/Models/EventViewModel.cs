@@ -23,7 +23,7 @@ namespace EventZone.Models
         public Nullable<System.DateTime> StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public List<Location> eventLocation { get; set; } 
-        public List<Gallery> eventImage {get; set; }
+        public List<Image> eventImage {get; set; }
         public List<Video> eventVideo { get;set;}
         public List<Comment> eventComment { get; set; }
         public bool Privacy { get; set; }

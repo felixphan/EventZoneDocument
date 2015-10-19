@@ -12,18 +12,16 @@ namespace EventZone.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class TrackingAction
+    public partial class Action
     {
-        public long TrackingID { get; set; }
-        public long SenderID { get; set; }
-        public long ReceiverID { get; set; }
-        public int SenderType { get; set; }
-        public Nullable<int> ReceiverType { get; set; }
-        public int ActionID { get; set; }
-        public System.DateTime ActionTime { get; set; }
+        public Action()
+        {
+            this.TrackingActions = new HashSet<TrackingAction>();
+        }
     
-        public virtual Action Action { get; set; }
-        public virtual User User { get; set; }
-        public virtual User User1 { get; set; }
+        public int ActionID { get; set; }
+        public string ActionName { get; set; }
+    
+        public virtual ICollection<TrackingAction> TrackingActions { get; set; }
     }
 }

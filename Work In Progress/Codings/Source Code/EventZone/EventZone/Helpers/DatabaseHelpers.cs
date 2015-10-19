@@ -138,9 +138,9 @@ namespace EventZone.Helpers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public List<Gallery> GetEventImage(long? id) {
-            List<Gallery> eventImage= new List<Gallery>();
-            List<Gallery> allImage= db.Galleries.ToList();
+        public List<Image> GetEventImage(long? id) {
+            List<Image> eventImage= new List<Image>();
+            List<Image> allImage= db.Images.ToList();
             if(allImage.Count!=0){    
             eventImage = allImage.FindAll(i=>i.EventID==id);
             return eventImage;
