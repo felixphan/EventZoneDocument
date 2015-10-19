@@ -4,7 +4,9 @@ body{
 	font-family: segoe ui;
 	min-width: 400px;
 }
-
+.container-fluid{
+	padding: 0;
+}
 .thumbnail{
 	padding: 1px;
 	background-color: #fff;
@@ -190,30 +192,34 @@ body{
 	width: 90%;
 }
 
-/* Event Info tab - Share */
-.d_event_share{
-	height: 40px;
-}
-
-.d_event_share > .d_deco_line{
+/* Event Info tab - Description */
+.d_deco_line{
 	height: 14px;
 	border-bottom: 1px whitesmoke solid;
 }
-
-.d_event_share > .d_text_share {
-	text-align: center;
-	font-size: 18px;
-	font-weight: lighter;
-	height: 20px;
+.d_des_cover{
+	margin-top: 40px;
+	position: absolute;
+    width: inherit;
+	border: 1px solid lightgrey;
+	border-radius: 4px;
+	height: 210px;
+	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* Standard syntax (must be last) */
 }
-
-.d_event_share > .d_description_cover{
-	margin-top: 20px;
-	height: 160px;
-}
-
-.d_share_button{
-	height: 50px;
+.d_des_content{
+	margin-top: 40px;
+    position: absolute;
+    width: inherit;
+	height: 210px;
+	border-radius: 4px;
+	background-color: white;
+	padding: 10px;
+	color: black;
+	font-size: 15px;
+	overflow-y: hidden;
 }
 
 /** CSS Image tab **/
@@ -221,9 +227,11 @@ body{
 	border: 0px solid white;
     overflow-y: auto;
     overflow-x: hidden;
-    height: 425px;
+    height: 435px;
 }
-
+.d_image_cover{
+	height: 100%;
+}
 .d_each_group {
 	overflow: hidden;
 }
@@ -289,6 +297,11 @@ body{
     height: initial;
 }
 
+/** CSS Report tab **/
+#i_reason1{
+	margin-top: 0px;
+}
+
 /*** Decorate CSS ***/
 .widget  li  a{
 	padding-top: 4px;
@@ -333,3 +346,8 @@ body{
 }
 
 /* Plugin Sticky Navbar */
+
+/* Plugin Trackpad-scroll-emulator */
+.trackpad{
+	swidth: initial;
+}
