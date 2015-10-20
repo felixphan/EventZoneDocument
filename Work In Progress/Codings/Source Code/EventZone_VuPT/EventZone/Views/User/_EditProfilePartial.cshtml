@@ -1,7 +1,6 @@
 ﻿@model EventZone.Models.EditUserModel
 @using EventZone.Models
 @{
-    EditUserModel editUserModel = ViewData["EditUserModel"] as EditUserModel;
     User user = ViewData["UserSession"] as User;
 }
 
@@ -97,7 +96,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.IDCard, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.IDCard, new { @Value = editUserModel.IDCard })
+                @Html.EditorFor(model => model.IDCard)
                 @Html.ValidationMessageFor(model => model.IDCard)
             </div>
         </div>

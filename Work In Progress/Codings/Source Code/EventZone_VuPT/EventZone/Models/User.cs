@@ -32,7 +32,6 @@ namespace EventZone.Models
     
         public long UserID { get; set; }
         public string UserName { get; set; }
-        public Nullable<int> TypeID { get; set; }
         public string UserPassword { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }

@@ -40,7 +40,6 @@ namespace EventZone.Models
         public virtual DbSet<PeopleFollow> PeopleFollows { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<Share> Shares { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<TrackingAction> TrackingActions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Video> Videos { get; set; }

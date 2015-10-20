@@ -5,108 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
-    @Styles.Render("~/Content/barAndTab")
-    @Styles.Render("~/Content/myCSS")
     @Scripts.Render("~/bundles/modernizr")
-</head>
-<body>
-    <div class="d_background_image">
-        <img class="d_overlay" src="~/img/sukien1.jpg" />
-    </div>
-    <div class="navbar navbar-inverse navbar-fixed-top" id="MenuLayout">
-        <div class="container-fluid d_white_text">
-            <div class="navbar-header">
-                <div class="navbar-brand uk-button-dropdown" data-uk-dropdown aria-haspopup="true" aria-expanded="false">
-                    @Html.ActionLink("Event Zone", "Index", "Home", null, new { @class = "navbar-brand" })
-                    <div class="uk-dropdown">
-                        <ul class="uk-nav uk-nav-dropdown">
-                            <li><a href="#">Policy</a></li>
-                            <li><a href="#">Help</a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div>
-                    <!-- Menu Category -->
-                    <ul id="i_Cate">
-                        <li class="dropdown d_Cate">
-                            <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="i_btn_Cate">
-                                Category
-                                <span class="caret"></span>
-                            </a>
-                            <ul class="dropdown-menu" id="i_Cate_dropdown">
-                                <li><a href="#">Music</a></li>
-                                <li><a href="#">Food and Drink</a></li>
-                                <li><a href="#">Classes</a></li>
-                                <li><a href="#">Arts</a></li>
-                                <li><a href="#">Parties</a></li>
-                                <li><a href="#">Sports and wellness</a></li>
-                                <li><a href="#">Networking</a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
 
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+</head>
+<body style="background-color:gray">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("EventZone", "Index", "Home", null, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li id="i_search" style="margin-left: 120px;">
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="input-group" style="{width: 100px;}">
+                    <li id="i_search" style=" margin-left: 120px;">
+
+                        <div class="input-group" style="{width: 100px;}">
+                            <form class="navbar-form navbar-left" role="search" action="@Url.Action("Search", "Search")" method="post">
                                 <input type="text"
+                                       name="keyword"
                                        class="form-control"
                                        aria-label="Text input with segmented button dropdown"
                                        placeholder="Search for event, channel or user"
                                        style="width: 250px;">
                                 <div class="input-group-btn">
-                                    <a class="btn btn-default" href="search_result.html" role="button">
+                                    <button id="i-seach" class="btn btn-default" type="submit" role="button">
                                         <span class="glyphicon glyphicon-search white"></span>
-                                    </a>
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#myModal">
-                                        <a href="#" id="i_advanced_search"><span class="glyphicon glyphicon-chevron-down white"></span></a>
                                     </button>
                                 </div>
-                            </div>
-                        </form>
+                            </form>
+
+                            <form class="navbar-form navbar-left" role="search" action="@Url.Action("SearchAdvance", "Search")" method="post">
+                                <div class="input-group-btn">
+                                    <button id="i_advanced_search" class="btn btn-default" type="submit" role="button">
+                                        <span class="glyphicon glyphicon-chevron-down white"></span>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
                     </li>
                 </ul>
-                @if (Session["authenticated"] == null || Session["authenticated"].ToString().IsEmpty())
-                {
-                    <ul class="nav navbar-nav navbar-right">
-                        <li><a href="#" data-toggle="modal" data-target="#myModal2" id="i_btn_signin">Sign In/Sign Up</a></li>
-                    </ul>
-                    <div class="modal fade" id="myModal2">
-                        @Html.Partial("_SignInSignUpPartial")
-                    </div>
-                }
-                else
-                {
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>
-                            <!-- Cụm Chức năng User sau khi đăng nhập -->
-                            <div class="d_user">
-                                <div class="d_user_avatar">
-
-                                </div>
-                                <div class="dropdown d_user_name">
-                                    <a href="#">
-                                        <img src="~/img/default-avatar.jpg" height="20" width="20" />
-                                    </a>
-                                    @Html.ActionLink("Hello " + @Session["userName"] + "!", "ManageProfile", "User", routeValues: null, htmlAttributes: new { title = "Manage" })
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li>@Html.ActionLink("Manage Profile", "ManageProfile", "User", routeValues: null, htmlAttributes: new { title = "Manage" })</li>
-                                        <li>@Html.ActionLink("Manage event", "ManageEvent", "User")</li>
-                                        <li><a href="#">abc</a></li>
-                                        <li role="presentation" class="divider"></li>
-                                        <li>@Html.ActionLink("Sign out", "Signout", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                }
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>
@@ -120,9 +64,14 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryval")
     @Scripts.Render("~/bundles/datetime")
-    @Scripts.Render("~/bundles/unobstructive")
+
+    <script>
+
+
+
+
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

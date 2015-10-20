@@ -21,7 +21,7 @@ namespace EventZone.Models
     
         public long LocationID { get; set; }
         public double Longitude { get; set; }
-        public double Lagitude { get; set; }
+        public double Latitude { get; set; }
         public string LocationName { get; set; }
     
         public virtual ICollection<EventPlace> EventPlaces { get; set; }

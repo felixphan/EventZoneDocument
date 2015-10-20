@@ -112,7 +112,7 @@ namespace EventZone.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
-        public DateTime UserDOB { get; set; }
+        public Nullable<System.DateTime> UserDOB { get; set; }
 
 
         [Required(ErrorMessage="Please select gender")]

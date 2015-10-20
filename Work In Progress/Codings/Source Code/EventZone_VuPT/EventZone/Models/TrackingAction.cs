@@ -20,7 +20,7 @@ namespace EventZone.Models
         public int SenderType { get; set; }
         public Nullable<int> ReceiverType { get; set; }
         public int ActionID { get; set; }
-        public System.TimeSpan ActionTime { get; set; }
+        public System.DateTime ActionTime { get; set; }
     
         public virtual Action Action { get; set; }
         public virtual User User { get; set; }

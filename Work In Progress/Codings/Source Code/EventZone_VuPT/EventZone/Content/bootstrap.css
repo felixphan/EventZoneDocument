@@ -1604,8 +1604,8 @@ pre code {
   }
 }
 .container-fluid {
-  /*padding-right: 15px; mycss
-  padding-left: 15px;*/
+  padding-right: 15px;
+  padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
 }
@@ -5520,9 +5520,7 @@ button.list-group-item-danger.active:focus {
           box-shadow: 0 1px 1px rgba(0, 0, 0, .05);
 }
 .panel-body {
-  /*padding: 15px;*/
-  padding-left: 10px; /*mycss*/
-  padding-right: 10px;
+  padding: 15px;
 }
 .panel-heading {
   padding: 10px 15px;
@@ -5986,7 +5984,7 @@ button.close {
   right: 0;
   bottom: 0;
   left: 0;
-  z-index: 1000;
+  z-index: 1040;
   background-color: #000;
 }
 .modal-backdrop.fade {

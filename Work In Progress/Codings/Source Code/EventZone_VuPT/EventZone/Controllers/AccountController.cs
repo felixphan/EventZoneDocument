@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Helpers;
 using System.Web.Mvc;
 using ASPSnippets.GoogleAPI;
 using Newtonsoft.Json.Linq;
@@ -39,22 +38,14 @@ namespace EventZone.Controllers
                 var newUser = listUser.FindAll(a => a.UserName.Equals(model.UserName));
                 if (newUser.Count != 0)
                 {
-                    //ModelState.AddModelError("", "UserName is already exist. Please choose another.");
-                    return Json(new
-                    {
-                        state = 0,
-                        message = "UserName is already exist. Please choose another."
-                    });
+                    ModelState.AddModelError("", "UserName is already exist. Please choose another.");
+                    return View();
                 }
                 newUser = listUser.FindAll(a => a.UserEmail.Equals(model.Email));
                 if (newUser.Count != 0)
                 {
-                    //ModelState.AddModelError("", "Email is already registered. Please choose another.");
-                    return Json(new
-                    {
-                        state = 0,
-                        message = "Email is already registered. Please choose another."
-                    });
+                    ModelState.AddModelError("", "Email is already registered. Please choose another.");
+                    return View();
                 }
                 else
                 {
@@ -88,20 +79,11 @@ namespace EventZone.Controllers
 
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
-                //return RedirectToAction("RegisterSuccess", "Account");
-                return Json(new
-                {
-                    state = 1,
-                    message = "Registered Successfully"
-                });
+                return RedirectToAction("RegisterSuccess", "Account");
             }
 
             // If we got this far, something failed, redisplay form
-            return Json(new
-            {
-                state = 0,
-                message = "Something Wrong"
-            });
+            return RedirectToAction("Index", "Home");
         }
         public ActionResult RegisterSuccess()
         {
@@ -110,10 +92,10 @@ namespace EventZone.Controllers
 
         // GET: /Account/Login
         [AllowAnonymous]
-        public PartialViewResult Signin(string returnUrl)
+        public ActionResult Signin(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return PartialView();
+            return View();
         }
 
         //
@@ -121,54 +103,36 @@ namespace EventZone.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Signin(LoginViewModel model)
+        public async Task<ActionResult> Signin(LoginViewModel model, string returnUrl)
         {
-            if (!ModelState.IsValid)
-                return Json(new
-                {
-                    state = 0,
-                    message = "Invalid model"
-                });
-
-            var dbhelp = new DatabaseHelpers();
-            if (dbhelp.ValidateUser(model.UserName, model.Password))
+            if (ModelState.IsValid)
             {
-                if (dbhelp.isLookedUser(model.UserName))
-                {
-                    ModelState.AddModelError("", "Your account is locked! Please contact with our support");
-                    return Json(new
+                DatabaseHelpers dbhelp= new DatabaseHelpers();
+                if (dbhelp.ValidateUser(model.UserName, model.Password)) {
+                    if (dbhelp.isLookedUser(model.UserName))
                     {
-                        state = 0,
-                        message = "Your account is locked! Please contact with our support"
-                    });
+                        ModelState.AddModelError("", "Your account is locked! Please contact with our support");
+                    }
+                    else {
+                        var user = dbhelp.GetUserByUserName(model.UserName);
+                        ViewData["User"] = user;
+                        Session["authenticated"] = true;
+                        Session["userName"] = user.UserName;
+                        Session["userAva"] = user.AvatarLink;
+                        Session["UserId"] = user.UserID;
+                        UserHelpers.SetCurrentUser(Session, user);
+                        
+                    }
                 }
-
-                var user = dbhelp.GetUserByUserName(model.UserName);
-                ViewData["User"] = user;
-                Session["authenticated"] = true;
-                Session["userName"] = user.UserName;
-                Session["userAva"] = user.AvatarLink;
-                Session["UserId"] = user.UserID;
-                UserHelpers.SetCurrentUser(Session, user);
-
-            }
-            else
-            {
-                ModelState.AddModelError("", "UserName or password is invalid.");
-                return Json(new
+                else
                 {
-                    state = 0,
-                    message = "Invalid account, password"
-                });
+                    ModelState.AddModelError("", "UserName or password is invalid.");
+                    return View();
+                }
             }
-
 
             // If we got this far, something failed, redisplay form
-            return Json(new
-            {
-                state = 1,
-                message = "Register successfully."
-            }); ;
+            return RedirectToAction("Index","Home");
         }
         public ActionResult Signout()
         {

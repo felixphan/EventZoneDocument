@@ -63,16 +63,16 @@
           <Property Name="EventID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ChannelID" Type="bigint" Nullable="false" />
           <Property Name="EventName" Type="nvarchar" MaxLength="1024" Nullable="false" />
-          <Property Name="EventStartDate" Type="date" Nullable="false" />
-          <Property Name="EventEndDate" Type="date" Nullable="false" />
+          <Property Name="EventStartDate" Type="datetime" Nullable="false" />
+          <Property Name="EventEndDate" Type="datetime" Nullable="false" />
           <Property Name="EventDescription" Type="nvarchar(max)" />
-          <Property Name="EventRegisterDate" Type="date" Nullable="false" />
+          <Property Name="EventRegisterDate" Type="datetime" Nullable="false" />
           <Property Name="View" Type="bigint" Nullable="false" />
           <Property Name="CategoryID" Type="bigint" Nullable="false" />
-          <Property Name="Privacy" Type="bit" Nullable="false" />
+          <Property Name="Privacy" Type="nvarchar" MaxLength="20" Nullable="false" />
           <Property Name="AvatarLink" Type="nvarchar" MaxLength="256" />
           <Property Name="EditBy" Type="bigint" />
-          <Property Name="EditTime" Type="time" Precision="7" />
+          <Property Name="EditTime" Type="datetime" />
           <Property Name="EditContent" Type="nvarchar(max)" />
           <Property Name="Status" Type="bit" Nullable="false" />
         </EntityType>
@@ -100,7 +100,7 @@
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="UserID" Type="bigint" Nullable="false" />
           <Property Name="ImageLink" Type="nvarchar" MaxLength="256" Nullable="false" />
-          <Property Name="UploadDate" Type="date" Nullable="false" />
+          <Property Name="UploadDate" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="LikeDislike">
           <Key>
@@ -117,7 +117,7 @@
           </Key>
           <Property Name="LocationID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Longitude" Type="float" Nullable="false" />
-          <Property Name="Lagitude" Type="float" Nullable="false" />
+          <Property Name="Latitude" Type="float" Nullable="false" />
           <Property Name="LocationName" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="PeopleFollow">
@@ -138,8 +138,8 @@
           <Property Name="ReportType" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="ReportContent" Type="nvarchar(max)" />
           <Property Name="ReportStatus" Type="int" Nullable="false" />
-          <Property Name="ReportDate" Type="date" Nullable="false" />
-          <Property Name="ResultDate" Type="date" />
+          <Property Name="ReportDate" Type="datetime" Nullable="false" />
+          <Property Name="ResultDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Share">
           <Key>
@@ -148,16 +148,6 @@
           <Property Name="ShareID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="UserID" Type="bigint" Nullable="false" />
-        </EntityType>
-        <EntityType Name="sysdiagrams">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
         </EntityType>
         <EntityType Name="TrackingAction">
           <Key>
@@ -169,7 +159,7 @@
           <Property Name="SenderType" Type="int" Nullable="false" />
           <Property Name="ReceiverType" Type="int" />
           <Property Name="ActionID" Type="int" Nullable="false" />
-          <Property Name="ActionTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="ActionTime" Type="datetime" Nullable="false" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -177,7 +167,6 @@
           </Key>
           <Property Name="UserID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="TypeID" Type="int" />
           <Property Name="UserPassword" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="UserFirstName" Type="nvarchar" MaxLength="32" />
           <Property Name="UserLastName" Type="nvarchar" MaxLength="32" />
@@ -189,7 +178,7 @@
           <Property Name="Place" Type="nvarchar(max)" />
           <Property Name="AccountStatus" Type="bit" Nullable="false" />
           <Property Name="Gender" Type="int" />
-          <Property Name="AvatarLink" Type="nvarchar" MaxLength="512" />
+          <Property Name="AvatarLink" Type="nvarchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -530,7 +519,6 @@
           <EntitySet Name="PeopleFollow" EntityType="Self.PeopleFollow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Share" EntityType="Self.Share" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrackingAction" EntityType="Self.TrackingAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
@@ -712,16 +700,16 @@
           <Property Name="EventID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ChannelID" Type="Int64" Nullable="false" />
           <Property Name="EventName" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="EventStartDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="EventEndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EventStartDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EventEndDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EventDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="EventRegisterDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EventRegisterDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="View" Type="Int64" Nullable="false" />
           <Property Name="CategoryID" Type="Int64" Nullable="false" />
-          <Property Name="Privacy" Type="Boolean" Nullable="false" />
+          <Property Name="Privacy" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="AvatarLink" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
           <Property Name="EditBy" Type="Int64" />
-          <Property Name="EditTime" Type="Time" Precision="7" />
+          <Property Name="EditTime" Type="DateTime" Precision="3" />
           <Property Name="EditContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Appeals" Relationship="Self.FK_Appeal_Event1" FromRole="Event" ToRole="Appeal" />
@@ -764,7 +752,7 @@
           <Property Name="EventID" Type="Int64" Nullable="false" />
           <Property Name="UserID" Type="Int64" Nullable="false" />
           <Property Name="ImageLink" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="UploadDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UploadDate" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Event" Relationship="Self.FK_Gallery_Event1" FromRole="Image" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_Gallery_User" FromRole="Image" ToRole="User" />
         </EntityType>
@@ -785,7 +773,7 @@
           </Key>
           <Property Name="LocationID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Longitude" Type="Double" Nullable="false" />
-          <Property Name="Lagitude" Type="Double" Nullable="false" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
           <Property Name="LocationName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Location" FromRole="Location" ToRole="EventPlace" />
         </EntityType>
@@ -809,8 +797,8 @@
           <Property Name="ReportType" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="ReportContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="ReportStatus" Type="Int32" Nullable="false" />
-          <Property Name="ReportDate" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ResultDate" Type="DateTime" Precision="0" />
+          <Property Name="ReportDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ResultDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Event" Relationship="Self.FK_Report_Event" FromRole="Report" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_Report_User" FromRole="Report" ToRole="User" />
         </EntityType>
@@ -824,16 +812,6 @@
           <NavigationProperty Name="Event" Relationship="Self.FK_Share_Event1" FromRole="Share" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_Share_User" FromRole="Share" ToRole="User" />
         </EntityType>
-        <EntityType Name="sysdiagram">
-          <Key>
-            <PropertyRef Name="diagram_id" />
-          </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
-        </EntityType>
         <EntityType Name="TrackingAction">
           <Key>
             <PropertyRef Name="TrackingID" />
@@ -844,7 +822,7 @@
           <Property Name="SenderType" Type="Int32" Nullable="false" />
           <Property Name="ReceiverType" Type="Int32" />
           <Property Name="ActionID" Type="Int32" Nullable="false" />
-          <Property Name="ActionTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="ActionTime" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="Action" Relationship="Self.FK_TrackingAction_ActorAction" FromRole="TrackingAction" ToRole="Action" />
           <NavigationProperty Name="User" Relationship="Self.FK_TrackingAction_User" FromRole="TrackingAction" ToRole="User" />
           <NavigationProperty Name="User1" Relationship="Self.FK_TrackingAction_User1" FromRole="TrackingAction" ToRole="User" />
@@ -855,7 +833,6 @@
           </Key>
           <Property Name="UserID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TypeID" Type="Int32" />
           <Property Name="UserPassword" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="UserFirstName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
           <Property Name="UserLastName" Type="String" MaxLength="32" FixedLength="false" Unicode="true" />
@@ -867,7 +844,7 @@
           <Property Name="Place" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="AccountStatus" Type="Boolean" Nullable="false" />
           <Property Name="Gender" Type="Int32" />
-          <Property Name="AvatarLink" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="AvatarLink" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="CategoryFollows" Relationship="Self.FK_CategoryFollow_User" FromRole="User" ToRole="CategoryFollow" />
           <NavigationProperty Name="Channels" Relationship="Self.FK_Channel_User" FromRole="User" ToRole="Channel" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_User" FromRole="User" ToRole="Comment" />
@@ -1221,7 +1198,6 @@
           <EntitySet Name="PeopleFollows" EntityType="Self.PeopleFollow" />
           <EntitySet Name="Reports" EntityType="Self.Report" />
           <EntitySet Name="Shares" EntityType="Self.Share" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TrackingActions" EntityType="Self.TrackingAction" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Videos" EntityType="Self.Video" />
@@ -1458,7 +1434,7 @@
               <MappingFragment StoreEntitySet="Location">
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
-                <ScalarProperty Name="Lagitude" ColumnName="Lagitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1495,17 +1471,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="EventZoneModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="TrackingActions">
             <EntityTypeMapping TypeName="EventZoneModel.TrackingAction">
               <MappingFragment StoreEntitySet="TrackingAction">
@@ -1524,7 +1489,6 @@
               <MappingFragment StoreEntitySet="User">
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="UserName" ColumnName="UserName" />
-                <ScalarProperty Name="TypeID" ColumnName="TypeID" />
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
                 <ScalarProperty Name="UserFirstName" ColumnName="UserFirstName" />
                 <ScalarProperty Name="UserLastName" ColumnName="UserLastName" />

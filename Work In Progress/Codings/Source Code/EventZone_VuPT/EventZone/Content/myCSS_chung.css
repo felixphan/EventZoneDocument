@@ -39,14 +39,14 @@ a:visited{
 	text-decoration: none;
 }
 
-.,d_background_image{
+.d_background_image{
 	position: fixed;
 	top: 0px;
 	width: 100%;
 	z-index: 0;
 }
 
-.,d_background_image_blur{
+.d_background_image_blur{
 	position: fixed;
 	top: 0px;
 	width: 100%;
