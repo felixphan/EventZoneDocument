@@ -9,7 +9,11 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-combined.no-icons.min.css">
-    <!-- Plugin Chọn giờ -->
+    <!-- Plugin Chọn Date & Time -->
+    <link href="../Content/bootstrap-datetimepicker.css" rel="stylesheet">
+
+    <!-- Plugin Bootstrap (Load lại để không bị ảnh hưởng bởi file BS-combined...css) -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
     
     <!-- Plugin Flip Effect -->
 	<link rel="stylesheet" href="../Content/jquery.m.flip.css" type="text/css"/>
@@ -47,32 +51,46 @@
 							<input type="text" class="form-control" id="i_title">
 						</div>
 					</div>
-					<div class="row b">	<!-- row Date -->
+					<div class="row b">	<!-- row Date Time -->
 						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-							Start date
+							Date & Time
 						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-							datepicker
+						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
+							<div class="form-group">
+								<div class="input-group date" id="datetimepicker1">
+									<input type="text" class="form-control">
+									<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
 						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-							End date
-						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-							datepicker
+						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
+							<div class="form-group">
+								<div class="input-group date" id="datetimepicker2">
+									<input type="text" class="form-control">
+									<span class="input-group-addon">
+									<span class="glyphicon glyphicon-calendar"></span>
+									</span>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div class="row b">	<!-- row Time -->
+					<div class="row b">	<!-- row Category -->
 						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-							Start time
+							Category
 						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-							timepicker
-						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-							End time
-						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-							timepicker
+						<div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
+						  <select class="form-control" id="i_choose_cate">
+						    <option>-- Choose a Category --</option>
+						    <option>Music</option>
+						    <option>Food and Drink</option>
+						    <option>Classes</option>
+						    <option>Arts</option>
+						    <option>Parties</option>
+						    <option>Sports and wellness</option>
+						    <option>Networking</option>
+						  </select>
 						</div>
 					</div>
 					<div class="row b">	<!-- row Location -->
@@ -107,17 +125,30 @@
 						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
 							<button type="button" class="btn btn-link">Link 1</button>
 						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-							<label class="radio-inline"><input type="radio" name="optradio">1080</label>
-							<label class="radio-inline"><input type="radio" name="optradio">720</label>
-							<label class="radio-inline"><input type="radio" name="optradio">360</label>
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						  <select class="form-control" id="i_quality_1">
+						    <option>Quality</option>
+						    <option>1080</option>
+						    <option>720</option>
+						    <option>360</option>
+						    <option>Auto</option>
+						  </select>
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
-						  <select class="form-control" id="sel1">
+						  <select class="form-control" id="i_location_1">
+						    <option>recorded at</option>
 						    <option>Location 1</option>
 						    <option>Location 2</option>
 						    <option>Location 3</option>
 						    <option>Location 4</option>
+						  </select>
+						</div>
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						  <select class="form-control" id="i_privacy_1">
+						    <option>privacy</option>
+						    <option>Public</option>
+						    <option>Unlisted</option>
+						    <option>Private</option>
 						  </select>
 						</div>
 						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
@@ -133,17 +164,30 @@
 						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
 							<button type="button" class="btn btn-link">Link 2</button>
 						</div>
-						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-							<label class="radio-inline"><input type="radio" name="optradio">1080</label>
-							<label class="radio-inline"><input type="radio" name="optradio">720</label>
-							<label class="radio-inline"><input type="radio" name="optradio">360</label>
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						  <select class="form-control" id="i_quality_2">
+						    <option>Quality</option>
+						    <option>1080</option>
+						    <option>720</option>
+						    <option>360</option>
+						    <option>Auto</option>
+						  </select>
 						</div>
 						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
-						  <select class="form-control" id="sel1">
+						  <select class="form-control" id="i_location_2">
+						  	<option>recorded at</option>
 						    <option>Location 1</option>
 						    <option>Location 2</option>
 						    <option>Location 3</option>
 						    <option>Location 4</option>
+						  </select>
+						</div>
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						  <select class="form-control" id="i_privacy_2">
+						    <option>privacy</option>
+						    <option>Public</option>
+						    <option>Unlisted</option>
+						    <option>Private</option>
 						  </select>
 						</div>
 						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
@@ -178,13 +222,12 @@
                             <div id="alerts"></div>
                             <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
                               <div class="btn-group">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font"><i class="icon-font"></i><b class="caret"></b></a>
+                                <a class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="Font"><i class="icon-font"></i><b class="caret"></b></a>
                                   <ul class="dropdown-menu">
-
                                   </ul>
                                 </div>
                               <div class="btn-group">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                                <a class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
                                   <ul class="dropdown-menu">
                                   <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
                                   <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
@@ -192,39 +235,39 @@
                                   </ul>
                               </div>
                               <div class="btn-group">
-                                <a class="btn" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
-                                <a class="btn" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
-                                <a class="btn" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
-                                <a class="btn" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
+                                <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
+                                <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
+                                <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
+                                <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
                               </div>
                               <div class="btn-group">
-                                <a class="btn" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
-                                <a class="btn" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
-                                <a class="btn" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
-                                <a class="btn" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
+                                <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
+                                <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
+                                <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
+                                <a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
                               </div>
                               <div class="btn-group">
-                                <a class="btn" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
-                                <a class="btn" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
-                                <a class="btn" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
-                                <a class="btn" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
+                                <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
+                                <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
+                                <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
+                                <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
                               </div>
                               <div class="btn-group">
-                                    <a class="btn dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
+                                    <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
                                     <div class="dropdown-menu input-append">
-                                        <input class="span2" placeholder="URL" type="text" data-edit="createLink"/>
-                                        <button class="btn" type="button">Add</button>
+                                        <input class="span2" placeholder="http://" type="text" data-edit="createLink"/>
+                                        <button class="btn btn-success" type="button">Add</button>
                                 </div>
-                                <a class="btn" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
+                                <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
                               </div>
                               
                               <div class="btn-group">
-                                <a class="btn" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
+                                <a class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
                                 <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
                               </div>
                               <div class="btn-group">
-                                <a class="btn" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
-                                <a class="btn" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
+                                <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
+                                <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
                               </div>
                               <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
                             </div>
@@ -251,6 +294,8 @@
 			</div>
 		</div>
 	</div>
+
+
 
 	<div class="col-xs-12 col-sm-12 col-lg-4 d_rightside b"> <!-- Khung chứa sự kiện khác -->
 		<div class="widget" id="widget_tabs">
@@ -291,7 +336,31 @@
 <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
 
 <!-- Plugin chọn giờ -->
+	<script src="../Scripts/moment-with-locales.js"></script>
+	<script src="../Scripts/bootstrap-datetimepicker.js"></script>
+	<script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker2').datetimepicker();
+        });
+    </script>
 
+	<script src="../Scripts/prettify-1.0.min.js"></script>
+	<script src="../Scripts/base.js"></script>
+	<script>
+	if (top != self) { top.location.replace(self.location.href); }
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-47462200-1', 'eonasdan.github.io');
+	ga('send', 'pageview');
+	</script>
 <!-- END of Plugin chọn giờ -->
 
 <!-- Plugin Flip Effect -->

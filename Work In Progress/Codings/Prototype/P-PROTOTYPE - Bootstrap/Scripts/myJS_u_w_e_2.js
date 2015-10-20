@@ -1,9 +1,12 @@
 $(document).ready(function(){
 
+	/*** SCRIPT xử lý ngay khi Load trang ***/
 
 	if($('#i_event_thumbnail').width() < $('#i_event_thumbnail').height()){
 		$('.crop img').addClass('portrait');
 	}
+
+	/*** SCRIPT Xử lý các sự kiện ***/
 
 /*
 if($('.crop_2 img').width() < $('.crop_2 img').height()){

@@ -1,0 +1,187 @@
+﻿@model IEnumerable<EventZoneC.Models.User>
+@using EventZoneC.Helpers;
+@using EventZoneC.Models
+@{
+    ViewBag.Title = "ManageUser";
+}
+@if (Session.Count !=0)
+{
+    EventZoneEntities3 db = new EventZoneEntities3();
+
+    User sessionvar = UserHelpers.GetCurrentUser(Session);
+
+
+    var user = db.Users.ToList();
+    user = user.FindAll(u => u.UserName.Contains(sessionvar.UserName));
+    @Html.Label("Wellcome " + sessionvar.UserName)
+<h2>Manage Users</h2>
+<script type="text/javascript" defer="defer">
+    @Html.Raw(ViewBag.StartupScript)
+</script>
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+
+using (Html.BeginForm("SearchUser", "Users"))
+{
+    <p>
+        Name user: @Html.TextBox("userName")
+        <input type="submit" value="Search" />
+    </p>
+
+}
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.UserName)
+        </th>
+        @*<th>
+            @Html.DisplayNameFor(model => model.TypeID)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.UserPassword)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserFirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserLastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserEmail)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserDOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDCard)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UserRoles)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Place)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AccountStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AvatarLink)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        if (item.UserRoles != 2)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserName)
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.TypeID)
+                    </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserPassword)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserFirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserLastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserEmail)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.UserDOB)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IDCard)
+                </td>
+                <td>
+                    @if (item.UserRoles == 0)
+                    {
+                        @Html.Label("User")
+                    }
+                    else if (item.UserRoles == 1)
+                    {
+                        @Html.Label("Moderator")
+                    }
+                    else
+                    {
+                        @Html.Label("Admin")
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Phone)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Place)
+                </td>
+                <td>
+                    @if (item.AccountStatus == true)
+                    {
+                        @Html.Label("Unlock")
+                    }
+                    else
+                    {
+                        @Html.Label("Locked")
+                    }
+
+                    @*//@Html.DisplayFor(modelItem => item.AccountStatus)*@
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Gender)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvatarLink)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.UserID })
+
+
+                    @using (Html.BeginForm("SetMod", "Users"))
+                    {
+
+                        @Html.HiddenFor(model => item.UserID, new { @id = "UserID", @Name = "UserID" })
+
+                        if (item.UserRoles == 0)
+                        {
+                            <input type="submit" value="SetMod" />
+                        }
+                        else if (item.UserRoles == 1)
+                        {
+                            <input type="submit" value="CanelMod" />
+                        }
+                    }
+                    @using (Html.BeginForm("Lock", "Users"))
+                    {
+
+                        @Html.HiddenFor(model => item.UserID, new { @id = "UserID", @Name = "UserID" })
+
+                        if (item.AccountStatus == true)
+                        {
+                            <input type="submit" value="Lock" />
+                        }
+                        else
+                        {
+                            <input type="submit" value="Unlock" />
+                        }
+                    }
+                </td>
+            </tr>
+        }
+
+    }
+
+</table>
+}

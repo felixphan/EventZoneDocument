@@ -1,3 +1,5 @@
+/* USER CREATE EVENT CSS */
+
 /*** Sửa file BOOTSTRAP ***/
 .tab-content{
 	padding: 10px 0;
@@ -7,6 +9,9 @@
 .row{
 	margin-left: 0px;
 	margin-right: 0px;
+}
+.row .form-control{
+	padding-left: 2px;
 }
 .b {
 	border: 0px red solid;
@@ -24,6 +29,18 @@
 }
 .nav{
 	margin-bottom: 0px;
+}
+.btn-group{
+	margin-bottom: 5px;
+}
+.btn-group .dropdown-menu{
+	width: 300px;
+}
+.btn-group .dropdown-menu .span2{
+    float: left;
+    margin-left: 10px;
+    height: 34px;
+    width: 229px;
 }
 
 /*** LEFT SIDE: chứa khung đăng ký (3 Tabs Basic, Image, Video); ***/
@@ -75,6 +92,26 @@ label#i_request{
 .d_btn_x{	/* Sửa do ảnh hưởng của CSS plugin khác */
 	margin-top: 5px;
 }
+.row input{
+	margin-top: auto;
+}
+.row .btn{
+	margin-top: auto;
+}
+.row input[type="radio"] {
+	margin-top: 4px;
+}
+.row input[type="checkbox"] {
+	margin-top: -1px;
+}
+
+/* Basic info tab > Description */
+.d_first_btn_group{
+}
+.btn-group .caret{
+	margin-top: inherit;
+	margin-left: 5px;
+}
 
 /* Image tab */
 .d_upload_container{
@@ -83,6 +120,7 @@ label#i_request{
 .d_images_container{
 	height: auto;
 }
+
 
 /* Video tab */
 

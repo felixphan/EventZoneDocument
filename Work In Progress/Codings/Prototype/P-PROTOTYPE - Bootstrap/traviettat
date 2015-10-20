@@ -41,3 +41,13 @@ daterangepicker: Giúp chọn ngày bằng cách hiện bảng Lịch
 Hiện khung xem ảnh
 	jquery.imagebox.js
 	jquery.imagebox_continue.js
+
+Hiệu ứng 2d
+	jquery.transform.js
+
+Plugin Chọn ngày/giờ
+	bootstrap-datetimepicker.css
+	base.js
+	bootstrap-datetimepicker.js
+	moment-with-locales.js
+	prettify-1.0.min.js
