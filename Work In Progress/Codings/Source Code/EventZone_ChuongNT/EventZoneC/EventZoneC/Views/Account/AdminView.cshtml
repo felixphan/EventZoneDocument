@@ -1,0 +1,46 @@
+﻿@using EventZoneC.Models
+@using EventZoneC.Helpers;
+
+@model User
+@{
+    ViewBag.Title = "AdminView";
+    }
+
+
+
+@*@ User u = EventZone.Helpers.UserHelpers.GetCurrentUser();
+    @if(Session["UserID"])*@
+
+    @if (Session.Count != 0)
+    {
+
+        EventZoneEntities3 db = new EventZoneEntities3();
+
+        User sessionvar = UserHelpers.GetCurrentUser(Session);
+
+
+        var user = db.Users.ToList();
+        user = user.FindAll(u => u.UserName.Contains(sessionvar.UserName));
+
+        if (user[0].UserRoles == 2)
+        {
+            <h2>Admin View</h2>
+            @Html.Label("Wellcome " + sessionvar.UserName)
+            <p>@Html.ActionLink("Manage Events", "ManageEvents", "Events")</p>
+
+            <p>@Html.ActionLink("Manage Users", "ManageUsers", "Users")</p>
+            <p>@Html.ActionLink("Manage Reports", "ManageReports", "Reports")</p>
+            <p>@Html.ActionLink("Manage Appeals", "ManageAppeals", "Appeals")</p>
+            <p>@Html.ActionLink("View statitic", "ViewStatitic")</p>
+        }
+        else
+        {<h2>Not Found!</h2>
+        }
+
+
+    }
+        
+
+
+
+

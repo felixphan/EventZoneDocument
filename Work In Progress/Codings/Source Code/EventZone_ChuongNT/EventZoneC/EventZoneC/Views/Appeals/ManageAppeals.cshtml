@@ -1,0 +1,128 @@
+﻿@model IEnumerable<EventZoneC.Models.Appeal>
+@using EventZoneC.Models;
+@using System.Data;
+@using System.Data.Entity;
+@{
+    ViewBag.Title = "ManageAppeals";
+}
+
+<h2>Index</h2>
+
+
+
+    @using (Html.BeginForm("SearchEvent", "Appeals"))
+    {
+        EventZoneEntities3 db = new EventZoneEntities3();
+
+    <p>
+
+        Name event: @Html.TextBox("searchString")
+    </p>
+       
+
+        <input type="submit" value="search" />
+    }
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.AppealContent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.AppealStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SendDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Event.EventName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.AppealContent)
+        </td>
+        <td>
+            @if (item.AppealStatus == 0)
+            {
+                @Html.Label("Pending")
+            }
+            else if (item.AppealStatus == 1)
+            {
+                @Html.Label("Approved")
+            }
+            else
+            {
+                @Html.Label("Rejected")
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SendDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Event.EventName)
+        </td>
+        <td>
+            @if (item.AppealStatus == 0)
+            {
+                using (Html.BeginForm("Approve", "Appeals"))
+                {
+
+                    @Html.HiddenFor(model => item.AppealID, new { @id = "AppealID", @Name = "AppealID" })
+
+
+                    <input type="submit" value="Approve" />
+
+                }
+                using (Html.BeginForm("Reject", "Appeals"))
+                {
+
+                    @Html.HiddenFor(model => item.AppealID, new { @id = "AppealID", @Name = "AppealID" })
+
+
+
+                    <input type="submit" value="Reject" />
+                }
+            }
+            else if (item.AppealStatus == 1)
+            {
+                using (Html.BeginForm("Reject", "Appeals"))
+                {
+
+                    @Html.HiddenFor(model => item.AppealID, new { @id = "AppealID", @Name = "AppealID" })
+
+
+
+                    <input type="submit" value="Reject" />
+                }
+
+            }
+            else
+            {
+                using (Html.BeginForm("Approve", "Appeals"))
+                {
+
+                    @Html.HiddenFor(model => item.AppealID, new { @id = "AppealID", @Name = "AppealID" })
+
+
+                    <input type="submit" value="Approve" />
+
+                }
+            }
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.AppealID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.AppealID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.AppealID })*@
+        </td>
+    </tr>
+}
+
+</table>

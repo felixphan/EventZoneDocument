@@ -1,0 +1,74 @@
+﻿@model EventZoneC.Models.Report
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Report</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ReportDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ReportDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResultDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.EventName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.EventName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.UserName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ReportID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
