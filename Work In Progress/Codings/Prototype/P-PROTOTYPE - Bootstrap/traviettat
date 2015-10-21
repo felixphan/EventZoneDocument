@@ -20,7 +20,9 @@ Viết tắt tên file:
 10. Luôn Comment trong mọi file, mọi chức năng.
 11. Comment trong CSS cần chia ra các phần tương ứng trang HTML
 	Thứ tự .class, #id từ trên xuống tương ứng từ trái sang phải, từ trên xuống dưới của trang HTML
-
+12. Khi cắt nhỏ file.html, phải viết tắt tên file cha vào đầu tên file con được cắt ra
+	Ví dụ: search_result.html
+		file con: s_r_each_user_card.html
 
 ----- Danh sách Plugin -----
 Smooth scroll: Làm mượt trang khi lăn chuột
@@ -35,7 +37,7 @@ mflip: Làm hiệu ứng lật ra mặt sau
 perfect-scollbar: trang trí lại Thanh cuộn chuột.
 	perfect-scrollbar.jquery.js
 
-daterangepicker: Giúp chọn ngày bằng cách hiện bảng Lịch
+daterangepicker: Giúp chọn dải ngày bằng cách hiện bảng Lịch
 	daterangepicker.css
 
 Hiện khung xem ảnh

@@ -1,17 +1,11 @@
 $(document).ready(function(){
 /*** xử lý khi Load trang ***/
-	$('.d_user').hide();	// Tắt Inside User đi
+	
+	/* Cho Avatar thành hình vuông: chiều cao = chiều ngang */
+	$(window).resize(function(){
+		
+	);
 
+	$('.d_u_avatar').css("height", $('.d_u_avatar').width());
 
-/*** Tắt mở Sign In & User ***/
-	$('#i_btn_ani').click(function(){
-		$('#i_btn_signin').toggle();
-		$('.d_user').toggle();
-	});
-	/*** End of Nâng cấp tắt, mở Category ***/
-
-	/*$('#i_btn_signout').click(function(){
-		$('#i_btn_signin').show();
-		$('.d_user').hide();
-	});*/
 });

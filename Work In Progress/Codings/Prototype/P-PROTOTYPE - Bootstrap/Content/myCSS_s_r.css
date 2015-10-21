@@ -28,13 +28,22 @@ hr {
 	float: right;
 	width: 100%;
 }
+.d_sum_result{
+	padding: 0;
+}
 
-/*** Khung kết quả TRÁI ***/
+/*** Khung kết quả TRÁI: CSS chung ***/
 .d_sum_result strong{
 	font-size: 17px;
 }
 .d_result_container{
 	padding: 0;
+}
+.d_e_sortbar, .d_c_sortbar, .d_u_sortbar, .d_l_sortbar {
+	width: 100%;
+}
+.d_e_result_container, .d_c_result_container, .d_u_result_container, .d_l_result_container, {
+	width: 100%;
 }
 
 /** Kết quả Event **/
@@ -42,6 +51,27 @@ hr {
 /** Kết quả Channel **/
 
 /** Kết quả User **/
+.d_user_card_cover{
+	padding: 5px;
+	border-radius: 4px;
+}
+.d_u_avatar{
+	padding: 0;
+}
+.d_u_info_cover{
+	padding: 0;
+}
+.d_u_name{
+	font-weight: bold;
+	padding-right: 0;
+}
+.d_u_follow_btn{
+	text-align: right;
+	padding-right: 0;
+}
+.d_u_result_container{
+	width: 100%;
+}
 
 /** Kết quả Location **/
 

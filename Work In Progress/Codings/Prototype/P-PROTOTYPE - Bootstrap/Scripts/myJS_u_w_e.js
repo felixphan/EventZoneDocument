@@ -1,5 +1,10 @@
 $(document).ready(function(){
 
+	/*** SCRIPT xử lý ngay khi Load trang ***/
+	if($('#i_event_thumbnail').width() < $('#i_event_thumbnail').height()){
+		$('.crop img').addClass('portrait');
+	}
+
 	$('#i_comment_btn').click(function(){
 		$('.d_comment_report').animate({
 		    height: '500'
@@ -45,25 +50,5 @@ $(document).ready(function(){
 	google.maps.event.addDomListener(window, 'load', init_map);
 	/*** End of OUTSOURCE: Google Map ***/
 
-	/*** OUTSOURCE: tùy chỉnh scroll bar ***/
-	function changeSize() {
-    var width = parseInt($("#Width").val());
-    var height = parseInt($("#Height").val());
-
-    $(".d_scrollbar_style").width(width).height(height);
-
-    // update scrollbars
-    $('.d_scrollbar_style').perfectScrollbar('update');
-
-    // or even with vanilla JS!
-    Ps.update(document.getElementById('.d_scrollbar_style'));
-	};
-
-	$(function() {
-	    $('.d_scrollbar_style').perfectScrollbar();
-
-	    // with vanilla JS!
-	    Ps.initialize(document.getElementById('.d_scrollbar_style'));
-	});
-	/*** End of OUTSOURCE: tùy chỉnh scroll bar ***/
+	
 });
