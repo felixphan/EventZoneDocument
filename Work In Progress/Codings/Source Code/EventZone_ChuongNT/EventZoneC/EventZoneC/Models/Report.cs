@@ -14,16 +14,22 @@ namespace EventZoneC.Models
     
     public partial class Report
     {
+        public Report()
+        {
+            this.TrackingReports = new HashSet<TrackingReport>();
+        }
+    
         public long ReportID { get; set; }
         public long EventID { get; set; }
         public long SenderID { get; set; }
         public string ReportType { get; set; }
         public string ReportContent { get; set; }
+        public int ReportStatus { get; set; }
         public System.DateTime ReportDate { get; set; }
         public Nullable<System.DateTime> ResultDate { get; set; }
-        public int ReportStatus { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<TrackingReport> TrackingReports { get; set; }
     }
 }

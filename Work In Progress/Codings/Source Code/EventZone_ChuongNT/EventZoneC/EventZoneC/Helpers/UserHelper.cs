@@ -8,7 +8,7 @@ namespace EventZoneC.Helpers
 {
     public class UserHelpers
     {
-        private EventZoneEntities3 db = new EventZoneEntities3();
+        private EventZoneEntities4 db = new EventZoneEntities4();
 
 
         private const string User = "user";

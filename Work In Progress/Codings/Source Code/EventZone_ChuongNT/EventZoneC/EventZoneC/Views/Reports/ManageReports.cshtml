@@ -2,17 +2,30 @@
 @using EventZoneC.Models;
 @using System.Data;
 @using System.Data.Entity;
+@using EventZoneC.Helpers;
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
-
-
-@using (Html.BeginForm("SearchEvent", "Reports"))
+@if (Session.Count != 0)
 {
-    EventZoneEntities3 db = new EventZoneEntities3();
+    EventZoneEntities4 db = new EventZoneEntities4();
 
+    User sessionvar = UserHelpers.GetCurrentUser(Session);
+
+
+    var user = db.Users.ToList();
+    user = user.FindAll(u => u.UserName.Contains(sessionvar.UserName));
+
+    if (user[0].UserRoles == 2)
+    {
+
+<h2>Manage Reports</h2>
+
+
+using (Html.BeginForm("SearchEvent", "Reports"))
+{
+   
     <p>
 
         Name event: @Html.TextBox("searchString")
@@ -89,13 +102,13 @@
 
                     @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
 
-               
+                    @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
                         <input type="submit" value="Approve" />
-                    
+
                 }
                 using (Html.BeginForm("Reject", "Reports"))
                 {
-
+                    @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
                     @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
 
 
@@ -108,7 +121,7 @@
                 {
 
                     @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
-
+                 @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
 
 
                     <input type="submit" value="Reject" />
@@ -122,7 +135,7 @@
 
                     @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
 
-
+                     @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
                     <input type="submit" value="Approve" />
 
                 }
@@ -135,3 +148,12 @@
 }
 
 </table>
+    }
+
+
+}
+
+else
+{
+    <h2>Not found</h2>
+}

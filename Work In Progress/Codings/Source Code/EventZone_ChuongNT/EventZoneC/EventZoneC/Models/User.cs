@@ -26,13 +26,16 @@ namespace EventZoneC.Models
             this.PeopleFollows1 = new HashSet<PeopleFollow>();
             this.Reports = new HashSet<Report>();
             this.Shares = new HashSet<Share>();
-            this.TrackingActions = new HashSet<TrackingAction>();
-            this.TrackingActions1 = new HashSet<TrackingAction>();
+            this.TrackingAppeals = new HashSet<TrackingAppeal>();
+            this.TrackingEvents = new HashSet<TrackingEvent>();
+            this.TrackingReports = new HashSet<TrackingReport>();
+            this.TrackingUsers = new HashSet<TrackingUser>();
+            this.TrackingUsers1 = new HashSet<TrackingUser>();
         }
     
         public long UserID { get; set; }
         public string UserName { get; set; }
-        public Nullable<int> TypeID { get; set; }
+        public Nullable<long> EditBy { get; set; }
         public string UserPassword { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
@@ -45,6 +48,7 @@ namespace EventZoneC.Models
         public bool AccountStatus { get; set; }
         public Nullable<int> Gender { get; set; }
         public string AvatarLink { get; set; }
+        public Nullable<System.DateTime> EditTime { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
         public virtual ICollection<Channel> Channels { get; set; }
@@ -56,7 +60,10 @@ namespace EventZoneC.Models
         public virtual ICollection<PeopleFollow> PeopleFollows1 { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
-        public virtual ICollection<TrackingAction> TrackingActions { get; set; }
-        public virtual ICollection<TrackingAction> TrackingActions1 { get; set; }
+        public virtual ICollection<TrackingAppeal> TrackingAppeals { get; set; }
+        public virtual ICollection<TrackingEvent> TrackingEvents { get; set; }
+        public virtual ICollection<TrackingReport> TrackingReports { get; set; }
+        public virtual ICollection<TrackingUser> TrackingUsers { get; set; }
+        public virtual ICollection<TrackingUser> TrackingUsers1 { get; set; }
     }
 }

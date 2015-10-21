@@ -6,13 +6,16 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using EventZoneC.Helpers;
+using EventZoneC.Models;
+
 
 namespace EventZoneC.Models
 {
     public class UsersController : Controller
     {
-        private EventZoneEntities3 db = new EventZoneEntities3();
-
+        private EventZoneEntities4 db = new EventZoneEntities4();
+        
         // GET: Users
         public ActionResult ManageUsers()
         {
@@ -55,7 +58,7 @@ namespace EventZoneC.Models
         //    }
         //    return View(user);
         //}
-        public ActionResult SetMod(int UserID)
+        public ActionResult SetMod(int UserID, int AdminID)
         {
     
 
@@ -63,16 +66,27 @@ namespace EventZoneC.Models
            var userChange = db.Users.Include(u=>u.EventFollows);
              userChange = userChange.Where(u => u.UserID == UserID);
              listUser = userChange.ToList();
-
+             TrackingUser track = new TrackingUser();
+             track.ActorID = AdminID;
+             track.ReceiverID = UserID;
+            //senderType, receiverType:
+            //user, mod, admin: 0
+            // event: 1, report: 2, appeal: 3
+           
+             track.ActionTime = DateTime.Now;
             if (userChange != null)
             {
                 if (listUser[0].UserRoles ==0){
                     listUser[0].UserRoles = 1;
+                    track.ActionID = 5;
+                    db.TrackingUsers.Add(track);
                 }
                 
                 else
                 {
                     listUser[0].UserRoles = 0;
+                    track.ActionID = 6;
+                    db.TrackingUsers.Add(track);
                 }
                // db.Entry(userChange).State = EntityState.Modified;
                 db.SaveChanges();
@@ -82,7 +96,7 @@ namespace EventZoneC.Models
             userChange = db.Users.Include(u => u.EventFollows);
             return View("ManageUsers", userChange);
         }
-        public ActionResult Lock(int UserID)
+        public ActionResult Lock(int UserID, int AdminID)
         {
 
 
@@ -91,17 +105,26 @@ namespace EventZoneC.Models
             var userChange = db.Users.Include(u => u.EventFollows);
             userChange = userChange.Where(u => u.UserID == UserID);
             listUser = userChange.ToList();
-
+            TrackingUser track = new TrackingUser();
+            track.ActorID = AdminID;
+            track.ReceiverID = UserID;
+            
+           
+            track.ActionTime = DateTime.Now;
             if (userChange != null)
             {
                 if (listUser[0].AccountStatus == true)
                 {
                     listUser[0].AccountStatus = false;
+                    track.ActionID = 1;
+                    db.TrackingUsers.Add(track);
                 }
 
                 else
                 {
                     listUser[0].AccountStatus = true;
+                    track.ActionID = 2;
+                    db.TrackingUsers.Add(track);
                 }
                 // db.Entry(userChange).State = EntityState.Modified;
                 db.SaveChanges();
@@ -171,8 +194,10 @@ namespace EventZoneC.Models
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "UserID,UserName,TypeID,UserPassword,UserFirstName,UserLastName,UserEmail,UserDOB,IDCard,UserRoles,Phone,Place,AccountStatus,Gender,AvatarLink")] User user)
+        public ActionResult Edit([Bind(Include = "UserID,UserName,EditBy,UserPassword,UserFirstName,UserLastName,UserEmail,UserDOB,IDCard,UserRoles,Phone,Place,AccountStatus,Gender,AvatarLink,EditTime")] User user, long AdminID)
         {
+            user.EditTime = DateTime.Now;
+            user.EditBy = AdminID;
             if (ModelState.IsValid)
             {
                 db.Entry(user).State = EntityState.Modified;

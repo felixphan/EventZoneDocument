@@ -12,7 +12,7 @@ namespace EventZoneC.Controllers
 {
     public class ReportsController : Controller
     {
-        private EventZoneEntities3 db = new EventZoneEntities3();
+        private EventZoneEntities4 db = new EventZoneEntities4();
 
         // GET: Reports
         public ActionResult ManageReports()
@@ -34,7 +34,7 @@ namespace EventZoneC.Controllers
 
             return View("ManageReports", report.ToList());
         }
-        public ActionResult Approve(int ReportID)
+        public ActionResult Approve(int ReportID, int AdminID)
         {
 
 
@@ -44,20 +44,30 @@ namespace EventZoneC.Controllers
             reportChange = reportChange.Where(u => u.ReportID == ReportID);
             listReport = reportChange.ToList();
 
+            TrackingReport track = new TrackingReport();
+            track.ActorID = AdminID;
+            track.ReceiverID = ReportID;
+            //senderType, receiverType:
+            //user, mod, admin: 0
+            // event: 1, report: 2, appeal: 3
+
+            track.ActionTime = DateTime.Now;
 
             if (reportChange != null)
             {
                 listReport[0].ReportStatus = 1;
                 // db.Entry(userChange).State = EntityState.Modified;
+                
+                track.ActionID = 3;
+                db.TrackingReports.Add(track);
                 db.SaveChanges();
-
 
             }
             reportChange = db.Reports.Include(r => r.User);
 
             return View("ManageReports", reportChange);
         }
-        public ActionResult Reject(int ReportID)
+        public ActionResult Reject(int ReportID, int AdminID)
         {
 
 
@@ -66,14 +76,23 @@ namespace EventZoneC.Controllers
             var reportChange = db.Reports.Include(r => r.User);
             reportChange = reportChange.Where(u => u.ReportID == ReportID);
             listReport = reportChange.ToList();
+            TrackingReport track = new TrackingReport();
+            track.ActorID = AdminID;
+            track.ReceiverID = ReportID;
+            //senderType, receiverType:
+            //user, mod, admin: 0
+            // event: 1, report: 2, appeal: 3
 
+            track.ActionTime = DateTime.Now;
 
             if (reportChange != null)
             {
                 listReport[0].ReportStatus = 2;
                 // db.Entry(userChange).State = EntityState.Modified;
+               
+                track.ActionID = 4;
+                db.TrackingReports.Add(track);
                 db.SaveChanges();
-
 
             }
             reportChange = db.Reports.Include(r => r.User);

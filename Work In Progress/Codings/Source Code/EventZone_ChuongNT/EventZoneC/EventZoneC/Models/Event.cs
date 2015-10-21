@@ -24,6 +24,7 @@ namespace EventZoneC.Models
             this.LikeDislikes = new HashSet<LikeDislike>();
             this.Reports = new HashSet<Report>();
             this.Shares = new HashSet<Share>();
+            this.TrackingEvents = new HashSet<TrackingEvent>();
         }
     
         public long EventID { get; set; }
@@ -52,5 +53,6 @@ namespace EventZoneC.Models
         public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
+        public virtual ICollection<TrackingEvent> TrackingEvents { get; set; }
     }
 }

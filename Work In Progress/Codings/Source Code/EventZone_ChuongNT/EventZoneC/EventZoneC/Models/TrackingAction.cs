@@ -19,10 +19,12 @@ namespace EventZoneC.Models
         public long ReceiverID { get; set; }
         public int SenderType { get; set; }
         public Nullable<int> ReceiverType { get; set; }
-        public int ActionID { get; set; }
-        public System.TimeSpan ActionTime { get; set; }
+        public int ActorActionID { get; set; }
+        public Nullable<System.TimeSpan> ActionTime { get; set; }
     
-        public virtual Action Action { get; set; }
+        public virtual ActorAction ActorAction { get; set; }
+        public virtual Admin Admin { get; set; }
+        public virtual Admin Admin1 { get; set; }
         public virtual User User { get; set; }
         public virtual User User1 { get; set; }
     }

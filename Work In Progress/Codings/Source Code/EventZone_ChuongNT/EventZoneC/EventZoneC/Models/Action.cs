@@ -16,12 +16,18 @@ namespace EventZoneC.Models
     {
         public Action()
         {
-            this.TrackingActions = new HashSet<TrackingAction>();
+            this.TrackingUsers = new HashSet<TrackingUser>();
+            this.TrackingAppeals = new HashSet<TrackingAppeal>();
+            this.TrackingEvents = new HashSet<TrackingEvent>();
+            this.TrackingReports = new HashSet<TrackingReport>();
         }
     
         public int ActionID { get; set; }
         public string ActionName { get; set; }
     
-        public virtual ICollection<TrackingAction> TrackingActions { get; set; }
+        public virtual ICollection<TrackingUser> TrackingUsers { get; set; }
+        public virtual ICollection<TrackingAppeal> TrackingAppeals { get; set; }
+        public virtual ICollection<TrackingEvent> TrackingEvents { get; set; }
+        public virtual ICollection<TrackingReport> TrackingReports { get; set; }
     }
 }

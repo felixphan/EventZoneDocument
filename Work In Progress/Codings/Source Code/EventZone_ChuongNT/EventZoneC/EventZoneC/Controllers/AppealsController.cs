@@ -12,7 +12,7 @@ namespace EventZoneC.Controllers
 {
     public class AppealsController : Controller
     {
-        private EventZoneEntities3 db = new EventZoneEntities3();
+        private EventZoneEntities4 db = new EventZoneEntities4();
 
         // GET: Appeals
         public ActionResult ManageAppeals()
@@ -35,7 +35,7 @@ namespace EventZoneC.Controllers
             return View("ManageAppeals", appeal.ToList());
         }
         // GET: Events/Details/5
-        public ActionResult Approve(int AppealID)
+        public ActionResult Approve(int AppealID, int AdminID)
         {
 
 
@@ -45,12 +45,22 @@ namespace EventZoneC.Controllers
             appealChange = appealChange.Where(u => u.AppealID == AppealID);
             listAppeal = appealChange.ToList();
 
+            TrackingAppeal track = new TrackingAppeal();
+            track.ActorID = AdminID;
+            track.ReceiverID = AppealID;
+            //senderType, receiverType:
+            //user, mod, admin: 0
+            // event: 1, report: 2, appeal: 3
 
+            track.ActionTime = DateTime.Now;
             if (appealChange != null)
             {
                 listAppeal[0].AppealStatus = 1;
                 // db.Entry(userChange).State = EntityState.Modified;
+                track.ActionID = 3;
+                db.TrackingAppeals.Add(track);
                 db.SaveChanges();
+
 
 
             }
@@ -58,7 +68,7 @@ namespace EventZoneC.Controllers
 
             return View("ManageAppeals", appealChange);
         }
-        public ActionResult Reject(int AppealID)
+        public ActionResult Reject(int AppealID, int AdminID)
         {
 
 
@@ -67,13 +77,23 @@ namespace EventZoneC.Controllers
             var appealChange = db.Appeals.Include(a => a.Event);
             appealChange = appealChange.Where(u => u.AppealID == AppealID);
             listAppeal = appealChange.ToList();
+            TrackingAppeal track = new TrackingAppeal();
+            track.ActorID = AdminID;
+            track.ReceiverID = AppealID;
+            //senderType, receiverType:
+            //user, mod, admin: 0
+            // event: 1, report: 2, appeal: 3
 
+            track.ActionTime = DateTime.Now;
 
             if (appealChange != null)
             {
                 listAppeal[0].AppealStatus = 2;
                 // db.Entry(userChange).State = EntityState.Modified;
+                track.ActionID = 4;
+                db.TrackingAppeals.Add(track);
                 db.SaveChanges();
+
 
 
             }

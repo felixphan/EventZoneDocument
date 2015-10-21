@@ -19,7 +19,7 @@ namespace EventZoneC.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private EventZoneEntities3 db = new EventZoneEntities3();
+        private EventZoneEntities4 db = new EventZoneEntities4();
 
         public AccountController()
         {

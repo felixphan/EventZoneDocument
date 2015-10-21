@@ -14,6 +14,11 @@ namespace EventZoneC.Models
     
     public partial class Appeal
     {
+        public Appeal()
+        {
+            this.TrackingAppeals = new HashSet<TrackingAppeal>();
+        }
+    
         public long AppealID { get; set; }
         public long EventID { get; set; }
         public string AppealContent { get; set; }
@@ -22,5 +27,6 @@ namespace EventZoneC.Models
         public Nullable<System.DateTime> ResultDate { get; set; }
     
         public virtual Event Event { get; set; }
+        public virtual ICollection<TrackingAppeal> TrackingAppeals { get; set; }
     }
 }

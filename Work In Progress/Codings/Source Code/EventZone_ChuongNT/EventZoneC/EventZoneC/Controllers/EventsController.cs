@@ -12,7 +12,7 @@ namespace EventZoneC.Controllers
 {
     public class EventsController : Controller
     {
-        private EventZoneEntities3 db = new EventZoneEntities3();
+        private EventZoneEntities4 db = new EventZoneEntities4();
 
         // GET: Events
         public ActionResult ManageEvents()
@@ -20,7 +20,7 @@ namespace EventZoneC.Controllers
             var events = db.Events.Include(e => e.Category).Include(e => e.Channel);
             return View(events.ToList());
         }
-        public ActionResult Lock(int EventID)
+        public ActionResult Lock(int EventID, long AdminID)
         {
 
 
@@ -29,17 +29,29 @@ namespace EventZoneC.Controllers
             var eventChange = db.Events.Include(u => u.EventFollows);
             eventChange = eventChange.Where(u => u.EventID == EventID);
             listEvent = eventChange.ToList();
+            TrackingEvent track = new TrackingEvent();
+            track.ActorID = AdminID;
+            track.ReceiverID = EventID;
+            //senderType, receiverType:
+            //user, mod, admin: 0
+            // event: 1, report: 2, appeal: 3
+
+            track.ActionTime = DateTime.Now;
 
             if (eventChange != null)
             {
                 if (listEvent[0].Status == true)
                 {
                     listEvent[0].Status = false;
+                    track.ActionID = 1;
+                    db.TrackingEvents.Add(track);
                 }
 
                 else
                 {
                     listEvent[0].Status = true;
+                    track.ActionID = 1;
+                    db.TrackingEvents.Add(track);
                 }
                 // db.Entry(userChange).State = EntityState.Modified;
                 db.SaveChanges();
