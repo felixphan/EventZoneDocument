@@ -1,6 +1,13 @@
 /* USER CREATE EVENT CSS */
 
 /*** Sửa file BOOTSTRAP ***/
+@media (min-width: 768px)
+.col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
+    float: left;
+    padding-left: 3px;
+    padding-right: 3px;
+}
+
 .tab-content{
 	padding: 10px 0;
 	overflow: initial;
@@ -16,6 +23,9 @@
 .b {
 	border: 0px red solid;
 	margin-top: 5px;
+}
+.form-group{
+	margin-bottom: 0px;
 }
 
 /*** Sửa plugin khác ***/
@@ -83,11 +93,25 @@
 	width: 100%;
 	height: auto;
 }
-label#i_request{
-	font-weight: normal;
+#i_title{
+	margin-bottom: auto;
+}
+#i_from_date, #i_to_date {
+	padding-left: 8px;
+}
+.d_stream_cover .d_stream_quality,
+.d_stream_cover .d_stream_location {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+.d_stream_cover .d_stream_privacy {
+	padding-left: 5px;
 }
 #i_info_tab .btn-danger{	/* cho nút Xóa sát vào */
 	margin-left: -15px;
+}
+label#i_request{
+	font-weight: normal;
 }
 .d_btn_x{	/* Sửa do ảnh hưởng của CSS plugin khác */
 	margin-top: 5px;

@@ -9,6 +9,7 @@
     <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="http://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap-combined.no-icons.min.css">
+    
     <!-- Plugin Chọn Date & Time -->
     <link href="../Content/bootstrap-datetimepicker.css" rel="stylesheet">
 
@@ -17,7 +18,6 @@
     
     <!-- Plugin Flip Effect -->
 	<link rel="stylesheet" href="../Content/jquery.m.flip.css" type="text/css"/>
-	<!-- Plugin Flip Effect -->
     <link rel="stylesheet" href="../Content/m.flip.css" type="text/css"/>
 
     <!-- myCSS -->
@@ -39,8 +39,14 @@
 				<div class="tab-pane active" id="i_info_tab">
 					<div class="form-group">
 					<div class="row b">	<!-- row Thumbnail -->
-						<div class="d_thumbnail b">
-							<img id="i_thumb" src="../img/bg1.jpg">
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+							Thumbnail
+						</div>
+						<div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_thumb b">
+							<img src="../img/upload.png">
+		              	</div>
+		              	<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
+		              		<button type="button" class="btn btn-primary">Browse Image</button>
 						</div>
 					</div>
 					<div class="row b">	<!-- row Title -->
@@ -58,7 +64,7 @@
 						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
 							<div class="form-group">
 								<div class="input-group date" id="datetimepicker1">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" placeholder="from" id="i_from_date">
 									<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -68,7 +74,7 @@
 						<div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
 							<div class="form-group">
 								<div class="input-group date" id="datetimepicker2">
-									<input type="text" class="form-control">
+									<input type="text" class="form-control" placeholder="to" id="i_to_date">
 									<span class="input-group-addon">
 									<span class="glyphicon glyphicon-calendar"></span>
 									</span>
@@ -118,14 +124,14 @@
 						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
 						</div>
 					</div>
-					<div class="row b">	<!-- row Streaming Link -->
+					<div class="row d_stream_cover b">	<!-- row Streaming Link -->
 						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
 							Streaming
 						</div>
-						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 d_stream_link b">
 							<button type="button" class="btn btn-link">Link 1</button>
 						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 d_stream_quality b">
 						  <select class="form-control" id="i_quality_1">
 						    <option>Quality</option>
 						    <option>1080</option>
@@ -134,7 +140,7 @@
 						    <option>Auto</option>
 						  </select>
 						</div>
-						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
+						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 d_stream_location b">
 						  <select class="form-control" id="i_location_1">
 						    <option>recorded at</option>
 						    <option>Location 1</option>
@@ -143,7 +149,7 @@
 						    <option>Location 4</option>
 						  </select>
 						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 d_stream_privacy b">
 						  <select class="form-control" id="i_privacy_1">
 						    <option>privacy</option>
 						    <option>Public</option>
@@ -157,14 +163,13 @@
 						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
 							<button type="button" class="btn btn-primary d_btn_x">+</button>
 						</div>
-					</div>
-					<div class="row b">	<!-- row Streaming Link 2 -->
+						<!-- row Streaming Link 2 -->
 						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
 						</div>
-						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 b">
+						<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 d_stream_link b">
 							<button type="button" class="btn btn-link">Link 2</button>
 						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 d_stream_quality b">
 						  <select class="form-control" id="i_quality_2">
 						    <option>Quality</option>
 						    <option>1080</option>
@@ -173,7 +178,7 @@
 						    <option>Auto</option>
 						  </select>
 						</div>
-						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
+						<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 d_stream_location b">
 						  <select class="form-control" id="i_location_2">
 						  	<option>recorded at</option>
 						    <option>Location 1</option>
@@ -182,7 +187,7 @@
 						    <option>Location 4</option>
 						  </select>
 						</div>
-						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+						<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 d_stream_privacy b">
 						  <select class="form-control" id="i_privacy_2">
 						    <option>privacy</option>
 						    <option>Public</option>

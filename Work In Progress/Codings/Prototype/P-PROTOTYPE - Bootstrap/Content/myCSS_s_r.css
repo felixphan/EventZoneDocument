@@ -1,97 +1,66 @@
-#i_btn_ani{
-	position: fixed;
-	top: 100px;
-}
-
-/* TOP MENU */
-#i_btn_Cate{
-	margin: -4px 0 0 -15px;
-}
-
-.d_user{
-	margin-top: 14px;
-	margin-left: 15px;
-}
-
-.d_user .d_user_notification,
-.d_user .d_user_avatar,
-.d_user .dropdown{
-	float: left;
-	margin-right: 10px;
-}
-
-.d_user .d_user_notification{
-	margin-top: 5px;
-}
-
-.d_user .d_user_name{
-	margin-top: -5px;
-	margin-left: -10px;
-	background-color: transparent;
-	border: 0px;
-}
-
-.d_user_avatar img{
-    margin-top: -3px;
-    width: 30px;
-    height: 30px;
-    box-sizing: border-box;
-    border: 0;
-    vertical-align: middle;
-    border-radius: 5px;
-    border: 1px white solid;
-}
-
-/* Background */
-.d_background_image{
-	z-index: -1;
-	position: fixed;
-	height: 100%;
-	width: 100%;
-	top: 0px;
-}
-
-/* SEARCH RESULT */
-.d_result_container{
-	margin-top: 80px;
-	position: relative;
+/*** Thêm ***/
+.b{
 	border: 1px red solid;
-	width: 1000px;
-	margin-bottom: 50px;
+	height: auto;
+}
+
+/*** sửa CSS BOOTSTRAP ***/
+.nav-tabs > li > a{
+	border: 0;
+	border-radius: 0;
+	background-color: whitesmoke;
+}
+
+/*** Bao hết phần chính ***/
+.d_all_result{
+	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	background-color: transparent;
-	height: 500px;
+	min-width: 460px;
+}
+hr {
+	margin-top: 40px;
+	margin-bottom: 10px;
+	border: 1px;
+	border-top: 1px solid #eee;
+}
+.d_change_filter button{
+	float: right;
+	width: 100%;
 }
 
-.d_overflow{
-	overflow-y: auto;
-	height: inherit;
+/*** Khung kết quả TRÁI ***/
+.d_sum_result strong{
+	font-size: 17px;
+}
+.d_result_container{
+	padding: 0;
 }
 
-.d_result_container li:hover{
-	background-color: transparent;
+/** Kết quả Event **/
+
+/** Kết quả Channel **/
+
+/** Kết quả User **/
+
+/** Kết quả Location **/
+
+/*** Các tabs bên PHẢI ***/
+.d_tab_container .tabs-right{
+	border: 0px;
+	border-radius: 0px;
+	height: 400px;
+	border-left: 1px solid lightgrey;
+}
+.d_tab_container li{
+	width: 100%;
+	border: 0px;
+}
+.d_tab_container .nav-tabs li.active > a,
+.d_tab_container .nav-tabs li.active > a:hover,
+.d_tab_container .nav-tabs li.active > a:focus {
+	border: 0px;
+	border-radius: 0px;
 }
 
-.d_result_container a:hover{
-	color: darkgrey;
-}
-
-.d_result_container > .col-xs-9{
-	padding-right: 5px;
-    padding-left: 5px;
-}
-
-.d_each_result{
-	margin-left: 5px;
-    margin-right: 5px;
-    width: 45px;
-    float: left;
-}
-
-/* Kết quả là Event */
-.d_result_event_cover{
-	height: 600px;
-    width: inherit;
-    border: 1px yellow solid;
-}
+/*** CSS Decorate ***/
