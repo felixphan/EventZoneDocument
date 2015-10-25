@@ -25,26 +25,9 @@ namespace EventZone
             bundles.Add(new ScriptBundle("~/bundles/datetime").Include(
             "~/Scripts/moment*",
             "~/Scripts/bootstrap-datetimepicker*"));
-
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
-            //bundles.Add(new ScriptBundle("~/bundles/myScript").Include(
-            //          "~/Scripts/jquery-1.11.3.min.js" , 
-            //          "~/Scripts/super-smooth.js"
-            //    ));
-            //bundles.Add(new ScriptBundle("~/bundles/myScript1").Include(
-            //          "~/Scripts/perfect-scrollbar.jquery.js",
-            //          "~/Scripts/myJS_u_w_e.js"
-            //    ));
-            //bundles.Add(new ScriptBundle("~/bundles/myCss").Include(
-            //         "~/Content/perfect-scrollbar.css",
-            //         "~/Content/myCSS_chung.css"
-            //   ));
-            //bundles.Add(new ScriptBundle("~/bundles/myCss1").Include(
-            //         "~/Content/myCSS_u_w_e.css"
-            //   ));
-            
+                      "~/Content/myCSS_chung.css"));
 
         }
     }

@@ -390,18 +390,6 @@ namespace EventZone.Helpers
         public Location GetLocationById(long id) {
             return db.Locations.Find(id);
         }
-
-        public long FindLocationByAllData(double longitude, double latitude, String locationName)
-        {
-            List<Location> listLocation = (from a in db.Locations
-                where
-                    a.Latitude.Equals(latitude) && a.Longitude.Equals(longitude) && a.LocationName.Equals(locationName)
-                select a).ToList();
-            if (listLocation.Count == 0)
-                return -1;
-            else
-                return listLocation[0].LocationID;
-        }
     }
 
 }
