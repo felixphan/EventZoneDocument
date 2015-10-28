@@ -15,6 +15,7 @@ namespace EventZone.Controllers
      [RequireHttps]
     public class AccountController : Controller
     {
+         private DatabaseHelpers dbhelp = new DatabaseHelpers();
         EventZoneEntities db = new EventZoneEntities();
         // GET: /Account/Register
         [AllowAnonymous]
@@ -65,8 +66,8 @@ namespace EventZone.Controllers
                     }
                     user.UserRoles = EventZoneConstants.IsUser;//set UserRole
                     // insert user to Database
-                    db.Users.Add(user);
-                    db.SaveChanges();
+                    dbhelp.data().Users.Add(user);
+                    dbhelp.data().SaveChanges();
                     Session["registerMessageError"] = "";
                 }
                 //set all session for 
@@ -79,6 +80,7 @@ namespace EventZone.Controllers
 
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
+                    
                 return RedirectToAction("RegisterSuccess", "Account");
             }
 

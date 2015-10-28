@@ -250,6 +250,7 @@
     <Compile Include="Models\User.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\Video.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
@@ -391,9 +392,12 @@
     <Content Include="Views\Search\Search.cshtml" />
     <Content Include="Views\Search\SearchAdvance.cshtml" />
     <Content Include="Views\LookAround\LookAround.cshtml" />
+    <Content Include="Views\Shared\SuggestCreateEvent.cshtml" />
+    <Content Include="Views\Event\_CommentPartial.cshtml" />
     <None Include="Views\Shared\_PermissionDeny.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\Shared\_ViewPlaceInLocation.cshtml" />
+    <Content Include="Views\Shared\_UserThumb.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -19,7 +19,7 @@ namespace EventZone.Controllers
             keyword= keyword.Trim();
             ViewData["listEvent"] = dbHelp.GetThumbEventListByListEvent(dbHelp.SearchEventByKeyword(keyword));
             ViewData["listLiveStream"] = dbHelp.GetThumbEventListByListEvent(dbHelp.SearchLiveStreamByKeyword(keyword));
-            ViewData["listUser"] = dbHelp.SearchUserByKeyword(keyword);
+            ViewData["listUser"] = dbHelp.GetUserThumbByList(dbHelp.SearchUserByKeyword(keyword));
             return View();
         }
 
@@ -83,7 +83,7 @@ namespace EventZone.Controllers
             listLiveStream = dbHelp.GetEventInDateRange(startTime, endTime, listLiveStream);
             ViewData["listEvent"] = dbHelp.GetThumbEventListByListEvent(listEvent);
             ViewData["listLiveStream"] = dbHelp.GetThumbEventListByListEvent(listLiveStream);
-            ViewData["listUser"] = new List<User>();
+            ViewData["listUser"] = new List<ViewThumbUserModel>();
             return View("Search");
         }
        

@@ -3,7 +3,7 @@
 @{
     List<ViewThumbEventModel> listEvent = ViewData["listEvent"] as List<ViewThumbEventModel>;
     List<ViewThumbEventModel> listLiveStream = ViewData["listLiveStream"] as List<ViewThumbEventModel>;
-    List<User> listUser = ViewData["listUser"] as List<User>;
+    List<ViewThumbUserModel> listUser = ViewData["listUser"] as List<ViewThumbUserModel>;
 }
 
 <div class="d_result_container container-fluid">
@@ -26,7 +26,20 @@
             <div class="tab-pane" id="live-r">
             </div>
             <div class="tab-pane" id="channel-r"></div>
-            <div class="tab-pane" id="user-r"></div>
+            <div class="tab-pane" id="user-r">
+                @if (listUser != null)
+                {
+                    foreach (var item in listUser)
+                    {
+                        <div>
+                            @Html.Partial("_UserThumb", item)
+                            <p>-------------------------------------------------------------</p>
+                        </div>
+
+                    }
+                }
+               
+            </div>
         </div>
     </div>
     <div class="col-xs-3">

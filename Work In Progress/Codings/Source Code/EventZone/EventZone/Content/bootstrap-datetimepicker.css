@@ -90,7 +90,8 @@
 .bootstrap-datetimepicker-widget button[data-action] {
   padding: 6px;
 }
-.bootstrap-datetimepicker-widget .btn[data-action="incrementHours"]::after {
+.bootstrap-datetimepicker-widget .btn[data-
+"incrementHours"]::after {
   position: absolute;
   width: 1px;
   height: 1px;

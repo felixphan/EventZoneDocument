@@ -21,9 +21,9 @@ namespace EventZone.Models
             this.EventFollows = new HashSet<EventFollow>();
             this.EventPlaces = new HashSet<EventPlace>();
             this.Images = new HashSet<Image>();
-            this.LikeDislikes = new HashSet<LikeDislike>();
             this.Reports = new HashSet<Report>();
             this.Shares = new HashSet<Share>();
+            this.LikeDislikes = new HashSet<LikeDislike>();
         }
     
         public long EventID { get; set; }
@@ -36,11 +36,11 @@ namespace EventZone.Models
         public long View { get; set; }
         public long CategoryID { get; set; }
         public bool Privacy { get; set; }
-        public string AvatarLink { get; set; }
         public Nullable<long> EditBy { get; set; }
         public Nullable<System.DateTime> EditTime { get; set; }
         public string EditContent { get; set; }
         public bool Status { get; set; }
+        public Nullable<long> Avatar { get; set; }
     
         public virtual ICollection<Appeal> Appeals { get; set; }
         public virtual Category Category { get; set; }
@@ -49,8 +49,8 @@ namespace EventZone.Models
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<EventPlace> EventPlaces { get; set; }
         public virtual ICollection<Image> Images { get; set; }
-        public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
+        public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
     }
 }

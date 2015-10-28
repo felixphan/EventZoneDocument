@@ -36,6 +36,7 @@ namespace EventZone.Controllers
         // GET: /Event/Details/5
         public ActionResult Details(long? id)
         {
+            User user= UserHelpers.GetCurrentUser(Session);
             Event evt = dbhelp.GetEventByID(id);
             if (evt == null)
             {
@@ -45,19 +46,37 @@ namespace EventZone.Controllers
             
             viewDetail.eventId = evt.EventID;
             viewDetail.eventName = evt.EventName;
-            viewDetail.eventAvatar = evt.AvatarLink;
+            viewDetail.eventAvatar = dbhelp.GetImageByID(evt.Avatar).ImageLink;
             viewDetail.eventDescription = evt.EventDescription;
             viewDetail.StartTime = evt.EventStartDate;
             viewDetail.EndTime = evt.EventEndDate;
+            viewDetail.isOwningEvent = false;
+            viewDetail.NumberLike = dbhelp.CountLike(evt.EventID);
+            viewDetail.NumberDisLike = dbhelp.CountDisLike(evt.EventID);
+            viewDetail.NumberFowllower = dbhelp.CountFollowerOfEvent(evt.EventID);
             viewDetail.eventLocation = dbhelp.GetEventLocation(evt.EventID);
             viewDetail.eventImage = dbhelp.GetEventImage(evt.EventID);
             viewDetail.eventVideo = dbhelp.GetEventVideo(evt.EventID);
+            viewDetail.eventComment = dbhelp.GetListComment(evt.EventID);
+            viewDetail.FindLike = new LikeDislike();
+            viewDetail.FindLike.Type = EventZoneConstants.NotRate;
+            viewDetail.FindLike.EventID = evt.EventID;
+               if(user!=null){
+                   viewDetail.isOwningEvent = dbhelp.IsEventOwnedByUser(evt.EventID, user.UserID);
+                   viewDetail.FindLike = dbhelp.FindLike(user.UserID,evt.EventID);
+                   if (viewDetail.FindLike == null) {
+                       viewDetail.FindLike = new LikeDislike();
+                       viewDetail.FindLike.Type = EventZoneConstants.NotRate;
+                   }
+                   viewDetail.isFollowing = dbhelp.IsFollowingEvent(user.UserID, evt.EventID);
+               }
             viewDetail.Privacy= evt.Privacy;
-
-
-
             if (TempData["EventDetailTask"] == null) {
                 ViewData["EventDetailTask"] = "EventDetail";
+                if (user == null  || dbhelp.GetAuthorEvent(evt.EventID).UserID != user.UserID)
+                {
+                    dbhelp.AddView(evt.EventID);
+                }
                 return View(viewDetail);
             }
             else 
@@ -74,46 +93,10 @@ namespace EventZone.Controllers
             TempData["EventDetailTask"] = "EditEvent";
             return RedirectToAction("Details", new { id=viewEvent.eventId });
         }
-
-        //
-        // POST: /Event/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        //
-        // GET: /Event/Delete/5
-        public ActionResult Delete(long? id)
-        {
+        public ActionResult Comment(long EventId,long CommentContent) {
             
-            return View();
-        }
 
-        //
-        // POST: /Event/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            return PartialView("_CommentPartial");
+        }                                                                                                                                                                                                  
     }
 }

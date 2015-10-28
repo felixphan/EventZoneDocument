@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using EventZone.Models;
 using System.Net;
 using System.Data.Entity;
+using System.Web.Helpers;
 
 namespace EventZone.Controllers
 {
@@ -33,6 +34,12 @@ namespace EventZone.Controllers
             }
             return View();
         }
+
+        /// <summary>
+        /// view detail user info
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult UserInfo(long? id=0)
         {
             User userSession = UserHelpers.GetCurrentUser(Session);
@@ -132,7 +139,10 @@ namespace EventZone.Controllers
             }
 
         }
-
+        /// <summary>
+        /// manage event
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ManageEvent() {
             if (UserHelpers.GetCurrentUser(Session) == null)
             {
@@ -142,7 +152,7 @@ namespace EventZone.Controllers
             List<Event> myEvent = datahelp.GetEventsByUser(currentUser.UserID);
             if (myEvent == null)
             {
-                return RedirectToAction("ManageEvent");
+                return View("SuggestCreateEvent");
             }
 
             List<ViewThumbEventModel> listThumbEvent = datahelp.GetThumbEventListByListEvent(myEvent);
@@ -156,7 +166,11 @@ namespace EventZone.Controllers
             return View();
         
         }
-
+        /// <summary>
+        /// view all my event thumb
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult MyEvent(long?id=-1) {
             if (id == -1)
             {
@@ -172,7 +186,7 @@ namespace EventZone.Controllers
             foreach (var item in myEvent) {
                 ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
                 thumbEventModel.eventId = item.EventID;
-                thumbEventModel.avartarLink = item.AvatarLink;
+                thumbEventModel.avatar = datahelp.GetImageByID(item.Avatar).ImageLink;
                 thumbEventModel.eventName = item.EventName;
                 thumbEventModel.StartTime = item.EventStartDate;
                 thumbEventModel.EndTime = item.EventEndDate;
@@ -185,6 +199,63 @@ namespace EventZone.Controllers
         }
         public ActionResult Index() {
             return View();
+        }
+
+        public JsonResult Like(long eventId)
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int state= EventZoneConstants.NotRate;
+            
+            if (user != null)
+            {
+                LikeDislike findlike= datahelp.FindLike(user.UserID,eventId);
+                if(findlike!=null){
+                state=findlike.Type;
+                }
+                success=datahelp.InsertLike(user.UserID, eventId);
+            }
+            
+            return Json(new { 
+            success = success,
+            state =state
+            });
+        }
+
+        public JsonResult DisLike(long eventId) {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int state = EventZoneConstants.NotRate;
+            if (user != null) {
+                LikeDislike findlike = datahelp.FindLike(user.UserID, eventId);
+                if (findlike != null)
+                {
+                    state = findlike.Type;
+                }
+                success = datahelp.InsertDislike(user.UserID, eventId);
+            }
+            return Json(new {
+                success= success,
+                state=state
+            });
+        }
+        public JsonResult Follow(long eventId) {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int followState = 0;
+            if (user != null) {
+                success = datahelp.FollowEvent(user.UserID, eventId);
+                if (datahelp.IsFollowingEvent(user.UserID, eventId)) {
+                    followState = 1;
+                }
+            }
+            return Json(new
+            {
+                success = success,
+                state = followState
+            }
+                
+           );
         }
         public List<Event> List() { return null; }
     }

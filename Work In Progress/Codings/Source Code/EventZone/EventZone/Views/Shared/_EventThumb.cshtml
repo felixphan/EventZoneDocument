@@ -13,7 +13,7 @@
                 <!--  -->
                
                 <div class="back">
-                    <img src="@Model.avartarLink" class="d_thumb_blur">
+                    <img src="@Model.avatar" class="d_thumb_blur">
                     <div class="d_btn_backside">
 
                         <a href="#" data-toggle="tooltip" title="Follow">
@@ -29,27 +29,31 @@
             <div class="d_info d_event_name">
                 @Html.ActionLink(Model.eventName, "Details", "Event", routeValues: new { id = @Model.eventId }, htmlAttributes: null)
             </div>
-            <div class="d_event_time">
-                <div class="d_info_icon glyphicon glyphicon-time"></div>
-                <div class="d_info">
-                    Từ @Model.StartTime đến @Model.EndTime
+            <div class="glyphicon glyphicon-eye-open">
+                <div>@Model.numberView
                 </div>
             </div>
-            <div class="d_event_date">
-                <div class="d_info_icon glyphicon glyphicon-calendar"></div>
-                <div class="d_info">
-                    Location
-                    @foreach (var item in @Model.location)
-                    {
-                        <div>
-                            @item.LocationName
-                        </div>
+                <div class="d_event_time">
+                    <div class="d_info_icon glyphicon glyphicon-time"></div>
+                    <div class="d_info">
+                        Từ @Model.StartTime đến @Model.EndTime
+                    </div>
+                </div>
+                <div class="d_event_date">
+                    <div class="d_info_icon glyphicon glyphicon-calendar"></div>
+                    <div class="d_info">
+                        Location
+                        @foreach (var item in @Model.location)
+                        {
+                            <div>
+                                @item.LocationName
+                            </div>
 
-                    }
+                        }
+                    </div>
                 </div>
+
             </div>
-            
-        </div>
     </div>
 
 
