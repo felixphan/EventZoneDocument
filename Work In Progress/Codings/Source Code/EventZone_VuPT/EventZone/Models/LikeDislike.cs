@@ -17,7 +17,7 @@ namespace EventZone.Models
         public long LikeDislikeID { get; set; }
         public long EventID { get; set; }
         public long UserID { get; set; }
-        public bool Type { get; set; }
+        public int Type { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual User User { get; set; }

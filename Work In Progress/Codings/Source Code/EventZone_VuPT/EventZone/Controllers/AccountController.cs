@@ -16,11 +16,13 @@ namespace EventZone.Controllers
     public class AccountController : Controller
     {
         EventZoneEntities db = new EventZoneEntities();
+
+        DatabaseHelpers dbhelp = new DatabaseHelpers();
         // GET: /Account/Register
         [AllowAnonymous]
         public ActionResult Register()
         {
-            return View();
+            return PartialView();
         }
 
         //
@@ -85,6 +87,8 @@ namespace EventZone.Controllers
                 Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
 
+                //Create Channel
+                dbhelp.CreateUserChannel(user);
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
                 //return RedirectToAction("RegisterSuccess", "Account");
@@ -111,8 +115,7 @@ namespace EventZone.Controllers
         [AllowAnonymous]
         public ActionResult Signin(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView();
         }
 
         //
@@ -332,8 +335,8 @@ namespace EventZone.Controllers
                     }
                     user.UserRoles = EventZoneConstants.IsUser;//set UserRole
                     // insert user to Database
-                    db.Users.Add(user);
-                    db.SaveChanges();
+                    dbhelp.data().Users.Add(user);
+                    dbhelp.data().SaveChanges();
                     Session["registerMessageError"] = "";
                 }
                 //set all session for 
@@ -344,6 +347,7 @@ namespace EventZone.Controllers
                 Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
 
+                dbhelp.CreateUserChannel(user);
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
                 return RedirectToAction("RegisterSuccess", "Account");
@@ -354,7 +358,7 @@ namespace EventZone.Controllers
         }
         public ActionResult ForgotAccount() {
 
-            return View();
+            return PartialView();
         }
         public ActionResult HandleForgotPass(ForgotViewModel model)
         {

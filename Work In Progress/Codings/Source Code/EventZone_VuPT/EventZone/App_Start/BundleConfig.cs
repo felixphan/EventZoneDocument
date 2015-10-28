@@ -27,6 +27,7 @@ namespace EventZone
             "~/Scripts/bootstrap-datetimepicker*"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-responsive.min.css",
                       "~/Content/myCSS_chung.css"));
 
         }

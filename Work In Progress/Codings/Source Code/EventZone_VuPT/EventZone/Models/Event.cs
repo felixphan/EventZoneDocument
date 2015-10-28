@@ -35,8 +35,8 @@ namespace EventZone.Models
         public System.DateTime EventRegisterDate { get; set; }
         public long View { get; set; }
         public long CategoryID { get; set; }
-        public string Privacy { get; set; }
-        public string AvatarLink { get; set; }
+        public bool Privacy { get; set; }
+        public Nullable<long> Avatar { get; set; }
         public Nullable<long> EditBy { get; set; }
         public Nullable<System.DateTime> EditTime { get; set; }
         public string EditContent { get; set; }

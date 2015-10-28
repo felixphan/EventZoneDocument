@@ -142,7 +142,7 @@ namespace EventZone.Controllers
             List<Event> myEvent = datahelp.GetEventsByUser(currentUser.UserID);
             if (myEvent == null)
             {
-                return RedirectToAction("ManageEvent");
+                return View("SuggestCreateEvent");
             }
 
             List<ViewThumbEventModel> listThumbEvent = datahelp.GetThumbEventListByListEvent(myEvent);
@@ -172,7 +172,7 @@ namespace EventZone.Controllers
             foreach (var item in myEvent) {
                 ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
                 thumbEventModel.eventId = item.EventID;
-                thumbEventModel.avartarLink = item.AvatarLink;
+                thumbEventModel.avatar = datahelp.GetImageByID(item.Avatar).ImageLink;
                 thumbEventModel.eventName = item.EventName;
                 thumbEventModel.StartTime = item.EventStartDate;
                 thumbEventModel.EndTime = item.EventEndDate;
@@ -186,6 +186,61 @@ namespace EventZone.Controllers
         public ActionResult Index() {
             return View();
         }
+        public JsonResult Like(long eventId)		
+        {		
+            User user = UserHelpers.GetCurrentUser(Session);		
+            Boolean success = false;		
+            int state= EventZoneConstants.NotRate;		
+            		
+            if (user != null)		
+            {		
+                LikeDislike findlike= datahelp.FindLike(user.UserID,eventId);		
+                if(findlike!=null){		
+                state=findlike.Type;		
+                }		
+                success=datahelp.InsertLike(user.UserID, eventId);		
+            }		
+            		
+            return Json(new { 		
+            success = success,		
+            state =state		
+            });		
+        }		
+        public JsonResult DisLike(long eventId) {		
+            User user = UserHelpers.GetCurrentUser(Session);		
+            Boolean success = false;		
+            int state = EventZoneConstants.NotRate;		
+            if (user != null) {		
+                LikeDislike findlike = datahelp.FindLike(user.UserID, eventId);		
+                if (findlike != null)		
+                {		
+                    state = findlike.Type;		
+                }		
+                success = datahelp.InsertDislike(user.UserID, eventId);		
+            }		
+            return Json(new {		
+                success= success,		
+                state=state		
+            });		
+        }		
+        public JsonResult Follow(long eventId) {		
+            User user = UserHelpers.GetCurrentUser(Session);		
+            Boolean success = false;		
+            int followState = 0;		
+            if (user != null) {		
+                success = datahelp.FollowEvent(user.UserID, eventId);		
+                if (datahelp.IsFollowingEvent(user.UserID, eventId)) {		
+                    followState = 1;		
+                }		
+            }		
+            return Json(new		
+            {		
+                success = success,		
+                state = followState		
+            }		
+                		
+           );
+            }
         public List<Event> List() { return null; }
     }
 }

@@ -1,56 +1,107 @@
 ﻿@model EventZone.Models.LoginViewModel
-@{
-    ViewBag.Title = "Log in";
-}
 
-<h2>@ViewBag.Title.</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Signin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true)
-                <div class="form-group">
-                    @Html.LabelFor(model => model.UserName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
+@{
+    const string loginPanelId = "loginPanelId";
+    const string alertPanelId = "createAccountAlert";
+    const string txtAccountName = "login-username";
+    const string txtAccountPassword = "login-password";
+}
+<div id="i_signin_section" class="tab-pane fade in active">
+    <section>
+        <!-- bao toàn bộ chức năng SIGN IN, f_... để đánh dấu đó là Chức năng-->
+        <div class="my_function_cover f_sign_in">
+            <div style="padding-top: 30px" class="panel-body">
+                @using (Ajax.BeginForm("Signin", "Account", null, new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnSuccess = "OnSignInRequestSucceeded",
+                }, new { id = loginPanelId }))
+                {
+                    @Html.AntiForgeryToken()
+                    var alertStyle = "";
+
+                    if (ViewData.ModelState == null || !ViewData.ModelState.Any(x => x.Value.Errors.Any()))
+                    {
+                        alertStyle = "display:none;";
+                    }
+                    <div id='@alertPanelId'
+                         class="alert alert-danger"
+                         style='@alertStyle'>
+                        @Html.ValidationSummary()
+                    </div>
+                    <div style="display: none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                    <div style="margin-bottom: 15px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @id = txtAccountName, placeholder = "Username or Email" })
                         @Html.ValidationMessageFor(m => m.UserName)
                     </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+
+                    <div style="margin-bottom: 15px" class="input-group">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @id = txtAccountPassword, placeholder = "password" })
                         @Html.ValidationMessageFor(m => m.Password)
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Sign in" class="btn btn-default" />
+
+                    <a data-toggle="modal" href="#myModal3" id="i_quen_mk">
+                        Forget password?
+                    </a>
+
+                    <div class="input-group" style="margin-bottom: 35px">
+                        <div class="checkbox">
+                            <label>
+                                <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                            </label>
+                        </div>
                     </div>
-                </div>
-                <p>
-                    @Html.ActionLink("Register", "Register","Äccount") if you don't have a local account.
-                    @Html.ActionLink("Reset Password", "ForgotAccount", "Account") if you forgot your password.
-                </p>
-            }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @using (Html.BeginForm("AuthenGoogle", "Account"))
-            {
-            @Html.AntiForgeryToken()
 
-             <button type="submit" class="btn btn-default" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>
+                    <div style="margin-top: 10px" class="form-group">
+                        <!-- Button -->
+                        <div class="col-sm-12 controls">
+                            <input type="submit" value="Sign in" class="btn btn-success" id="btn-login" />
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("AuthenGoogle", "Account"))
+                {
+                    @Html.AntiForgeryToken()
 
-            }
-        </section>
-    </div>
+                    <button type="submit" class="btn btn-default" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>
+
+                }
+            </div>
+        </div><!-- bao toàn bộ chức năng SIGN IN -->
+    </section>
 </div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script>
+    $('#@loginPanelId').submit(function (event) {
+        @*Validate form.*@
+        var isValidForm = $('#@loginPanelId').validate().form();
+        @*Form is invalid.*@
+        if (!isValidForm) {
+
+            @*Prevent this form from being submitted*@
+            event.preventDefault();
+
+            @*Display error panel*@
+            $('#@alertPanelId').show();
+
+            return false;
+        }
+
+        return true;
+    });
+
+    function OnSignInRequestSucceeded(data) {
+        if (data.state === 1) {
+            $('#myModal2').modal('toggle');
+            $('.modal-backdrop').remove();
+            $('#MenuLayout').load(location.href + " #MenuLayout");
+        } else {
+            $('#@alertPanelId').empty();
+            $('#@alertPanelId').append("<p>Invalid username or password</p>");
+            $('#@alertPanelId').show();
+        }
+        console.log('This event is fired when a request has been sent to server successfully');
+        console.log(data);
+    }
+</script>

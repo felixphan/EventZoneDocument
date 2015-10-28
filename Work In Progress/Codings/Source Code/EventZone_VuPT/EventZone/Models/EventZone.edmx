@@ -69,8 +69,8 @@
           <Property Name="EventRegisterDate" Type="datetime" Nullable="false" />
           <Property Name="View" Type="bigint" Nullable="false" />
           <Property Name="CategoryID" Type="bigint" Nullable="false" />
-          <Property Name="Privacy" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="AvatarLink" Type="nvarchar" MaxLength="256" />
+          <Property Name="Privacy" Type="bit" Nullable="false" />
+          <Property Name="Avatar" Type="bigint" />
           <Property Name="EditBy" Type="bigint" />
           <Property Name="EditTime" Type="datetime" />
           <Property Name="EditContent" Type="nvarchar(max)" />
@@ -109,7 +109,7 @@
           <Property Name="LikeDislikeID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="UserID" Type="bigint" Nullable="false" />
-          <Property Name="Type" Type="bit" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -706,8 +706,8 @@
           <Property Name="EventRegisterDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="View" Type="Int64" Nullable="false" />
           <Property Name="CategoryID" Type="Int64" Nullable="false" />
-          <Property Name="Privacy" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="AvatarLink" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Privacy" Type="Boolean" Nullable="false" />
+          <Property Name="Avatar" Type="Int64" />
           <Property Name="EditBy" Type="Int64" />
           <Property Name="EditTime" Type="DateTime" Precision="3" />
           <Property Name="EditContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -763,7 +763,7 @@
           <Property Name="LikeDislikeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="EventID" Type="Int64" Nullable="false" />
           <Property Name="UserID" Type="Int64" Nullable="false" />
-          <Property Name="Type" Type="Boolean" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Event" Relationship="Self.FK_LikeDislike_Event1" FromRole="LikeDislike" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_LikeDislike_User" FromRole="LikeDislike" ToRole="User" />
         </EntityType>
@@ -1382,7 +1382,7 @@
                 <ScalarProperty Name="View" ColumnName="View" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="Privacy" ColumnName="Privacy" />
-                <ScalarProperty Name="AvatarLink" ColumnName="AvatarLink" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="EditBy" ColumnName="EditBy" />
                 <ScalarProperty Name="EditTime" ColumnName="EditTime" />
                 <ScalarProperty Name="EditContent" ColumnName="EditContent" />
