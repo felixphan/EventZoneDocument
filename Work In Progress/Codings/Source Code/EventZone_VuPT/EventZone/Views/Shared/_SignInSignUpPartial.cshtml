@@ -1,0 +1,27 @@
+﻿
+<div id="mdlSignIn"
+     class="modal-dialog col-md-8">
+    <!-- Modal content-->
+    <div class="panel panel-info d_margin_top">
+        <div class="panel-heading">
+            <div class="panel-title">Welcome to Event Zone</div>
+            <div style="float:right; font-size: 80%; position: relative; top: -17px"><a href="#" data-dismiss="modal" id="i_close_modal">Close</a></div>
+        </div>
+        <div style="padding-top:10px" class="panel-body">
+            <div class="cover_all_functions">
+                <ul class="nav nav-tabs">
+                    <!-- áp dụng Tab lên thanh Nút chức năng -->
+                    <li class="d_signin_tab active"><a data-toggle="tab" href="#i_signin_section" id="i_signin_tab">Sign In</a></li> <!-- #sectionA là Nút đầu tiên, mặc định là hiện đầu tiên nên có Active -->
+                    <li class="d_signup_tab"><a data-toggle="tab" href="#i_signup_section" id="i_signup_tab">Sign Up</a></li>    <!-- #sectionB là những nút tiếp theo -->
+                </ul>
+                <div class="tab-content">
+                    <!-- Div chứa Nội dung của mỗi Tab nhé -->
+                    @Html.Action("SignIn", "Account");
+                    @Html.Action("Register","Account");
+                </div>
+                @Html.Action("ForgotAccount","Account");
+            </div>
+        </div>
+    </div>
+</div>
+

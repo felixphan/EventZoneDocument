@@ -1,0 +1,13 @@
+﻿@using EventZone.Models
+@{
+    var listEventSamePlace = ViewData["listEventSamePlace"] as List<Event>;
+}
+@if (listEventSamePlace != null)
+{
+    foreach (var item in listEventSamePlace)
+    {
+        <p class="myp">
+           @Html.ActionLink(@item.EventName, "Details", "Event", routeValues: new { id = @item.EventID }, htmlAttributes: new { @class= "btn btn-primary pull-right"})
+        </p>
+    }
+}

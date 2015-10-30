@@ -1,0 +1,5 @@
+﻿@model IEnumerable<EventZone.Models.Category>
+
+@foreach (var item in Model) {
+    <li> <a href="#">@Html.DisplayFor(modelItem => item.CategoryName)</a></li>
+}

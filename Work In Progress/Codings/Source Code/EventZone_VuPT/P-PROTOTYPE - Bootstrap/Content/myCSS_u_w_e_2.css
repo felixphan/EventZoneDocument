@@ -1,0 +1,353 @@
+/*** Sửa CSS BOOTSTRAP ***/
+body{
+	color: white;
+	font-family: segoe ui;
+	min-width: 400px;
+}
+.container-fluid{
+	padding: 0;
+}
+.thumbnail{
+	padding: 1px;
+	background-color: #fff;
+	border: 0px solid #ddd;
+}
+
+.thumbnail > img, .thumbnail a > img {
+	border-radius: inherit;
+}
+
+.col-md-1, .col-md-2, .col-md-4, .col-md-6, .col-md-8, .col-md-9, .col-md-11, .col-md-12{
+	border: 0px solid red;
+}
+
+#myTab {
+	padding-left: 10px;
+	padding-top: 5px;
+	background-color: rgba(255, 255, 255, .25);
+}
+
+.d_tab-content_cover{
+	overflow: auto;
+    height: 441px;
+}
+
+.d_left_cover > .row {
+	border: 1px lightgrey solid;
+	border-radius: 3px;
+	margin-right: -10px;
+    margin-bottom: 10px;
+    height: 490px;
+}
+
+.d_right_cover > .row {
+	border: 1px lightgrey solid;
+	border-radius: 3px;
+    margin-left: -10px;
+    margin-bottom: 10px;
+}
+
+.tab-content{
+	padding: 10px 10px 0 10px;
+}
+
+.panel-body{
+	padding: none;
+	padding-top: 10px;
+}
+
+.panel-group .panel{
+	background-color: rgba(0,0,0,0);
+}
+
+.panel-default > .panel-heading {
+    color: #AFAFAF;
+    background-color: rgba(0,0,0,.4);
+    border-color: #ddd;
+}
+
+.panel-default {
+    border: none;
+}
+
+.nav-tabs > li > a {
+    color: white;
+    height: 30px;
+}
+
+/*** CSS cho các Function ***/
+.d_all_function_cover{
+
+	border: 0px blue dashed;
+	margin: 30px auto;
+}
+
+.d_left_cover{
+	height: 500px;
+}
+
+.d_right_cover > .d_right_top {
+	height: 300px;
+}
+
+.d_right_cover > .d_right_bottom {
+	height: 180px;
+}
+
+/** CSS Event Info Tab **/
+.d_basic_info{
+	height: auto;
+	padding: 0px;
+}
+
+.d_basic_info > .d_event_thumbnail {
+	padding: 0;
+	height: auto;
+	overflow: hidden;
+}
+
+.crop {
+    width: 100%;
+    height: 160px;
+}
+
+.crop img {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	height: 100%;
+	width: auto;
+	-webkit-transform: translate(-50%,-50%);
+  		-ms-transform: translate(-50%,-50%);
+  			transform: translate(-50%,-50%);
+}
+
+.crop img.portrait {	/* Khi ảnh có Width < Height thì Add class .portrait vào bằng code JS */
+	height: auto;
+	width: 100%;
+}
+
+/* Event Info tab - Title */
+#i_event_title{
+	font-size: 20px;
+    text-align: justify;
+}
+
+/* Event Info tab - Highlight */
+.d_event_highlight,
+.d_event_des {
+	padding: 0;
+	margin-top: 20px;
+}
+
+.d_event_highlight{
+	height: 155px;
+}
+
+.d_event_highlight > .d_deco_line{
+	height: 14px;
+	border-bottom: 1px whitesmoke solid;
+}
+
+.d_event_highlight > .d_text_highlight{
+	text-align: center;
+	font-size: 18px;
+	font-weight: lighter;
+	height: 20px;
+}
+
+.d_event_highlight > .d_highlight_image_cover{
+	margin-top: 20px;
+	height: 160px;
+}
+
+.d_hightlight_item {
+    overflow: hidden;
+    margin: 3px;
+    height: auto;
+    width: 32%;
+    float: left;
+    position: inherit;
+    border: 1px white solid;
+}
+
+.crop_2 {
+    width: 100%;
+    height: 100px;
+}
+
+.crop_2 img {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	height: 100%;  /* Để tạm cho full hình, chưa Crop được */
+	width: 100%;
+	-webkit-transform: translate(-50%,-50%);
+  		-ms-transform: translate(-50%,-50%);
+  			transform: translate(-50%,-50%);
+}
+
+.crop_2 img.portrait {	/* Khi ảnh có Width < Height thì Add class .portrait vào bằng code JS */
+	height: auto;
+	width: 90%;
+}
+
+/* Event Info tab - Description */
+.d_deco_line{
+	height: 14px;
+	border-bottom: 1px whitesmoke solid;
+}
+.d_des_cover{
+	margin-top: 40px;
+	position: absolute;
+    width: inherit;
+	border: 1px solid lightgrey;
+	border-radius: 4px;
+	height: 210px;
+	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* Standard syntax (must be last) */
+}
+.d_des_content{
+	margin-top: 40px;
+    position: absolute;
+    width: inherit;
+	height: 210px;
+	border-radius: 4px;
+	background-color: white;
+	padding: 10px;
+	color: black;
+	font-size: 15px;
+	overflow-y: hidden;
+}
+
+/** CSS Image tab **/
+#i_image_tab{
+	border: 0px solid white;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 435px;
+}
+.d_image_cover{
+	height: 100%;
+}
+.d_each_group {
+	overflow: hidden;
+}
+
+.d_deco_text_location{
+	text-align: center;
+	font-size: larger;
+}
+
+/** CSS Video tab **/
+#i_event_video {
+}
+
+.d_video_cover{
+	width: 100%;
+    height: 340px;
+    overflow-y: overlay;
+    position: relative;
+}
+
+.d_video_thumb_container {
+    border: 0px red solid;
+    width: 100%;
+    height: inherit;
+    position: relative;
+    padding-right: 10px;
+    padding-top: 10px;
+}
+
+.d_link_cover a{
+	color: white;
+}
+
+.col-md-4.thumb {
+    height: auto;
+    margin-bottom: 0px;
+}
+
+/** CSS Map tab **/
+#map-container{
+	height: 245px;
+    border-radius: 3px;
+}
+
+/** CSS Comment tab **/
+
+.d_write_comment,
+.d_write_report{
+	position: relative;
+    color: gray;
+    bottom: -10px;
+}
+
+#i_cmt_box,
+#i_report_box{
+	float: left;
+    width: 80%;
+}
+
+#i_send_cmt,
+#i_send_report{
+	float: right;
+    height: initial;
+}
+
+/** CSS Report tab **/
+#i_reason1{
+	margin-top: 0px;
+}
+
+/*** Decorate CSS ***/
+.widget  li  a{
+	padding-top: 4px;
+}
+
+.b{
+	border: 1px red solid;
+	height: 70px;
+	width: 100%;
+}
+
+.d_filter_bg{
+	height: 100%;
+	width: 100%;
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.5);
+	z-index: 0
+}
+
+#i_bg_image{
+	background-size: cover;
+	position: fixed;
+    height: auto;
+    width: 100%;
+    -webkit-filter: blur(10px);
+    z-index: -1;
+}
+
+.nav-tabs > li > a{
+	color: white;
+}
+
+.nav-tabs > li.active > a {
+	background-color: rgba(255, 255, 255, 1);
+	border-bottom-color: transparent;
+	border: 1px solid #fff;
+}
+
+.nav-tabs > li > a:hover{
+	background-color: rgba(255, 255, 255, .25);
+	border: 1px solid #fff;
+}
+
+/* Plugin Sticky Navbar */
+
+/* Plugin Trackpad-scroll-emulator */
+.trackpad{
+	swidth: initial;
+}
