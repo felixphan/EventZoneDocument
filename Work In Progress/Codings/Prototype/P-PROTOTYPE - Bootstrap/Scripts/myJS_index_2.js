@@ -5,7 +5,7 @@ $(document).ready(function(){
 	var mc_height = $(window).height();
 	$('.d_middle_category iframe').height(mc_height);
 	$('.d_3_column iframe').height(mc_height);
-
+	
 	/* chạy hiệu ứng Flip */
 	$("#card").flip({
 	  axis: 'y',

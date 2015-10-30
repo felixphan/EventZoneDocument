@@ -1,10 +1,10 @@
-/************************************************** thêm CSS ***/
+/**************************************************** thêm CSS ***/
 .b{
 	border: 0px red solid;
 	height: auto;
 }
 
-/************************************************** Sửa CSS BOOTSTRAP ***/
+/**************************************************** Sửa CSS BOOTSTRAP ***/
 body{
 	background-color: white;
 	color: grey;
@@ -56,15 +56,20 @@ body{
 }
 
 /**************************************************** Khung chức năng TỔNG QUÁT ***/
+.d_uwe_body{
+	font-family: segoe ui;
+	overflow-y: scroll;
+}
 .d_all_function_cover{
 	border: 0px blue dashed;
 	margin: 30px auto;
+	min-width: 430px;
 }
 .d_left_cover,
 .d_right_top,
 .d_right_bottom{
 	margin-bottom: 10px;
-	border: 1px grey solid;
+	border: 1px lightgrey solid;
 	padding: 0;
 	border-radius: 4px;
 }
@@ -72,7 +77,7 @@ body{
 	height: 184px;
 }
 
-/************************************************* Event Info Tab **/
+/**************************************************** Event Info Tab **/
 .d_basic_info{
 	height: auto;
 	padding: 0px;
@@ -83,7 +88,7 @@ body{
 	overflow: hidden;
 }
 
-/************************************************* Event Info tab - Thumb & info */
+/**************************************************** Event Info tab - Thumb & info */
 .d_event_body{
 	overflow: hidden;
 }
@@ -133,7 +138,7 @@ iframe #i_frame_gallery{
 	text-align: center;
 }
 
-/************************************************* Event Info tab - Description */
+/**************************************************** Event Info tab - Description */
 .d_deco_line{
 	height: 14px;
 	border-bottom: 1px lightgray solid;
@@ -143,12 +148,14 @@ iframe #i_frame_gallery{
 	position: absolute;
     width: 95%;
 	border: 1px solid lightgrey;
-	border-radius: 4px;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
 	height: 220px;
 	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Firefox 3.6 to 15 */
     background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* Standard syntax (must be last) */
+    border-bottom: 0px;
 }
 .d_des_content{
 	margin-top: 30px;
@@ -163,7 +170,7 @@ iframe #i_frame_gallery{
 	overflow-y: hidden;
 }
 
-/************************************************* Image tab **/
+/**************************************************** Image tab **/
 #i_image_tab{
 	border: 0px solid white;
     height: 435px;
@@ -180,7 +187,7 @@ iframe #i_frame_gallery{
 	font-size: larger;
 }
 
-/************************************************* Video tab **/
+/**************************************************** Video tab **/
 .d_info_tab{
 	height: 455px;
     padding: 10px 0;
@@ -213,14 +220,26 @@ iframe #i_frame_gallery{
     margin-bottom: 0px;
 }
 
-/************************************************* Map tab **/
+/**************************************************** Watch Video tab **/
+.d_watch_video_tab{
+	border: 0px red solid;
+}
+.d_play_video iframe{
+	height: 400px;
+}
+.d_wv_button {
+}
+.d_wv_button a {
+	margin-right: 10px;
+}
+
+/**************************************************** Map tab **/
 #map-container{
 	height: 245px;
     border-radius: 3px;
 }
 
-/************************************************* Comment tab **/
-
+/**************************************************** Comment tab **/
 .d_write_comment,
 .d_write_report{
 	position: relative;
@@ -237,14 +256,20 @@ iframe #i_frame_gallery{
 	float: right;
     height: initial;
 }
+#i_frame_comment{
+	width: 100%;
+}
+.d_cm_each_comment{
 
-/************************************************** Khung chức năng PHẢI ***/
+}
 
-/************************************************** Comment Tab ***/
+/**************************************************** Khung chức năng PHẢI ***/
+
+/**************************************************** Comment Tab ***/
 .d_comment{
 	background-color: white;
 	height: 145px;
 }
 
 
-/************************************************** Decorate CSS ***/
+/**************************************************** Decorate CSS ***/

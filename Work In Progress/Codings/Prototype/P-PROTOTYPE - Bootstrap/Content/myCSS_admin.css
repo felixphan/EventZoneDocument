@@ -1,31 +1,40 @@
-/*** Thêm ***/
-.b{
+/**************************************************** Thêm ***/
+
+/**************************************************** Sửa BOOTSTRAP ***/
+.navbar-inverse {
+    border-radius: 0;
+}
+
+/**************************************************** Khung STATISTIC ***/
+
+/**************************************************** Khung MANAGE EVENT ***/
+
+/**************************************************** Khung MANAGE USER ***/
+
+/**************************************************** Khung REPORT ***/
+
+/**************************************************** Khung APPEAL ***/
+
+/**************************************************** Decorate khác ***/
+.d_admin_body{
+	overflow-y: scroll;
+}
+.d_result_container{
+	padding: 10px;
+	padding-left: 15px;
 	border: 1px red solid;
-	height: 20px;
+	border-radius: 5px;
 }
-
-/*** sửa CSS BOOTSTRAP ***/
-.navbar-inverse{
-	border-top-left-radius: 0;
-	border-top-right-radius: 0;
+.d_me_container,
+.d_mu_container,
+.d_re_container,
+.d_ae_container{
+	padding: 0;
 }
-
-/*** Bao hết phần chính ***/
-
-/*** Khung hiển thị TRÁI ***/
-
-/** Khung STATISTIC **/
-
-/** Khung MANAGE EVENT **/
-
-/** Khung MANAGE USER **/
-
-/** Khung REPORT **/
-
-/** Khung APPEAL**/
-
-/*** Khung hiển thị PHẢI ***/
-
-/** Khung Recommended Event **/
-
-/*** CSS Decorate ***/
+.d_mu_btn_group button,
+.d_me_btn_group button{
+	margin-bottom: 10px;
+}
+#i_frame_info{
+	padding-left: 0;
+}

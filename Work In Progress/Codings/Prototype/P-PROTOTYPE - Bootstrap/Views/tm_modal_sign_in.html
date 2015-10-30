@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Result</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Plugin Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+
+    <!-- Plug in tạo Sub-menu
+    <link rel="stylesheet" type="text/css" href="../Content/jquery.smartmenus.bootstrap.css"> -->
+    
+    <!-- myCSS -->
+    <link rel="stylesheet" type="text/css" href="../Content/myCSS_index_2.css">
+
+</head>
+
+<body>
+
+  <div class="cover_all_functions">
+    <ul class="nav nav-tabs">   <!-- áp dụng Tab lên thanh Nút chức năng -->
+        <li class="d_signin_tab active"><a data-toggle="tab" href="#i_signin_section" id="i_signin_tab">Sign In</a></li>
+        <li class="d_signup_tab"><a data-toggle="tab" href="#i_signup_section" id="i_signup_tab">Sign Up</a></li>
+    </ul>
+    <div class="tab-content">
+      <div id="i_signin_section"class="tab-pane fade in active">
+          <div class="my_function_cover f_sign_in">    
+              <div style="padding-top: 30px" class="panel-body" >
+                  <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+                  <form id="loginform" class="form-horizontal" role="form">
+                      <div style="margin-bottom: 10px" class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                          <input id="login-username" type="text" class="form-control" name="username" value="" placeholder="username or email">                                        
+                      </div>
+
+                      <div style="margin-bottom: 10px" class="input-group">
+                          <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                          <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                      </div>
+
+                      <a data-toggle="modal" href="#myModal3" id="i_quen_mk">
+                          Forget password?
+                      </a>
+
+                      <div class="input-group"  style="margin-bottom: 35px">
+                        <div class="checkbox">
+                          <label>
+                            <input id="login-remember" type="checkbox" name="remember" value="1"> Remember me
+                          </label>
+                        </div>
+                      </div>
+
+                      <div style="margin-top:10px" class="form-group">
+                          <!-- Button -->
+                          <div class="col-sm-12 controls">
+                            <a id="btn-login" href="#" class="btn btn-success">Sign In  </a>
+                            <a id="btn-fblogin" href="#" class="btn btn-danger">Sign In with Google+</a>
+                          </div>
+                      </div>  
+                  </form>
+              </div> 
+          </div><!-- bao toàn bộ chức năng SIGN IN -->
+      </div>
+      <div id="i_signup_section" class="tab-pane fade"> <!-- bao toàn bộ chức năng SIGN UP -->
+        <div class="my_function_cover f_sign_up"> 
+          <div style="padding-top:30px" class="panel-body" >
+              <div style="display:none" id="login-alert" class="alert alert-danger col-sm-12"></div>
+              <form id="loginform" class="form-horizontal" role="form">
+
+              	  <div style="margin-bottom: 10px" class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                      <input id="login-username" type="text" class="form-control" name="username"placeholder="username">
+                  </div>
+
+                  <div style="margin-bottom: 10px" class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
+                      <input id="login-email" type="text" class="form-control" name="email"placeholder="email">
+                  </div>
+                      
+                  <div style="margin-bottom: 10px" class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                      <input id="login-password" type="password" class="form-control" name="password" placeholder="password">
+                  </div>
+                  
+                  <div style="margin-bottom: 10px" class="input-group">
+                      <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                      <input id="d_login-re_password" type="password" class="form-control" name="password" placeholder="re-enter password">
+                  </div>
+
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <input id="i_first_name" type="text" name="lastname" placeholder="First name"
+                         class="form-control">
+                  </div>
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <input id="i_last_name" type="text" name="lastname" placeholder="Last name"
+                         class="col-xs-6 col-sm-6 col-md-6 col-lg-6 form-control">
+                  </div>
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div style="margin-bottom: 10px" class="input-group">
+                        <label class="radio-inline"><input type="radio" name="optradio">Male</label>
+                        <label class="radio-inline"><input type="radio" name="optradio">Female</label>
+                    </div>
+                  </div>
+                  <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div style="margin-bottom: 10px" class="input-group">
+                      Birthday:
+                      <input type="date" name="start"/>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div class="input-group d_agree_policy">
+                      <div class="checkbox">
+                        <label>
+                          <input type="checkbox" name="remember" value="1">
+                            Tôi đã đọc và đồng ý với các
+                          <a href="policy.html" id="i_policy"><i>Điều khoản sử dụng</i></a>.
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div style="margin-top:10px">
+                        <!-- Button -->
+                        <div class="controls">
+                          <a id="btn-login" href="#" class="btn btn-success">Sign Up</a>
+                        </div>
+                    </div>
+                  </div>
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- ALL SCRIPT HERE -->
+<!-- Default JQuery -->
+<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>
+
+<!-- Default Bootstrap -->
+<script type="text/javascript" src="../Scripts/bootstrap.js"></script>
+
+<script type="text/javascript" src="../Scripts/jquery.smartmenus.js"></script> <!-- Plug in tạo Sub-menu -->
+<script type="text/javascript" src="../Scripts/jquery.smartmenus.bootstrap.js"></script> <!-- Plug in tạo Sub-menu -->
+</body>
+</html>
