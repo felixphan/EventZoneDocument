@@ -13,9 +13,10 @@ namespace EventZone.Controllers
     public class AccountController : Controller
     {
         private readonly EventZoneEntities db = new EventZoneEntities();
-
+        
         private Uri RedirectUriGoogle
         {
+
             get
             {
                 var uriBuilder = new UriBuilder(Request.Url)
@@ -39,7 +40,7 @@ namespace EventZone.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignInPost(SignInViewModel model)
         {
-            if (!ModelState.IsValid)
+               if (!ModelState.IsValid)
                 return Json(new
                 {
                     state = 0,
@@ -389,6 +390,10 @@ namespace EventZone.Controllers
                 state = 0,
                 message = "Something Wrong! Please Try Again Later"
             });
+        }
+        public ActionResult RequireSignin()
+        {
+            return View();
         }
     }
 }

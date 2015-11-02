@@ -7,6 +7,4 @@ $(document).ready(function(){
 	$('.d_3_column iframe').height(mc_height);
 	$('.d_about iframe').height(mc_height);
 	
-	/* chạy hiệu ứng Flip */
-
-});	
+});

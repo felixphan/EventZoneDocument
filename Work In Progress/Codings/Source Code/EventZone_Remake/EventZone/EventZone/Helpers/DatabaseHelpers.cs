@@ -403,10 +403,10 @@ namespace EventZone.Helpers
         {
             try
             {
-                var carFollow = new CategoryFollow();
-                carFollow.FollowerID = userID;
-                carFollow.CategoryID = categoryID;
-                db.CategoryFollows.Add(carFollow);
+                var catFollow = new CategoryFollow();
+                catFollow.FollowerID = userID;
+                catFollow.CategoryID = categoryID;
+                db.CategoryFollows.Add(catFollow);
                 db.SaveChanges();
                 return true;
             }
@@ -1043,10 +1043,47 @@ namespace EventZone.Helpers
         {
             db = new EventZoneEntities();
         }
+
         public List<Category> GetAllCategory()
         {
             return db.Categories.ToList();
         }
 
+        public int GetNewEventCount(long categoryID)
+        {
+            int count = 0;
+            DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(2);
+            count = (from a in db.Events where a.CategoryID == categoryID && (floorDateTime <= a.EventRegisterDate) select a).Count();
+            return count;
+        }
+
+        public int GetNewLiveEventCount(long categoryID)
+        {
+            int count = 0;
+            DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(2);
+            var listEvent = (from a in db.Events where a.CategoryID == categoryID && (floorDateTime <= a.EventRegisterDate) select a).ToList();
+            try
+            {
+                foreach (var item in listEvent)
+                {
+                    if (EventDatabaseHelper.Instance.isLive(item.EventID))
+                    {
+                        count = count + 1;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return count;
+            }
+            return count;
+        }
+
+        public int GetCategoryFollower(long categoryID)
+        {
+            var numberFollower = (from a in db.CategoryFollows where a.CategoryID == categoryID select a).ToList().Count;
+            return numberFollower;
+
+        }
     }
 }

@@ -320,17 +320,13 @@ li { list-style-type: none; }
 
 .field-validation-error { color: red; }
 .full-screen-bg {
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    overflow: hidden;
+    min-width: 100%;
+    min-height: 100%;
     z-index: -100;
 }
 .fullscreen-bg__video {
-    position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    min-width: inherit;
+    min-height: inherit;
 }

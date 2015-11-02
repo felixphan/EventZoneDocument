@@ -172,6 +172,7 @@
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -396,6 +397,13 @@
     <Content Include="Views\Event\_CommentPartial.cshtml" />
     <Content Include="Views\Event\_EditEventPartial.cshtml" />
     <Content Include="Views\Event\_LocationPartial.cshtml" />
+    <Content Include="Views\Account\RequireSignin.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\ManageEvent.cshtml" />
+    <Content Include="Views\User\ManageProfile.cshtml" />
+    <Content Include="Views\User\_EditProfilePartial.cshtml" />
+    <Content Include="Views\User\_MyEventPartial.cshtml" />
+    <Content Include="Views\User\_UserInfoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
