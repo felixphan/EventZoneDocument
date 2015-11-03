@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ASPSnippets.GoogleAPI">
-      <HintPath>D:\EventZone\EventZone\EventZone\bin\ASPSnippets.GoogleAPI.dll</HintPath>
+      <HintPath>B:\Users\cuongnvse02837\Desktop\ASPSnippets.GoogleAPI.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
@@ -299,6 +299,7 @@
     <Content Include="img\sukien2.jpg" />
     <Content Include="img\test.gif" />
     <Content Include="img\upload.png" />
+    <Content Include="img\bgvideo1080-cut.webm" />
     <EntityDeploy Include="Models\EventZone.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EventZone.Designer.cs</LastGenOutput>
@@ -316,7 +317,6 @@
       <DependentUpon>EventZone.edmx</DependentUpon>
       <LastGenOutput>EventZone.cs</LastGenOutput>
     </Content>
-    <Content Include="img\bgvideo1080-cut.webm" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\Account\ForgotAccount.js" />
     <Content Include="Scripts\Event\base.js" />
@@ -339,6 +339,7 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\Search\SearchAdvance.js" />
     <Content Include="Scripts\jquery.ajaxform.js" />
     <Content Include="Scripts\Account\SignIn.js" />

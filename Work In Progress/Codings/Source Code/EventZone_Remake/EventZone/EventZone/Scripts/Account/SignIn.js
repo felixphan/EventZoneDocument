@@ -6,19 +6,21 @@
 
         //@*Prevent this form from being submitted*@
         event.preventDefault();
-        $("#signin-Password").val("");
+        $("#signin-password").val("");
         return false;
     }
-    $("#signin-Password").val($.md5($("#signin-Password").val()));
+    $("#signin-password").val($.md5($("#signin-password").val()));
     return true;
 });
 
 function OnSignInRequestSucceeded(data) {
     if (data.state === 1) {
-        $("#myModal2").modal("toggle");
-        $(".modal-backdrop").remove();
-        //A space before #SignUl means that they don't add other div again
-        $("#SignUl").load(location.href + " #SignUl");
+        location.reload();
+        //$("#myModal2").modal("toggle");
+        //$(".modal-backdrop").remove();
+        ////A space before #SignUl means that they don't add other div again
+        //$("#SignUl").load(location.href + " #SignUl");
+       
     } else {
         $("#alertPanelSignIn").empty();
         $("#alertPanelSignIn").append("<p>Invalid username or password</p>");

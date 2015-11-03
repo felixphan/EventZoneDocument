@@ -383,18 +383,23 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public bool IsFollowingCategory(long userID, long categoryID)
         {
-            var carFollow =
-                (from a in db.CategoryFollows where a.FollowerID == userID && a.CategoryID == categoryID select a)
-                    .ToList()[0];
-            if (carFollow != null)
+            try
             {
-                return true;
+                var carFollow =
+                    (from a in db.CategoryFollows where a.FollowerID == userID && a.CategoryID == categoryID select a).ToList()[0];
+                if (carFollow != null)
+                {
+                    return true;
+                }
+            }
+            catch {
+                return false;
             }
             return false;
         }
 
         /// <summary>
-        ///     User Follow a new category
+        ///    Follow category if user doest now follow it, unfollow category if user is following this category
         /// </summary>
         /// <param name="userID"></param>
         /// <param name="categoryID"></param>
@@ -404,6 +409,12 @@ namespace EventZone.Helpers
             try
             {
                 var catFollow = new CategoryFollow();
+                if (IsFollowingCategory(userID, categoryID)) {
+                    catFollow = (from a in db.CategoryFollows where a.CategoryID == categoryID && a.FollowerID == userID select a).ToList()[0];
+                    db.CategoryFollows.Remove(catFollow);
+                    db.SaveChanges();
+                    return true;
+                }
                 catFollow.FollowerID = userID;
                 catFollow.CategoryID = categoryID;
                 db.CategoryFollows.Add(catFollow);
@@ -1043,25 +1054,36 @@ namespace EventZone.Helpers
         {
             db = new EventZoneEntities();
         }
-
+        /// <summary>
+        /// get all category in database
+        /// </summary>
+        /// <returns></returns>
         public List<Category> GetAllCategory()
         {
             return db.Categories.ToList();
         }
 
-        public int GetNewEventCount(long categoryID)
+        /// <summary>
+        /// count new event by category(new event is event that be defined as event is created in recent 7 days)
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public int CountNewEventByCategory(long categoryID)
         {
             int count = 0;
-            DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(2);
+            DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(7);
             count = (from a in db.Events where a.CategoryID == categoryID && (floorDateTime <= a.EventRegisterDate) select a).Count();
             return count;
         }
-
-        public int GetNewLiveEventCount(long categoryID)
+        /// <summary>
+        ///  count live event by category(which event has streaming)
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public int CountLiveEventByCategory(long categoryID)
         {
             int count = 0;
-            DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(2);
-            var listEvent = (from a in db.Events where a.CategoryID == categoryID && (floorDateTime <= a.EventRegisterDate) select a).ToList();
+            var listEvent = (from a in db.Events where a.CategoryID == categoryID select a).ToList();
             try
             {
                 foreach (var item in listEvent)
@@ -1079,11 +1101,10 @@ namespace EventZone.Helpers
             return count;
         }
 
-        public int GetCategoryFollower(long categoryID)
+        public int CountFollowerByCategory(long categoryID)
         {
             var numberFollower = (from a in db.CategoryFollows where a.CategoryID == categoryID select a).ToList().Count;
             return numberFollower;
-
         }
     }
 }

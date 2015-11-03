@@ -8,12 +8,14 @@
 <link href="~/Content/Home/bootstrap-social.css" rel="stylesheet" />
 <link href="~/Content/Home/font-awesome.min.css" rel="stylesheet" />
 <script src="~/Scripts/Home/bootstrap-hover-dropdown.min.js"></script>
+
 <div class="full-screen-bg">
     <video class="fullscreen-bg__video" autoplay loop muted>
         <source src="~/img/bgvideo1080-cut.mp4" type="video/mp4">
         <source src="~/img/bgvideo1080-cut.webm" type="video/webm"/>
     </video>
 </div>
+
 <div class="d_middle_category" style="margin-top: 200px">
     <div class="d_md_body">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_mc_text_1">
@@ -21,12 +23,13 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_mc_text_2">
             Only one zone for all Activities. Promote, manage, and host successful events.
-            <a href="#" id="i_learn_more">
+            <p><a href="#" id="i_learn_more">
                 Learn More
             </a>
         </div>
         <div class="d_mc_category">
-            @foreach (var item in Model)
+            @if (Model != null) { 
+            foreach (var item in Model)
             {
                 <div class="btn-group d_btn_middle">
                     <a type="button" class="btn btn-default" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
@@ -35,7 +38,7 @@
                             <div class="d_stat_cover">
                                 <div class="d_stat_new_event">
                                     <div class="d_data">
-                                        @CommonDataHelpers.Instance.GetNewEventCount(item.CategoryID)
+                                        @CommonDataHelpers.Instance.CountNewEventByCategory(item.CategoryID)
                                     </div>
                                     <div class="d_data_name">
                                         New Event
@@ -43,35 +46,94 @@
                                 </div>
                                 <div class="d_stat_new_follower">
                                     <div class="d_data">
-                                        @CommonDataHelpers.Instance.GetCategoryFollower(item.CategoryID)
+                                        <span id="number-follower-category-@item.CategoryID">
+                                        @CommonDataHelpers.Instance.CountFollowerByCategory(item.CategoryID)
+                                        </span>
                                     </div>
                                     <div class="d_data_name">
-                                        New Follower
+                                        Follower
                                     </div>
                                 </div>
                                 <div class="d_stat_new_live" id="followCount+@item.CategoryID">
                                     <div class="d_data">
-                                        @CommonDataHelpers.Instance.GetNewLiveEventCount(item.CategoryID)
+                                        @CommonDataHelpers.Instance.CountLiveEventByCategory(item.CategoryID)
                                     </div>
                                     <div class="d_data_name">
-                                        New Live Event
+                                        Live Event
                                     </div>
                                 </div>
                                 <div class="d_follow_cate">
-                                    <button type="button" class="btn btn-default btn-md" style="color: black" onclick="followCategory(this.value)" id="@item.CategoryID" value="@item.CategoryID">
+                                    <button type="button" class="btn btn-default btn-md" style="color: black" onclick="followCategory(this.value)" id="btn-follow-category-@item.CategoryID" value="@item.CategoryID">
                                         <span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>
-                                        <span class="categoryText">Follow</span>
+                                        <span class="categoryText" id="follow-category-@item.CategoryID-status">
+                                        @if(user!=null&&UserDatabaseHelper.Instance.IsFollowingCategory(user.UserID,item.CategoryID))
+                                        {
+                                        <text>
+                                            Following
+                                        </text>                                   
+       
+                                        }
+                                        else { 
+                                        <text>
+                                            Follow
+                                        </text>
+                                        }
+                                         </span>
                                     </button>
                                 </div>
                             </div>
                         </div>
                     </ul>
                 </div>
-            }
+            }}
         </div>
     </div>
-
-
 </div>
 
+
+
+
 <script src="~/Scripts/Home/Index.js"></script>
+<script>
+    //handle follow category
+    function followCategory(categoryID) {
+               @if(user!=null){
+                   <text>
+                   $.ajax({
+                       url: "/User/FollowCategory",
+                       type: "POST",
+                       dataType: "json",
+                       data: {
+                           categoryID: categoryID
+                       },
+                       success: function (data) {
+                           if (data.success) {
+                               if (data.state == 0) {
+                                   $("#number-follower-category-" + categoryID).text(parseInt($("#number-follower-category-" + categoryID).text()) - 1);
+                                   $("#follow-category-" + categoryID + "-status").text("Follow");
+                               } else if (data.state == 1) {
+                                   $("#number-follower-category-" + categoryID).text(parseInt($("#number-follower-category-" + categoryID).text()) + 1);
+                                   $("#follow-category-" + categoryID + "-status").text("Following");
+                               }
+                           } else {
+                               alert("ops.. somthing wrong!Please try again later...");
+                           }
+                       },
+                       error: function (jqXHR, textStatus, errorThrown) {
+                           console.log(jqXHR);
+                           console.log(textStatus);
+                           console.log(errorThrown);
+                       }
+
+                   })
+                   </text>
+               }
+               else { 
+                   <text>
+                   alert("please login to do this action!")
+                   </text>
+               }
+            
+    }
+
+</script>
