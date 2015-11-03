@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="ASPSnippets.GoogleAPI">
-      <HintPath>B:\Users\cuongnvse02837\Desktop\ASPSnippets.GoogleAPI.dll</HintPath>
+      <HintPath>D:\EventZone\EventZone\EventZone\bin\ASPSnippets.GoogleAPI.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.1\lib\net45\EntityFramework.dll</HintPath>
@@ -270,8 +270,9 @@
     <Content Include="Content\Event\perfect-scrollbar.css" />
     <Content Include="Content\Home\font-awesome.min.css" />
     <Content Include="Content\Home\Index.css" />
-    <Content Include="Content\Search\SearchAdvance.css" />
+    <Content Include="Content\Home\jquery.m.flip.css" />
     <Content Include="Content\Search\SearchResult.css" />
+    <Content Include="Content\Search\SearchAdvance.css" />
     <Content Include="Content\_Layout\Site.css" />
     <Content Include="Content\_Layout\_Layout.css" />
     <Content Include="favicon.ico" />
@@ -300,7 +301,6 @@
     <Content Include="img\sukien2.jpg" />
     <Content Include="img\test.gif" />
     <Content Include="img\upload.png" />
-    <Content Include="img\bgvideo1080-cut.webm" />
     <EntityDeploy Include="Models\EventZone.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EventZone.Designer.cs</LastGenOutput>
@@ -318,6 +318,7 @@
       <DependentUpon>EventZone.edmx</DependentUpon>
       <LastGenOutput>EventZone.cs</LastGenOutput>
     </Content>
+    <Content Include="img\bgvideo1080-cut.webm" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\Account\ForgotAccount.js" />
     <Content Include="Scripts\Event\base.js" />
@@ -334,13 +335,13 @@
     <Content Include="Content\Home\bootstrap-social.css" />
     <Content Include="Scripts\Home\bootstrap-hover-dropdown.min.js" />
     <Content Include="Scripts\Home\Index.js" />
+    <Content Include="Scripts\Home\jquery.m.flip.js" />
     <Content Include="Scripts\Home\jquery.smartmenus.bootstrap.js" />
     <Content Include="Scripts\Home\jquery.smartmenus.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\Search\SearchAdvance.js" />
     <Content Include="Scripts\jquery.ajaxform.js" />
     <Content Include="Scripts\Account\SignIn.js" />

@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Event Zone</title>
+    <title>@ViewBag.Title - My ASP.NET Application</title>
     <!--Style-->
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
     <link href="~/Content/_Layout/_Layout.css" rel="stylesheet"/>
@@ -22,44 +22,7 @@
     <script src="~/Scripts/_Layout/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.bootstrap.js"></script>
-    <script>
-        //check cookie
-        $(document).ready(function() {
-            @if (UserHelpers.GetCurrentUser(Session) == null)
-            {
-                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
-                {
-                    var userName = Request.Cookies["userName"].Value;
-                    var password = Request.Cookies["password"].Value;
-                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
-                    {
-                        <text>
-                        $.ajax({
-                            url: "/Account/CheckCookie",
-                            type:"POST",
-                            dataType: "json",
-                            success: function (data) {
-                                if (data.state == 0) {
-                                    alert(data.message)
-                                } else if (data.state == 1)
-                                {
-                                   /// window.location.reload();
-                                }
-                            },
-                            error: function (jqXHR, textStatus, errorThrown) {
-                            console.log(jqXHR);
-                            console.log(textStatus);
-                            console.log(errorThrown);
-                        }
-                        })
-            
-                        </text>
-                    }
-                }
-            }
 
-        })
-    </script>
 </head>
 <body>
 <!-- i_2_ đánh dấu CSS Index_2.html -->
@@ -76,7 +39,7 @@
             </button>
             <!-- Brand -->
             <li class="dropdown">
-                <a href="index.html" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Event Zone</a>
+                <a href="" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Event Zone</a>
                 <ul class="dropdown-menu d_brand_menu">
                     <li>
                         <a href="#">Policy</a>
@@ -236,8 +199,6 @@
         $(".field-validation-error").empty();
     }
 </script>
-
-
 @RenderSection("scripts", false)
 </body>
 </html>

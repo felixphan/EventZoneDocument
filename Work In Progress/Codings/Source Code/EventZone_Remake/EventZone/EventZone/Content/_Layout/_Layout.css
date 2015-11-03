@@ -129,34 +129,38 @@ li { list-style-type: none; }
 
 /*********************************************** MIDDLE Category ***/
 
-.d_md_body {
-    background-color: transparent;
-    color: gray;
-    font-family: segoe ui;
-    margin-top: 100px;
+.d_md_body{
+	margin-top: 100px;
+	font-family: segoe ui;
+	color: gray;
+	background-color: transparent;
 }
-
 .d_mc_text_1,
 .d_mc_text_2,
-.d_mc_category { text-align: center; }
-
-.d_mc_text_1 { font-size: 60px; }
-
-.d_mc_text_2 {
-    font-size: 30px;
-    font-weight: lighter;
+.d_mc_category{
+	text-align: center;
 }
-
+.d_mc_text_1{
+	font-size: 60px;
+}
+.d_mc_text_2{
+	font-size: 30px;
+	font-weight: lighter;
+}
 .d_mc_text_2 a,
-.d_mc_text_2 a:hover { color: #fff }
+.d_mc_text_2 a:hover{
+	color: #fff
+}
+.d_mc_category{
+	margin-bottom: 250px;
 
-.d_mc_category { margin-bottom: 250px; }
-
-.d_mc_category button { margin-bottom: 5px; }
-
-.d_btn_middle {
-    background-color: rgba(255, 255, 255, .2);
-    font-size: 15px;
+}
+.d_mc_category button{
+	margin-bottom: 5px;	
+}
+.d_btn_middle{
+	font-size: 15px;
+	background-color: rgba(255,255,255,.2);
 }
 
 /*********************************************** Middle Category > Statistic for each button ***/
@@ -216,7 +220,6 @@ li { list-style-type: none; }
 }
 
 .d_cc_event_container {
-    border: 1px red solid;
     height: 500px;
     overflow-y: scroll;
     padding: 0;
@@ -315,16 +318,14 @@ li { list-style-type: none; }
    the scrollbar off with overflow:hidden */
 
 .field-validation-error { color: red; }
-
 .full-screen-bg {
-    min-height: 100%;
     min-width: 100%;
+    min-height: 100%;
     z-index: -100;
 }
-
 .fullscreen-bg__video {
-    left: 0;
-    min-height: inherit;
-    min-width: inherit;
     top: 0;
+    left: 0;
+    min-width: inherit;
+    min-height: inherit;
 }

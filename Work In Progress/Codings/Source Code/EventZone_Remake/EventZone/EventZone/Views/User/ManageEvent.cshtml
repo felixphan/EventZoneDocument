@@ -1,23 +1,20 @@
-﻿@using EventZone.Models
+﻿@using EventZone.Models;
 @{
     ViewBag.Title = "ManageProfile";
 }
 @{
     var user = Session["user"] as User;
     var task = ViewData["ManageEventTask"];
+
 }
-<center>
-    <h2>ManageProfile</h2>
-</center>
-@if (user.UserID == null)
-{
-    @Html.ActionLink("RequireSignin", "Account")
-    ;
+<center><h2>ManageProfile</h2></center>
+@if (user.UserID == null) { 
+@Html.ActionLink("RequireSignin", "Account");
 }
 @Html.ValidationSummary()
-@Html.ActionLink("My event", "MyEvent", new {id = @user.UserID}) |
-@Html.ActionLink("My Follower", "Follower", "User", null, new {title = "Schedule"}) |
-@Html.ActionLink("Reported", "Reported", "User", null, new {title = "Schedule"}) |
+@Html.ActionLink("My event", "MyEvent", new { id = @user.UserID }) |
+@Html.ActionLink("My Follower", "Follower", "User", routeValues: null, htmlAttributes: new { title = "Schedule" }) | 
+@Html.ActionLink("Reported", "Reported", "User", routeValues: null, htmlAttributes: new { title = "Schedule" }) | 
 @if (task == "MyEvent")
 {
     @Html.Partial("_MyEventPartial")
@@ -25,8 +22,7 @@
 else if (task == "Follower")
 {
     @Html.Partial("_FollowerPartial")
-}
-else if (task == "Reported")
+}else if (task == "Reported")
 {
     @Html.Partial("_ReportedPartial")
 }

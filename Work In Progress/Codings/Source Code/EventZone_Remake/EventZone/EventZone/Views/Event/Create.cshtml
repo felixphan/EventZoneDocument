@@ -26,18 +26,12 @@
 <!-- myCSS -->
 <link href="~/Content/Event/Create.css" rel="stylesheet"/>
 <div class="container b">
-<div class="col-xs-12 col-sm-12 col-lg-7 d_leftside b">
+<div class="col-xs-12 col-sm-12 col-lg-12 d_leftside b">
 <!-- Khung Đăng ký sự kiện -->
 <div class="widget" id="widget_tabs">
 <ul class="nav nav-tabs" id="myTab">
     <li id="i_first_tab" class="active">
         <a href="#i_info_tab" data-toggle="tab">Event Info</a>
-    </li>
-    <li>
-        <a href="#i_image_tab" data-toggle="tab">Gallery (10)</a>
-    </li>
-    <li>
-        <a href="#i_video_tab" data-toggle="tab">Video (4)</a>
     </li>
 </ul>
 <div class="tab-content">
@@ -63,7 +57,7 @@
         <!-- row Title -->
         @Html.LabelFor(model => model.Title, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-            @Html.EditorFor(model => model.Title)
+            @Html.TextBoxFor(model => model.Title, new{@class="form-control",@style="width:100%"})
             @Html.ValidationMessageFor(model => model.Title)
         </div>
     </div>
@@ -134,7 +128,7 @@
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
 
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
             @Html.DropDownList("Quality", new SelectList(ListResolutionItem, "Value", "Text"), new {@class = "form-control"})
             @Html.ValidationMessageFor(model => model.Quality)
         </div>
@@ -144,7 +138,7 @@
 
             </select>
         </div>
-        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
             @Html.DropDownList("PrivacyYoutube", new SelectList(ListPrivacy, "Value", "Text"), new {@class = "form-control"})
             @Html.ValidationMessageFor(model => model.PrivacyYoutube)
         </div>
@@ -283,54 +277,6 @@
     </div>
     </div>
 }
-</div>
-<!-- Khung chứa Gallery -->
-<div class="tab-pane" id="i_image_tab">
-    <div class="d_upload_container b">
-
-    </div>
-    <div class="d_images_container b">
-
-    </div>
-</div>
-<!-- Khung chứa Video -->
-<div class="tab-pane" id="i_video_tab">
-    Tab 3
-</div>
-</div>
-</div>
-</div>
-<div class="col-xs-12 col-sm-12 col-lg-4 d_rightside b">
-    <!-- Khung chứa sự kiện khác -->
-    <div class="widget" id="widget_tabs">
-        <ul class="nav nav-tabs" id="myTab">
-            <li id="i_first_tab" class="active">
-                <a href="#i_other_tab" data-toggle="tab">Other events</a>
-            </li>
-        </ul>
-        <div class="tab-content">
-            <!-- Khung chứa các sự kiện khác -->
-            <div class="tab-pane active" id="i_other_tab">
-                <div class="row d_each_event b1">
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_o_thumb b1">
-                        <div class="box m-flip">
-                            <!-- m-flip cho Thumbnail -->
-                            <div class="front">
-                                <img src="~/img/bg2.jpg" class="">
-                            </div>
-                            <div class="back">
-                                <img src="~/img/bg2.jpg" class="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_o_title b1">
-                        <!-- o: Other event -->
-                        Khai giảng các khóa học nghiệp vụ kế toán, nhân sự, thuế, xnk ngắn hạn
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </div>
 <!-- All script here -->

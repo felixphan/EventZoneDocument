@@ -1,13 +1,12 @@
-﻿@using EventZone.Helpers
+﻿@model EventZone.Models.User
 @using EventZone.Models
-@model User
 @{
-    var user = ViewData["UserSession"] as User;
+    User user = ViewData["UserSession"] as User;
 }
 
 <div>
     <h4>User</h4>
-    <hr/>
+	<hr />
     <dl class="dl-horizontal">
         <dt>
             @Html.DisplayNameFor(model => model.UserName)
@@ -30,7 +29,7 @@
         </dt>
 
         <dd>
-            @user.UserFirstName
+           @user.UserFirstName
         </dd>
 
         <dt>
@@ -46,7 +45,7 @@
         </dt>
 
         <dd>
-            @user.UserEmail
+           @user.UserEmail
         </dd>
 
         <dt>
@@ -62,14 +61,14 @@
         </dt>
 
         <dd>
-            @user.IDCard
+           @user.IDCard
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Phone)
         </dt>
 
         <dd>
-            @user.Phone
+           @user.Phone
         </dd>
 
         <dt>
@@ -85,15 +84,12 @@
         </dt>
 
         <dd>
-            @if (user.Gender == EventZoneConstants.isMale)
-            {
-                <div>Male</div>
+            @if(user.Gender==EventZone.Helpers.EventZoneConstants.isMale){ 
+             <div>Male</div>
+            }else{
+            <div>Female</div>
             }
-            else
-            {
-                <div>Female</div>
-            }
-
+                
         </dd>
 
         <dt>
@@ -103,10 +99,10 @@
         <dd>
             <img src="@user.AvatarLink" alt="Smiley face" height="42" width="42">
         </dd>
-        @if (Session["userID"] != null || Session["userID"].ToString() != "" && user.UserID.ToString() == Session["userID"].ToString())
-        {
-            @Html.ActionLink("Edit Profile", "EditProfile", "User")
+        @if (Session["userID"] != null || Session["userID"].ToString() != "" && user.UserID.ToString() == Session["userID"].ToString()) { 
+        @Html.ActionLink("Edit Profile", "EditProfile", "User")
         }
-
+      
     </dl>
 </div>
+

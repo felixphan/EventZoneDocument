@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using EventZone.Helpers;
 
 namespace EventZone.Models
@@ -23,6 +24,8 @@ namespace EventZone.Models
         {
             get
             {
+
+
                 var list = CommonDataHelpers.Instance.GetAllCategory();
                 return list;
             }

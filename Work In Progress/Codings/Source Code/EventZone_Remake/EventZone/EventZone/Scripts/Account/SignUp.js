@@ -19,7 +19,7 @@ function OnSignUpRequestSucceeded(data) {
         $("#myModal2").modal("toggle");
         $(".modal-backdrop").remove();
         $("#SignUl").load(location.href + " #SignUl");
-        alert("Thank for registering our system! We have sent you an welcome email! Return home to start looking for events.");
+        alert("Thank for signing up for our system! We sent you an welcome email! Return home to start looking for events.");
     } else {
         $("#alertPanelSignUp").empty();
         $("#alertPanelSignUp").append("<p>" + data.message + "</p>");

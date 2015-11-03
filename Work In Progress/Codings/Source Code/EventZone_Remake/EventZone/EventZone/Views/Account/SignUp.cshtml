@@ -33,12 +33,12 @@
                 @Html.ValidationMessageFor(model => model.Email)
                 <div style="margin-bottom: 10px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    @Html.TextBoxFor(model => model.Password, new {@class = "form-control", @placeholder = "Password", @id = "signup-Password"})
+                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @placeholder = "Password", @id = "signup-Password" })
                 </div>
                 @Html.ValidationMessageFor(model => model.Password)
                 <div style="margin-bottom: 10px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    @Html.TextBoxFor(model => model.ConfirmPassword, new {@class = "form-control", @placeholder = "Re-enter Password", @id = "signup-ConfirmPassword"})
+                    @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Re-enter Password", @id = "signup-ConfirmPassword" })
                 </div>
                 @Html.ValidationMessageFor(model => model.ConfirmPassword)
 
@@ -73,9 +73,9 @@
                         <div class="checkbox">
                             <label>
                                 <input type="checkbox" name="policy" value="1">
-                                I have read and accepted with
+                                Tôi đã đọc và đồng ý với các
                                 <a href="policy.html" id="i_policy">
-                                    <i>Event Zone Website’s policy</i>
+                                    <i>Điều khoản sử dụng</i>
                                 </a>.
                             </label>
                         </div>
@@ -94,4 +94,3 @@
     </div>
 </div>
 <script src="~/Scripts/Account/SignUp.js"></script>
-<script src="~/Scripts/jquery.md5.js"></script>

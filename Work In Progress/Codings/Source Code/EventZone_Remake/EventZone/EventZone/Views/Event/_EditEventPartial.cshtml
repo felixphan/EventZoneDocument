@@ -1,4 +1,5 @@
 ﻿@model EventZone.Models.ViewDetailEventModel
+@using EventZone.Models
 @using (Html.BeginForm("EditEvent", "Event"))
 {
     @Html.AntiForgeryToken()
@@ -17,7 +18,7 @@
         <div class="form-group">
             <p class="control-label col-md-2">Location</p>
 
-            @Html.Partial("_LocationPartial", Model.eventLocation)
+            @Html.Partial("_LocationPartial",Model.eventLocation)
             @*@if (Model.eventLocation.Count != 0)
                 {
                     <div class="col-md-10">
@@ -35,8 +36,12 @@
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default"/>
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
+
+
+    
+
