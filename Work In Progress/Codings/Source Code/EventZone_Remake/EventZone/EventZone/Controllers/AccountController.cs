@@ -7,13 +7,15 @@ using ASPSnippets.GoogleAPI;
 using EventZone.Helpers;
 using EventZone.Models;
 using Newtonsoft.Json.Linq;
+using System.Web;
+using System.Security.Cryptography;
 
 namespace EventZone.Controllers
 {
     public class AccountController : Controller
     {
         private readonly EventZoneEntities db = new EventZoneEntities();
-        
+
         private Uri RedirectUriGoogle
         {
 
@@ -32,15 +34,26 @@ namespace EventZone.Controllers
         // GET: Account
         public ActionResult SignIn()
         {
+            //if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null) {
+            //    string username = Request.Cookies["userName"].Value;
+            //    string password = Request.Cookies["password"].Value;
+            //    if(UserDatabaseHelper.Instance.ValidateUser(username,password)){
+            //        var user = UserDatabaseHelper.Instance.GetUserByUserName(username);
+            //        Session["authenticated"] = true;
+            //        Session["userName"] = user.UserName;
+            //        Session["userAva"] = user.AvatarLink;
+            //        Session["UserId"] = user.UserID;
+            //        UserHelpers.SetCurrentUser(Session, user);
+            //    }
+            //}
             return PartialView();
         }
-
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult SignInPost(SignInViewModel model)
         {
-               if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return Json(new
                 {
                     state = 0,
@@ -58,7 +71,18 @@ namespace EventZone.Controllers
                         message = "Your account is locked! Please contact with our support"
                     });
                 }
+                if (model.Remember)
+                {
+                    HttpCookie userName = new HttpCookie("userName");
+                    userName.Expires = DateTime.Now.AddDays(7);
+                    userName.Value = model.UserName;
+                    Response.Cookies.Add(userName);
 
+                    HttpCookie password = new HttpCookie("password");
+                    password.Expires = DateTime.Now.AddDays(7);
+                    password.Value = model.Password;
+                    Response.Cookies.Add(password);
+                }
                 var user = UserDatabaseHelper.Instance.GetUserByUserName(model.UserName);
                 Session["authenticated"] = true;
                 Session["userName"] = user.UserName;
@@ -109,7 +133,7 @@ namespace EventZone.Controllers
                     return Json(new
                     {
                         state = 0,
-                        message = "Username is already existed. Please choose another."
+                        message = "UserName is already exist. Please choose another."
                     });
                 }
                 newUser = listUser.FindAll(a => a.UserEmail.Equals(model.Email));
@@ -119,7 +143,7 @@ namespace EventZone.Controllers
                     return Json(new
                     {
                         state = 0,
-                        message = "Email is already existed. Please choose another."
+                        message = "Email is already registered. Please choose another."
                     });
                 }
                 user.UserEmail = model.Email;
@@ -320,7 +344,20 @@ namespace EventZone.Controllers
             catch (Exception e)
             {
             }
-
+            //remove cookie userName
+            if (Request.Cookies["userName"] != null)
+            {
+                HttpCookie userName = new HttpCookie("userName");
+                userName.Expires = DateTime.Now.AddDays(-1);
+                Response.Cookies.Add(userName);
+            }
+            //remove cookie password
+            if (Request.Cookies["password"] != null)
+            {
+                HttpCookie password = new HttpCookie("password");
+                password.Expires = DateTime.Now.AddDays(-1);
+                Request.Cookies.Add(password);
+            }
             Session["authenticated"] = "";
             Session["userName"] = "";
             Session["userAva"] = "";
@@ -361,8 +398,8 @@ namespace EventZone.Controllers
                         Enumerable.Repeat(chars, 8)
                             .Select(s => s[random.Next(s.Length)])
                             .ToArray());
-
-                    var isUpdated = UserDatabaseHelper.Instance.ResetPassword(model.Email, newPassword);
+                    string passHash = EventZoneUtility.Instance.HashPassword(newPassword);
+                    var isUpdated = UserDatabaseHelper.Instance.ResetPassword(model.Email, passHash);
                     if (isUpdated)
                     {
                         MailHelpers.Instance.SendMailResetPassword(model.Email, newPassword);
@@ -394,6 +431,49 @@ namespace EventZone.Controllers
         public ActionResult RequireSignin()
         {
             return View();
+        }
+        public ActionResult CheckCookie()
+        {
+            if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+            {
+                string userName = Request.Cookies["userName"].Value;
+                string password = Request.Cookies["password"].Value;
+                if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                {
+                    var user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                    if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                    {
+                        return Json(new
+                        {
+                            success = 0,
+                            message = "Your account have been locked! Please contact with admin to active it!"
+                        });
+                    }
+                    Session["authenticated"] = true;
+                    Session["userName"] = user.UserName;
+                    Session["userAva"] = user.AvatarLink;
+                    Session["UserId"] = user.UserID;
+                    UserHelpers.SetCurrentUser(Session, user);
+                    return Json(new
+                    {
+                        success = 1,
+                        message = ""
+                    });
+                }
+                else
+                {
+                    return Json(new
+                    {
+                        success = 0,
+                        message = "Your account have been changed password! Please try to sign in with a new password!"
+                    });
+                }
+            }
+            return Json(new
+            {
+                success = 0,
+                message = "Cookie is empty!"
+            });
         }
     }
 }

@@ -30,7 +30,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <UseVSHostingProcess>true</UseVSHostingProcess>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -335,13 +335,14 @@
     <Content Include="Content\Home\bootstrap-social.css" />
     <Content Include="Scripts\Home\bootstrap-hover-dropdown.min.js" />
     <Content Include="Scripts\Home\Index.js" />
-    <Content Include="Scripts\Home\jquery.m.flip.js" />
+    <Content Include="Scripts\Home\jquery.flip.min.js" />
     <Content Include="Scripts\Home\jquery.smartmenus.bootstrap.js" />
     <Content Include="Scripts\Home\jquery.smartmenus.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\Search\SearchAdvance.js" />
     <Content Include="Scripts\jquery.ajaxform.js" />
     <Content Include="Scripts\Account\SignIn.js" />

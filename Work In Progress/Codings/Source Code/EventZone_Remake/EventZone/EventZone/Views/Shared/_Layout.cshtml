@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Event Zone</title>
     <!--Style-->
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
     <link href="~/Content/_Layout/_Layout.css" rel="stylesheet"/>
@@ -22,6 +22,40 @@
     <script src="~/Scripts/_Layout/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.bootstrap.js"></script>
+    <script>
+    //check cookie
+    $(document).ready(function () {
+        @if (UserHelpers.GetCurrentUser(Session) == null) {
+                if(Request.Cookies["userName"]!=null&&Request.Cookies["password"]!=null){
+                    string userName= Request.Cookies["userName"].Value;
+                    string password= Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password)) {
+                        <text>
+        $.ajax({
+            url: "/Account/CheckCookie",
+            type: "POST",
+            dataType: "json",
+            success: function (data) {
+                if (data.state == 0) {
+                    alert(data.message)
+                } else if (data.state == 1) {
+                    /// window.location.reload();
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+
+        </text>
+                    }
+                }
+            }
+
+    })
+    </script>
 
 </head>
 <body>

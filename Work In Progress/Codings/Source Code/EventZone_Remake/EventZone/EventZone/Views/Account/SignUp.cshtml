@@ -8,7 +8,7 @@
             {
                 HttpMethod = "POST",
                 OnSuccess = "OnSignUpRequestSucceeded"
-            }, new {id = "SignUpForm"}))
+            }, new { id = "SignUpForm" }))
             {
                 @Html.AntiForgeryToken()
                 var alertStyle = "";
@@ -23,12 +23,12 @@
                 </div>
                 <div style="margin-bottom: 10px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                    @Html.TextBoxFor(model => model.UserName, new {@class = "form-control", @placeholder = "Username"})
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Username" })
                 </div>
                 @Html.ValidationMessageFor(model => model.UserName)
                 <div style="margin-bottom: 10px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
-                    @Html.TextBoxFor(model => model.Email, new {@class = "form-control", @placeholder = "Email"})
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control", @placeholder = "Email" })
                 </div>
                 @Html.ValidationMessageFor(model => model.Email)
                 <div style="margin-bottom: 10px" class="input-group">
@@ -43,12 +43,12 @@
                 @Html.ValidationMessageFor(model => model.ConfirmPassword)
 
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-bottom: 10px">
-                    @Html.TextBoxFor(model => model.UserFirstName, new {@class = "form-control", @placeholder = "First Name"})
+                    @Html.TextBoxFor(model => model.UserFirstName, new { @class = "form-control", @placeholder = "First Name" })
                     @Html.ValidationMessageFor(model => model.UserFirstName)
                 </div>
 
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6" style="margin-bottom: 10px">
-                    @Html.TextBoxFor(model => model.UserLastName, new {@class = "form-control", @placeholder = "Last Name"})
+                    @Html.TextBoxFor(model => model.UserLastName, new { @class = "form-control", @placeholder = "Last Name" })
                     @Html.ValidationMessageFor(model => model.UserLastName)
                 </div>
 
@@ -63,7 +63,7 @@
                 <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6">
                     <div style="margin-bottom: 10px" class="input-group">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-gift"></i></span>
-                        @Html.TextBoxFor(model => model.UserDOB, new {@class = "form-control", @type = "date", @style = "border-radius:4px"})
+                        @Html.TextBoxFor(model => model.UserDOB, new { @class = "form-control", @type = "date", @style = "border-radius:4px" })
                     </div>
                     @Html.ValidationMessageFor(model => model.UserDOB)
                 </div>
@@ -94,3 +94,4 @@
     </div>
 </div>
 <script src="~/Scripts/Account/SignUp.js"></script>
+<script src="~/Scripts/jquery.md5.js"></script>
