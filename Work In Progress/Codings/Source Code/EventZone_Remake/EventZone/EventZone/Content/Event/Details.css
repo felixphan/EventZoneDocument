@@ -1,353 +1,281 @@
-/*** Sửa CSS BOOTSTRAP ***/
-body{
-	color: white;
-	font-family: segoe ui;
-	min-width: 400px;
-}
-.container-fluid{
-	padding: 0;
-}
-.thumbnail{
-	padding: 1px;
-	background-color: #fff;
-	border: 0px solid #ddd;
+﻿/**************************************************** thêm CSS ***/
+.b {
+    border: 0px red solid;
+    height: auto;
 }
 
-.thumbnail > img, .thumbnail a > img {
-	border-radius: inherit;
+/**************************************************** Sửa CSS BOOTSTRAP ***/
+
+.container-fluid { padding: 0; }
+
+.thumbnail {
+    background-color: #fff;
+    border: 0px solid #ddd;
+    padding: 1px;
 }
 
-.col-md-1, .col-md-2, .col-md-4, .col-md-6, .col-md-8, .col-md-9, .col-md-11, .col-md-12{
-	border: 0px solid red;
-}
+.thumbnail > img, .thumbnail a > img { border-radius: inherit; }
 
 #myTab {
-	padding-left: 10px;
-	padding-top: 5px;
-	background-color: rgba(255, 255, 255, .25);
+    background-color: rgba(0, 0, 0, .1);
+    padding-left: 10px;
+    padding-top: 5px;
 }
 
-.d_tab-content_cover{
-	overflow: auto;
+.tab-content {
+    background-color: white;
+    border-radius: 4px;
+    padding: 10px 5px 5px 5px;
+}
+
+.d_tab-content_cover {
     height: 441px;
+    overflow: auto;
 }
 
-.d_left_cover > .row {
-	border: 1px lightgrey solid;
-	border-radius: 3px;
-	margin-right: -10px;
-    margin-bottom: 10px;
-    height: 490px;
+.panel-body {
+    padding: none;
+    padding-top: 10px;
 }
 
-.d_right_cover > .row {
-	border: 1px lightgrey solid;
-	border-radius: 3px;
-    margin-left: -10px;
-    margin-bottom: 10px;
-}
-
-.tab-content{
-	padding: 10px 10px 0 10px;
-}
-
-.panel-body{
-	padding: none;
-	padding-top: 10px;
-}
-
-.panel-group .panel{
-	background-color: rgba(0,0,0,0);
-}
-
-.panel-default > .panel-heading {
-    color: #AFAFAF;
-    background-color: rgba(0,0,0,.4);
-    border-color: #ddd;
-}
+.d_video_item_cover { margin: 0; }
 
 .panel-default {
     border: none;
+    border-bottom: lightgrey;
 }
 
-.nav-tabs > li > a {
-    color: white;
-    height: 30px;
+.panel-default > .panel-heading {
+    background-color: rgba(0, 0, 0, 0);
+    color: #AFAFAF;
 }
 
-/*** CSS cho các Function ***/
-.d_all_function_cover{
+.panel-title { color: gray; }
 
-	border: 0px blue dashed;
-	margin: 30px auto;
+/**************************************************** Khung chức năng TỔNG QUÁT ***/
+
+.d_uwe_body {
+    color: grey;
+    font-family: segoe ui;
+    font-family: segoe ui;
+    min-width: 400px;
+    overflow-y: hidden;
+    sbackground-color: white;
 }
 
-.d_left_cover{
-	height: 500px;
+.d_all_function_cover {
+    border: 0px blue dashed;
+    margin: 30px auto;
+    min-width: 430px;
 }
 
-.d_right_cover > .d_right_top {
-	height: 300px;
+.d_left_cover,
+.d_right_top,
+.d_right_bottom {
+    border: 1px lightgrey solid;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    padding: 0;
 }
 
-.d_right_cover > .d_right_bottom {
-	height: 180px;
-}
+.d_right_bottom { height: 184px; }
 
-/** CSS Event Info Tab **/
-.d_basic_info{
-	height: auto;
-	padding: 0px;
+/**************************************************** Event Info Tab **/
+
+.d_basic_info {
+    height: auto;
+    padding: 0px;
 }
 
 .d_basic_info > .d_event_thumbnail {
-	padding: 0;
-	height: auto;
-	overflow: hidden;
-}
-
-.crop {
-    width: 100%;
-    height: 160px;
-}
-
-.crop img {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	height: 100%;
-	width: auto;
-	-webkit-transform: translate(-50%,-50%);
-  		-ms-transform: translate(-50%,-50%);
-  			transform: translate(-50%,-50%);
-}
-
-.crop img.portrait {	/* Khi ảnh có Width < Height thì Add class .portrait vào bằng code JS */
-	height: auto;
-	width: 100%;
-}
-
-/* Event Info tab - Title */
-#i_event_title{
-	font-size: 20px;
-    text-align: justify;
-}
-
-/* Event Info tab - Highlight */
-.d_event_highlight,
-.d_event_des {
-	padding: 0;
-	margin-top: 20px;
-}
-
-.d_event_highlight{
-	height: 155px;
-}
-
-.d_event_highlight > .d_deco_line{
-	height: 14px;
-	border-bottom: 1px whitesmoke solid;
-}
-
-.d_event_highlight > .d_text_highlight{
-	text-align: center;
-	font-size: 18px;
-	font-weight: lighter;
-	height: 20px;
-}
-
-.d_event_highlight > .d_highlight_image_cover{
-	margin-top: 20px;
-	height: 160px;
-}
-
-.d_hightlight_item {
-    overflow: hidden;
-    margin: 3px;
     height: auto;
-    width: 32%;
-    float: left;
-    position: inherit;
-    border: 1px white solid;
+    overflow: hidden;
+    padding: 0;
 }
 
-.crop_2 {
+/**************************************************** Event Info tab - Thumb & info */
+
+.d_event_body { overflow: hidden; }
+
+#i_event_thumbnail {
+    height: auto;
     width: 100%;
-    height: 100px;
 }
 
-.crop_2 img {
-	position: absolute;
-	left: 50%;
-	top: 50%;
-	height: 100%;  /* Để tạm cho full hình, chưa Crop được */
-	width: 100%;
-	-webkit-transform: translate(-50%,-50%);
-  		-ms-transform: translate(-50%,-50%);
-  			transform: translate(-50%,-50%);
+.d_event_info { padding: 0; }
+
+#i_event_title {
+    margin-bottom: 10px;
+    padding: 0;
 }
 
-.crop_2 img.portrait {	/* Khi ảnh có Width < Height thì Add class .portrait vào bằng code JS */
-	height: auto;
-	width: 90%;
+#i_event_title p {
+    color: black;
+    font-size: 18px;
+    font-weight: bold;
 }
 
-/* Event Info tab - Description */
-.d_deco_line{
-	height: 14px;
-	border-bottom: 1px whitesmoke solid;
+.d_each_info { padding: 0; }
+
+.d_each_info div { margin-bottom: 3px; }
+
+.d_each_info .fa,
+.d_each_info .glyphicon {
+    margin-top: 2px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
-.d_des_cover{
-	margin-top: 40px;
-	position: absolute;
-    width: inherit;
-	border: 1px solid lightgrey;
-	border-radius: 4px;
-	height: 210px;
-	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Safari 5.1 to 6.0 */
-    background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Opera 11.1 to 12.0 */
-    background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Firefox 3.6 to 15 */
-    background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* Standard syntax (must be last) */
+
+.d_event_time { padding: 0; }
+
+.glyphicon-map-marker { margin-left: -1px; }
+
+iframe {
+    height: 444px;
+    overflow: hidden;
+    width: 99.9%;
 }
-.d_des_content{
-	margin-top: 40px;
+
+iframe #i_frame_gallery { }
+
+.d_text_des { text-align: center; }
+
+/**************************************************** Event Info tab - Description */
+
+.d_deco_line {
+    border-bottom: 1px lightgray solid;
+    height: 14px;
+}
+
+.d_des_fade {
+    background: -webkit-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(255, 255, 255, 1)); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(255, 255, 255, 1)); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(255, 255, 255, 1)); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0), rgba(255, 255, 255, 1)); /* Standard syntax (must be last) */
+    border: 1px solid lightgrey;
+    border-bottom: 0px;
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    height: 220px;
+    margin-top: 30px;
     position: absolute;
-    width: inherit;
-	height: 210px;
-	border-radius: 4px;
-	background-color: white;
-	padding: 10px;
-	color: black;
-	font-size: 15px;
-	overflow-y: hidden;
+    width: 95%;
 }
 
-/** CSS Image tab **/
-#i_image_tab{
-	border: 0px solid white;
-    overflow-y: auto;
-    overflow-x: hidden;
+.d_des_content {
+    background-color: white;
+    border-radius: 4px;
+    color: black;
+    font-size: 15px;
+    height: 220px;
+    margin-top: 30px;
+    overflow-y: hidden;
+    padding: 10px;
+    position: absolute;
+    width: 95%;
+}
+
+/**************************************************** Image tab **/
+
+#i_image_tab {
+    border: 0px solid white;
     height: 435px;
 }
-.d_image_cover{
-	height: 100%;
-}
-.d_each_group {
-	overflow: hidden;
+
+.d_image_cover { height: 100%; }
+
+.d_each_group { overflow: hidden; }
+
+.d_deco_text_location {
+    font-size: larger;
+    text-align: center;
 }
 
-.d_deco_text_location{
-	text-align: center;
-	font-size: larger;
+/**************************************************** Video tab **/
+
+.d_info_tab {
+    background-color: #fff;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    height: 455px;
+    padding: 10px 0;
 }
 
-/** CSS Video tab **/
-#i_event_video {
-}
+.d_panel_1 { padding-top: 0; }
 
-.d_video_cover{
-	width: 100%;
-    height: 340px;
+.d_video_cover {
+    height: 365px;
     overflow-y: overlay;
     position: relative;
+    width: 100%;
 }
 
 .d_video_thumb_container {
     border: 0px red solid;
-    width: 100%;
     height: inherit;
-    position: relative;
     padding-right: 10px;
     padding-top: 10px;
+    position: relative;
+    width: 100%;
 }
 
-.d_link_cover a{
-	color: white;
-}
+.d_link_cover a { color: gray; }
 
 .col-md-4.thumb {
     height: auto;
     margin-bottom: 0px;
 }
 
-/** CSS Map tab **/
-#map-container{
-	height: 245px;
+/**************************************************** Watch Video tab **/
+
+.d_watch_video_tab { border: 0px red solid; }
+
+.d_play_video iframe { height: 400px; }
+
+.d_wv_button { }
+
+.d_wv_button a { margin-right: 10px; }
+
+/**************************************************** Map tab **/
+
+#map-container {
     border-radius: 3px;
+    height: 245px;
 }
 
-/** CSS Comment tab **/
+/**************************************************** Comment tab **/
 
 .d_write_comment,
-.d_write_report{
-	position: relative;
-    color: gray;
+.d_write_report {
     bottom: -10px;
+    color: gray;
+    position: relative;
 }
 
 #i_cmt_box,
-#i_report_box{
-	float: left;
+#i_report_box {
+    float: left;
     width: 80%;
 }
 
 #i_send_cmt,
-#i_send_report{
-	float: right;
+#i_send_report {
+    float: right;
     height: initial;
 }
 
-/** CSS Report tab **/
-#i_reason1{
-	margin-top: 0px;
+#i_frame_comment { width: 100%; }
+
+.d_cm_each_comment { }
+
+/**************************************************** Khung chức năng PHẢI ***/
+
+/**************************************************** Comment Tab ***/
+
+.d_comment {
+    background-color: white;
+    height: 145px;
 }
 
-/*** Decorate CSS ***/
-.widget  li  a{
-	padding-top: 4px;
-}
 
-.b{
-	border: 1px red solid;
-	height: 70px;
-	width: 100%;
-}
-
-.d_filter_bg{
-	height: 100%;
-	width: 100%;
-	position: fixed;
-	background-color: rgba(0, 0, 0, 0.5);
-	z-index: 0
-}
-
-#i_bg_image{
-	background-size: cover;
-	position: fixed;
-    height: auto;
-    width: 100%;
-    -webkit-filter: blur(10px);
-    z-index: -1;
-}
-
-.nav-tabs > li > a{
-	color: white;
-}
-
-.nav-tabs > li.active > a {
-	background-color: rgba(255, 255, 255, 1);
-	border-bottom-color: transparent;
-	border: 1px solid #fff;
-}
-
-.nav-tabs > li > a:hover{
-	background-color: rgba(255, 255, 255, .25);
-	border: 1px solid #fff;
-}
-
-/* Plugin Sticky Navbar */
-
-/* Plugin Trackpad-scroll-emulator */
-.trackpad{
-	swidth: initial;
-}
+/**************************************************** Decorate CSS ***/

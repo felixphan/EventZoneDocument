@@ -2,23 +2,21 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 using ASPSnippets.GoogleAPI;
 using EventZone.Helpers;
 using EventZone.Models;
 using Newtonsoft.Json.Linq;
-using System.Web;
-using System.Security.Cryptography;
 
 namespace EventZone.Controllers
 {
     public class AccountController : Controller
     {
         private readonly EventZoneEntities db = new EventZoneEntities();
-        
+
         private Uri RedirectUriGoogle
         {
-
             get
             {
                 var uriBuilder = new UriBuilder(Request.Url)
@@ -48,12 +46,13 @@ namespace EventZone.Controllers
             //}
             return PartialView();
         }
+
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
         public ActionResult SignInPost(SignInViewModel model)
         {
-               if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
                 return Json(new
                 {
                     state = 0,
@@ -71,13 +70,14 @@ namespace EventZone.Controllers
                         message = "Your account is locked! Please contact with our support"
                     });
                 }
-                if(model.Remember){
-                    HttpCookie userName= new HttpCookie("userName");
-                    userName.Expires= DateTime.Now.AddDays(7);
-                    userName.Value= model.UserName;
+                if (model.Remember)
+                {
+                    var userName = new HttpCookie("userName");
+                    userName.Expires = DateTime.Now.AddDays(7);
+                    userName.Value = model.UserName;
                     Response.Cookies.Add(userName);
 
-                    HttpCookie password = new HttpCookie("password");
+                    var password = new HttpCookie("password");
                     password.Expires = DateTime.Now.AddDays(7);
                     password.Value = model.Password;
                     Response.Cookies.Add(password);
@@ -346,13 +346,14 @@ namespace EventZone.Controllers
             //remove cookie userName
             if (Request.Cookies["userName"] != null)
             {
-                HttpCookie userName = new HttpCookie("userName");
+                var userName = new HttpCookie("userName");
                 userName.Expires = DateTime.Now.AddDays(-1);
                 Response.Cookies.Add(userName);
             }
             //remove cookie password
-            if (Request.Cookies["password"] != null) {
-                HttpCookie password = new HttpCookie("password");
+            if (Request.Cookies["password"] != null)
+            {
+                var password = new HttpCookie("password");
                 password.Expires = DateTime.Now.AddDays(-1);
                 Request.Cookies.Add(password);
             }
@@ -364,18 +365,6 @@ namespace EventZone.Controllers
             UserHelpers.SetCurrentUser(Session, null);
 
             return RedirectToAction("Index", "Home");
-        }
-
-        private class Email
-        {
-            public string Value { get; set; }
-            public string Type { get; set; }
-        }
-
-        private class Address
-        {
-            public string Value { get; set; }
-            public bool Primary { get; set; }
         }
 
         public ActionResult ForgotPassword()
@@ -396,7 +385,7 @@ namespace EventZone.Controllers
                         Enumerable.Repeat(chars, 8)
                             .Select(s => s[random.Next(s.Length)])
                             .ToArray());
-                    string passHash = EventZoneUtility.Instance.HashPassword(newPassword);
+                    var passHash = EventZoneUtility.Instance.HashPassword(newPassword);
                     var isUpdated = UserDatabaseHelper.Instance.ResetPassword(model.Email, passHash);
                     if (isUpdated)
                     {
@@ -426,19 +415,23 @@ namespace EventZone.Controllers
                 message = "Something Wrong! Please Try Again Later"
             });
         }
+
         public ActionResult RequireSignin()
         {
             return View();
         }
-        public ActionResult CheckCookie() {
+
+        public ActionResult CheckCookie()
+        {
             if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
             {
-                string userName = Request.Cookies["userName"].Value;
-                string password = Request.Cookies["password"].Value;
+                var userName = Request.Cookies["userName"].Value;
+                var password = Request.Cookies["password"].Value;
                 if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
                 {
                     var user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
-                    if (UserDatabaseHelper.Instance.isLookedUser(user.UserName)) {
+                    if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                    {
                         return Json(new
                         {
                             success = 0,
@@ -456,20 +449,29 @@ namespace EventZone.Controllers
                         message = ""
                     });
                 }
-                else
+                return Json(new
                 {
-                    return Json(new
-                    {
-                        success = 0,
-                        message = "Your account have been changed password! Please try to sign in with a new password!"
-                    });
-                }
+                    success = 0,
+                    message = "Your account have been changed password! Please try to sign in with a new password!"
+                });
             }
             return Json(new
             {
                 success = 0,
                 message = "Cookie is empty!"
             });
+        }
+
+        private class Email
+        {
+            public string Value { get; set; }
+            public string Type { get; set; }
+        }
+
+        private class Address
+        {
+            public string Value { get; set; }
+            public bool Primary { get; set; }
         }
     }
 }

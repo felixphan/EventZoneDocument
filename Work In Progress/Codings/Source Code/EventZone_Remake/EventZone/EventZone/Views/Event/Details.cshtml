@@ -1,267 +1,284 @@
-﻿@model EventZone.Models.ViewDetailEventModel
-@using EventZone.Models
-@using EventZone.Helpers
+﻿@using EventZone.Models
+@model ViewDetailEventModel
 @{
-    User user = Session["User"] as User;
+    var user = Session["User"] as User;
     var task = ViewData["EventDetailTask"];
-    int userLikeEvent = Model.FindLike.Type;
-    int numberLike = Model.NumberLike;
-    int numberDislike = Model.NumberDisLike;
-    int numberFollow = Model.NumberFowllower;
+    var userLikeEvent = Model.FindLike.Type;
+    var numberLike = Model.NumberLike;
+    var numberDislike = Model.NumberDisLike;
+    var numberFollow = Model.NumberFowllower;
 }
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="~/Content/Event/perfect-scrollbar.css" rel="stylesheet" />
-<!-- <link rel="stylesheet" type="text/css" href="~/Content/myCSS_chung.css">  CSS của riêng mình, có kèm OurSource -->
-<link href="~/Content/Event/Details.css" rel="stylesheet" />
-  <!-- CSS của riêng mình, có kèm OurSource -->
+<link href="~/Content/Event/Details.css" rel="stylesheet"/>
+<!-- CSS của riêng mình, có kèm OurSource -->
 <!-- Bao phần show Các Tab chức năng -->
-<div class="d_khung_nen row">
-    <!-- khung nền cố định nằm ở lớp dưới, căn giữa lớp trên -->
-    <div class="d_function_cover">
-        <div class="d_info_container d_deco1 col-md-8">
-
-            <!-- Nav tabs BOOTSTRAP -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#i_event_info" aria-controls="i_event_info" role="tab" data-toggle="tab">Event info</a></li>
-                <li role="presentation">
-                    <a href="#i_gallery" aria-controls="i_gallery" role="tab" data-toggle="tab">
-                        @if (Model.eventImage == null)
-                        {
-                            <p>Gallery(0)</p>
-                        }
-                        else
-                        {
-                            <p>Gallery(@Model.eventImage.Count)</p>
-                        }
-
-                    </a>
-                </li>
-
-                <li role="presentation">
-                    <a href="#i_video" aria-controls="i_video" role="tab" data-toggle="tab" onlick="autocomple()">
-                        @if (Model.eventVideo == null)
-                        {
-                            <p>Video(0)</p>
-                        }
-                        else
-                        {
-                            <p>Video(@Model.eventVideo.Count)</p>
-                        }
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Tab panes BOOTSTRAP -->
-            <div class="tab-content">
-
-                <div role="tabpanel" class="tab-pane active" id="i_event_info">
-                    <!-- Khung chứa Basic info với Thumb, tên, ngày tạo, ai tạo~. -->
-                    @if (task == "EventDetail")
-                    {
-                        <div class="d_info">
-                            <div class="d_thumb_container">
-                                <img src="@Model.eventAvatar" id="i_info_thumb">
-                            </div>
-                            <!-- <div class="d_info_icon glyphicon glyphicon-font"></div> -->   <!-- có nên đưa Icon cho Title vào k? -->
-                            <div id="i_event_name">
-                                @Model.eventName
-                            </div>
-                            <div class="d_event_time">
-                                <div class="d_info_icon glyphicon glyphicon-time"></div>
-                                <div class="">
-                                    @Model.StartTime
-                                </div>
-                            </div>
-                            <div class="d_event_date">
-                                <div class="d_info_icon glyphicon glyphicon-calendar"></div>
-                                <div class="">
-                                    @Model.EndTime
-                                </div>
-                            </div>
-                            <div class="d_event_location">
-                                <div class="d_info_icon glyphicon glyphicon-map-marker"></div>
-                                @if (Model.eventLocation != null)
-                                {
-                                    foreach (var item in Model.eventLocation)
-                                    {
-                                        <div>
-                                            @item.LocationName;
-                                        </div>
-                                    }
-                                }
-                            </div>
+<div class="d_uwe_body" style="margin-top: 100px">
+<div class="container-fluid">
+<div class="d_all_function_cover">
+<div class="col-sx-12 col-sm-12 col-md-8 col-lg-8 d_left_cover">
+<ul class="nav nav-tabs" id="myTab">
+    <li class="active">
+        <a href="#i_info_tab" data-toggle="tab">Event Info</a>
+    </li>
+    <li>
+        <a href="#i_image_tab" data-toggle="tab">
+            @if (Model.eventImage == null)
+            {
+                <p>Gallery(0)</p>
+            }
+            else
+            {
+                <p>Gallery(@Model.eventImage.Count)</p>
+            }
+        </a>
+    </li>
+    <li>
+        <a href="#i_video_tab" data-toggle="tab">
+            @if (Model.eventVideo == null)
+            {
+                <p>Video(0)</p>
+            }
+            else
+            {
+                <p>Video(@Model.eventVideo.Count)</p>
+            }
+        </a>
+    </li>
+</ul>
+<div class="tab-content d_info_tab">
+    <!-- Khung chứa Basic info & Description -->
+    <div class="tab-pane active" id="i_info_tab">
+        @if (task == "EventDetail")
+        {
+            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 d_event_thumbnail">
+                <img src="@Model.eventAvatar" id="i_event_thumbnail">
+            </div>
+            <!-- DETAIL INFO -->
+            <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_event_info">
+                <!-- TITLE -->
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9"
+                     id="i_event_title">
+                    <p>@Model.eventName</p>
+                    <!-- DATE TIME -->
+                    <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d_each_info">
+                        <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-list-ul">
                         </div>
-                        <div class="d_button_group">
-                                <button id="btn-like" class="glyphicon glyphicon-thumbs-up"></button><span id="like-count">@numberLike</span>
-                            <br><button id="btn-dislike" class="glyphicon glyphicon-thumbs-down"></button><span id="dislike-count">@numberDislike</span>
-                            <br><button id="btn-follow"><span id="follow-status">Follow</span></button><span id="follow-count">@numberFollow</span>
-
-                            <div id="fb-root"></div>
-                            <div class="fb-share-button" data-href="http://www.your-domain.com/your-page.html" data-layout="button"></div>
-                  
+                        <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+                            in <i>category</i>
                         </div>
-                        <div class="d_des">
-                            @Model.eventDescription
-                            @if (Model.isOwningEvent) { 
-                            @Html.ActionLink("Edit", "Edit", "Event", routeValues: new { id = @Model.eventId }, htmlAttributes: null)
-                            }
-                            
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-time">
                         </div>
-                    }
-                    else
-                    {
-                        @Html.Partial("_EditEventPartial")
-                    }
-                </div>
-
-                <!-- Khung chứa ảnh cho Gallery -->
-                <div role="tabpanel" class="tab-pane scrollbar" id="i_gallery">
-                    <div>
-                        <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
-                        <div class="fileUpload btn btn-primary">
-                            <span>Upload</span>
-                            <input id="uploadBtn" type="file" class="upload" />
+                        <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+                            @Model.StartTime - @Model.EndTime
                         </div>
-                    </div>
-                    <div class="container-fluid d_thumbs_cover">
-                        <div>
-                            @if (Model.eventImage != null)
+                        <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-map-marker">
+                        </div>
+                        <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+                            @if (Model.eventLocation != null)
                             {
-                                foreach (var item in Model.eventImage)
+                                foreach (var item in Model.eventLocation)
                                 {
-                                    <div class=" col-md-4 thumb">
-                                        <a class="thumbnail" href=@item.ImageLink>
-                                            <img class="img-responsive" src="@item.ImageLink" alt="">
-                                        </a>
+                                    <div>
+                                        @item.LocationName;
                                     </div>
                                 }
                             }
                         </div>
                     </div>
                 </div>
-                <!-- Khung chứa Video -->
-                <div role="tabpanel" class="tab-pane" id="i_video">
-                    <div id="result-list" class="panel-group d_video_item_cover">
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
+                <!-- BUTTONS -->
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+                    <button class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-like">
+                        <i class="glyphicon glyphicon-thumbs-up"></i> @numberLike
+                    </button>
 
-                                    <a href="#i_event_video" data-toggle="collapse" data-parent="#result-list">
-                                        <div class="xxx">Video sự kiện (12)</div>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="i_event_video" class="panel-collapse collapse">
-                                <div class="container-fluid d_video_cover">
-                                    <div class="panel-body">
-                                        <div class="container-fluid d_thumbs_video_cover">
-                                            <div>
-
-                                                @if (Model.eventVideo != null)
-                                                {
-                                                    foreach (var item in Model.eventVideo)
-                                                    {
-                                                        var link= item.VideoLink.ToString().Replace("watch?v=","embed/");
-                                                        <div class=" col-md-4 thumb">
-                                                            <embed width="420" height="315"
-                                                                   src="@link">
-                                                        </div>
-                                                    }
-                                                }
-                                                <div class=" col-md-4 thumb">
-                                                    <a class="thumbnail" href="#">
-                                                        Add a video
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="panel panel-default">
-                            <div class="panel-heading">
-                                <h4 class="panel-title">
-                                    <a href="#i_streaming_link" data-toggle="collapse" data-parent="#result-list">
-                                        <div class="xxx">Link xem sự kiện trực tiếp (8)</div>
-                                    </a>
-                                </h4>
-                            </div>
-                            <div id="i_streaming_link" class="panel-collapse collapse">
-                                <div class="container-fluid d_video_cover">
-                                    <div class="panel-body">
-                                        <div class="container-fluid d_thumbs_video_cover">
-                                            <div>
-                                                x
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-dislike">
+                        <i class="glyphicon glyphicon-thumbs-down"></i> @numberDislike
+                    </button>
+                    <a class="btn btn-block btn-social btn-reddit btn-xs" id="btn-follow">
+                        <i class="fa fa-star-o"></i> @numberFollow Followers
+                    </a>
+                    <button class="btn btn-block btn-social btn-facebook btn-xs" id="fb-share button" data-href="http://www.your-domain.com/your-page.html">
+                        <i class="fa fa-facebook"></i> Share Facebook
+                    </button>
                 </div>
             </div>
-        </div>
-
-        <div class="d_map d_deco1 col-md-4">
-            <!-- Khung chứa Map -->
-            <!-- Nav tabs BOOTSTRAP -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#i_map" aria-controls="i_map" role="tab" data-toggle="tab">Map</a>
-                </li>
-            </ul>
-
-            <!-- Tab panes BOOTSTRAP -->
-            <div class="tab-content">
-                <div role="tabpanel" class="tab-pane active" id="i_map">
-                    <div id="map-container"></div>
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des">
+                <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
                 </div>
+                <div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 d_text_des">
+                    Description
+                </div>
+                <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_content">
+                    @Model.eventDescription
+                    @if (Model.isOwningEvent)
+                    {
+                        @Html.ActionLink("Edit", "Edit", "Event", new {id = @Model.eventId}, null)
+                    }
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_fade">
+
+                </div>
+
+            </div>
+        }
+        else
+        {
+            @Html.Partial("_EditEventPartial")
+        }
+    </div>
+    <!-- Khung chứa Gallery -->
+    <div class="tab-pane" id="i_image_tab">
+        <div>
+            <input id="uploadFile" placeholder="Choose File" disabled="disabled"/>
+            <div class="fileUpload btn btn-primary">
+                <span>Upload</span>
+                <input id="uploadBtn" type="file" class="upload"/>
             </div>
         </div>
-
-        <div class="d_comment_report d_deco1 col-md-4">
-            <!-- Khung chứa Comment, Report -->
-            <!-- Nav tabs BOOTSTRAP -->
-            <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active">
-                    <a href="#i_comment" aria-controls="i_comment" role="tab" data-toggle="tab" id="i_comment_btn">Comment (23)</a>
-                </li>
-                <li role="presentation">
-                    <a href="#i_report" aria-controls="i_report" role="tab" data-toggle="tab">Report</a>
-                </li>
-            </ul>
-
-            <!-- Tab panes BOOTSTRAP -->
-            <div class="tab-content">
-                @Html.Partial("_CommentPartial",@Model.eventComment)
-                <div role="tabpanel" class="tab-pane" id="i_report"></div>
+        <div class="container-fluid d_thumbs_cover">
+            <div>
+                @if (Model.eventImage != null)
+                {
+                    foreach (var item in Model.eventImage)
+                    {
+                        <div class=" col-md-4 thumb">
+                            <a class="thumbnail" href=@item.ImageLink>
+                                <img class="img-responsive" src="@item.ImageLink" alt="">
+                            </a>
+                        </div>
+                    }
+                }
             </div>
         </div>
     </div>
+    <!-- Khung chứa Video -->
+    <div class="tab-pane" id="i_video_tab">
+        <div id="result-list" class="panel-group d_video_item_cover">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+
+                        <a href="#i_event_video" data-toggle="collapse" data-parent="#result-list">
+                            <div class="xxx">Video sự kiện</div>
+                        </a>
+                    </h4>
+                </div>
+                <div id="i_event_video" class="panel-collapse collapse">
+                    <div class="container-fluid d_video_cover">
+                        <div class="panel-body">
+                            <div class="container-fluid d_thumbs_video_cover">
+                                <div>
+
+                                    @if (Model.eventVideo != null)
+                                    {
+                                        foreach (var item in Model.eventVideo)
+                                        {
+                                            var link = item.VideoLink.Replace("watch?v=", "embed/");
+                                            <div class=" col-md-4 thumb">
+                                                <embed width="420" height="315"
+                                                       src="@link">
+                                            </div>
+                                        }
+                                    }
+                                    <div class=" col-md-4 thumb">
+                                        <a class="thumbnail" href="#">
+                                            Add a video
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a href="#i_streaming_link" data-toggle="collapse" data-parent="#result-list">
+                            <div class="xxx">Link xem sự kiện trực tiếp (8)</div>
+                        </a>
+                    </h4>
+                </div>
+                <div id="i_streaming_link" class="panel-collapse collapse">
+                    <div class="container-fluid d_video_cover">
+                        <div class="panel-body">
+                            <div class="container-fluid d_thumbs_video_cover">
+                                <div>
+                                    x
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Khung chứa View Video -->
+</div>
+</div>
+<div class="col-sx-12 col-sm-12 col-md-4 col-lg-4 d_right_cover d_map d_deco1">
+    <!-- Thẻ Tab Map -->
+    <!-- Khung chứa Map -->
+    <!-- Nav tabs BOOTSTRAP -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#i_map" aria-controls="i_map" role="tab" data-toggle="tab">Map</a>
+        </li>
+    </ul>
+
+    <!-- Tab panes BOOTSTRAP -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="i_map">
+            <div id="map-container"></div>
+        </div>
+    </div>
+
+    <!-- Thẻ Tab Comment & Report -->
+    <div class="d_right_bottom">
+        <!-- Khung chứa Comment, Report -->
+        <!-- Nav tabs BOOTSTRAP -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="active">
+                <a href="#i_comment" aria-controls="i_comment" role="tab" data-toggle="tab" id="i_comment_btn">Comment (23)</a>
+            </li>
+            <li role="presentation">
+                <a href="#i_report" aria-controls="i_report" role="tab" data-toggle="tab">Report</a>
+            </li>
+        </ul>
+
+        <!-- Tab panes BOOTSTRAP -->
+        <div class="tab-content">
+            @Html.Partial("_CommentPartial", @Model.eventComment)
+            <div role="tabpanel" class="tab-pane" id="i_report"></div>
+        </div>
+    </div>
+</div>
+</div>
+</div>
 </div>
 
-
-<!-- All script here -->
-<script type="text/javascript" src="~/Scripts/Event/perfect-scrollbar.jquery.js"></script> <!-- Plugin thay Style Scrollbar -->
 <script type="text/javascript" src="~/Scripts/Event/jquery.transform.js"></script> <!-- Plugin basic Animation 2d -->
 <!-- <script type="text/javascript" src="js/myJS_chung.js"></script> JS của riêng mình, có kèm OutSource -->
 <script type="text/javascript" src="~/Scripts/Event/Details.js"></script> <!-- JS thuộc trang -->
 <script>
     //facebook share
-(function (d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.5";
-    fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
+    (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "//connect.facebook.net/ja_JP/sdk.js#xfbml=1&version=v2.5";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));
+</script>
 
 
 <script>
     //upload file
-    document.getElementById("uploadBtn").onchange = function () {
+    document.getElementById("uploadBtn").onchange = function() {
         document.getElementById("uploadFile").value = this.value;
     };
 
@@ -271,15 +288,17 @@
     var state = 0;
     var followState = 0;
     //dislike script
-    $(document).ready(function () {
-        $("#btn-dislike").click(function () {
-            @if (user == null) {
-               <text>
+    $(document).ready(function() {
+        $("#btn-dislike").click(function() {
+            @if (user == null)
+            {
+                <text>
             alert('Require Signin :((');
             </text>
-           }
-           else {
-               <text>
+            }
+            else
+            {
+                <text>
             $.ajax({
                 type: "post",
                 url: "/User/Dislike",
@@ -304,17 +323,19 @@
 
             })
             </text>
-           }
+            }
         });
 
-        $("#btn-like").click(function () {
-            @if (user == null) {
-               <text>
+        $("#btn-like").click(function() {
+            @if (user == null)
+            {
+                <text>
             alert('Require Signin :((');
             </text>
-           }
-           else {
-               <text>
+            }
+            else
+            {
+                <text>
             $.ajax({
                 type: "post",
                 url: "/User/Like",
@@ -339,20 +360,22 @@
 
             })
                </text>
-           }
+            }
         });
 
         if (followState == 1) {
             $('#follow-status').text("Following");
         }
-        $("#btn-follow").click(function () {
-           @if (user == null) {
-               <text>
+        $("#btn-follow").click(function() {
+            @if (user == null)
+            {
+                <text>
                alert('Require Signin :((');
                </text>
-           }
-           else {
-               <text>
+            }
+            else
+            {
+                <text>
                $.ajax({
                    type: "post",
                    url: "/User/Follow",
@@ -381,17 +404,17 @@
 
                })
                </text>
-           }
+            }
         });
 
 
-
-    })
+    });
 </script>
 
 <script>
     var index = 0;
-    /*** OUTSOURCE: Google Map ***/
+
+/*** OUTSOURCE: Google Map ***/
     /*** OUTSOURCE: Google Map ***/
     function init_map() {
         var var_location = new google.maps.LatLng(21.013629, 105.526556);
@@ -402,9 +425,11 @@
             zoom: 7
         };
         var var_map = new google.maps.Map(document.getElementById("map-container"),
-           var_mapoptions);
-        @if(Model.eventLocation!=null){
-            foreach (var item in @Model.eventLocation) {
+            var_mapoptions);
+        @if (Model.eventLocation != null)
+        {
+            foreach (var item in @Model.eventLocation)
+            {
                 <text>
         index = index + 1;
         (function (index) {
@@ -432,6 +457,7 @@
             }
         }
     }
+
     google.maps.event.addDomListener(window, 'load', init_map);
     //document.addEventListener('DOMContentLoaded', init_map);
     /*** End of OUTSOURCE: Google Map ***/

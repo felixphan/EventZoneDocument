@@ -106,13 +106,13 @@ namespace EventZone.Controllers
 
         public ActionResult Details(long? id)
         {
-            User user = UserHelpers.GetCurrentUser(Session);
-            Event evt = EventDatabaseHelper.Instance.GetEventByID(id);
+            var user = UserHelpers.GetCurrentUser(Session);
+            var evt = EventDatabaseHelper.Instance.GetEventByID(id);
             if (evt == null)
             {
                 return View("FailedLoadEvent");
             }
-            ViewDetailEventModel viewDetail = new ViewDetailEventModel();
+            var viewDetail = new ViewDetailEventModel();
 
             viewDetail.eventId = evt.EventID;
             viewDetail.eventName = evt.EventName;
@@ -155,11 +155,8 @@ namespace EventZone.Controllers
                 }
                 return View(viewDetail);
             }
-            else
-            {
-                ViewData["EventDetailTask"] = "EditEvent";
-                return View(viewDetail);
-            }
+            ViewData["EventDetailTask"] = "EditEvent";
+            return View(viewDetail);
         }
     }
 }

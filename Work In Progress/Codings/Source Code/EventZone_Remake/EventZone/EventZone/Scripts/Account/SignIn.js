@@ -20,7 +20,7 @@ function OnSignInRequestSucceeded(data) {
         //$(".modal-backdrop").remove();
         ////A space before #SignUl means that they don't add other div again
         //$("#SignUl").load(location.href + " #SignUl");
-       
+
     } else {
         $("#alertPanelSignIn").empty();
         $("#alertPanelSignIn").append("<p>Invalid username or password</p>");

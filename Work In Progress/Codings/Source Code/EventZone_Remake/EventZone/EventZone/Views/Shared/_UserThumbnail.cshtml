@@ -1,45 +1,22 @@
 ﻿@model EventZone.Models.ViewThumbUserModel
 @{
     ViewBag.Title = "_UserThumb";
-    
 }
-<div class="container-fluid d_card_container scrollbar d_scrollbar_style">
-    <div class="d_each_event container-fluid">
-        <div class="container-fluid d_event_basic_info">
-            <div class="box m-flip">
-                <!-- -->
-                <div class="back">
-                    <img src="@Model.Avatar" class="d_thumb_blur">
-                    <div class="d_btn_backside">
-
-                        <a href="#" data-toggle="tooltip" title="Follow">
-                            <div class="glyphicon glyphicon-star-empty" id="i_btn_bs_1"></div> <!-- bs: viết tắt của Backside -->
-                        </a>
-                        <a href="#" data-toggle="tooltip" title="Share">
-                            <div class="glyphicon glyphicon-share-alt" id="i_btn_bs_3"></div>
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <!-- <div class="d_info_icon glyphicon glyphicon-font"></div> --> <!-- có nên đưa Icon cho Title vào k? -->
-            <div class="d_info d_event_name">
-                @Model.Name
-            </div>
-            <div class="d_event_time">
-                Follower
-                <div class="d_info">
-                    @Model.NumberFollower
-                </div>
-            </div>
-            <div class="d_event_date">
-                Event
-                <div class="d_info">
-                    @Model.NumberOwnedEvent
-                </div>
-            </div>
-
-        </div>
+<!-- u_ để đánh dấu CSS USER -->
+<div class="col-xs-4 col-sm-4 col-md-4 col-lg-3 d_u_avatar b">
+    <img src="@Model.Avatar">
+</div>
+<div class="col-xs-8 col-sm-8 col-md-8 col-lg-9 d_u_info_cover">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_u_name">
+        <b>Name: </b> >@Model.Name
     </div>
-
-
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_u_event">
+        <b>Total Events: </b>@Model.NumberOwnedEvent
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_u_follower">
+        <b>Total Follower: </b>@Model.NumberFollower
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_u_follow_btn">
+        <button type="button" class="btn btn-info btn-xs d_follow_btn">Follow</button>
+    </div>
 </div>

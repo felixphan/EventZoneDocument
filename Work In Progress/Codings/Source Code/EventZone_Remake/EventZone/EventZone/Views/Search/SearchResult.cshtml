@@ -29,42 +29,57 @@
         listEventCount = listEvent.Count;
     }
 }
-<div class="d_result_container container-fluid" style="margin-top: 100px">
-    <div class="col-xs-9 d_overflow">
+<link href="~/Content/Search/SearchResult.css" rel="stylesheet"/>
+<div class="d_all_result container b" style="margin-top: 100px">
+    <div class="col-xs-8 col-sm-9 col-md-9 col-lg-10 d_result_container">
         <!-- Tab panes -->
         <div class="tab-content">
-            <div class="tab-pane active" id="event-r">
-                @if (listEvent != null)
-                {
-                    foreach (var item in listEvent)
+            <!-- EVENT Result: e_ đánh dấu CSS Event -->
+            <div class="tab-pane active b" id="event-r">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_e_result_container">
+                    @if (listEvent != null)
                     {
-                        <div>
-                            @Html.Partial("_EventThumbnail", item)
-                            <p>-------------------------------------------------------------</p>
-                        </div>
+                        foreach (var item in listEvent)
+                        {
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                @Html.Partial("_EventThumbnail", item)
+                            </div>
+                        }
                     }
-                }
-
+                </div>
             </div>
-            <div class="tab-pane" id="live-r">
-            </div>
-            <div class="tab-pane" id="channel-r"></div>
-            <div class="tab-pane" id="user-r">
-                @if (listUser != null)
-                {
-                    foreach (var item in listUser)
+            <!-- Live Event Result: c_ đánh dấu CSS Live Event -->
+            <div class="tab-pane b" id="liveEvent-r">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_c_result_container b">
+                    @if (listLiveStream != null)
                     {
-                        <div>
-                            @Html.Partial("_UserThumbnail", item)
-                            <p>-------------------------------------------------------------</p>
-                        </div>
+                        foreach (var item in listEvent)
+                        {
+                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                                @Html.Partial("_EventThumbnail", item)
+                            </div>
+                        }
                     }
-                }
+                </div>
+            </div>
+            <!-- USER Result: u_ đánh dấu CSS User -->
+            <div class="tab-pane b" id="user-r">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_u_result_container">
+                    @if (listUser != null)
+                    {
+                        foreach (var item in listUser)
+                        {
+                            <div>
+                                @Html.Partial("_UserThumbnail", item)
+                            </div>
+                        }
+                    }
 
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xs-3">
+    <div class="col-xs-4 col-sm-3 col-md-3 col-lg-2 d_tab_container">
         <!-- required for floating -->
         <!-- Nav tabs -->
         <ul class="nav nav-tabs tabs-right">

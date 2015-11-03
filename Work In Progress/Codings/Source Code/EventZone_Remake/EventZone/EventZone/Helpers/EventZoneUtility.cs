@@ -1,25 +1,29 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+
 namespace EventZone.Helpers
 {
-    public class EventZoneUtility:SingletonBase<EventZoneUtility>
+    public class EventZoneUtility : SingletonBase<EventZoneUtility>
     {
-        private EventZoneUtility(){}
+        private EventZoneUtility()
+        {
+        }
+
         public string HashPassword(string password)
         {
             // byte array representation of that string
-            byte[] encodedPassword = new UTF8Encoding().GetBytes(password);
+            var encodedPassword = new UTF8Encoding().GetBytes(password);
 
             // need MD5 to calculate the hash
-            byte[] hash = ((HashAlgorithm)CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
+            var hash = ((HashAlgorithm) CryptoConfig.CreateFromName("MD5")).ComputeHash(encodedPassword);
 
             // string representation (similar to UNIX format)
-            string encoded = BitConverter.ToString(hash)
+            var encoded = BitConverter.ToString(hash)
                 // without dashes
-               .Replace("-", string.Empty)
+                .Replace("-", string.Empty)
                 // make lowercase
-               .ToLower();
+                .ToLower();
             return encoded;
         }
     }

@@ -25,8 +25,8 @@ namespace EventZone.Controllers
             listEvent = EventDatabaseHelper.Instance.SearchByCategory(listEvent, categoryid);
             ViewData["listEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEvent);
             return View("SearchResult");
-            
         }
+
         [HttpPost]
         public ActionResult BasicSearch(BasicSearch model)
         {

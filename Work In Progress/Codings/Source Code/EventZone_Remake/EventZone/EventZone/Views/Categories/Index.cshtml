@@ -2,8 +2,7 @@
 
 @foreach (var item in Model)
 {
-        <li>
-            <a href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
-        </li>
-
+    <li>
+        <a href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
+    </li>
 }
