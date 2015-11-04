@@ -38,15 +38,6 @@
           <Property Name="CategoryID" Type="bigint" Nullable="false" />
           <Property Name="FollowerID" Type="bigint" Nullable="false" />
         </EntityType>
-        <EntityType Name="Channel">
-          <Key>
-            <PropertyRef Name="ChannelID" />
-          </Key>
-          <Property Name="ChannelID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="UserID" Type="bigint" Nullable="false" />
-          <Property Name="ChannelName" Type="nvarchar" MaxLength="512" Nullable="false" />
-          <Property Name="ChannelDescription" Type="nvarchar(max)" />
-        </EntityType>
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="CommentID" />
@@ -55,6 +46,15 @@
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="UserID" Type="bigint" Nullable="false" />
           <Property Name="CommentContent" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Channel">
+          <Key>
+            <PropertyRef Name="ChannelID" />
+          </Key>
+          <Property Name="ChannelID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="bigint" Nullable="false" />
+          <Property Name="ChannelName" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ChannelDescription" Type="nvarchar(max)" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -92,6 +92,12 @@
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="LocationID" Type="bigint" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6013: The table/view 'EventZone.dbo.EventRank' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
+        <EntityType Name="EventRank">
+          <Property Name="EventId" Type="bigint" />
+          <Property Name="Score" Type="bigint" />
+        </EntityType>-->
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="ImageID" />
@@ -228,18 +234,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Channel_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Channel" Type="Self.Channel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Channel">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Comment_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
@@ -260,6 +254,18 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Comment">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Channel_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Channel" Type="Self.Channel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Channel">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -336,6 +342,9 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <!--Errors Found During Generation:
+error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship, but cannot be found.
+        <Association Name="FK_EventRank_Event" />-->
         <Association Name="FK_Gallery_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="Image" Type="Self.Image" Multiplicity="*" />
@@ -509,8 +518,8 @@
           <EntitySet Name="Appeal" EntityType="Self.Appeal" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Category" EntityType="Self.Category" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoryFollow" EntityType="Self.CategoryFollow" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Channel" EntityType="Self.Channel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comment" EntityType="Self.Comment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Channel" EntityType="Self.Channel" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventFollow" EntityType="Self.EventFollow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventPlace" EntityType="Self.EventPlace" Schema="dbo" store:Type="Tables" />
@@ -535,10 +544,6 @@
             <End Role="User" EntitySet="User" />
             <End Role="CategoryFollow" EntitySet="CategoryFollow" />
           </AssociationSet>
-          <AssociationSet Name="FK_Channel_User" Association="Self.FK_Channel_User">
-            <End Role="User" EntitySet="User" />
-            <End Role="Channel" EntitySet="Channel" />
-          </AssociationSet>
           <AssociationSet Name="FK_Comment_Event1" Association="Self.FK_Comment_Event1">
             <End Role="Event" EntitySet="Event" />
             <End Role="Comment" EntitySet="Comment" />
@@ -546,6 +551,10 @@
           <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
             <End Role="User" EntitySet="User" />
             <End Role="Comment" EntitySet="Comment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Channel_User" Association="Self.FK_Channel_User">
+            <End Role="User" EntitySet="User" />
+            <End Role="Channel" EntitySet="Channel" />
           </AssociationSet>
           <AssociationSet Name="FK_Event_Category" Association="Self.FK_Event_Category">
             <End Role="Category" EntitySet="Category" />
@@ -672,17 +681,6 @@
           <NavigationProperty Name="Category" Relationship="Self.FK_CategoryFollow_Category" FromRole="CategoryFollow" ToRole="Category" />
           <NavigationProperty Name="User" Relationship="Self.FK_CategoryFollow_User" FromRole="CategoryFollow" ToRole="User" />
         </EntityType>
-        <EntityType Name="Channel">
-          <Key>
-            <PropertyRef Name="ChannelID" />
-          </Key>
-          <Property Name="ChannelID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="UserID" Type="Int64" Nullable="false" />
-          <Property Name="ChannelName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="ChannelDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="User" Relationship="Self.FK_Channel_User" FromRole="Channel" ToRole="User" />
-          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Channel1" FromRole="Channel" ToRole="Event" />
-        </EntityType>
         <EntityType Name="Comment">
           <Key>
             <PropertyRef Name="CommentID" />
@@ -693,6 +691,17 @@
           <Property Name="CommentContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Event" Relationship="Self.FK_Comment_Event1" FromRole="Comment" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_Comment_User" FromRole="Comment" ToRole="User" />
+        </EntityType>
+        <EntityType Name="Channel">
+          <Key>
+            <PropertyRef Name="ChannelID" />
+          </Key>
+          <Property Name="ChannelID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="ChannelName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ChannelDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Channel_User" FromRole="Channel" ToRole="User" />
+          <NavigationProperty Name="Events" Relationship="Self.FK_Event_Channel1" FromRole="Channel" ToRole="Event" />
         </EntityType>
         <EntityType Name="Event">
           <Key>
@@ -715,8 +724,8 @@
           <Property Name="Status" Type="Boolean" Nullable="false" />
           <NavigationProperty Name="Appeals" Relationship="Self.FK_Appeal_Event1" FromRole="Event" ToRole="Appeal" />
           <NavigationProperty Name="Category" Relationship="Self.FK_Event_Category" FromRole="Event" ToRole="Category" />
-          <NavigationProperty Name="Channel" Relationship="Self.FK_Event_Channel1" FromRole="Event" ToRole="Channel" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Event1" FromRole="Event" ToRole="Comment" />
+          <NavigationProperty Name="Channel" Relationship="Self.FK_Event_Channel1" FromRole="Event" ToRole="Channel" />
           <NavigationProperty Name="EventFollows" Relationship="Self.FK_EventFollow_Event1" FromRole="Event" ToRole="EventFollow" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Event1" FromRole="Event" ToRole="EventPlace" />
           <NavigationProperty Name="Images" Relationship="Self.FK_Gallery_Event1" FromRole="Event" ToRole="Image" />
@@ -848,8 +857,8 @@
           <Property Name="AvatarLink" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="DataJoin" Type="DateTime" Precision="0" />
           <NavigationProperty Name="CategoryFollows" Relationship="Self.FK_CategoryFollow_User" FromRole="User" ToRole="CategoryFollow" />
-          <NavigationProperty Name="Channels" Relationship="Self.FK_Channel_User" FromRole="User" ToRole="Channel" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_User" FromRole="User" ToRole="Comment" />
+          <NavigationProperty Name="Channels" Relationship="Self.FK_Channel_User" FromRole="User" ToRole="Channel" />
           <NavigationProperty Name="EventFollows" Relationship="Self.FK_EventFollow_User" FromRole="User" ToRole="EventFollow" />
           <NavigationProperty Name="Images" Relationship="Self.FK_Gallery_User" FromRole="User" ToRole="Image" />
           <NavigationProperty Name="LikeDislikes" Relationship="Self.FK_LikeDislike_User" FromRole="User" ToRole="LikeDislike" />
@@ -932,30 +941,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Channel_User">
-          <End Role="User" Type="Self.User" Multiplicity="1" />
-          <End Role="Channel" Type="Self.Channel" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="Channel">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Event_Channel1">
-          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
-          <End Role="Event" Type="Self.Event" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Channel">
-              <PropertyRef Name="ChannelID" />
-            </Principal>
-            <Dependent Role="Event">
-              <PropertyRef Name="ChannelID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Comment_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="Comment" Type="Self.Comment" Multiplicity="*" />
@@ -977,6 +962,30 @@
             </Principal>
             <Dependent Role="Comment">
               <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Channel_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="Channel" Type="Self.Channel" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="Channel">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Event_Channel1">
+          <End Role="Channel" Type="Self.Channel" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Channel">
+              <PropertyRef Name="ChannelID" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="ChannelID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1189,8 +1198,8 @@
           <EntitySet Name="Appeals" EntityType="Self.Appeal" />
           <EntitySet Name="Categories" EntityType="Self.Category" />
           <EntitySet Name="CategoryFollows" EntityType="Self.CategoryFollow" />
-          <EntitySet Name="Channels" EntityType="Self.Channel" />
           <EntitySet Name="Comments" EntityType="Self.Comment" />
+          <EntitySet Name="Channels" EntityType="Self.Channel" />
           <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="EventFollows" EntityType="Self.EventFollow" />
           <EntitySet Name="EventPlaces" EntityType="Self.EventPlace" />
@@ -1223,14 +1232,6 @@
             <End Role="User" EntitySet="Users" />
             <End Role="CategoryFollow" EntitySet="CategoryFollows" />
           </AssociationSet>
-          <AssociationSet Name="FK_Channel_User" Association="Self.FK_Channel_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Channel" EntitySet="Channels" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Event_Channel1" Association="Self.FK_Event_Channel1">
-            <End Role="Channel" EntitySet="Channels" />
-            <End Role="Event" EntitySet="Events" />
-          </AssociationSet>
           <AssociationSet Name="FK_Comment_Event1" Association="Self.FK_Comment_Event1">
             <End Role="Event" EntitySet="Events" />
             <End Role="Comment" EntitySet="Comments" />
@@ -1238,6 +1239,14 @@
           <AssociationSet Name="FK_Comment_User" Association="Self.FK_Comment_User">
             <End Role="User" EntitySet="Users" />
             <End Role="Comment" EntitySet="Comments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Channel_User" Association="Self.FK_Channel_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Channel" EntitySet="Channels" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_Channel1" Association="Self.FK_Event_Channel1">
+            <End Role="Channel" EntitySet="Channels" />
+            <End Role="Event" EntitySet="Events" />
           </AssociationSet>
           <AssociationSet Name="FK_EventFollow_Event1" Association="Self.FK_EventFollow_Event1">
             <End Role="Event" EntitySet="Events" />
@@ -1351,16 +1360,6 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Channels">
-            <EntityTypeMapping TypeName="EventZoneModel.Channel">
-              <MappingFragment StoreEntitySet="Channel">
-                <ScalarProperty Name="ChannelID" ColumnName="ChannelID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="ChannelName" ColumnName="ChannelName" />
-                <ScalarProperty Name="ChannelDescription" ColumnName="ChannelDescription" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="EventZoneModel.Comment">
               <MappingFragment StoreEntitySet="Comment">
@@ -1368,6 +1367,16 @@
                 <ScalarProperty Name="EventID" ColumnName="EventID" />
                 <ScalarProperty Name="UserID" ColumnName="UserID" />
                 <ScalarProperty Name="CommentContent" ColumnName="CommentContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Channels">
+            <EntityTypeMapping TypeName="EventZoneModel.Channel">
+              <MappingFragment StoreEntitySet="Channel">
+                <ScalarProperty Name="ChannelID" ColumnName="ChannelID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="ChannelName" ColumnName="ChannelName" />
+                <ScalarProperty Name="ChannelDescription" ColumnName="ChannelDescription" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

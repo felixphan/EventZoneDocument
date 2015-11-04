@@ -16,6 +16,7 @@
 
 function OnSignUpRequestSucceeded(data) {
     if (data.state === 1) {
+        location.reload();
         $("#myModal2").modal("toggle");
         $(".modal-backdrop").remove();
         $("#SignUl").load(location.href + " #SignUl");
