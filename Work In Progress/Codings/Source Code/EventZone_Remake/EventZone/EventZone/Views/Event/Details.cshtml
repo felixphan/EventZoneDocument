@@ -134,13 +134,7 @@
                     </div>
                     <!-- Khung chứa Gallery -->
                     <div class="tab-pane" id="i_image_tab">
-                        <div>
-                            <input id="uploadFile" placeholder="Choose File" disabled="disabled" />
-                            <div class="fileUpload btn btn-primary">
-                                <span>Upload</span>
-                                <input id="uploadBtn" type="file" class="upload" />
-                            </div>
-                        </div>
+                        
                         <div class="container-fluid d_thumbs_cover">
                             <div>
                                 @if (Model.eventImage != null)
@@ -156,6 +150,20 @@
                                 }
                             </div>
                         </div>
+                        @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div>
+                                <div class="fileUpload btn btn-primary">
+                                    <span>Upload</span>
+                                    <input id="uploadBtn" name="file" type="file" class="upload" style="width: 100%;" />
+                                </div>
+                            </div>
+                            <input hidden name="eventID" value="@Model.eventId">
+                            <div>
+                                <input type="submit" value="Upload" />
+                            </div>
+                        }
+                        
                     </div>
                     <!-- Khung chứa Video -->
                     <div class="tab-pane" id="i_video_tab">

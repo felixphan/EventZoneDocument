@@ -740,6 +740,36 @@ namespace EventZone.Helpers
                 return false;
             }
         }
+        /// <summary>
+        /// count number of unique user comment on event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public int CountUniqueUserComment(long eventID) {
+            int count = 0;
+            try
+            {
+                count = (from a in db.Comments where a.EventID == eventID select a.UserID).Distinct().ToList().Count();
+            }
+            catch { 
+            }
+            return count;
+        }
+        /// <summary>
+        /// calculate event score to rank it, each view will be calculate as 1 point, like(or dislike) = 2 , unique user comment = 3 point, follow = 4 point.
+        /// </summary>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
+        public long CalculateEventScore(long eventId) {
+            long score = 0;
+            try {
+                score = GetEventByID(eventId).View + (CountDisLike(eventId) + CountLike(eventId))*2 + CountUniqueUserComment(eventId) * 3 + CountFollowerOfEvent(eventId)*4;
+            }
+            catch
+            {
+            }
+            return score;
+        }
 
         /// <summary>
         ///     trả lại event có tên, địa điểm hoặc description trùng với keyword, keyword = null thi tra lai toan bo event
@@ -993,10 +1023,14 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public int CountLike(long eventID)
         {
-            var countLike =
-                (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Like select a)
-                    .Count();
-            return countLike;
+            try
+            {
+                var countLike =
+                    (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Like select a)
+                        .Count();
+                return countLike;
+            }
+            catch { return 0;}
         }
 
         /// <summary>
@@ -1006,10 +1040,17 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public int CountDisLike(long eventID)
         {
-            var disLike =
-                (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Dislike select a)
-                    .Count();
-            return disLike;
+            try
+            {
+                var disLike =
+                    (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Dislike select a)
+                        .Count();
+                return disLike;
+            }
+            catch
+            {
+                return 0;
+            }
         }
 
         /// <summary>
@@ -1019,8 +1060,15 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public int CountFollowerOfEvent(long eventID)
         {
-            var NumberFollower = (from a in db.EventFollows where a.EventID == eventID select a).ToList().Count;
-            return NumberFollower;
+            try
+            {
+                var NumberFollower = (from a in db.EventFollows where a.EventID == eventID select a).ToList().Count;
+                return NumberFollower;
+            }
+            catch {
+                return 0;
+            }
+           
         }
 
         /// <summary>

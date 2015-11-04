@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using EventZone.Helpers;
 using EventZone.Models;
+using System.Web;
+using System.IO;
+using Amazon.S3;
 
 namespace EventZone.Controllers
 {
@@ -160,6 +163,41 @@ namespace EventZone.Controllers
                 ViewData["EventDetailTask"] = "EditEvent";
                 return View(viewDetail);
             }
+        }
+
+        public ActionResult ImageUpload(HttpPostedFileBase file, long eventID)
+        {
+            
+            Image photo = new Image();
+            if (file != null)
+            {
+                string[] whiteListedExt = { ".jpg", ".gif", ".png", ".tiff" };
+                Stream stream = file.InputStream;
+                string extension = Path.GetExtension(file.FileName);
+                if (whiteListedExt.Contains(extension))
+                {
+                    string pic = Guid.NewGuid()+ eventID.ToString() + extension;
+                    using (AmazonS3Client s3Client = new AmazonS3Client(Amazon.RegionEndpoint.USWest2))
+                        EventZoneUtility.FileUploadToS3("eventzone", pic, stream, true, s3Client);
+                    Image image = new Image();
+                    image.EventID = eventID;
+                    image.ImageLink = pic;
+
+
+
+
+                    TempData["ImageUploadError"] = null; // success
+                }
+                else
+                {
+                    TempData["ImageUploadError"] = "File is not supported! Please select an image file";
+                }
+            }
+            else
+            {
+                TempData["ImageUploadError"] = "Your must select a file to upload";
+            }
+            return RedirectToAction("Details", "Event",db.Events.Find(eventID));
         }
     }
 }

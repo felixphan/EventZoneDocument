@@ -15,6 +15,7 @@ namespace EventZone.Controllers
     public class AccountController : Controller
     {
         private readonly EventZoneEntities db = new EventZoneEntities();
+       
 
         private Uri RedirectUriGoogle
         {
@@ -176,7 +177,7 @@ namespace EventZone.Controllers
                 //Create Channel
                 UserDatabaseHelper.Instance.CreateUserChannel(user);
                 //Send email confirm
-                MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
+                MailHelpers.Instance.SendMailWelcome(user.UserEmail,user.UserFirstName,user.UserLastName);
                 //return RedirectToAction("RegisterSuccess", "Account");
                 return Json(new
                 {
@@ -324,7 +325,6 @@ namespace EventZone.Controllers
                 Session["userAva"] = user.AvatarLink;
                 Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
-
                 //Send email confirm
                 MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
                 return RedirectToAction("RegisterSuccess", "Account");
