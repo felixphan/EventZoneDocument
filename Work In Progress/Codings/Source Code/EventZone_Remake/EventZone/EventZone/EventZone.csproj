@@ -214,6 +214,9 @@
     <Compile Include="Models\EventPlace.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\EventRank.cs">
+      <DependentUpon>EventZone.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\EventViewModels.cs" />
     <Compile Include="Models\EventZone.Context.cs">
       <AutoGen>True</AutoGen>
@@ -275,8 +278,9 @@
     <Content Include="Content\Home\font-awesome.min.css" />
     <Content Include="Content\Home\Index.css" />
     <Content Include="Content\Home\jquery.m.flip.css" />
-    <Content Include="Content\Search\SearchResult.css" />
+    <Content Include="Content\Home\myCSS_index_2.css" />
     <Content Include="Content\Search\SearchAdvance.css" />
+    <Content Include="Content\Search\SearchResult.css" />
     <Content Include="Content\_Layout\Site.css" />
     <Content Include="Content\_Layout\_Layout.css" />
     <Content Include="favicon.ico" />
@@ -340,24 +344,28 @@
     <Content Include="Scripts\Event\prettify-1.0.min.js" />
     <Content Include="Content\Home\bootstrap-social.css" />
     <Content Include="Scripts\Home\bootstrap-hover-dropdown.min.js" />
+    <Content Include="Scripts\Home\bootstrap.min.js" />
     <Content Include="Scripts\Home\Index.js" />
     <Content Include="Scripts\Home\jquery.flip.min.js" />
     <Content Include="Scripts\Home\jquery.smartmenus.bootstrap.js" />
     <Content Include="Scripts\Home\jquery.smartmenus.js" />
+    <Content Include="Scripts\Home\myJS_index_2.js" />
+    <Content Include="Scripts\jquery-1.11.3.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\jquery.md5.js" />
     <Content Include="Scripts\Search\SearchAdvance.js" />
     <Content Include="Scripts\jquery.ajaxform.js" />
     <Content Include="Scripts\Account\SignIn.js" />
     <Content Include="Scripts\Account\SignUp.js" />
+    <Content Include="Scripts\shareFacebook.js" />
     <Content Include="Scripts\_Layout\jquery.smartmenus.bootstrap.js" />
     <Content Include="Scripts\_Layout\jquery.smartmenus.js" />
     <Content Include="Scripts\_Layout\jquery.unobtrusive-ajax.js" />
@@ -421,6 +429,7 @@
     <Content Include="Views\User\_EditProfilePartial.cshtml" />
     <Content Include="Views\User\_MyEventPartial.cshtml" />
     <Content Include="Views\User\_UserInfoPartial.cshtml" />
+    <Content Include="Views\Home\_ThumbEventHomepage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

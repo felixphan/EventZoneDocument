@@ -35,7 +35,7 @@ namespace EventZone.Models
         public System.DateTime EventRegisterDate { get; set; }
         public long View { get; set; }
         public long CategoryID { get; set; }
-        public bool Privacy { get; set; }
+        public int Privacy { get; set; }
         public Nullable<long> Avatar { get; set; }
         public Nullable<long> EditBy { get; set; }
         public Nullable<System.DateTime> EditTime { get; set; }
@@ -46,6 +46,7 @@ namespace EventZone.Models
         public virtual Category Category { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
         public virtual Channel Channel { get; set; }
+        public virtual EventRank EventRank { get; set; }
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<EventPlace> EventPlaces { get; set; }
         public virtual ICollection<Image> Images { get; set; }

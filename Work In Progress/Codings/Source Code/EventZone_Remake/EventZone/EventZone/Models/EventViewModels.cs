@@ -30,7 +30,7 @@ namespace EventZone.Models
 
         [Required]
         [Display(Name = "Privacy")]
-        public bool Privacy { get; set; }
+        public int Privacy { get; set; }
 
         [Required]
         [Display(Name = "Streaming")]
@@ -73,6 +73,14 @@ namespace EventZone.Models
         public List<Image> eventImage { get; set; }
         public List<Video> eventVideo { get; set; }
         public List<Comment> eventComment { get; set; }
-        public bool Privacy { get; set; }
+        public int Privacy { get; set; }
+    }
+    public class ThumbEventHomePage {
+        public long EventID { get; set; }
+        public string avatar { get; set; }
+        public string EventName { get; set; }
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+        public List<Location> listLocation { get; set; }
     }
 }

@@ -106,6 +106,21 @@ namespace EventZone.Helpers
             return channel;
         }
 
+
+        /// <summary>
+        /// get list following categoryID by user
+        /// </summary>
+        public List<long> GetListFollowingCategoryByUser (long userID){
+            try
+            {
+                List<long> result = (from a in db.CategoryFollows where a.FollowerID == userID select a.CategoryID).ToList();
+                return result;
+            }
+            catch {
+                return null;
+            }
+
+        }
         /// <summary>
         ///     count numbers event of user
         /// </summary>
@@ -150,7 +165,7 @@ namespace EventZone.Helpers
             }
             return listView;
         }
-
+       
         /// <summary>
         ///     Check is user following another user
         /// </summary>
@@ -245,7 +260,12 @@ namespace EventZone.Helpers
                 return false;
             }
         }
-
+        /// <summary>
+        /// user unfollow event
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="eventId"></param>
+        /// <returns></returns>
         public bool UnFollowEvent(long userId, long eventId)
         {
             try
@@ -722,7 +742,7 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        ///     trả lại event có tên, địa điểm hoặc description trùng với keyword
+        ///     trả lại event có tên, địa điểm hoặc description trùng với keyword, keyword = null thi tra lai toan bo event
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
@@ -820,7 +840,26 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public Image GetImageByID(long? imageID)
         {
+            
             return db.Images.Find(imageID);
+        }
+
+        
+        /// <summary>
+        /// Search all event by CategoryID
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public List<Event> SearchEventByCategoryID(long categoryID)
+        {
+            List<Event> listEvent = new List<Event>();
+            try {
+                listEvent = (from a in db.Events where a.CategoryID == categoryID select a).ToList();
+            }
+            catch { 
+            }
+            return listEvent;
+
         }
 
         /// <summary>
@@ -829,7 +868,7 @@ namespace EventZone.Helpers
         /// <param name="listEvent"></param>
         /// <param name="listCategory"></param>
         /// <returns></returns>
-        public List<Event> SearchByCategory(List<Event> listEvent, long[] listCategory)
+        public List<Event> SearchByListCategory(List<Event> listEvent, long[] listCategory)
         {
             if (listCategory.Length == 0)
             {
@@ -852,6 +891,101 @@ namespace EventZone.Helpers
             return result;
         }
 
+        /// <summary>
+        /// Get list new event
+        /// </summary>
+        /// <returns></returns>
+        public List<Event> GetListNewEvent() { 
+            List<Event> result= new List<Event>();
+            try
+            {
+                 DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(7);
+                 result = (from a in db.Events where a.EventRegisterDate >= floorDateTime select a).ToList();
+                 result= result.OrderBy(o => o.EventRegisterDate).ToList();
+            }
+            catch { }
+            return result;
+        }
+        /// <summary>
+        /// get list new event by User (result is all new event which that user is following by category)
+        /// </summary>
+        /// <returns></returns>
+        public List<Event> GetListNewEventByUser (long userID){
+            List<Event> result = new List<Event>();
+            try
+            {
+                long[] listCategoryID = UserDatabaseHelper.Instance.GetListFollowingCategoryByUser(userID).ToArray();
+                List<Event> newEvent = GetListNewEvent();
+                result = SearchByListCategory(newEvent, listCategoryID);
+            }
+            catch { 
+            
+            }
+            return result;
+        }
+        public List<ThumbEventHomePage> GetThumbEventHomepage(List<Event> ListEvent)
+        {
+            List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();
+            if (ListEvent == null) {
+                return null;
+            }
+            foreach (var item in ListEvent) {
+                ThumbEventHomePage thumbevt = new ThumbEventHomePage();
+                thumbevt.EventID = item.EventID;
+                thumbevt.EventName = item.EventName; 
+                thumbevt.avatar = GetImageByID(item.Avatar).ImageLink;
+                thumbevt.StartDate = item.EventStartDate;
+                if (item.EventEndDate != null) {
+                    thumbevt.EndDate = item.EventEndDate;
+                }
+                thumbevt.listLocation = EventDatabaseHelper.Instance.GetEventLocation(item.EventID);
+                listThumb.Add(thumbevt);
+            }
+            return listThumb;
+
+        }
+        /// <summary>
+        /// Select public and avaiable event(avaiable is event not locked)
+        /// </summary>
+        /// <param name="listEvent"></param>
+        /// <returns></returns>
+        /// 
+        public List<Event> RemoveLockedEventInList(List<Event> listEvent)
+        {
+            try
+            {
+                List<Event> result = new List<Event>();
+                listEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) && (o.Status == EventZoneConstants.isActive));
+                result = listEvent;
+                return result;
+            }
+            catch {
+                return listEvent;
+            }
+        }
+        /// <summary>
+        /// Take 50 hotest event
+        /// </summary>
+        /// <returns></returns>
+        public List<Event> GetHotEvent() {
+            List<Event> result = new List<Event>();
+            try {
+                List<long> listEventID;
+                listEventID = (from a in db.EventRanks orderby a.Score select a.EventId).Take(50).ToList();
+                foreach (var item in listEventID) {
+                    Event evt = db.Events.Find(item);
+                    if (evt != null) {
+                        result.Add(evt);
+                    }
+                }
+                return result;
+            }
+            catch {
+                result = (from a in db.Events select a).Take(50).ToList();
+                return result;
+            }
+            
+        }
         /// <summary>
         ///     dem so like cua event
         /// </summary>
@@ -918,7 +1052,18 @@ namespace EventZone.Helpers
             }
             return result;
         }
-
+        public List<Event> GetLiveEventByListEvent(List<Event> listEvent) {
+            List<Event> result= new List<Event>();
+            if (listEvent != null) { 
+                foreach(var item in listEvent){
+                    if (isLive(item.EventID)) {
+                        result.Add(item);
+                    }  
+                }
+            }
+            return result;
+        
+        }
         /// <summary>
         ///     get list comment of event
         /// </summary>
@@ -1064,7 +1209,15 @@ namespace EventZone.Helpers
         {
             return db.Categories.ToList();
         }
-
+        public Category GetCategoryById(long id) {
+            try
+            {
+                return db.Categories.Find(id);
+            }
+            catch {
+                return null;
+            }
+        }
         /// <summary>
         /// count new event by category(new event is event that be defined as event is created in recent 7 days)
         /// </summary>

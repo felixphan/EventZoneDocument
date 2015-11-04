@@ -1,4 +1,5 @@
 ﻿$("#SignInForm").submit(function (event) {
+    $("#alertPanelSignIn").hide();
     //@*Validate form.*@
     var isValidForm = $("#SignInForm").validate().form();
     //@*Form is invalid.*@
@@ -15,6 +16,7 @@
 
 function OnSignInRequestSucceeded(data) {
     if (data.state === 1) {
+        $("#signin-password").val("");
         location.reload();
         //$("#myModal2").modal("toggle");
         //$(".modal-backdrop").remove();
@@ -22,6 +24,7 @@ function OnSignInRequestSucceeded(data) {
         //$("#SignUl").load(location.href + " #SignUl");
 
     } else {
+        $("#signin-password").val("");
         $("#alertPanelSignIn").empty();
         $("#alertPanelSignIn").append("<p>Invalid username or password</p>");
         $("#alertPanelSignIn").show();

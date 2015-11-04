@@ -2,6 +2,7 @@
 @model IEnumerable<EventZone.Models.Category>
 @{
     var user = UserHelpers.GetCurrentUser(Session);
+    ViewBag.Title = "Home Page";
 }
 
 <link href="~/Content/Home/Index.css" rel="stylesheet"/>
@@ -22,7 +23,7 @@
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_mc_text_2">
             Only one zone for all Activities. Promote, manage, and host successful events.
-            <a href="#" id="i_learn_more">
+           <p> <a href="#" id="i_learn_more">
                 Learn More
             </a>
         </div>
@@ -97,158 +98,23 @@
     <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11">
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 d_cc_column d_cc_column_1">
             <div class="d_cc_title" style="color: white">
-                Column 1
+                New Event
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_cc_event_container">
-                <div class="d_ee_body">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 d_ee_thumb">
-                        <div class="card">
-                            <div class="front">
-                                <img src="~/img/bg1.jpg">
-                                <div class="d_ee_live">
-                                    live
-                                </div>
-                            </div>
-                            <div class="back">
-                                <div class="d_ee_thumb_back">
-                                    <div class="d_ee_follow">
-                                        Follow
-                                    </div>
-                                    <div class="d_ee_share">
-                                        Share
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_ee_info_cover">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_title">
-                            The Wave Music Festival 2015 - Hà Nội
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_datetime">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2 d_ee_icon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 d_ee_datetime2">
-                                Thứ ngày tháng năm
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_location">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2 d_ee_icon">
-                                <span class="glyphicon glyphicon-map-marker"></span>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 d_ee_location2">
-                                Hà nội
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           @Html.Action("NewEvent","Home")
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 d_cc_column d_cc_column_2">
             <div class="d_cc_title" style="color: white">
-                Column 2
+                Hot Event
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_cc_event_container">
-                <div class="d_ee_body">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 d_ee_thumb">
-                        <div class="card">
-                            <div class="front">
-                                <img src="~/img/bg1.jpg">
-                                <div class="d_ee_live">
-                                    live
-                                </div>
-                            </div>
-                            <div class="back">
-                                <div class="d_ee_thumb_back">
-                                    <div class="d_ee_follow">
-                                        Follow
-                                    </div>
-                                    <div class="d_ee_share">
-                                        Share
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_ee_info_cover">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_title">
-                            The Wave Music Festival 2015 - Hà Nội
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_datetime">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2 d_ee_icon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 d_ee_datetime2">
-                                Thứ ngày tháng năm
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_location">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2 d_ee_icon">
-                                <span class="glyphicon glyphicon-map-marker"></span>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 d_ee_location2">
-                                Hà nội
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           @Html.Action("HotEvent", "Home")
         </div>
 
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 d_cc_column d_cc_column_3">
             <div class="d_cc_title" style="color: white">
-                Column 3
+                Live Streaming
             </div>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_cc_event_container">
-                <div class="d_ee_body">
-                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 d_ee_thumb">
-                        <div class="card">
-                            <div class="front">
-                                <img src="~/img/bg1.jpg">
-                                <div class="d_ee_live">
-                                    live
-                                </div>
-                            </div>
-                            <div class="back">
-                                <div class="d_ee_thumb_back">
-                                    <div class="d_ee_follow">
-                                        Follow
-                                    </div>
-                                    <div class="d_ee_share">
-                                        Share
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_ee_info_cover">
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_title">
-                            The Wave Music Festival 2015 - Hà Nội
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_datetime">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2 d_ee_icon">
-                                <span class="glyphicon glyphicon-time"></span>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 d_ee_datetime2">
-                                Thứ ngày tháng năm
-                            </div>
-                        </div>
-                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_ee_location">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-2 d_ee_icon">
-                                <span class="glyphicon glyphicon-map-marker"></span>
-                            </div>
-                            <div class="col-xs-11 col-sm-11 col-md-10 col-lg-10 d_ee_location2">
-                                Hà nội
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+           @Html.Action("LiveEvent","Home")
         </div>
     </div>
 </div>
@@ -284,7 +150,6 @@
                 console.log(textStatus);
                 console.log(errorThrown);
             }
-
         })
         </text>
                }

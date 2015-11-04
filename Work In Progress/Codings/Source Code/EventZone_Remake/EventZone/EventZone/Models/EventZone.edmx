@@ -69,7 +69,7 @@
           <Property Name="EventRegisterDate" Type="datetime" Nullable="false" />
           <Property Name="View" Type="bigint" Nullable="false" />
           <Property Name="CategoryID" Type="bigint" Nullable="false" />
-          <Property Name="Privacy" Type="bit" Nullable="false" />
+          <Property Name="Privacy" Type="int" Nullable="false" />
           <Property Name="Avatar" Type="bigint" />
           <Property Name="EditBy" Type="bigint" />
           <Property Name="EditTime" Type="datetime" />
@@ -92,12 +92,13 @@
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="LocationID" Type="bigint" Nullable="false" />
         </EntityType>
-        <!--Errors Found During Generation:
-warning 6013: The table/view 'EventZone.dbo.EventRank' does not have a primary key defined and no valid primary key could be inferred. This table/view has been excluded. To use the entity, you will need to review your schema, add the correct keys, and uncomment it.
         <EntityType Name="EventRank">
-          <Property Name="EventId" Type="bigint" />
-          <Property Name="Score" Type="bigint" />
-        </EntityType>-->
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="bigint" Nullable="false" />
+          <Property Name="Score" Type="bigint" Nullable="false" />
+        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="ImageID" />
@@ -294,6 +295,18 @@ warning 6013: The table/view 'EventZone.dbo.EventRank' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Event_EventRank">
+          <End Role="EventRank" Type="Self.EventRank" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EventRank">
+              <PropertyRef Name="EventId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EventFollow_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="EventFollow" Type="Self.EventFollow" Multiplicity="*" />
@@ -342,9 +355,6 @@ warning 6013: The table/view 'EventZone.dbo.EventRank' does not have a primary k
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <!--Errors Found During Generation:
-error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship, but cannot be found.
-        <Association Name="FK_EventRank_Event" />-->
         <Association Name="FK_Gallery_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="Image" Type="Self.Image" Multiplicity="*" />
@@ -523,6 +533,7 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventFollow" EntityType="Self.EventFollow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventPlace" EntityType="Self.EventPlace" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventRank" EntityType="Self.EventRank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LikeDislike" EntityType="Self.LikeDislike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
@@ -562,6 +573,10 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           </AssociationSet>
           <AssociationSet Name="FK_Event_Channel1" Association="Self.FK_Event_Channel1">
             <End Role="Channel" EntitySet="Channel" />
+            <End Role="Event" EntitySet="Event" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_EventRank" Association="Self.FK_Event_EventRank">
+            <End Role="EventRank" EntitySet="EventRank" />
             <End Role="Event" EntitySet="Event" />
           </AssociationSet>
           <AssociationSet Name="FK_EventFollow_Event1" Association="Self.FK_EventFollow_Event1">
@@ -716,7 +731,7 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           <Property Name="EventRegisterDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="View" Type="Int64" Nullable="false" />
           <Property Name="CategoryID" Type="Int64" Nullable="false" />
-          <Property Name="Privacy" Type="Boolean" Nullable="false" />
+          <Property Name="Privacy" Type="Int32" Nullable="false" />
           <Property Name="Avatar" Type="Int64" />
           <Property Name="EditBy" Type="Int64" />
           <Property Name="EditTime" Type="DateTime" Precision="3" />
@@ -726,6 +741,7 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           <NavigationProperty Name="Category" Relationship="Self.FK_Event_Category" FromRole="Event" ToRole="Category" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Event1" FromRole="Event" ToRole="Comment" />
           <NavigationProperty Name="Channel" Relationship="Self.FK_Event_Channel1" FromRole="Event" ToRole="Channel" />
+          <NavigationProperty Name="EventRank" Relationship="Self.FK_Event_EventRank" FromRole="Event" ToRole="EventRank" />
           <NavigationProperty Name="EventFollows" Relationship="Self.FK_EventFollow_Event1" FromRole="Event" ToRole="EventFollow" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Event1" FromRole="Event" ToRole="EventPlace" />
           <NavigationProperty Name="Images" Relationship="Self.FK_Gallery_Event1" FromRole="Event" ToRole="Image" />
@@ -753,6 +769,14 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           <NavigationProperty Name="Event" Relationship="Self.FK_EventPlace_Event1" FromRole="EventPlace" ToRole="Event" />
           <NavigationProperty Name="Location" Relationship="Self.FK_EventPlace_Location" FromRole="EventPlace" ToRole="Location" />
           <NavigationProperty Name="Videos" Relationship="Self.FK_Video_EventPlace" FromRole="EventPlace" ToRole="Video" />
+        </EntityType>
+        <EntityType Name="EventRank">
+          <Key>
+            <PropertyRef Name="EventId" />
+          </Key>
+          <Property Name="EventId" Type="Int64" Nullable="false" />
+          <Property Name="Score" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_Event_EventRank" FromRole="EventRank" ToRole="Event" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -989,6 +1013,18 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Event_EventRank">
+          <End Role="EventRank" Type="Self.EventRank" Multiplicity="1" />
+          <End Role="Event" Type="Self.Event" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="EventRank">
+              <PropertyRef Name="EventId" />
+            </Principal>
+            <Dependent Role="Event">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_EventFollow_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="EventFollow" Type="Self.EventFollow" Multiplicity="*" />
@@ -1203,6 +1239,7 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="EventFollows" EntityType="Self.EventFollow" />
           <EntitySet Name="EventPlaces" EntityType="Self.EventPlace" />
+          <EntitySet Name="EventRanks" EntityType="Self.EventRank" />
           <EntitySet Name="Images" EntityType="Self.Image" />
           <EntitySet Name="LikeDislikes" EntityType="Self.LikeDislike" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
@@ -1246,6 +1283,10 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
           </AssociationSet>
           <AssociationSet Name="FK_Event_Channel1" Association="Self.FK_Event_Channel1">
             <End Role="Channel" EntitySet="Channels" />
+            <End Role="Event" EntitySet="Events" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Event_EventRank" Association="Self.FK_Event_EventRank">
+            <End Role="EventRank" EntitySet="EventRanks" />
             <End Role="Event" EntitySet="Events" />
           </AssociationSet>
           <AssociationSet Name="FK_EventFollow_Event1" Association="Self.FK_EventFollow_Event1">
@@ -1416,6 +1457,14 @@ error 6004: The table 'EventZone.dbo.EventRank' is referenced by a relationship,
                 <ScalarProperty Name="EventPlaceID" ColumnName="EventPlaceID" />
                 <ScalarProperty Name="EventID" ColumnName="EventID" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EventRanks">
+            <EntityTypeMapping TypeName="EventZoneModel.EventRank">
+              <MappingFragment StoreEntitySet="EventRank">
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -19,13 +19,20 @@ namespace EventZone.Controllers
             return PartialView(new AdvanceSearch());
         }
 
-        public ActionResult CategorySearch(long[] categoryid)
+        public ActionResult CategorySearch(long categoryid)
         {
             List<Event> listEvent = new List<Event>();
-            listEvent = EventDatabaseHelper.Instance.SearchByCategory(listEvent, categoryid);
-            ViewData["listEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEvent);
+            List<Event> liveEvent= new List<Event>();
+            listEvent = EventDatabaseHelper.Instance.SearchEventByCategoryID(categoryid);
+            liveEvent = EventDatabaseHelper.Instance.GetLiveEventByListEvent(listEvent);
+            try
+            {
+                TempData["task"] = "Category " + CommonDataHelpers.Instance.GetCategoryById(categoryid).CategoryName;
+            }
+            catch { }
+            TempData["listLiveStream"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(liveEvent);
+            TempData["listEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEvent);
             return View("SearchResult");
-            
         }
         [HttpPost]
         public ActionResult BasicSearch(BasicSearch model)
@@ -40,13 +47,14 @@ namespace EventZone.Controllers
                 keyword = model.Keyword;
             }
             keyword = keyword.Trim();
-            ViewData["listEvent"] =
+            TempData["listEvent"] =
                 EventDatabaseHelper.Instance.GetThumbEventListByListEvent(
                     EventDatabaseHelper.Instance.SearchEventByKeyword(keyword));
-            ViewData["listLiveStream"] =
+            TempData["listLiveStream"] =
                 EventDatabaseHelper.Instance.GetThumbEventListByListEvent(
                     EventDatabaseHelper.Instance.SearchLiveStreamByKeyword(keyword));
-            ViewData["listUser"] = UserDatabaseHelper.Instance.SearchUserByKeyword(keyword);
+            TempData["listUser"] = UserDatabaseHelper.Instance.SearchUserByKeyword(keyword);
+            TempData["task"] = "Search";
             return View("SearchResult");
         }
 
@@ -64,8 +72,8 @@ namespace EventZone.Controllers
             listLiveStream = EventDatabaseHelper.Instance.SearchLiveStreamByKeyword(model.Keyword);
             if (model.SelectedCategory != null && model.SelectedCategory.Length != 0)
             {
-                listEvent = EventDatabaseHelper.Instance.SearchByCategory(listEvent, model.SelectedCategory);
-                listLiveStream = EventDatabaseHelper.Instance.SearchByCategory(listLiveStream, model.SelectedCategory);
+                listEvent = EventDatabaseHelper.Instance.SearchByListCategory(listEvent, model.SelectedCategory);
+                listLiveStream = EventDatabaseHelper.Instance.SearchByListCategory(listLiveStream, model.SelectedCategory);
             }
 
             if (model.Location != null && model.Location.LocationName != null &&
@@ -104,9 +112,15 @@ namespace EventZone.Controllers
 
             listEvent = EventDatabaseHelper.Instance.GetEventInDateRange(startTime, endTime, listEvent);
             listLiveStream = EventDatabaseHelper.Instance.GetEventInDateRange(startTime, endTime, listLiveStream);
-            ViewData["listEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEvent);
-            ViewData["listLiveStream"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listLiveStream);
-            ViewData["listUser"] = new List<ViewThumbUserModel>();
+            TempData["listEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEvent);
+            TempData["listLiveStream"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listLiveStream);
+            TempData["listUser"] = new List<ViewThumbUserModel>();
+            TempData["task"] = "Search";
+            if (String.IsNullOrEmpty(model.Keyword.Trim()))
+            {
+                TempData["task"] = "AdvanceSearch";
+            }
+            
             return View("SearchResult");
         }
     }

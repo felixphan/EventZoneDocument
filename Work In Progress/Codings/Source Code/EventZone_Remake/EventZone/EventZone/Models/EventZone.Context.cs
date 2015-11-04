@@ -34,6 +34,7 @@ namespace EventZone.Models
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventFollow> EventFollows { get; set; }
         public virtual DbSet<EventPlace> EventPlaces { get; set; }
+        public virtual DbSet<EventRank> EventRanks { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<LikeDislike> LikeDislikes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }

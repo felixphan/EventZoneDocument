@@ -1,8 +1,10 @@
 ﻿@using EventZone.Models
 @{
-    var listEvent = ViewData["listEvent"] as List<ViewThumbEventModel>;
-    var listLiveStream = ViewData["listLiveStream"] as List<ViewThumbEventModel>;
-    var listUser = ViewData["listUser"] as List<ViewThumbUserModel>;
+    var listEvent = TempData["listEvent"] as List<ViewThumbEventModel>;
+    var listLiveStream = TempData["listLiveStream"] as List<ViewThumbEventModel>;
+    var listUser = TempData["listUser"] as List<ViewThumbUserModel>;
+    var task = TempData["task"];
+    ViewBag.Title = TempData["task"];
     int listUserCount, listLiveStreamCount, listEventCount;
     if (listUser == null)
     {
@@ -89,9 +91,13 @@
             <li>
                 <a href="search-result.html#live-r" data-toggle="tab">Live Streaming (@listLiveStreamCount)</a>
             </li>
+            @if (task == "Search")
+            {
             <li>
                 <a href="search-result.html#user-r" data-toggle="tab">User(@listUserCount)</a>
             </li>
+            }
+            
         </ul>
     </div>
 </div>

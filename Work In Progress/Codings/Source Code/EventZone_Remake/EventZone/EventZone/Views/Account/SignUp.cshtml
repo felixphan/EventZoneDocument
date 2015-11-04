@@ -33,12 +33,12 @@
                 @Html.ValidationMessageFor(model => model.Email)
                 <div style="margin-bottom: 10px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    @Html.TextBoxFor(model => model.Password, new { @class = "form-control", @placeholder = "Password", @id = "signup-Password" })
+                    @Html.PasswordFor(model => model.Password, new { @class = "form-control", @placeholder = "Password", @id = "signup-Password" })
                 </div>
                 @Html.ValidationMessageFor(model => model.Password)
                 <div style="margin-bottom: 10px" class="input-group">
                     <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                    @Html.TextBoxFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Re-enter Password", @id = "signup-ConfirmPassword" })
+                    @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control", @placeholder = "Re-enter Password", @id = "signup-ConfirmPassword" })
                 </div>
                 @Html.ValidationMessageFor(model => model.ConfirmPassword)
 
