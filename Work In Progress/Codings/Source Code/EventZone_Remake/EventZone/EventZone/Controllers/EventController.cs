@@ -332,5 +332,21 @@ namespace EventZone.Controllers
             }
             return RedirectToAction("Details", "Event", new { id = evt.EventID });
         }
+         public ActionResult Comment(int eventID, string commentContent)
+        {
+            List<EventZone.Models.Comment> listComment = EventDatabaseHelper.Instance.GetListComment(eventID);
+            CommentViewModel comment = new CommentViewModel { eventID = eventID, listComment = listComment };
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user != null)
+            {
+                if (EventDatabaseHelper.Instance.AddCommentToEvent(eventID, user.UserID, commentContent))
+                {
+                    comment.listComment = EventDatabaseHelper.Instance.GetListComment(eventID);
+                    return PartialView("_CommentPartial", comment);
+                };
+            }
+            return PartialView("_CommentPartial", comment);
+        }   
+    
     }
 }

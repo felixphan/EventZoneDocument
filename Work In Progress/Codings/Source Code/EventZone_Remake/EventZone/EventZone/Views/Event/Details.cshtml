@@ -252,8 +252,8 @@
                     </ul>
 
                     <!-- Tab panes BOOTSTRAP -->
-                    <div class="tab-content">
-                        @Html.Partial("_CommentPartial", @Model.eventComment)
+                    <div class="tab-content" id="comment-content">
+                        @Html.Partial("_CommentPartial", new CommentViewModel { eventID = @Model.eventId, listComment = @Model.eventComment })
                         <div role="tabpanel" class="tab-pane" id="i_report"></div>
                     </div>
                 </div>

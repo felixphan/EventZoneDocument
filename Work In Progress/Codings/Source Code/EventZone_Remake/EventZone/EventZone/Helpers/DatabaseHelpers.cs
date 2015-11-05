@@ -1138,6 +1138,29 @@ namespace EventZone.Helpers
         
         }
         /// <summary>
+        /// add comment to event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <param name="userID"></param>
+        /// <param name="commentContent"></param>
+        /// <returns></returns>
+        public bool AddCommentToEvent(long eventID, long userID, string commentContent)
+        {
+
+            Comment comment = new Comment();
+            comment.EventID = eventID;
+            comment.UserID = userID;
+            comment.CommentContent = commentContent;
+            try
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+        /// <summary>
         ///     get list comment of event
         /// </summary>
         /// <param name="eventID"></param>

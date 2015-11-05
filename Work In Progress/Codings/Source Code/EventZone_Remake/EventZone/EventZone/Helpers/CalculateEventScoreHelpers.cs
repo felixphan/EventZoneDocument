@@ -15,9 +15,9 @@ namespace EventZone.Helpers
         {
            using (var db = new EventZoneEntities())
             {
-                foreach (var item in db.Events.ToList())
+                foreach (var item in db.EventRanks.ToList())
                 {
-                    item.EventRank.Score = EventDatabaseHelper.Instance.CalculateEventScore(item.EventID);
+                    item.Score = EventDatabaseHelper.Instance.CalculateEventScore(item.EventId);
                 }
                 db.SaveChanges();
             };

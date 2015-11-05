@@ -77,4 +77,11 @@ namespace EventZone.Models
         public DateTime EndDate { get; set; }
         public List<Location> listLocation { get; set; }
     }
+    public class CommentViewModel
+    {
+
+        public long eventID { set; get; }
+        public List<Comment> listComment { set; get; }
+    }
+
 }
