@@ -45,105 +45,22 @@ namespace EventZone.Controllers
                 string[] locationList = Regex.Split(locationName, ";");
                 string[] lattitudeList = Regex.Split(lattitude, ";");
                 string[] longitudeList = Regex.Split(longitude, ";");
-                var locationId = new List<double>();
-                List<EventPlace> listEventPlaces = new List<EventPlace>();
-
-                //Search for duplicated location before adding new location to database
-                for (var i = 0; i < locationList.Length - 1; i++)
-                {
-                    double locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
-                        double.Parse(lattitudeList[i]),
-                        locationList[i]);
-                    if (
-                        locationIdIndex == -1)
-                    {
-                        var newLocation = new Location();
-                        newLocation.LocationName = locationList[i];
-                        newLocation.Latitude = double.Parse(lattitudeList[i]);
-                        newLocation.Longitude = double.Parse(longitudeList[i]);
-                        db.Locations.Add(newLocation);
-                        db.SaveChanges();
-                        locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
-                            double.Parse(lattitudeList[i]),
-                            locationList[i]);
-                    }
-                    locationId.Add(locationIdIndex);
-                }
+                var locationId = LocationHelpers.Instance.GetLocationIdOfEvent(locationList, longitudeList, lattitudeList);
 
                 //Adding new event to database
-                var newEvent = new Event();
-                newEvent.EventName = model.Title;
-                var userChannel =
-                    db.Channels.ToList().Find(c => c.UserID.Equals(long.Parse(Session["UserId"].ToString())));
-                newEvent.ChannelID = userChannel.ChannelID;
-                newEvent.EventStartDate = model.StartTime;
-                newEvent.EventEndDate = model.EndTime;
-                newEvent.EventDescription = model.Description;
-                newEvent.EventRegisterDate = DateTime.Now;
-                newEvent.View = 0;
-                newEvent.CategoryID = model.CategoryID;
-                newEvent.Privacy = model.Privacy;
-                newEvent.Avatar = null;
-                newEvent.EditBy = long.Parse(Session["UserId"].ToString());
-                newEvent.EditTime = DateTime.Now;
-                newEvent.EditContent = null;
-                newEvent.Status = true;
-                // insert Event to Database
-                db.Events.Add(newEvent);
-                db.SaveChanges();
+                var newEvent = EventDatabaseHelper.Instance.AddNewEvent(model, Session["UserId"].ToString());
 
                 //Insert to Event Place
-                for (var i = 0; i < locationId.Count; i++)
-                {
-                    var newEventPlace = new EventPlace();
-                    newEventPlace.LocationID = (long)locationId[i];
-                    newEventPlace.EventID = newEvent.EventID;
-                    db.EventPlaces.Add(newEventPlace);
-                    db.SaveChanges();
-                    listEventPlaces.Add(newEventPlace);
-                }
-
-                //Add Event Rank
-
-                EventRank newEventRank = new EventRank();
-                newEventRank.EventId = newEvent.EventID;
-                newEventRank.Score = 0;
-                db.EventRanks.Add(newEventRank);
-                db.SaveChanges();
+                var listEventPlaces = EventDatabaseHelper.Instance.AddEventPlace(locationId, newEvent);
 
                 // Create Video if it is live event
                 if (model.IsLive)
                 {
-                    string[] viewDataResult =
-                        new EventController().Run(model.Title, model.StartTime, model.EndTime, model.Quality,
-                            model.PrivacyYoutube).Result;
+                    var viewDataResult = EventDatabaseHelper.Instance.AddLiveVideo(model, locationList, listEventPlaces, longitudeList, lattitudeList);
                     ViewData["StreamName"] = viewDataResult[0];
                     ViewData["PrimaryServerURL"] = viewDataResult[1];
                     ViewData["BackupServerURL"] = viewDataResult[2];
                     ViewData["YoutubeURL"] = viewDataResult[3];
-                    var video = new Video();
-                    video.StartTime = model.StartTime;
-                    video.EndTime = model.EndTime;
-                    video.Privacy = model.PrivacyYoutube;
-                    for (int i = 0; i < locationList.Length; i++)
-                    {
-                        if (locationList[i].Equals(model.LocationLiveName))
-                        {
-                            foreach (EventPlace item in listEventPlaces)
-                            {
-                                if (item.LocationID ==
-                                    LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
-                                        double.Parse(lattitudeList[i]),
-                                        locationList[i]))
-                                {
-                                    video.EventPlaceID = item.EventPlaceID;
-                                }
-                            }
-                        }
-                    }
-                    video.VideoLink = viewDataResult[3];
-                    db.Videos.Add(video);
-                    db.SaveChanges();
                 }
                 return RedirectToAction("Details", "Event", new { id = newEvent.EventID });
             }
@@ -263,6 +180,7 @@ namespace EventZone.Controllers
             viewDetail.eventImage = EventDatabaseHelper.Instance.GetEventImage(evt.EventID);
             viewDetail.eventVideo = EventDatabaseHelper.Instance.GetEventVideo(evt.EventID);
             viewDetail.eventComment = EventDatabaseHelper.Instance.GetListComment(evt.EventID);
+            viewDetail.Category = EventDatabaseHelper.Instance.GetEventCategory(evt.EventID);
             viewDetail.FindLike = new LikeDislike();
             viewDetail.FindLike.Type = EventZoneConstants.NotRate;
             viewDetail.FindLike.EventID = evt.EventID;

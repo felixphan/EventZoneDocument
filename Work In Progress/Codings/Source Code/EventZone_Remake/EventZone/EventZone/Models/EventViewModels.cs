@@ -67,7 +67,7 @@ namespace EventZone.Models
         public List<Video> eventVideo { get; set; }
         public List<Comment> eventComment { get; set; }
         public int Privacy { get; set; }
-        public String[] Category { get; set; }
+        public String Category { get; set; }
     }
     public class ThumbEventHomePage {
         public long EventID { get; set; }

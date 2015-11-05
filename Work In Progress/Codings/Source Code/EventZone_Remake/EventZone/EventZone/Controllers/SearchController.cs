@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.WebPages;
 using EventZone.Helpers;
 using EventZone.Models;
 using Microsoft.Ajax.Utilities;
@@ -116,11 +117,11 @@ namespace EventZone.Controllers
             TempData["listLiveStream"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listLiveStream);
             TempData["listUser"] = new List<ViewThumbUserModel>();
             TempData["task"] = "Search";
-            if (String.IsNullOrEmpty(model.Keyword.Trim()))
+            if (model.Keyword == null||model.Keyword.Trim().IsEmpty())
             {
                 TempData["task"] = "AdvanceSearch";
             }
-            
+           
             return View("SearchResult");
         }
     }

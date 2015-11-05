@@ -27,7 +27,14 @@ namespace EventZone.Controllers
 
             return View();
         }
-
+        public ActionResult Policy()
+        {
+            return View();
+        }
+        public ActionResult Help()
+        {
+            return View();
+        }
         /// <summary>
         /// return new event to new event column Home page
         /// </summary>
