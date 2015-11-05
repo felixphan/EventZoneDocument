@@ -722,7 +722,12 @@ namespace EventZone.Helpers
             return null;
         }
 
-        //Check is event owned by user or not
+        /// <summary>
+        /// Check is event 
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <param name="UserID"></param>
+        /// <returns></returns>
         public bool IsEventOwnedByUser(long eventID, long UserID)
         {
             try
@@ -953,6 +958,26 @@ namespace EventZone.Helpers
             }
             return result;
         }
+
+        public bool AddImage(Image image) {
+            try {
+                db.Images.Add(image);
+                db.SaveChanges();
+                return true;
+            }
+            catch { 
+            }
+            return false;
+        }
+ 
+
+
+
+        /// <summary>
+        /// Get thumb event home(used for display event in home only)
+        /// </summary>
+        /// <param name="ListEvent"></param>
+        /// <returns></returns>
         public List<ThumbEventHomePage> GetThumbEventHomepage(List<Event> ListEvent)
         {
             List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();

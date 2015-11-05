@@ -168,6 +168,13 @@ namespace EventZone.Controllers
         public ActionResult ImageUpload(HttpPostedFileBase file, long eventID)
         {
             
+            User user= UserHelpers.GetCurrentUser(Session);
+            Event evt = db.Events.Find(eventID);
+        
+            if (user == null) {
+                TempData["ImageUploadError"] = "You have to login to do this feature";
+                return RedirectToAction("Details", "Event", new { id=evt.EventID });
+            }
             Image photo = new Image();
             if (file != null)
             {
@@ -179,13 +186,11 @@ namespace EventZone.Controllers
                     string pic = Guid.NewGuid()+ eventID.ToString() + extension;
                     using (AmazonS3Client s3Client = new AmazonS3Client(Amazon.RegionEndpoint.USWest2))
                         EventZoneUtility.FileUploadToS3("eventzone", pic, stream, true, s3Client);
-                    Image image = new Image();
-                    image.EventID = eventID;
-                    image.ImageLink = pic;
-
-
-
-
+                    photo.EventID = eventID;
+                    photo.ImageLink = "https://s3-us-west-2.amazonaws.com/eventzone/"+pic;
+                    photo.UploadDate = DateTime.Today;
+                    photo.UserID = UserHelpers.GetCurrentUser(Session).UserID;
+                    EventDatabaseHelper.Instance.AddImage(photo);
                     TempData["ImageUploadError"] = null; // success
                 }
                 else
@@ -197,7 +202,7 @@ namespace EventZone.Controllers
             {
                 TempData["ImageUploadError"] = "Your must select a file to upload";
             }
-            return RedirectToAction("Details", "Event",db.Events.Find(eventID));
+            return RedirectToAction("Details", "Event", new { id = evt.EventID });
         }
     }
 }
