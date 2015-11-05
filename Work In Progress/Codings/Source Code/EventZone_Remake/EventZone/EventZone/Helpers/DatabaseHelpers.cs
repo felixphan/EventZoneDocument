@@ -639,6 +639,17 @@ namespace EventZone.Helpers
             return false;
         }
 
+        public bool AddImageToEvent(Image image) {
+            try {
+                db.Images.Add(image);
+                db.SaveChanges();
+                return true;
+            }
+            catch { }
+            return false;
+        }
+
+
         /// <summary>
         ///     Get all image of an event
         /// </summary>
@@ -722,12 +733,7 @@ namespace EventZone.Helpers
             return null;
         }
 
-        /// <summary>
-        /// Check is event 
-        /// </summary>
-        /// <param name="eventID"></param>
-        /// <param name="UserID"></param>
-        /// <returns></returns>
+        //Check is event owned by user or not
         public bool IsEventOwnedByUser(long eventID, long UserID)
         {
             try
@@ -958,26 +964,6 @@ namespace EventZone.Helpers
             }
             return result;
         }
-
-        public bool AddImage(Image image) {
-            try {
-                db.Images.Add(image);
-                db.SaveChanges();
-                return true;
-            }
-            catch { 
-            }
-            return false;
-        }
- 
-
-
-
-        /// <summary>
-        /// Get thumb event home(used for display event in home only)
-        /// </summary>
-        /// <param name="ListEvent"></param>
-        /// <returns></returns>
         public List<ThumbEventHomePage> GetThumbEventHomepage(List<Event> ListEvent)
         {
             List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();
@@ -1137,6 +1123,29 @@ namespace EventZone.Helpers
             return result;
         
         }
+        /// <summary>
+        /// add comment to event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <param name="userID"></param>
+        /// <param name="commentContent"></param>
+        /// <returns></returns>
+        public bool AddCommentToEvent(long eventID, long userID, string commentContent)
+        {
+
+            Comment comment = new Comment();
+            comment.EventID = eventID;
+            comment.UserID = userID;
+            comment.CommentContent = commentContent;
+            try
+            {
+                db.Comments.Add(comment);
+                db.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
         /// <summary>
         ///     get list comment of event
         /// </summary>

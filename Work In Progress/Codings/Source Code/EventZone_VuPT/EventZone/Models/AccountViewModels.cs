@@ -30,8 +30,7 @@ namespace EventZone.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
-        public Nullable<System.DateTime> UserDOB { get; set; }
-
+        public DateTime? UserDOB { get; set; }
 
         [Required(ErrorMessage = "Please select gender")]
         public int Gender { get; set; }
@@ -39,13 +38,14 @@ namespace EventZone.Models
         [Required(ErrorMessage = "Please enter your first name!")]
         [Display(Name = "First name")]
         public string UserFirstName { get; set; }
+
         public string UserLastName { get; set; }
     }
-    
-    public class LoginViewModel
+
+    public class SignInViewModel
     {
         [Required(ErrorMessage = "Please enter your user name")]
-        [Display(Name = "User name")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please enter your password")]
@@ -53,8 +53,11 @@ namespace EventZone.Models
         [Display(Name = "Password")]
         public string Password { get; set; }
 
+        [Display(Name = "Remember me")]
+        public bool Remember { get; set; }
     }
-    public class GooleAccountModel 
+
+    public class GoogleAccountModel
     {
         [Required(ErrorMessage = "Please enter your user name")]
         [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 8)]
@@ -74,24 +77,24 @@ namespace EventZone.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
-        public Nullable<System.DateTime> UserDOB { get; set; }
-
+        public DateTime? UserDOB { get; set; }
 
         [Display(Name = "Email")]
         public string Email { get; set; }
+
         public string Place { get; set; }
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
 
         [Required(ErrorMessage = "Please select gender")]
         public int Gender { get; set; }
-    
     }
-    public class RegisterViewModel
+
+    public class SignUpViewModel
     {
         [Required(ErrorMessage = "Please enter your user name")]
         [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 8)]
-        [Display(Name = "User name")]
+        [Display(Name = "User Name")]
         public string UserName { get; set; }
 
         [Required(ErrorMessage = "Please enter your password")]
@@ -112,15 +115,15 @@ namespace EventZone.Models
 
         [DataType(DataType.DateTime)]
         [Display(Name = "Date of birth")]
-        public Nullable<System.DateTime> UserDOB { get; set; }
+        public DateTime? UserDOB { get; set; }
 
-
-        [Required(ErrorMessage="Please select gender")]
+        [Required(ErrorMessage = "Please select gender")]
         public int Gender { get; set; }
 
-        [Required(ErrorMessage="Please enter your first name!")]
-        [Display(Name="First name")]
+        [Required(ErrorMessage = "Please enter your first name!")]
+        [Display(Name = "First name")]
         public string UserFirstName { get; set; }
+
         public string UserLastName { get; set; }
     }
 

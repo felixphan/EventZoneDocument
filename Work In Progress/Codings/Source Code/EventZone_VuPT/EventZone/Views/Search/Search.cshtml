@@ -1,56 +1,34 @@
-﻿@using EventZone.Models
+﻿@model EventZone.Models.BasicSearch
 
-@{
-    List<ViewThumbEventModel> listEvent = ViewData["listEvent"] as List<ViewThumbEventModel>;
-    List<ViewThumbEventModel> listLiveStream = ViewData["listLiveStream"] as List<ViewThumbEventModel>;
-    List<ViewThumbUserModel> listUser = ViewData["listUser"] as List<ViewThumbUserModel>;
+@using (Html.BeginForm("BasicSearch", "Search", FormMethod.Post, new {@class = "navbar-form navbar-left"}))
+{
+    <div class="input-group" style="width: 100px;">
+        <input type="text" name="Keyword" id="Keyword" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Search for event, channel or user" style="width: 250px;">
+        <div class="input-group-btn">
+            <button class="btn btn-default" type="submit">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="modal" data-target="#myModal">
+                <a href="#" id="i_advanced_search">
+                    <span class="glyphicon glyphicon-chevron-down"></span></a>
+            </button>
+        </div>
+    </div>
 }
-
-<div class="d_result_container container-fluid">
-    <div class="col-xs-9 d_overflow">
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <div class="tab-pane active" id="event-r">
-                @if (listEvent != null)
-                {
-                    foreach (var item in listEvent)
-                    {
-                        <div>
-                            @Html.Partial("_EventThumb", item)
-                            <p>-------------------------------------------------------------</p>
-                        </div>
-                    }
-                }
-
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal 1 content: Advanced Search -->
+        <div class="panel panel-info d_margin_top">
+            <div class="panel-heading">
+                <div class="panel-title">Advanced Search</div>
+                <div style="float: right; font-size: 80%; position: relative; top: -17px">
+                    <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
+                </div>
             </div>
-            <div class="tab-pane" id="live-r">
-            </div>
-            <div class="tab-pane" id="channel-r"></div>
-            <div class="tab-pane" id="user-r">
-                @if (listUser != null)
-                {
-                    foreach (var item in listUser)
-                    {
-                        <div>
-                            @Html.Partial("_UserThumb", item)
-                            <p>-------------------------------------------------------------</p>
-                        </div>
-
-                    }
-                }
-
+            <div style="padding-top: 10px" class="panel-body">
+                <!-- md_ đánh dấu CSS của MODAL -->
+                @Html.Action("SearchAdvance", "Search", new {@id = "i_frame_md_ad_search"})
             </div>
         </div>
     </div>
-    <div class="col-xs-3">
-        <!-- required for floating -->
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs tabs-right">
-            <li class="active"><a href="search-result.html#event-r" data-toggle="tab">Event (@listEvent.Count)</a></li>
-            <li><a href="search-result.html#live-r" data-toggle="tab">Live Streaming (@listLiveStream.Count)</a></li>
-            <li><a href="search-result.html#user-r" data-toggle="tab">User(@listUser.Count)</a></li>
-        </ul>
-    </div>
 </div>
-
-

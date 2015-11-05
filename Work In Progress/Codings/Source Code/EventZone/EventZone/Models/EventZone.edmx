@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Action">
           <Key>
             <PropertyRef Name="ActionID" />
@@ -69,7 +69,7 @@
           <Property Name="EventRegisterDate" Type="datetime" Nullable="false" />
           <Property Name="View" Type="bigint" Nullable="false" />
           <Property Name="CategoryID" Type="bigint" Nullable="false" />
-          <Property Name="Privacy" Type="bit" Nullable="false" />
+          <Property Name="Privacy" Type="int" Nullable="false" />
           <Property Name="Avatar" Type="bigint" />
           <Property Name="EditBy" Type="bigint" />
           <Property Name="EditTime" Type="datetime" />
@@ -91,6 +91,14 @@
           <Property Name="EventPlaceID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="LocationID" Type="bigint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EventRank">
+          <Key>
+            <PropertyRef Name="EventRankId" />
+          </Key>
+          <Property Name="EventRankId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EventId" Type="bigint" Nullable="false" />
+          <Property Name="Score" Type="bigint" Nullable="false" />
         </EntityType>
         <EntityType Name="Image">
           <Key>
@@ -149,6 +157,16 @@
           <Property Name="EventID" Type="bigint" Nullable="false" />
           <Property Name="UserID" Type="bigint" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TrackingAction">
           <Key>
             <PropertyRef Name="TrackingID" />
@@ -179,6 +197,7 @@
           <Property Name="AccountStatus" Type="bit" Nullable="false" />
           <Property Name="Gender" Type="int" />
           <Property Name="AvatarLink" Type="nvarchar" MaxLength="100" />
+          <Property Name="DataJoin" Type="date" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -189,7 +208,7 @@
           <Property Name="VideoLink" Type="nvarchar" MaxLength="256" Nullable="false" />
           <Property Name="StartTime" Type="datetime" Nullable="false" />
           <Property Name="EndTime" Type="datetime" />
-          <Property Name="Privacy" Type="bit" Nullable="false" />
+          <Property Name="Privacy" Type="int" Nullable="false" />
         </EntityType>
         <Association Name="FK_Appeal_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
@@ -332,6 +351,18 @@
             </Principal>
             <Dependent Role="EventPlace">
               <PropertyRef Name="LocationID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EventRank_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="EventRank" Type="Self.EventRank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="EventRank">
+              <PropertyRef Name="EventId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -513,12 +544,14 @@
           <EntitySet Name="Event" EntityType="Self.Event" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventFollow" EntityType="Self.EventFollow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EventPlace" EntityType="Self.EventPlace" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EventRank" EntityType="Self.EventRank" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Image" EntityType="Self.Image" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="LikeDislike" EntityType="Self.LikeDislike" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PeopleFollow" EntityType="Self.PeopleFollow" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Report" EntityType="Self.Report" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Share" EntityType="Self.Share" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TrackingAction" EntityType="Self.TrackingAction" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Video" EntityType="Self.Video" Schema="dbo" store:Type="Tables" />
@@ -569,6 +602,10 @@
           <AssociationSet Name="FK_EventPlace_Location" Association="Self.FK_EventPlace_Location">
             <End Role="Location" EntitySet="Location" />
             <End Role="EventPlace" EntitySet="EventPlace" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EventRank_Event" Association="Self.FK_EventRank_Event">
+            <End Role="Event" EntitySet="Event" />
+            <End Role="EventRank" EntitySet="EventRank" />
           </AssociationSet>
           <AssociationSet Name="FK_Gallery_Event1" Association="Self.FK_Gallery_Event1">
             <End Role="Event" EntitySet="Event" />
@@ -627,10 +664,11 @@
             <End Role="Video" EntitySet="Video" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="EventZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="EventZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Action">
           <Key>
             <PropertyRef Name="ActionID" />
@@ -705,7 +743,8 @@
           <Property Name="EventRegisterDate" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="View" Type="Int64" Nullable="false" />
           <Property Name="CategoryID" Type="Int64" Nullable="false" />
-          <Property Name="Privacy" Type="Boolean" Nullable="false" />
+          <Property Name="Privacy" Type="Int32" Nullable="false" />
+          <Property Name="Avatar" Type="Int64" />
           <Property Name="EditBy" Type="Int64" />
           <Property Name="EditTime" Type="DateTime" Precision="3" />
           <Property Name="EditContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
@@ -716,11 +755,11 @@
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_Event1" FromRole="Event" ToRole="Comment" />
           <NavigationProperty Name="EventFollows" Relationship="Self.FK_EventFollow_Event1" FromRole="Event" ToRole="EventFollow" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Event1" FromRole="Event" ToRole="EventPlace" />
+          <NavigationProperty Name="EventRanks" Relationship="Self.FK_EventRank_Event" FromRole="Event" ToRole="EventRank" />
           <NavigationProperty Name="Images" Relationship="Self.FK_Gallery_Event1" FromRole="Event" ToRole="Image" />
+          <NavigationProperty Name="LikeDislikes" Relationship="Self.FK_LikeDislike_Event1" FromRole="Event" ToRole="LikeDislike" />
           <NavigationProperty Name="Reports" Relationship="Self.FK_Report_Event" FromRole="Event" ToRole="Report" />
           <NavigationProperty Name="Shares" Relationship="Self.FK_Share_Event1" FromRole="Event" ToRole="Share" />
-          <Property Name="Avatar" Type="Int64" />
-          <NavigationProperty Name="LikeDislikes" Relationship="EventZoneModel.FK_LikeDislike_Event1" FromRole="Event" ToRole="LikeDislike" />
         </EntityType>
         <EntityType Name="EventFollow">
           <Key>
@@ -743,6 +782,15 @@
           <NavigationProperty Name="Location" Relationship="Self.FK_EventPlace_Location" FromRole="EventPlace" ToRole="Location" />
           <NavigationProperty Name="Videos" Relationship="Self.FK_Video_EventPlace" FromRole="EventPlace" ToRole="Video" />
         </EntityType>
+        <EntityType Name="EventRank">
+          <Key>
+            <PropertyRef Name="EventRankId" />
+          </Key>
+          <Property Name="EventRankId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventId" Type="Int64" Nullable="false" />
+          <Property Name="Score" Type="Int64" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_EventRank_Event" FromRole="EventRank" ToRole="Event" />
+        </EntityType>
         <EntityType Name="Image">
           <Key>
             <PropertyRef Name="ImageID" />
@@ -755,15 +803,26 @@
           <NavigationProperty Name="Event" Relationship="Self.FK_Gallery_Event1" FromRole="Image" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_Gallery_User" FromRole="Image" ToRole="User" />
         </EntityType>
+        <EntityType Name="LikeDislike">
+          <Key>
+            <PropertyRef Name="LikeDislikeID" />
+          </Key>
+          <Property Name="LikeDislikeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EventID" Type="Int64" Nullable="false" />
+          <Property Name="UserID" Type="Int64" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Event" Relationship="Self.FK_LikeDislike_Event1" FromRole="LikeDislike" ToRole="Event" />
+          <NavigationProperty Name="User" Relationship="Self.FK_LikeDislike_User" FromRole="LikeDislike" ToRole="User" />
+        </EntityType>
         <EntityType Name="Location">
           <Key>
             <PropertyRef Name="LocationID" />
           </Key>
           <Property Name="LocationID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Longitude" Type="Double" Nullable="false" />
+          <Property Name="Latitude" Type="Double" Nullable="false" />
           <Property Name="LocationName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="EventPlaces" Relationship="Self.FK_EventPlace_Location" FromRole="Location" ToRole="EventPlace" />
-          <Property Name="Latitude" Type="Double" Nullable="false" />
         </EntityType>
         <EntityType Name="PeopleFollow">
           <Key>
@@ -800,6 +859,16 @@
           <NavigationProperty Name="Event" Relationship="Self.FK_Share_Event1" FromRole="Share" ToRole="Event" />
           <NavigationProperty Name="User" Relationship="Self.FK_Share_User" FromRole="Share" ToRole="User" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TrackingAction">
           <Key>
             <PropertyRef Name="TrackingID" />
@@ -833,18 +902,19 @@
           <Property Name="AccountStatus" Type="Boolean" Nullable="false" />
           <Property Name="Gender" Type="Int32" />
           <Property Name="AvatarLink" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DataJoin" Type="DateTime" Precision="0" />
           <NavigationProperty Name="CategoryFollows" Relationship="Self.FK_CategoryFollow_User" FromRole="User" ToRole="CategoryFollow" />
           <NavigationProperty Name="Channels" Relationship="Self.FK_Channel_User" FromRole="User" ToRole="Channel" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="EventFollows" Relationship="Self.FK_EventFollow_User" FromRole="User" ToRole="EventFollow" />
           <NavigationProperty Name="Images" Relationship="Self.FK_Gallery_User" FromRole="User" ToRole="Image" />
+          <NavigationProperty Name="LikeDislikes" Relationship="Self.FK_LikeDislike_User" FromRole="User" ToRole="LikeDislike" />
           <NavigationProperty Name="PeopleFollows" Relationship="Self.FK_PeopleFollow_User" FromRole="User" ToRole="PeopleFollow" />
           <NavigationProperty Name="PeopleFollows1" Relationship="Self.FK_PeopleFollow_User3" FromRole="User" ToRole="PeopleFollow" />
           <NavigationProperty Name="Reports" Relationship="Self.FK_Report_User" FromRole="User" ToRole="Report" />
           <NavigationProperty Name="Shares" Relationship="Self.FK_Share_User" FromRole="User" ToRole="Share" />
           <NavigationProperty Name="TrackingActions" Relationship="Self.FK_TrackingAction_User" FromRole="User" ToRole="TrackingAction" />
           <NavigationProperty Name="TrackingActions1" Relationship="Self.FK_TrackingAction_User1" FromRole="User" ToRole="TrackingAction" />
-          <NavigationProperty Name="LikeDislikes" Relationship="EventZoneModel.FK_LikeDislike_User" FromRole="User" ToRole="LikeDislike" />
         </EntityType>
         <EntityType Name="Video">
           <Key>
@@ -855,7 +925,7 @@
           <Property Name="VideoLink" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="StartTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="EndTime" Type="DateTime" Precision="3" />
-          <Property Name="Privacy" Type="Boolean" Nullable="false" />
+          <Property Name="Privacy" Type="Int32" Nullable="false" />
           <NavigationProperty Name="EventPlace" Relationship="Self.FK_Video_EventPlace" FromRole="Video" ToRole="EventPlace" />
         </EntityType>
         <Association Name="FK_TrackingAction_ActorAction">
@@ -990,6 +1060,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_EventRank_Event">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="EventRank" Type="Self.EventRank" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="EventRank">
+              <PropertyRef Name="EventId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Gallery_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
           <End Role="Image" Type="Self.Image" Multiplicity="*" />
@@ -998,6 +1080,18 @@
               <PropertyRef Name="EventID" />
             </Principal>
             <Dependent Role="Image">
+              <PropertyRef Name="EventID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LikeDislike_Event1">
+          <End Role="Event" Type="Self.Event" Multiplicity="1" />
+          <End Role="LikeDislike" Type="Self.LikeDislike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Event">
+              <PropertyRef Name="EventID" />
+            </Principal>
+            <Dependent Role="LikeDislike">
               <PropertyRef Name="EventID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1070,6 +1164,18 @@
               <PropertyRef Name="UserID" />
             </Principal>
             <Dependent Role="Image">
+              <PropertyRef Name="UserID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_LikeDislike_User">
+          <End Role="User" Type="Self.User" Multiplicity="1" />
+          <End Role="LikeDislike" Type="Self.LikeDislike" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserID" />
+            </Principal>
+            <Dependent Role="LikeDislike">
               <PropertyRef Name="UserID" />
             </Dependent>
           </ReferentialConstraint>
@@ -1156,11 +1262,14 @@
           <EntitySet Name="Events" EntityType="Self.Event" />
           <EntitySet Name="EventFollows" EntityType="Self.EventFollow" />
           <EntitySet Name="EventPlaces" EntityType="Self.EventPlace" />
+          <EntitySet Name="EventRanks" EntityType="Self.EventRank" />
           <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="LikeDislikes" EntityType="Self.LikeDislike" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
           <EntitySet Name="PeopleFollows" EntityType="Self.PeopleFollow" />
           <EntitySet Name="Reports" EntityType="Self.Report" />
           <EntitySet Name="Shares" EntityType="Self.Share" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TrackingActions" EntityType="Self.TrackingAction" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <EntitySet Name="Videos" EntityType="Self.Video" />
@@ -1208,9 +1317,17 @@
             <End Role="Event" EntitySet="Events" />
             <End Role="EventPlace" EntitySet="EventPlaces" />
           </AssociationSet>
+          <AssociationSet Name="FK_EventRank_Event" Association="Self.FK_EventRank_Event">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="EventRank" EntitySet="EventRanks" />
+          </AssociationSet>
           <AssociationSet Name="FK_Gallery_Event1" Association="Self.FK_Gallery_Event1">
             <End Role="Event" EntitySet="Events" />
             <End Role="Image" EntitySet="Images" />
+          </AssociationSet>
+          <AssociationSet Name="FK_LikeDislike_Event1" Association="Self.FK_LikeDislike_Event1">
+            <End Role="Event" EntitySet="Events" />
+            <End Role="LikeDislike" EntitySet="LikeDislikes" />
           </AssociationSet>
           <AssociationSet Name="FK_Report_Event" Association="Self.FK_Report_Event">
             <End Role="Event" EntitySet="Events" />
@@ -1236,6 +1353,10 @@
             <End Role="User" EntitySet="Users" />
             <End Role="Image" EntitySet="Images" />
           </AssociationSet>
+          <AssociationSet Name="FK_LikeDislike_User" Association="Self.FK_LikeDislike_User">
+            <End Role="User" EntitySet="Users" />
+            <End Role="LikeDislike" EntitySet="LikeDislikes" />
+          </AssociationSet>
           <AssociationSet Name="FK_PeopleFollow_User" Association="Self.FK_PeopleFollow_User">
             <End Role="User" EntitySet="Users" />
             <End Role="PeopleFollow" EntitySet="PeopleFollows" />
@@ -1260,51 +1381,7 @@
             <End Role="User" EntitySet="Users" />
             <End Role="TrackingAction" EntitySet="TrackingActions" />
           </AssociationSet>
-          <EntitySet Name="LikeDislikes" EntityType="EventZoneModel.LikeDislike" />
-          <AssociationSet Name="FK_LikeDislike_Event1" Association="EventZoneModel.FK_LikeDislike_Event1">
-            <End Role="Event" EntitySet="Events" />
-            <End Role="LikeDislike" EntitySet="LikeDislikes" />
-          </AssociationSet>
-          <AssociationSet Name="FK_LikeDislike_User" Association="EventZoneModel.FK_LikeDislike_User">
-            <End Role="User" EntitySet="Users" />
-            <End Role="LikeDislike" EntitySet="LikeDislikes" />
-          </AssociationSet>
         </EntityContainer>
-        <EntityType Name="LikeDislike">
-          <Key>
-            <PropertyRef Name="LikeDislikeID" />
-          </Key>
-          <Property Name="LikeDislikeID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EventID" Type="Int64" Nullable="false" />
-          <Property Name="UserID" Type="Int64" Nullable="false" />
-          <Property Name="Type" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Event" Relationship="EventZoneModel.FK_LikeDislike_Event1" FromRole="LikeDislike" ToRole="Event" />
-          <NavigationProperty Name="User" Relationship="EventZoneModel.FK_LikeDislike_User" FromRole="LikeDislike" ToRole="User" />
-        </EntityType>
-        <Association Name="FK_LikeDislike_Event1">
-          <End Type="EventZoneModel.Event" Role="Event" Multiplicity="1" />
-          <End Type="EventZoneModel.LikeDislike" Role="LikeDislike" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Event">
-              <PropertyRef Name="EventID" />
-            </Principal>
-            <Dependent Role="LikeDislike">
-              <PropertyRef Name="EventID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_LikeDislike_User">
-          <End Type="EventZoneModel.User" Role="User" Multiplicity="1" />
-          <End Type="EventZoneModel.LikeDislike" Role="LikeDislike" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="UserID" />
-            </Principal>
-            <Dependent Role="LikeDislike">
-              <PropertyRef Name="UserID" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1371,7 +1448,6 @@
           <EntitySetMapping Name="Events">
             <EntityTypeMapping TypeName="EventZoneModel.Event">
               <MappingFragment StoreEntitySet="Event">
-                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="EventID" ColumnName="EventID" />
                 <ScalarProperty Name="ChannelID" ColumnName="ChannelID" />
                 <ScalarProperty Name="EventName" ColumnName="EventName" />
@@ -1382,6 +1458,7 @@
                 <ScalarProperty Name="View" ColumnName="View" />
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="Privacy" ColumnName="Privacy" />
+                <ScalarProperty Name="Avatar" ColumnName="Avatar" />
                 <ScalarProperty Name="EditBy" ColumnName="EditBy" />
                 <ScalarProperty Name="EditTime" ColumnName="EditTime" />
                 <ScalarProperty Name="EditContent" ColumnName="EditContent" />
@@ -1407,6 +1484,15 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="EventRanks">
+            <EntityTypeMapping TypeName="EventZoneModel.EventRank">
+              <MappingFragment StoreEntitySet="EventRank">
+                <ScalarProperty Name="EventRankId" ColumnName="EventRankId" />
+                <ScalarProperty Name="EventId" ColumnName="EventId" />
+                <ScalarProperty Name="Score" ColumnName="Score" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Images">
             <EntityTypeMapping TypeName="EventZoneModel.Image">
               <MappingFragment StoreEntitySet="Image">
@@ -1418,12 +1504,22 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="LikeDislikes">
+            <EntityTypeMapping TypeName="EventZoneModel.LikeDislike">
+              <MappingFragment StoreEntitySet="LikeDislike">
+                <ScalarProperty Name="LikeDislikeID" ColumnName="LikeDislikeID" />
+                <ScalarProperty Name="EventID" ColumnName="EventID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Locations">
             <EntityTypeMapping TypeName="EventZoneModel.Location">
               <MappingFragment StoreEntitySet="Location">
-                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="LocationName" ColumnName="LocationName" />
               </MappingFragment>
             </EntityTypeMapping>
@@ -1460,6 +1556,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EventZoneModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TrackingActions">
             <EntityTypeMapping TypeName="EventZoneModel.TrackingAction">
               <MappingFragment StoreEntitySet="TrackingAction">
@@ -1490,6 +1597,7 @@
                 <ScalarProperty Name="AccountStatus" ColumnName="AccountStatus" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
                 <ScalarProperty Name="AvatarLink" ColumnName="AvatarLink" />
+                <ScalarProperty Name="DataJoin" ColumnName="DataJoin" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1502,16 +1610,6 @@
                 <ScalarProperty Name="StartTime" ColumnName="StartTime" />
                 <ScalarProperty Name="EndTime" ColumnName="EndTime" />
                 <ScalarProperty Name="Privacy" ColumnName="Privacy" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="LikeDislikes">
-            <EntityTypeMapping TypeName="EventZoneModel.LikeDislike">
-              <MappingFragment StoreEntitySet="LikeDislike">
-                <ScalarProperty Name="Type" ColumnName="Type" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="EventID" ColumnName="EventID" />
-                <ScalarProperty Name="LikeDislikeID" ColumnName="LikeDislikeID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

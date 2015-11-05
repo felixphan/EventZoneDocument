@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Linq;
 using System.Web.Mvc;
+using EventZone.Helpers;
+using EventZone.Models;
 
 namespace EventZone.Controllers
 {
-    [RequireHttps]
     public class HomeController : Controller
     {
+        private readonly EventZoneEntities db = new EventZoneEntities();
         public ActionResult Index()
         {
-            return View();
+            return View(db.Categories.ToList());
         }
 
         public ActionResult About()

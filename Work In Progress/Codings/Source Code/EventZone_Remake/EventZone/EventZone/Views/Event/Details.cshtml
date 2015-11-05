@@ -8,7 +8,6 @@
     int numberLike = Model.NumberLike;
     int numberDislike = Model.NumberDisLike;
     int numberFollow = Model.NumberFowllower;
-    ViewBag.Title = Model.eventName;
 }
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link href="~/Content/Event/Details.css" rel="stylesheet" />
@@ -64,7 +63,7 @@
                                         <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-list-ul">
                                         </div>
                                         <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
-                                            in <i>category</i>
+                                            in <i>Category</i>
                                         </div>
                                         <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-time">
                                         </div>
@@ -149,21 +148,21 @@
                                     }
                                 }
                             </div>
+
+                            @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                            {
+      
+                                    <div class="fileUpload btn btn-primary">
+                                        <span>Upload</span>
+                                        <input id="uploadBtn" type="file" class="upload" name="file" />
+                                    </div>
+                                    <input hidden name="eventID" value="@Model.eventId">
+                                    <p>
+                                        <input type="submit" value="Create" />
+                                    </p>
+                                
+                            }
                         </div>
-                        @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                        {
-                            <div>
-                                <div class="fileUpload btn btn-primary">
-                                    <span>Upload</span>
-                                    <input id="uploadBtn" name="file" type="file" class="upload" style="width: 100%;" />
-                                </div>
-                            </div>
-                            <input hidden name="eventID" value="@Model.eventId">
-                            <div>
-                                <input type="submit" value="Upload" />
-                            </div>
-                        }
-                        
                     </div>
                     <!-- Khung chứa Video -->
                     <div class="tab-pane" id="i_video_tab">
@@ -261,8 +260,8 @@
                     </ul>
 
                     <!-- Tab panes BOOTSTRAP -->
-                    <div class="tab-content">
-                        @Html.Partial("_CommentPartial", @Model.eventComment)
+                    <div class="tab-content" id="comment-content">
+                        @Html.Partial("_CommentPartial", new CommentViewModel { eventID = @Model.eventId, listComment = @Model.eventComment })
                         <div role="tabpanel" class="tab-pane" id="i_report"></div>
                     </div>
                 </div>

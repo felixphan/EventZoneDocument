@@ -7,16 +7,19 @@
 @{
     var ListResolutionItem = new List<ListItem>
     {
-        new ListItem {Text = "144p", Value = "144p"},
+        new ListItem {Text = "240p", Value = "240p"},
         new ListItem {Text = "360p", Value = "360p"},
+        new ListItem {Text = "480p", Value = "480p"},
         new ListItem {Text = "720p", Value = "720p"},
-        new ListItem {Text = "1080p", Value = "1080p"}
+        new ListItem {Text = "720p_hfr", Value = "720p_hfr"},
+        new ListItem {Text = "1080p", Value = "1080p"},
+        new ListItem {Text = "1080p_hfr", Value = "1080p_hfr"}
     };
     var ListPrivacy = new List<ListItem>
     {
-        new ListItem {Text = "Public", Value = "Public"},
-        new ListItem {Text = "Unlisted", Value = "Unlisted"},
-        new ListItem {Text = "Private", Value = "Private"}
+        new ListItem {Text = "Public", Value = "0"},
+        new ListItem {Text = "Unlisted", Value = "1"},
+        new ListItem {Text = "Private", Value = "2"}
     };
 }
 <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
@@ -57,7 +60,7 @@
         <!-- row Title -->
         @Html.LabelFor(model => model.Title, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-            @Html.TextBoxFor(model => model.Title, new{@class="form-control",@style="width:100%"})
+            @Html.TextBoxFor(model => model.Title, new {@class = "form-control", @style = "width:100%"})
             @Html.ValidationMessageFor(model => model.Title)
         </div>
     </div>
@@ -71,8 +74,8 @@
                 <div class="input-group date" id="datetimepicker1" style="z-index: 2">
                     @Html.TextBoxFor(model => model.StartTime, new {@type = "text", @class = "form-control", @placeholder = "from", @id = "i_start_time"})
                     <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
                 </div>
                 @Html.ValidationMessageFor(model => model.StartTime)
             </div>
@@ -82,8 +85,8 @@
                 <div class="input-group date" id="datetimepicker2" style="z-index: 2">
                     @Html.TextBoxFor(model => model.EndTime, new {@type = "text", @class = "form-control", @placeholder = "to", @id = "i_end_time"})
                     <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
                 </div>
                 @Html.ValidationMessageFor(model => model.EndTime)
             </div>
@@ -117,8 +120,7 @@
         </div>
     </div>
     <div class="row b">
-        @Html.LabelFor(model => model.
-        , new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+        @Html.LabelFor(model => model.IsLive, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
             @Html.EditorFor(model => model.IsLive)
             @Html.ValidationMessageFor(model => model.IsLive)
@@ -135,9 +137,7 @@
         </div>
 
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b" id="LocationSelection">
-            <select class="form-control" id="i_location_1">
-
-            </select>
+            <select class="form-control" id="i_location_1" name="LocationLiveName"></select>
         </div>
         <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
             @Html.DropDownList("PrivacyYoutube", new SelectList(ListPrivacy, "Value", "Text"), new {@class = "form-control"})
@@ -148,7 +148,7 @@
         <!-- row Privacy -->
         @Html.LabelFor(model => model.Privacy, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-            @Html.EditorFor(model => model.Privacy)
+            @Html.DropDownList("Privacy", new SelectList(ListPrivacy, "Value", "Text"), new { @class = "form-control" })
             @Html.ValidationMessageFor(model => model.Privacy)
         </div>
     </div>
@@ -266,7 +266,8 @@
                     </div>
                     <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
                 </div>
-                <div id="editor" contenteditable="true" name="Description">Enter your description</div>
+                <textarea id="editor" contenteditable="true">Enter your description</textarea>
+                <input type="hidden" id="descriptionInput" name="Description"/>
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
@@ -278,6 +279,9 @@
     </div>
     </div>
 }
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- All script here -->

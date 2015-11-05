@@ -17,7 +17,8 @@ namespace EventZone.Controllers
         // GET: /User/
         public ActionResult ManageProfile()
         {
-            if (UserHelpers.GetCurrentUser(Session) == null) {
+            if (UserHelpers.GetCurrentUser(Session) == null)
+            {
                 return RedirectToAction("RequireSignin", "Account");
             }
             ViewData["UserSession"] = UserHelpers.GetCurrentUser(Session);
@@ -38,11 +39,11 @@ namespace EventZone.Controllers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult UserInfo(long? id=0)
+        public ActionResult UserInfo(long? id = 0)
         {
             User userSession = UserHelpers.GetCurrentUser(Session);
             User user;
-        
+
             if (userSession.UserID == id || id == 0)
             {
                 user = userSession;
@@ -55,7 +56,7 @@ namespace EventZone.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            
+
             ViewData["UserSession"] = user;
             TempData["ManageProfileTask"] = "UserInfo";
             return RedirectToAction("ManageProfile");
@@ -112,14 +113,15 @@ namespace EventZone.Controllers
                     user.AvatarLink = editUserModel.AvatarLink;
                     user.Phone = editUserModel.Phone;
                     user.Place = editUserModel.Place;
-                
+
                     if (UserDatabaseHelper.Instance.UpdateUser(user))
                     {
                         UserHelpers.SetCurrentUser(Session, user);
                         TempData["ManageProfileTask"] = "UserInfo";
                         return RedirectToAction("ManageProfile");
                     }
-                    else {
+                    else
+                    {
                         TempData["ManageProfileTask"] = "EditProfile";
                         ModelState.AddModelError("", "Something went wrong! Please try again!");
                         return RedirectToAction("EditProfile");
@@ -141,7 +143,8 @@ namespace EventZone.Controllers
         /// manage event
         /// </summary>
         /// <returns></returns>
-        public ActionResult ManageEvent() {
+        public ActionResult ManageEvent()
+        {
             if (UserHelpers.GetCurrentUser(Session) == null)
             {
                 return RedirectToAction("RequireSignin", "Account");
@@ -162,26 +165,29 @@ namespace EventZone.Controllers
             ViewData["ListThumbEvent"] = listThumbEvent;//chứa thông tin cần thiết để show 1 event
             ViewData["MyEvent"] = myEvent;//event cua người dùng
             return View();
-        
+
         }
         /// <summary>
         /// view all my event thumb
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public ActionResult MyEvent(long?id=-1) {
+        public ActionResult MyEvent(long? id = -1)
+        {
             if (id == -1)
             {
                 return RedirectToAction("ManageEvent");
             }
             User user = UserDatabaseHelper.Instance.GetUserByID(id);
             List<Event> myEvent = EventDatabaseHelper.Instance.GetEventsByUser(id);
-            if (myEvent == null) {
+            if (myEvent == null)
+            {
                 return RedirectToAction("ManageEvent");
             }
-           
-            List<ViewThumbEventModel> listThumbEvent= new List<ViewThumbEventModel>();
-            foreach (var item in myEvent) {
+
+            List<ViewThumbEventModel> listThumbEvent = new List<ViewThumbEventModel>();
+            foreach (var item in myEvent)
+            {
                 ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
                 thumbEventModel.eventId = item.EventID;
                 thumbEventModel.avatar = EventDatabaseHelper.Instance.GetImageByID(item.Avatar).ImageLink;
@@ -195,7 +201,8 @@ namespace EventZone.Controllers
             ViewData["MyEvent"] = myEvent;
             return RedirectToAction("ManageEvent");
         }
-        public ActionResult Index() {
+        public ActionResult Index()
+        {
             return View();
         }
 
@@ -203,28 +210,32 @@ namespace EventZone.Controllers
         {
             User user = UserHelpers.GetCurrentUser(Session);
             Boolean success = false;
-            int state= EventZoneConstants.NotRate;
-            
+            int state = EventZoneConstants.NotRate;
+
             if (user != null)
             {
-                LikeDislike findlike= UserDatabaseHelper.Instance.FindLike(user.UserID,eventId);
-                if(findlike!=null){
-                state=findlike.Type;
+                LikeDislike findlike = UserDatabaseHelper.Instance.FindLike(user.UserID, eventId);
+                if (findlike != null)
+                {
+                    state = findlike.Type;
                 }
-                success=UserDatabaseHelper.Instance.InsertLike(user.UserID, eventId);
+                success = UserDatabaseHelper.Instance.InsertLike(user.UserID, eventId);
             }
-            
-            return Json(new { 
-            success = success,
-            state =state
+
+            return Json(new
+            {
+                success = success,
+                state = state
             });
         }
 
-        public JsonResult DisLike(long eventId) {
+        public JsonResult DisLike(long eventId)
+        {
             User user = UserHelpers.GetCurrentUser(Session);
             Boolean success = false;
             int state = EventZoneConstants.NotRate;
-            if (user != null) {
+            if (user != null)
+            {
                 LikeDislike findlike = UserDatabaseHelper.Instance.FindLike(user.UserID, eventId);
                 if (findlike != null)
                 {
@@ -232,16 +243,19 @@ namespace EventZone.Controllers
                 }
                 success = UserDatabaseHelper.Instance.InsertDislike(user.UserID, eventId);
             }
-            return Json(new {
-                success= success,
-                state=state
+            return Json(new
+            {
+                success = success,
+                state = state
             });
         }
-        public JsonResult FollowEvent(long eventId) {
+        public JsonResult FollowEvent(long eventId)
+        {
             User user = UserHelpers.GetCurrentUser(Session);
             Boolean success = false;
             int followState = 0;
-            if (user != null) {
+            if (user != null)
+            {
                 success = UserDatabaseHelper.Instance.FollowEvent(user.UserID, eventId);
                 if (UserDatabaseHelper.Instance.IsFollowingEvent(user.UserID, eventId))
                 {
@@ -253,7 +267,7 @@ namespace EventZone.Controllers
                 success = success,
                 state = followState
             }
-                
+
            );
         }
 
@@ -278,6 +292,8 @@ namespace EventZone.Controllers
 
            );
         }
+
+
     }
 }
 

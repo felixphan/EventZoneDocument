@@ -16,6 +16,7 @@ namespace EventZone.Models
     {
         public long EventId { get; set; }
         public long Score { get; set; }
+        public long EventRankId { get; set; }
     
         public virtual Event Event { get; set; }
     }

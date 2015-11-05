@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using EventZone.Models;
 using System.Net;
 using System.Data.Entity;
+using System.Web.Helpers;
 
 namespace EventZone.Controllers
 {
@@ -14,8 +15,6 @@ namespace EventZone.Controllers
     {
         //
         // GET: /User/
-        private DatabaseHelpers datahelp = new DatabaseHelpers();
-        private EventZoneEntities db = new EventZoneEntities();
         public ActionResult ManageProfile()
         {
             if (UserHelpers.GetCurrentUser(Session) == null) {
@@ -33,6 +32,12 @@ namespace EventZone.Controllers
             }
             return View();
         }
+
+        /// <summary>
+        /// view detail user info
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult UserInfo(long? id=0)
         {
             User userSession = UserHelpers.GetCurrentUser(Session);
@@ -44,7 +49,7 @@ namespace EventZone.Controllers
             }
             else
             {
-                user = datahelp.GetUserByID(id);
+                user = UserDatabaseHelper.Instance.GetUserByID(id);
                 if (user == null)
                 {
                     return RedirectToAction("Index", "Home");
@@ -92,7 +97,7 @@ namespace EventZone.Controllers
                 if (ModelState.IsValid)
                 {
 
-                    User user = datahelp.GetUserByID(editUserModel.UserID);
+                    User user = UserDatabaseHelper.Instance.GetUserByID(editUserModel.UserID);
                     if (user == null)
                     {
                         ModelState.AddModelError("", "You are signed out!");
@@ -108,7 +113,7 @@ namespace EventZone.Controllers
                     user.Phone = editUserModel.Phone;
                     user.Place = editUserModel.Place;
                 
-                    if (datahelp.UpdateUser(user))
+                    if (UserDatabaseHelper.Instance.UpdateUser(user))
                     {
                         UserHelpers.SetCurrentUser(Session, user);
                         TempData["ManageProfileTask"] = "UserInfo";
@@ -132,20 +137,23 @@ namespace EventZone.Controllers
             }
 
         }
-
+        /// <summary>
+        /// manage event
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ManageEvent() {
             if (UserHelpers.GetCurrentUser(Session) == null)
             {
                 return RedirectToAction("RequireSignin", "Account");
             }
             User currentUser = UserHelpers.GetCurrentUser(Session);
-            List<Event> myEvent = datahelp.GetEventsByUser(currentUser.UserID);
+            List<Event> myEvent = EventDatabaseHelper.Instance.GetEventsByUser(currentUser.UserID);
             if (myEvent == null)
             {
                 return View("SuggestCreateEvent");
             }
 
-            List<ViewThumbEventModel> listThumbEvent = datahelp.GetThumbEventListByListEvent(myEvent);
+            List<ViewThumbEventModel> listThumbEvent = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(myEvent);
 
             if (ViewData["ManageEventTask"] == null)
             {
@@ -156,14 +164,18 @@ namespace EventZone.Controllers
             return View();
         
         }
-
+        /// <summary>
+        /// view all my event thumb
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public ActionResult MyEvent(long?id=-1) {
             if (id == -1)
             {
                 return RedirectToAction("ManageEvent");
             }
-            User user = datahelp.GetUserByID(id);
-            List<Event> myEvent = datahelp.GetEventsByUser(id);
+            User user = UserDatabaseHelper.Instance.GetUserByID(id);
+            List<Event> myEvent = EventDatabaseHelper.Instance.GetEventsByUser(id);
             if (myEvent == null) {
                 return RedirectToAction("ManageEvent");
             }
@@ -172,11 +184,11 @@ namespace EventZone.Controllers
             foreach (var item in myEvent) {
                 ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
                 thumbEventModel.eventId = item.EventID;
-                thumbEventModel.avatar = datahelp.GetImageByID(item.Avatar).ImageLink;
+                thumbEventModel.avatar = EventDatabaseHelper.Instance.GetImageByID(item.Avatar).ImageLink;
                 thumbEventModel.eventName = item.EventName;
                 thumbEventModel.StartTime = item.EventStartDate;
                 thumbEventModel.EndTime = item.EventEndDate;
-                thumbEventModel.location = datahelp.GetEventLocation(item.EventID);
+                thumbEventModel.location = EventDatabaseHelper.Instance.GetEventLocation(item.EventID);
                 listThumbEvent.Add(thumbEventModel);
             }
             ViewData["ListThumbEvent"] = listThumbEvent;
@@ -186,62 +198,86 @@ namespace EventZone.Controllers
         public ActionResult Index() {
             return View();
         }
-        public JsonResult Like(long eventId)		
-        {		
-            User user = UserHelpers.GetCurrentUser(Session);		
-            Boolean success = false;		
-            int state= EventZoneConstants.NotRate;		
-            		
-            if (user != null)		
-            {		
-                LikeDislike findlike= datahelp.FindLike(user.UserID,eventId);		
-                if(findlike!=null){		
-                state=findlike.Type;		
-                }		
-                success=datahelp.InsertLike(user.UserID, eventId);		
-            }		
-            		
-            return Json(new { 		
-            success = success,		
-            state =state		
-            });		
-        }		
-        public JsonResult DisLike(long eventId) {		
-            User user = UserHelpers.GetCurrentUser(Session);		
-            Boolean success = false;		
-            int state = EventZoneConstants.NotRate;		
-            if (user != null) {		
-                LikeDislike findlike = datahelp.FindLike(user.UserID, eventId);		
-                if (findlike != null)		
-                {		
-                    state = findlike.Type;		
-                }		
-                success = datahelp.InsertDislike(user.UserID, eventId);		
-            }		
-            return Json(new {		
-                success= success,		
-                state=state		
-            });		
-        }		
-        public JsonResult Follow(long eventId) {		
-            User user = UserHelpers.GetCurrentUser(Session);		
-            Boolean success = false;		
-            int followState = 0;		
-            if (user != null) {		
-                success = datahelp.FollowEvent(user.UserID, eventId);		
-                if (datahelp.IsFollowingEvent(user.UserID, eventId)) {		
-                    followState = 1;		
-                }		
-            }		
-            return Json(new		
-            {		
-                success = success,		
-                state = followState		
-            }		
-                		
-           );
+
+        public JsonResult Like(long eventId)
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int state= EventZoneConstants.NotRate;
+            
+            if (user != null)
+            {
+                LikeDislike findlike= UserDatabaseHelper.Instance.FindLike(user.UserID,eventId);
+                if(findlike!=null){
+                state=findlike.Type;
+                }
+                success=UserDatabaseHelper.Instance.InsertLike(user.UserID, eventId);
             }
-        public List<Event> List() { return null; }
+            
+            return Json(new { 
+            success = success,
+            state =state
+            });
+        }
+
+        public JsonResult DisLike(long eventId) {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int state = EventZoneConstants.NotRate;
+            if (user != null) {
+                LikeDislike findlike = UserDatabaseHelper.Instance.FindLike(user.UserID, eventId);
+                if (findlike != null)
+                {
+                    state = findlike.Type;
+                }
+                success = UserDatabaseHelper.Instance.InsertDislike(user.UserID, eventId);
+            }
+            return Json(new {
+                success= success,
+                state=state
+            });
+        }
+        public JsonResult FollowEvent(long eventId) {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int followState = 0;
+            if (user != null) {
+                success = UserDatabaseHelper.Instance.FollowEvent(user.UserID, eventId);
+                if (UserDatabaseHelper.Instance.IsFollowingEvent(user.UserID, eventId))
+                {
+                    followState = 1;
+                }
+            }
+            return Json(new
+            {
+                success = success,
+                state = followState
+            }
+                
+           );
+        }
+
+        public JsonResult FollowCategory(long categoryId)
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            Boolean success = false;
+            int followState = 0;
+            if (user != null)
+            {
+                success = UserDatabaseHelper.Instance.FollowCategory(user.UserID, categoryId);
+                if (UserDatabaseHelper.Instance.IsFollowingCategory(user.UserID, categoryId))
+                {
+                    followState = 1;
+                }
+            }
+            return Json(new
+            {
+                success = success,
+                state = followState
+            }
+
+           );
+        }
     }
 }
 
