@@ -1,5 +1,4 @@
 ﻿@using System.Web.UI.WebControls
-@using EventZone.Models
 @model EventZone.Models.CreateEventModel
 @{
     ViewBag.Title = "Create";
@@ -8,407 +7,308 @@
 @{
     var ListResolutionItem = new List<ListItem>
     {
-        new ListItem {Text = "144p", Value = "144p"},
+        new ListItem {Text = "240p", Value = "240p"},
         new ListItem {Text = "360p", Value = "360p"},
+        new ListItem {Text = "480p", Value = "480p"},
         new ListItem {Text = "720p", Value = "720p"},
+        new ListItem {Text = "720p_hfr", Value = "720p_hfr"},
         new ListItem {Text = "1080p", Value = "1080p"},
+        new ListItem {Text = "1080p_hfr", Value = "1080p_hfr"}
     };
     var ListPrivacy = new List<ListItem>
     {
-        new ListItem {Text = "Public", Value = "Public"},
-        new ListItem {Text = "Unlisted", Value = "Unlisted"},
-        new ListItem {Text = "Private", Value = "Private"},
+        new ListItem {Text = "Public", Value = "0"},
+        new ListItem {Text = "Unlisted", Value = "1"},
+        new ListItem {Text = "Private", Value = "2"}
     };
 }
 <link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
-<!-- Plugin Flip Effect -->
-<link rel="stylesheet" href="~/Content/jquery.m.flip.css" type="text/css" />
-<link rel="stylesheet" href="~/Content/m.flip.css" type="text/css" />
+<link href="~/Content/Event/bootstrap-datetimepicker.min.css" rel="stylesheet"/>
+<link href="~/Content/Event/jquery.m.flip.css" rel="stylesheet"/>
+<link href="~/Content/Event/m.flip.css" rel="stylesheet"/>
 <!-- myCSS -->
-<link rel="stylesheet" type="text/css" href="~/Content/myCSS_u_c_e.css">
+<link href="~/Content/Event/Create.css" rel="stylesheet"/>
 <div class="container b">
-    <div class="col-xs-12 col-sm-12 col-lg-7 d_leftside b">
-        <!-- Khung Đăng ký sự kiện -->
-        <div class="widget" id="widget_tabs">
-            <ul class="nav nav-tabs" id="myTab">
-                <li id="i_first_tab" class="active"><a href="#i_info_tab" data-toggle="tab">Event Info</a></li>
-                <li><a href="#i_image_tab" data-toggle="tab">Gallery (10)</a></li>
-                <li><a href="#i_video_tab" data-toggle="tab">Video (4)</a></li>
-            </ul>
-            <div class="tab-content">
-                <!-- Khung chứa Thông tin cơ bản & Description -->
-                <div class="tab-pane active" id="i_info_tab">
-                    @using (Html.BeginForm("CreateEvent", "Event", "POST"))
-                    {
-                        @Html.AntiForgeryToken()
-                        @Html.ValidationSummary()
-                        <div class="form-group">
-                            <div class="row b">
-                                <!-- row Thumbnail -->
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                    Thumbnail
-                                </div>
-                                <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_thumb b">
-                                    <img src="~/img/upload.png">
-                                </div>
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-                                    <button type="button" class="btn btn-primary">Browse Image</button>
-                                </div>
-                            </div>
-                            <div class="row b">
-                                <!-- row Title -->
-                                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b" })
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-                                    @Html.EditorFor(model => model.Title)
-                                    @Html.ValidationMessageFor(model => model.Title)
-                                </div>
-                            </div>
-                            <div class="row b">
-                                <!-- row Date Time -->
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                    Date & Time
-                                </div>
-                                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
-                                    <div class="form-group">
-                                        <div class="input-group date" id="datetimepicker1">
-                                            @Html.TextBoxFor(model => model.StartTime, new { @type = "text", @class = "form-control", @placeholder = "from", @id = "i_from_date" })
-                                            @Html.ValidationMessageFor(model => model.StartTime)
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
-                                    <div class="form-group">
-                                        <div class="input-group date" id="datetimepicker2">
-                                            @Html.TextBoxFor(model => model.EndTime, new { @type = "text", @class = "form-control", @placeholder = "to", @id = "i_to_date" })
-                                            @Html.ValidationMessageFor(model => model.EndTime)
-                                            <span class="input-group-addon">
-                                                <span class="glyphicon glyphicon-calendar"></span>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row b">
-                                <!-- row Category -->
-                                @Html.LabelFor(model => model.CategoryID, htmlAttributes: new { @class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b" })
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-                                    @Html.DropDownList("CategoryID", null, new{@class="form-control"})
-                                    @Html.ValidationMessageFor(model => model.CategoryID)
-                                </div>
-                            </div>
-                            <div class="row b" id="LocationDiv">
-                                <div id="LocationInput">
-                                    <input class="text-box single-line hidden form-control" id="LocationName" name="LocationName" type="text" value="">
-                                    <input class="text-box single-line hidden" id="Langitude" name="Langitude" type="text" value="">
-                                    <input class="text-box single-line hidden" id="Longitude" name="Longitude" type="text" value="">
-                                    <div id="wrapper">
-                                        @Html.LabelFor(model => model.LocationName, htmlAttributes: new { @class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b" })
-                                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 b">
-                                            <input type="text" class="LocationInput form-control" id="Location-0" onfocus="searchLocation(this)" />
-                                            <input type="hidden" id="Longitude-0" class="LongitudeInput" />
-                                            <input type="hidden" id="Langitude-0" class="LangitudeInput" />
-                                        </div>
-                                        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                            <button type="button" class="btn btn-primary d_btn_x" id="btnAddLocation">Add Location</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row b">
-                                @Html.LabelFor(model => model.IsLive, htmlAttributes: new { @class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b" })
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-                                    @Html.EditorFor(model => model.IsLive)
-                                    @Html.ValidationMessageFor(model => model.IsLive)
-                                </div>
-                            </div>
-                            <div class="row d_stream_cover b">
-                                <!-- row Streaming Link -->
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                    Streaming
-                                </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                    @Html.DropDownList("Resolution", new SelectList(ListResolutionItem, "Value", "Text"),new {@class="form-control"})
-                                    @Html.ValidationMessageFor(model => model.Resolution)
-                                </div>
-
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-                                    <select class="form-control" id="i_location_1">
-                                        <option>recorded at</option>
-                                        <option>Location 1</option>
-                                        <option>Location 2</option>
-                                        <option>Location 3</option>
-                                        <option>Location 4</option>
-                                    </select>
-                                </div>
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                    @Html.DropDownList("PrivacyYoutube", new SelectList(ListPrivacy, "Value", "Text"), new { @class = "form-control" })
-                                    @Html.ValidationMessageFor(model => model.PrivacyYoutube)
-                                </div>
-                            </div>
-                            <div class="row b">
-                                <!-- row Privacy -->
-                                @Html.LabelFor(model => model.Privacy, htmlAttributes: new { @class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b" })
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
-                                    @Html.EditorFor(model => model.Privacy)
-                                    @Html.ValidationMessageFor(model => model.Privacy)
-                                </div>
-                            </div>
-                            <div class="row b">
-                                <!-- row Request Urgent -->
-                                @Html.LabelFor(model => model.RequestUrgent, htmlAttributes: new { @class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b" })
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-                                    @Html.EditorFor(model => model.RequestUrgent)
-                                    @Html.ValidationMessageFor(model => model.RequestUrgent)
-                                </div>
-                            </div>
-                            <div class="row b">
-                                <!-- row Description -->
-                                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
-                                    Description
-                                </div>
-                                <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
-                                    <div>
-                                        <div id="alerts"></div>
-                                        <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
-                                            <div class="btn-group">
-                                                <a class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="Font"><i class="icon-font"></i><b class="caret"></b></a>
-                                                <ul class="dropdown-menu"></ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
-                                                <ul class="dropdown-menu">
-                                                    <li><a data-edit="fontSize 5"><font size="5">Huge</font></a></li>
-                                                    <li><a data-edit="fontSize 3"><font size="3">Normal</font></a></li>
-                                                    <li><a data-edit="fontSize 1"><font size="1">Small</font></a></li>
-                                                </ul>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)"><i class="icon-bold"></i></a>
-                                                <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)"><i class="icon-italic"></i></a>
-                                                <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough"><i class="icon-strikethrough"></i></a>
-                                                <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)"><i class="icon-underline"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list"><i class="icon-list-ul"></i></a>
-                                                <a class="btn btn-default" data-edit="insertorderedlist" title="Number list"><i class="icon-list-ol"></i></a>
-                                                <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)"><i class="icon-indent-left"></i></a>
-                                                <a class="btn btn-default" data-edit="indent" title="Indent (Tab)"><i class="icon-indent-right"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)"><i class="icon-align-left"></i></a>
-                                                <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)"><i class="icon-align-center"></i></a>
-                                                <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)"><i class="icon-align-right"></i></a>
-                                                <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)"><i class="icon-align-justify"></i></a>
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink"><i class="icon-link"></i></a>
-                                                <div class="dropdown-menu input-append">
-                                                    <input class="span2" placeholder="http://" type="text" data-edit="createLink" />
-                                                    <button class="btn btn-success" type="button">Add</button>
-                                                </div>
-                                                <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink"><i class="icon-cut"></i></a>
-                                            </div>
-
-                                            <div class="btn-group">
-                                                <a class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn"><i class="icon-picture"></i></a>
-                                                <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage" />
-                                            </div>
-                                            <div class="btn-group">
-                                                <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)"><i class="icon-undo"></i></a>
-                                                <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)"><i class="icon-repeat"></i></a>
-                                            </div>
-                                            <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
-                                        </div>
-                                        <div id="editor" contenteditable="true" name="Description">Enter your description</div>
-                                        @Html.ValidationMessageFor(model => model.Description)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="button" id="btnSubmit" class="btn btn-default" value="Create" />
-                                </div>
-                            </div>
-                        </div>
-                    }
+<div class="col-xs-12 col-sm-12 col-lg-12 d_leftside b">
+<!-- Khung Đăng ký sự kiện -->
+<div class="widget" id="widget_tabs">
+<ul class="nav nav-tabs" id="myTab">
+    <li id="i_first_tab" class="active">
+        <a href="#i_info_tab" data-toggle="tab">Event Info</a>
+    </li>
+</ul>
+<div class="tab-content">
+<!-- Khung chứa Thông tin cơ bản & Description -->
+<div class="tab-pane active" id="i_info_tab">
+@using (Html.BeginForm("CreateEvent", "Event", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+    <div class="row b">
+        <!-- row Thumbnail -->
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+            Thumbnail
+        </div>
+        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_thumb b">
+            <img src="~/img/upload.png">
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
+            <button type="button" class="btn btn-primary">Browse Image</button>
+        </div>
+    </div>
+    <div class="row b">
+        <!-- row Title -->
+        @Html.LabelFor(model => model.Title, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
+            @Html.TextBoxFor(model => model.Title, new {@class = "form-control", @style = "width:100%"})
+            @Html.ValidationMessageFor(model => model.Title)
+        </div>
+    </div>
+    <div class="row b">
+        <!-- row Date Time -->
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+            Date & Time
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
+            <div class="form-group">
+                <div class="input-group date" id="datetimepicker1" style="z-index: 2">
+                    @Html.TextBoxFor(model => model.StartTime, new {@type = "text", @class = "form-control", @placeholder = "from", @id = "i_start_time"})
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
                 </div>
-                <!-- Khung chứa Gallery -->
-                <div class="tab-pane" id="i_image_tab">
-                    <div class="d_upload_container b">
-
-                    </div>
-                    <div class="d_images_container b">
-
-                    </div>
+                @Html.ValidationMessageFor(model => model.StartTime)
+            </div>
+        </div>
+        <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5 b">
+            <div class="form-group">
+                <div class="input-group date" id="datetimepicker2" style="z-index: 2">
+                    @Html.TextBoxFor(model => model.EndTime, new {@type = "text", @class = "form-control", @placeholder = "to", @id = "i_end_time"})
+                    <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
                 </div>
-                <!-- Khung chứa Video -->
-                <div class="tab-pane" id="i_video_tab">
-                    Tab 3
-                </div>
+                @Html.ValidationMessageFor(model => model.EndTime)
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-12 col-lg-4 d_rightside b">
-        <!-- Khung chứa sự kiện khác -->
-        <div class="widget" id="widget_tabs">
-            <ul class="nav nav-tabs" id="myTab">
-                <li id="i_first_tab" class="active"><a href="#i_other_tab" data-toggle="tab">Other events</a></li>
-            </ul>
-            <div class="tab-content">
-                <!-- Khung chứa các sự kiện khác -->
-                <div class="tab-pane active" id="i_other_tab">
-                    <div class="row d_each_event b1">
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_o_thumb b1">
-                            <div class="box m-flip">
-                                <!-- m-flip cho Thumbnail -->
-                                <div class="front">
-                                    <img src="~/img/bg2.jpg" class="">
-                                </div>
-                                <div class="back">
-                                    <img src="~/img/bg2.jpg" class="">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 d_o_title b1">
-                            <!-- o: Other event -->
-                            Khai giảng các khóa học nghiệp vụ kế toán, nhân sự, thuế, xnk ngắn hạn
-                        </div>
-                    </div>
+    <div class="row b">
+        <!-- row Category -->
+        @Html.LabelFor(model => model.CategoryID, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
+            @Html.DropDownList("CategoryId", null, new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.CategoryID)
+        </div>
+    </div>
+    <div class="row b" id="LocationDiv">
+        <div id="LocationInput">
+            <input class="text-box single-line hidden form-control" id="LocationName" name="LocationName" type="text">
+            <input class="text-box single-line hidden" id="Lattitude" name="Lattitude" type="text" value="">
+            <input class="text-box single-line hidden" id="Longitude" name="Longitude" type="text" value="">
+            <div id="wrapper">
+                @Html.LabelFor(model => model.LocationName, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+                <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 b">
+                    <input type="text" class="LocationInput form-control" id="Location-0" onfocus="searchLocation(this)"/>
+                    <input type="hidden" id="Longitude-0" class="LongitudeInput"/>
+                    <input type="hidden" id="Lattitude-0" class="LangitudeInput"/>
                 </div>
+                <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+                    <button type="button" class="btn btn-primary d_btn_x" id="btnAddLocation">Add Location</button>
+                </div>
+            </div>
+            @Html.ValidationMessageFor(model => model.LocationName)
+        </div>
+    </div>
+    <div class="row b">
+        @Html.LabelFor(model => model.IsLive, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
+            @Html.EditorFor(model => model.IsLive)
+            @Html.ValidationMessageFor(model => model.IsLive)
+        </div>
+    </div>
+    <div class="row d_stream_cover b">
+        <!-- row Streaming Link -->
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
+            @Html.DropDownList("Quality", new SelectList(ListResolutionItem, "Value", "Text"), new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.Quality)
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b" id="LocationSelection">
+            <select class="form-control" id="i_location_1" name="LocationLiveName"></select>
+        </div>
+        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b">
+            @Html.DropDownList("PrivacyYoutube", new SelectList(ListPrivacy, "Value", "Text"), new {@class = "form-control"})
+            @Html.ValidationMessageFor(model => model.PrivacyYoutube)
+        </div>
+    </div>
+    <div class="row b">
+        <!-- row Privacy -->
+        @Html.LabelFor(model => model.Privacy, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 b">
+            @Html.DropDownList("Privacy", new SelectList(ListPrivacy, "Value", "Text"), new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Privacy)
+        </div>
+    </div>
+    <div class="row b">
+        <!-- row Request Urgent -->
+        @Html.LabelFor(model => model.RequestUrgent, new {@class = "col-xs-2 col-sm-2 col-md-2 col-lg-2 b"})
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
+            @Html.EditorFor(model => model.RequestUrgent)
+            @Html.ValidationMessageFor(model => model.RequestUrgent)
+        </div>
+    </div>
+    <div class="row b">
+        <!-- row Description -->
+        <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">
+            Description
+        </div>
+        <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 b">
+            <div>
+                <div id="alerts"></div>
+                <div class="btn-toolbar" data-role="editor-toolbar" data-target="#editor">
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="Font">
+                            <i class="icon-font"></i><b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu"></ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn dropdown-toggle btn-default" data-toggle="dropdown" title="Font Size"><i class="icon-text-height"></i>&nbsp;<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a data-edit="fontSize 5">
+                                    <font size="5">Huge</font>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-edit="fontSize 3">
+                                    <font size="3">Normal</font>
+                                </a>
+                            </li>
+                            <li>
+                                <a data-edit="fontSize 1">
+                                    <font size="1">Small</font>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="bold" title="Bold (Ctrl/Cmd+B)">
+                            <i class="icon-bold"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="italic" title="Italic (Ctrl/Cmd+I)">
+                            <i class="icon-italic"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="strikethrough" title="Strikethrough">
+                            <i class="icon-strikethrough"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="underline" title="Underline (Ctrl/Cmd+U)">
+                            <i class="icon-underline"></i>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="insertunorderedlist" title="Bullet list">
+                            <i class="icon-list-ul"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="insertorderedlist" title="Number list">
+                            <i class="icon-list-ol"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="outdent" title="Reduce indent (Shift+Tab)">
+                            <i class="icon-indent-left"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="indent" title="Indent (Tab)">
+                            <i class="icon-indent-right"></i>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="justifyleft" title="Align Left (Ctrl/Cmd+L)">
+                            <i class="icon-align-left"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="justifycenter" title="Center (Ctrl/Cmd+E)">
+                            <i class="icon-align-center"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="justifyright" title="Align Right (Ctrl/Cmd+R)">
+                            <i class="icon-align-right"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="justifyfull" title="Justify (Ctrl/Cmd+J)">
+                            <i class="icon-align-justify"></i>
+                        </a>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default dropdown-toggle" data-toggle="dropdown" title="Hyperlink">
+                            <i class="icon-link"></i>
+                        </a>
+                        <div class="dropdown-menu input-append">
+                            <input class="span2" placeholder="http://" type="text" data-edit="createLink"/>
+                            <button class="btn btn-success" type="button">Add</button>
+                        </div>
+                        <a class="btn btn-default" data-edit="unlink" title="Remove Hyperlink">
+                            <i class="icon-cut"></i>
+                        </a>
+                    </div>
+
+                    <div class="btn-group">
+                        <a class="btn btn-default" title="Insert picture (or just drag & drop)" id="pictureBtn">
+                            <i class="icon-picture"></i>
+                        </a>
+                        <input type="file" data-role="magic-overlay" data-target="#pictureBtn" data-edit="insertImage"/>
+                    </div>
+                    <div class="btn-group">
+                        <a class="btn btn-default" data-edit="undo" title="Undo (Ctrl/Cmd+Z)">
+                            <i class="icon-undo"></i>
+                        </a>
+                        <a class="btn btn-default" data-edit="redo" title="Redo (Ctrl/Cmd+Y)">
+                            <i class="icon-repeat"></i>
+                        </a>
+                    </div>
+                    <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
+                </div>
+                <textarea id="editor" contenteditable="true">Enter your description</textarea>
+                <input type="hidden" id="descriptionInput" name="Description"/>
+                @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
     </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" id="btnSubmit" class="btn btn-default" value="Create"/>
+        </div>
+    </div>
+    </div>
+}
+</div>
+</div>
+</div>
+</div>
 </div>
 <!-- All script here -->
 <!-- Default JQuery -->
-<script src="~/Scripts/jquery.hotkeys.js"></script>
-<script src="~/Scripts/bootstrap-wysiwyg.js"></script>
+<script src="~/Scripts/Event/jquery.hotkeys.js"></script>
+<script src="~/Scripts/Event/bootstrap-wysiwyg.js"></script>
 <!-- Plugin chọn giờ -->
-<script src="~/Scripts/moment-with-locales.js"></script>
-<script type="text/javascript">
-    $(function () {
-        $('#datetimepicker1').datetimepicker();
-        $('#datetimepicker2').datetimepicker();
-    });
-</script>
-<script src="~/Scripts/prettify-1.0.min.js"></script>
-<script src="~/Scripts/base.js"></script>
-<!-- END of Plugin chọn giờ -->
-<!-- Plugin Edit Description -->
+<script src="~/Scripts/Event/moment-with-locales.min.js"></script>
+<script src="~/Scripts/Event/prettify-1.0.min.js"></script>
+<script src="~/Scripts/Event/Create.js"></script>
+<script src="~/Scripts/Event/jquery.m.flip.js"></script>
+<script src="~/Scripts/Event/bootstrap-datetimepicker.min.js"></script>
 <script>
-    $(function () {
-        function initToolbarBootstrapBindings() {
-            var fonts = ['Serif', 'Sans', 'Arial', 'Arial Black', 'Courier',
-                  'Courier New', 'Comic Sans MS', 'Helvetica', 'Impact', 'Lucida Grande', 'Lucida Sans', 'Tahoma', 'Times',
-                  'Times New Roman', 'Verdana'],
-                  fontTarget = $('[title=Font]').siblings('.dropdown-menu');
-            $.each(fonts, function (idx, fontName) {
-                fontTarget.append($('<li><a data-edit="fontName ' + fontName + '" style="font-family:\'' + fontName + '\'">' + fontName + '</a></li>'));
-            });
-            $('a[title]').tooltip({ container: 'body' });
-            $('.dropdown-menu input').click(function () { return false; })
-                .change(function () { $(this).parent('.dropdown-menu').siblings('.dropdown-toggle').dropdown('toggle'); })
-            .keydown('esc', function () { this.value = ''; $(this).change(); });
-
-            $('[data-role=magic-overlay]').each(function () {
-                var overlay = $(this), target = $(overlay.data('target'));
-                overlay.css('opacity', 0).css('position', 'absolute').offset(target.offset()).width(target.outerWidth()).height(target.outerHeight());
-            });
-            if ("onwebkitspeechchange" in document.createElement("input")) {
-                var editorOffset = $('#editor').offset();
-                $('#voiceBtn').css('position', 'absolute').offset({ top: editorOffset.top, left: editorOffset.left + $('#editor').innerWidth() - 35 });
-            } else {
-                $('#voiceBtn').hide();
-            }
-        };
-        function showErrorAlert(reason, detail) {
-            var msg = '';
-            if (reason === 'unsupported-file-type') { msg = "Unsupported format " + detail; }
-            else {
-                console.log("error uploading file", reason, detail);
-            }
-            $('<div class="alert"> <button type="button" class="close" data-dismiss="alert">&times;</button>' +
-             '<strong>File upload error</strong> ' + msg + ' </div>').prependTo('#alerts');
-        };
-        initToolbarBootstrapBindings();
-        $('#editor').wysiwyg({ fileUploadError: showErrorAlert });
-        window.prettyPrint && prettyPrint();
-    });
-</script>
-<!-- END of Plugin Edit Description -->
-<script>
-    $(document).ready(function () {
-        $('.d_stream_cover').fadeOut('slow');
-        $("#IsLive").change(function() {
-            if (this.checked) {
-                $('.d_stream_cover').fadeIn('slow');
-            } else {
-                $('.d_stream_cover').fadeOut('slow');
-            }
-        });
-        $("#btnAddLocation").click(function () {
-            var length = $('input[id^=Location-]').length;
-            console.log(length);
-            $('#LocationInput').append('<div id="wrapper">' +
-            '<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 b">' +
-                '<input type="text" class="LocationInput form-control" id="Location-'+length+'" onfocus="searchLocation(this)" />'+
-                '<input type="hidden" id="Longitude-'+length+'" class="LongitudeInput" />'+
-                '<input type="hidden" id="Langitude-'+length+'" class="LangitudeInput" />'+
-            '</div>'+
-            '<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2 b">'+
-                '<button type="button" class="btn btn-primary btnRemoveLocation">Remove</button>'+
-            '</div>'+
-        '</div>');
-        });
-        $("#LocationInput").on("click", ".btnRemoveLocation", function () { //user click on remove text
-            $(this).parent('div').parent('div').remove();
-        });
-
-        $('#btnSubmit').click(function () {
-            var LocationInputText = "";
-            var LongitudeInputText = "";
-            var LangitudeInputText = "";
-            $('[id^=Location-]').each(function (i, item) {
-                LocationInputText = LocationInputText + $(item).val() + ";";
-            });
-            $('[id^=Longitude-]').each(function (i, item) {
-                LongitudeInputText = LongitudeInputText + $(item).val() + ";";
-            });
-            $('[id^=Langitude-]').each(function (i, item) {
-                LangitudeInputText = LangitudeInputText + $(item).val() + ";";
-            });
-            $('#LocationName').val(LocationInputText);
-            $('#Longitude').val(LongitudeInputText);
-            $('#Langitude').val(LangitudeInputText);
-            $(this).parents("form").submit();
-        });
-        $('#IsLive').click(function () {
-            if ($(this).is(':checked')) $('#YoutubeOption').show();
-        })
-    });
-</script>
-<script>
-    var autocomplete;
+    //Location Map
+    var autocomplete = "";
     var number = "";
+
     function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
         // location types.
         autocomplete = new google.maps.places.Autocomplete(
-            (document.getElementById('Location-' + number)),
-            { types: [] });
+        (document.getElementById('Location-' + number)),
+        { types: [] });
 
         // When the user selects an address from the dropdown, populate the address
         // fields in the form.
         autocomplete.addListener('place_changed', getCoordinates);
-    }
-
-    function searchLocation(x) {
-        var LocationID = $(x).attr('id');
-        number = LocationID.substring(9, 10);
-        initAutocomplete();
     }
 
     // [START region_fillform]
@@ -416,6 +316,16 @@
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
         document.getElementById('Longitude-' + number).value = place.geometry.location.lng();
-        document.getElementById('Langitude-' + number).value = place.geometry.location.lat();
+        document.getElementById('Lattitude-' + number).value = place.geometry.location.lat();
+        $("#i_location_1").empty();
+        $('[id^=Location-]').each(function(i, item) {
+            $("#i_location_1").append(new Option($(item).val(), $(item).val(), true, true));
+        });
+    }
+
+    function searchLocation(x) {
+        var LocationID = $(x).attr('id');
+        number = LocationID.substring(9, 10);
+        initAutocomplete();
     }
 </script>

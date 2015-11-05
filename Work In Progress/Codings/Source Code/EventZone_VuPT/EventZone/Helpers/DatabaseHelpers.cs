@@ -1,25 +1,32 @@
-﻿using EventZone.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
-
+using EventZone.Models;
 
 namespace EventZone.Helpers
 {
-    public class DatabaseHelpers : SingletonBase<DatabaseHelpers>
+    /// <summary>
+    ///     All functions related to User
+    /// </summary>
+    public class UserDatabaseHelper : SingletonBase<UserDatabaseHelper>
     {
-        private EventZoneEntities db = new EventZoneEntities();
+        private readonly EventZoneEntities db;
 
-        public EventZoneEntities data()
+        private UserDatabaseHelper()
         {
-            return db;
+            db = new EventZoneEntities();
         }
 
+        /// <summary>
+        ///     Check is user exists in database or not. If yes return true, else return false.
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public bool ValidateUser(string userName, string password)
         {
-            List<User> listUser = db.Users.ToList();
+            var listUser = db.Users.ToList();
             var user = listUser.FindAll(i => i.UserName == userName);
             if (user.Count == 0)
             {
@@ -32,9 +39,14 @@ namespace EventZone.Helpers
             return true;
         }
 
+        /// <summary>
+        ///     Check is user's status locked or not. If user's status is locked, return true else return false
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public bool isLookedUser(string userName)
         {
-            List<User> listUser = db.Users.ToList();
+            var listUser = db.Users.ToList();
             var user = listUser.FindAll(i => i.UserName == userName);
             if (user.Count == 0)
             {
@@ -47,11 +59,16 @@ namespace EventZone.Helpers
             return false;
         }
 
+        /// <summary>
+        ///     Create a default channel for user when they signup first time. return true if success, else return false
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool CreateUserChannel(User user)
         {
             try
             {
-                Channel channel = new Channel();
+                var channel = new Channel();
                 channel.UserID = user.UserID;
                 channel.ChannelName = user.UserFirstName +
                                       (user.UserLastName == "" || user.UserLastName == null
@@ -64,40 +81,394 @@ namespace EventZone.Helpers
             }
             catch
             {
-
                 return false;
             }
-
-
         }
 
+        /// <summary>
+        ///     get all channel in DB
+        /// </summary>
+        /// <returns></returns>
+        public List<Channel> GetAllChannel()
+        {
+            return db.Channels.ToList();
+        }
+
+        /// <summary>
+        ///     get Channel by userID
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public Channel GetUserChannel(long userID)
+        {
+            var channel = new Channel();
+            channel = GetAllChannel().FindAll(i => i.UserID == userID)[0];
+            return channel;
+        }
+
+        /// <summary>
+        ///     count numbers event of user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public int CountOwnedEvent(long userID)
+        {
+            try
+            {
+                var channelID = GetUserChannel(userID).ChannelID;
+                var k = (from a in db.Events where a.ChannelID == channelID select a).Count();
+                return k;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        ///     get thumb list user from list user for viewing
+        /// </summary>
+        /// <param name="listUser"></param>
+        /// <returns></returns>
+        public List<ViewThumbUserModel> GetUserThumbByList(List<User> listUser)
+        {
+            var listView = new List<ViewThumbUserModel>();
+            if (listUser == null)
+            {
+                return null;
+            }
+            foreach (var item in listUser)
+            {
+                var view = new ViewThumbUserModel();
+                view.UserID = item.UserID;
+                view.Avatar = item.AvatarLink;
+                view.Name = item.UserFirstName +
+                            (item.UserLastName == null || item.UserLastName == "" ? "" : item.UserLastName);
+                view.NumberFollower = NumberFollower(item.UserID);
+                view.NumberOwnedEvent = Instance.CountOwnedEvent(item.UserID);
+                listView.Add(view);
+            }
+            return listView;
+        }
+
+        /// <summary>
+        ///     Check is user following another user
+        /// </summary>
+        /// <param name="FollowerID"></param>
+        /// <param name="FollowingID"></param>
+        /// <returns></returns>
+        public bool IsFollowingUser(long FollowerID, long FollowingID)
+        {
+            var people =
+                (from a in db.PeopleFollows
+                 where a.FollowerUserID == FollowerID && a.FollowingUserID == FollowingID
+                 select a).ToList()[0];
+            if (people != null)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///     User Follows another user
+        /// </summary>
+        /// <param name="FollowerID"></param>
+        /// <param name="FollowingID"></param>
+        /// <returns></returns>
+        public bool FollowingPeople(long FollowerID, long FollowingID)
+        {
+            try
+            {
+                var ppfollow = new PeopleFollow();
+                ppfollow.FollowerUserID = FollowerID;
+                ppfollow.FollowingUserID = FollowingID;
+                db.PeopleFollows.Add(ppfollow);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///     Check is user following a event
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public bool IsFollowingEvent(long userID, long eventID)
+        {
+            try
+            {
+                var evtFollow =
+                    (from a in db.EventFollows where a.FollowerID == userID && a.EventID == eventID select a).ToList()[0
+                        ];
+                if (evtFollow != null)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///     User follows event
+        /// </summary>
+        /// <param name="useID"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public bool FollowEvent(long useID, long eventID)
+        {
+            try
+            {
+                if (IsFollowingEvent(useID, eventID))
+                {
+                    UnFollowEvent(useID, eventID);
+                    return true;
+                }
+                var evtFollow = new EventFollow();
+                evtFollow.EventID = eventID;
+                evtFollow.FollowerID = useID;
+                db.EventFollows.Add(evtFollow);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public bool UnFollowEvent(long userId, long eventId)
+        {
+            try
+            {
+                var follow =
+                    (from a in db.EventFollows where a.FollowerID == userId && a.EventID == eventId select a).ToList()[0
+                        ];
+                db.EventFollows.Remove(follow);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///     Check xem user like or dislike event. Nếu chưa like hoặc dislike trả lại 0;
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public LikeDislike FindLike(long userId, long eventID)
+        {
+            try
+            {
+                var like =
+                    (from a in db.LikeDislikes where a.UserID == userId && a.EventID == eventID select a).ToList()[0];
+                if (like != null)
+                {
+                    return like;
+                }
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Like event
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public bool InsertLike(long userID, long eventID)
+        {
+            try
+            {
+                //Check user liked this event or not		
+                var findLike = FindLike(userID, eventID);
+                //Check user liked this event or not		
+                if (findLike != null)
+                {
+                    findLike.Type = EventZoneConstants.Like;
+                    db.Entry(findLike).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return true;
+                }
+                //If user dont like or dislike this event before		
+                var like = new LikeDislike();
+                like.Type = EventZoneConstants.Like;
+                like.UserID = userID;
+                like.EventID = eventID;
+                db.LikeDislikes.Add(like);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///     dislike event
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public bool InsertDislike(long userID, long eventID)
+        {
+            try
+            {
+                //Check user liked this event or not		
+                var findLike = FindLike(userID, eventID);
+                //Check user liked this event or not		
+                if (findLike != null)
+                {
+                    findLike.Type = EventZoneConstants.Dislike;
+                    db.Entry(findLike).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return true;
+                }
+                //If user dont like or dislike this event before		
+                var like = new LikeDislike();
+                like.Type = EventZoneConstants.Dislike;
+                like.UserID = userID;
+                like.EventID = eventID;
+                db.LikeDislikes.Add(like);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///     count number follower of user
+        /// </summary>
+        /// <param name="UserID"></param>
+        /// <returns></returns>
+        public int NumberFollower(long UserID)
+        {
+            try
+            {
+                var k = (from a in db.PeopleFollows where a.FollowingUserID == UserID select a).Count();
+                return k;
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
+        /// <summary>
+        ///     Check is user following a category
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public bool IsFollowingCategory(long userID, long categoryID)
+        {
+            try
+            {
+                var carFollow =
+                    (from a in db.CategoryFollows where a.FollowerID == userID && a.CategoryID == categoryID select a).ToList()[0];
+                if (carFollow != null)
+                {
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///    Follow category if user doest now follow it, unfollow category if user is following this category
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public bool FollowCategory(long userID, long categoryID)
+        {
+            try
+            {
+                var catFollow = new CategoryFollow();
+                if (IsFollowingCategory(userID, categoryID))
+                {
+                    catFollow = (from a in db.CategoryFollows where a.CategoryID == categoryID && a.FollowerID == userID select a).ToList()[0];
+                    db.CategoryFollows.Remove(catFollow);
+                    db.SaveChanges();
+                    return true;
+                }
+                catFollow.FollowerID = userID;
+                catFollow.CategoryID = categoryID;
+                db.CategoryFollows.Add(catFollow);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        ///     find user by email, return null if not found
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         public User GetUserByEmail(string email)
         {
-            List<User> listUser = db.Users.ToList();
+            var listUser = db.Users.ToList();
             var user = listUser.FindAll(i => i.UserEmail == email);
             if (user.Count != 0)
             {
                 return user[0];
             }
             return null;
-
         }
 
+        /// <summary>
+        ///     get user by user name, return null if not found
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
         public User GetUserByUserName(string userName)
         {
-            List<User> listUser = db.Users.ToList();
+            var listUser = db.Users.ToList();
             var user = listUser.FindAll(i => i.UserName == userName);
             if (user.Count != 0)
             {
                 return user[0];
             }
             return null;
-
         }
 
+        /// <summary>
+        ///     Get user by userId, return null if not found
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public User GetUserByID(long? userID)
         {
-            List<User> listUser = db.Users.ToList();
+            var listUser = db.Users.ToList();
             var user = listUser.FindAll(i => i.UserID == userID);
             if (user.Count != 0)
             {
@@ -106,19 +477,11 @@ namespace EventZone.Helpers
             return null;
         }
 
-        public bool ResetPassword(string email, string password)
-        {
-            User user = GetUserByEmail(email);
-            if (user != null)
-            {
-                user.UserPassword = password;
-                db.Entry(user).State = EntityState.Modified;
-                db.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
+        /// <summary>
+        ///     Update User to database
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
         public bool UpdateUser(User user)
         {
             try
@@ -133,29 +496,86 @@ namespace EventZone.Helpers
             }
         }
 
+        /// <summary>
+        ///     Change user password
+        /// </summary>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public bool ResetPassword(string email, string password)
+        {
+            var user = GetUserByEmail(email);
+            if (user != null)
+            {
+                user.UserPassword = password;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///     Search user By keyword
+        /// </summary>
+        /// <param name="keyword"></param>
+        /// <returns></returns>
+        public List<User> SearchUserByKeyword(string keyword)
+        {
+            if (keyword == "" || keyword == null)
+            {
+                return db.Users.ToList();
+            }
+            keyword = keyword.ToLower();
+
+            var listResult = new List<User>();
+
+            var retrievedResult = (from x in listResult
+                                   where x.UserFirstName.ToLower().Contains(keyword) || x.UserLastName.ToLower().Contains(keyword)
+                                   select x).ToList();
+            return retrievedResult;
+        }
+    }
+
+    /// <summary>
+    ///     All function related to Event
+    /// </summary>
+    public class EventDatabaseHelper : SingletonBase<EventDatabaseHelper>
+    {
+        private readonly EventZoneEntities db;
+
+        private EventDatabaseHelper()
+        {
+            db = new EventZoneEntities();
+        }
+        /// <summary>
+        ///     get all event of an user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public List<Event> GetEventsByUser(long? userID)
         {
-            List<Channel> listChannel = db.Channels.ToList();
+            var listChannel = db.Channels.ToList();
             if (listChannel.FindAll(i => i.UserID == userID).Count == 0)
             {
                 return null;
             }
-            Channel mychannel = listChannel.FindAll(i => i.UserID == userID)[0];
-            List<Event> listEvent = db.Events.ToList();
-            List<Event> myEvent = listEvent.FindAll(i => i.ChannelID == mychannel.ChannelID);
+            var mychannel = listChannel.FindAll(i => i.UserID == userID)[0];
+            var listEvent = db.Events.ToList();
+            var myEvent = listEvent.FindAll(i => i.ChannelID == mychannel.ChannelID);
             return myEvent;
         }
 
-        ///<summary>
-        ///get all locations of an event
-        ///</summary>
+        /// <summary>
+        ///     get all locations of an event
+        /// </summary>
         public List<Location> GetEventLocation(long EventID)
         {
-            List<EventPlace> listEventPlace = db.EventPlaces.ToList(); //load all event place
-            List<EventPlace> listEventLocation = listEventPlace.FindAll(i => i.EventID == EventID);
+            var listEventPlace = db.EventPlaces.ToList(); //load all event place
+            var listEventLocation = listEventPlace.FindAll(i => i.EventID == EventID);
             //select current event places
-            List<Location> listLocation = db.Locations.ToList();
-            List<Location> result = new List<Location>();
+            var listLocation = db.Locations.ToList();
+            var result = new List<Location>();
             foreach (var item in listEventLocation)
             {
                 var loc = listLocation.FindAll(i => i.LocationID == item.LocationID)[0];
@@ -165,7 +585,7 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// Get event by eventID
+        ///     Get event by eventID
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
@@ -182,14 +602,32 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// Get all image of an event
+        ///     Inscrease number view of event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public bool AddViewEvent(long eventID)
+        {
+            var evt = Instance.GetEventByID(eventID);
+            if (evt != null)
+            {
+                evt.View += 1;
+                db.Entry(evt).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///     Get all image of an event
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         public List<Image> GetEventImage(long? id)
         {
-            List<Image> eventImage = new List<Image>();
-            List<Image> allImage = db.Images.ToList();
+            var eventImage = new List<Image>();
+            var allImage = db.Images.ToList();
             if (allImage.Count != 0)
             {
                 eventImage = allImage.FindAll(i => i.EventID == id);
@@ -199,22 +637,22 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// Get all video of an event
+        ///     Get all video of an event
         /// </summary>
         /// <param name="id"></param>
         /// <returns> </returns>
         public List<Video> GetEventVideo(long? id)
         {
-            List<Video> eventVideo = new List<Video>();
-            List<EventPlace> allEventPlace = db.EventPlaces.ToList(); //retrieve data from table EventPlace
+            var eventVideo = new List<Video>();
+            var allEventPlace = db.EventPlaces.ToList(); //retrieve data from table EventPlace
             //find all video of event;
-            List<EventPlace> listPlace = allEventPlace.FindAll(i => i.EventID == id);
-            List<Video> allVideo = db.Videos.ToList(); // retrieve data from talble Video
+            var listPlace = allEventPlace.FindAll(i => i.EventID == id);
+            var allVideo = db.Videos.ToList(); // retrieve data from talble Video
             if (listPlace.Count != 0)
             {
                 foreach (var item in listPlace)
                 {
-                    List<Video> listVideo = allVideo.FindAll(i => i.EventPlaceID == item.EventPlaceID);
+                    var listVideo = allVideo.FindAll(i => i.EventPlaceID == item.EventPlaceID);
                     foreach (var video in listVideo)
                     {
                         eventVideo.Add(video);
@@ -227,13 +665,13 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// Get all comment of an event
+        ///     Get all comment of an event
         /// </summary>
         /// <returns></returns>
         public List<Comment> GetEventComment(long? id)
         {
-            List<Comment> eventComment = new List<Comment>();
-            List<Comment> allComment = db.Comments.ToList();
+            var eventComment = new List<Comment>();
+            var allComment = db.Comments.ToList();
 
             if (allComment.Count != 0)
             {
@@ -245,27 +683,46 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// Lay thong tin nguoi dang event
+        ///     Lay thong tin nguoi dang event
         /// </summary>
         /// <param name="eventId"></param>
         /// <returns></returns>
         public User GetAuthorEvent(long? eventId)
         {
-            Event evt = db.Events.Find(eventId);
-            List<Channel> listChannel = db.Channels.ToList(); // retrieve all Channel fromm table Channel
-            Channel authorChannel = listChannel.FindAll(i => i.ChannelID == evt.ChannelID)[0];
+            var evt = db.Events.Find(eventId);
+            var listChannel = db.Channels.ToList(); // retrieve all Channel fromm table Channel
+            var authorChannel = listChannel.FindAll(i => i.ChannelID == evt.ChannelID)[0];
             if (evt != null)
             {
-                List<User> listUser = db.Users.ToList(); //retrieve all user from table user
-                User user = listUser.FindAll(i => i.UserID == authorChannel.UserID)[0];
+                var listUser = db.Users.ToList(); //retrieve all user from table user
+                var user = listUser.FindAll(i => i.UserID == authorChannel.UserID)[0];
                 if (user != null) return user;
                 return null;
             }
             return null;
         }
 
+        //Check is event owned by user or not
+        public bool IsEventOwnedByUser(long eventID, long UserID)
+        {
+            try
+            {
+                var channel = UserDatabaseHelper.Instance.GetUserChannel(UserID);
+                if (channel != null)
+                {
+                    var evt = db.Events.Find(eventID);
+                    if (channel.ChannelID == evt.ChannelID) return true;
+                }
+                return false;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         /// <summary>
-        /// trả lại event có tên, địa điểm hoặc description trùng với keyword 
+        ///     trả lại event có tên, địa điểm hoặc description trùng với keyword
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
@@ -276,25 +733,22 @@ namespace EventZone.Helpers
                 return db.Events.ToList();
             }
             keyword = keyword.ToLower();
-            List<Event> listResult = new List<Event>();
-            listResult = (from a in db.Events.AsEnumerable()
-                where
-                    a.EventName.ToLower().Contains(keyword) ||
-                    a.EventPlaces.ToArray().ToString().ToLower().Contains(keyword) ||
-                    a.EventDescription.ToLower().Contains(keyword)
-                select a).ToList();
-            return listResult;
+            var listResult = new List<Event>();
+            var retrievedResult = (from x in listResult
+                                   where x.EventName.ToLower().Contains(keyword) || x.EventDescription.ToLower().Contains(keyword)
+                                   select x).ToList();
+            return retrievedResult;
         }
 
         /// <summary>
-        /// trả lại live event
+        ///     trả lại live event
         /// </summary>
         /// <param name="keyword"></param>
         /// <returns></returns>
         public List<Event> SearchLiveStreamByKeyword(string keyword)
         {
-            List<Event> listEvent = SearchEventByKeyword(keyword);
-            List<Event> currentStream = new List<Event>();
+            var listEvent = SearchEventByKeyword(keyword);
+            var currentStream = new List<Event>();
             foreach (var item in listEvent)
             {
                 if (isLive(item.EventID))
@@ -305,20 +759,25 @@ namespace EventZone.Helpers
             return currentStream;
         }
 
-        public bool isLive(long? id)
+        /// <summary>
+        ///     Check does event Live or not
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public bool isLive(long? eventID)
         {
-            List<EventPlace> listEventPlace = db.EventPlaces.ToList(); //load all eventPlace
-            List<EventPlace> myEvenPlace = listEventPlace.FindAll(i => i.EventID == id);
+            var listEventPlace = db.EventPlaces.ToList(); //load all eventPlace
+            var myEvenPlace = listEventPlace.FindAll(i => i.EventID == eventID);
             // load event place of this event
-            List<Video> video = db.Videos.ToList();
+            var video = db.Videos.ToList();
             foreach (var item in myEvenPlace)
             {
-                List<Video> videoInPlace = video.FindAll(i => i.EventPlaceID == item.EventPlaceID).ToList();
-                DateTime currTime = DateTime.Now;
+                var videoInPlace = video.FindAll(i => i.EventPlaceID == item.EventPlaceID).ToList();
+                var currTime = DateTime.Now;
                 foreach (var item1 in videoInPlace)
                 {
-                    DateTime start = item1.StartTime;
-                    DateTime? end = item1.EndTime;
+                    var start = item1.StartTime;
+                    var end = item1.EndTime;
                     if (end != null && start.CompareTo(currTime) <= 0 && currTime.CompareTo(end) < 0)
                     {
                         return true;
@@ -328,33 +787,13 @@ namespace EventZone.Helpers
             return false;
         }
 
-        /// <summary>
-        /// Search user By keyword
-        /// </summary>
-        /// <param name="keyword"></param>
-        /// <returns></returns>
-        public List<User> SearchUserByKeyword(string keyword)
-        {
-            if (keyword == "" || keyword == null)
-            {
-                return db.Users.ToList();
-            }
-            keyword = keyword.ToLower();
-
-            List<User> listUser = (from a in db.Users
-                where a.UserFirstName.ToLower().Contains(keyword) || a.UserLastName.ToLower().Contains(keyword)
-                select a).ToList();
-            return listUser;
-        }
-
         public List<ViewThumbEventModel> GetThumbEventListByListEvent(List<Event> listEvent)
         {
-
-            List<ViewThumbEventModel> listThumbEvent = new List<ViewThumbEventModel>();
+            var listThumbEvent = new List<ViewThumbEventModel>();
             if (listEvent == null) return listThumbEvent;
             foreach (var item in listEvent)
             {
-                ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
+                var thumbEventModel = new ViewThumbEventModel();
                 thumbEventModel.eventId = item.EventID;
                 try
                 {
@@ -368,23 +807,24 @@ namespace EventZone.Helpers
                 thumbEventModel.eventName = item.EventName;
                 thumbEventModel.StartTime = item.EventStartDate;
                 thumbEventModel.EndTime = item.EventEndDate;
-                thumbEventModel.location = GetEventLocation(item.EventID);
+                thumbEventModel.location = Instance.GetEventLocation(item.EventID);
                 listThumbEvent.Add(thumbEventModel);
             }
             return listThumbEvent;
         }
 
         /// <summary>
-        /// get all category
+        ///     get Image by ID
         /// </summary>
+        /// <param name="imageID"></param>
         /// <returns></returns>
-        public List<Category> GetAllCategory()
+        public Image GetImageByID(long? imageID)
         {
-            return db.Categories.ToList();
+            return db.Images.Find(imageID);
         }
 
         /// <summary>
-        /// Lọc event theo nhóm category từ list event
+        ///     Lọc event theo nhóm category từ list event
         /// </summary>
         /// <param name="listEvent"></param>
         /// <param name="listCategory"></param>
@@ -400,10 +840,10 @@ namespace EventZone.Helpers
                 return null;
             }
 
-            List<Event> result = new List<Event>();
-            for (int i = 0; i < listCategory.Length; i++)
+            var result = new List<Event>();
+            for (var i = 0; i < listCategory.Length; i++)
             {
-                List<Event> item = listEvent.FindAll(m => m.CategoryID == listCategory[i]);
+                var item = listEvent.FindAll(m => m.CategoryID == listCategory[i]);
                 foreach (var evt in item)
                 {
                     result.Add(evt);
@@ -413,32 +853,44 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// Tinh khoang cach giua 2 location
+        ///     dem so like cua event
         /// </summary>
-        /// <param name="p1"></param>
-        /// <param name="p2"></param>
+        /// <param name="eventID"></param>
         /// <returns></returns>
-        public double CalculateDistance(Location p1, Location p2)
+        public int CountLike(long eventID)
         {
-            // using formula in http://www.movable-type.co.uk/scripts/latlong.html
-            double R = 6371; // distance of the earth in km
-            double dLatitude = Radians(p1.Latitude - p2.Latitude); // different in Rad of latitude
-            double dLongitude = Radians(p1.Longitude - p2.Longitude); // different in Rad of longitude
-
-            double a = Math.Sin(dLatitude/2)*Math.Sin(dLatitude/2) +
-                       Math.Cos(Radians(p1.Latitude))*Math.Cos(Radians(p2.Latitude))
-                       *Math.Sin(dLongitude/2)*Math.Sin(dLongitude/2);
-            double c = 2*Math.Atan2(Math.Sqrt(a), Math.Sqrt(1.0 - a));
-            return R*c;
-        }
-
-        private double Radians(double x)
-        {
-            return x*Math.PI/180.0;
+            var countLike =
+                (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Like select a)
+                    .Count();
+            return countLike;
         }
 
         /// <summary>
-        /// Tim kiem Su kien xung quanh 1 dia diem, default ban kinh = 20km
+        ///     dem so dislike cua event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public int CountDisLike(long eventID)
+        {
+            var disLike =
+                (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Dislike select a)
+                    .Count();
+            return disLike;
+        }
+
+        /// <summary>
+        ///     Count number followers of an event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public int CountFollowerOfEvent(long eventID)
+        {
+            var NumberFollower = (from a in db.EventFollows where a.EventID == eventID select a).ToList().Count;
+            return NumberFollower;
+        }
+
+        /// <summary>
+        ///     Tim kiem Su kien xung quanh 1 dia diem, default ban kinh = 20km
         /// </summary>
         /// <param name="location"></param>
         /// <param name="distance"></param>
@@ -451,13 +903,13 @@ namespace EventZone.Helpers
             {
                 return null;
             }
-            List<Event> result = new List<Event>();
+            var result = new List<Event>();
             foreach (var item in listEvent)
             {
-                List<Location> eventLocation = GetEventLocation(item.EventID);
+                var eventLocation = Instance.GetEventLocation(item.EventID);
                 foreach (var location in eventLocation)
                 {
-                    if (CalculateDistance(location, seachlocation) <= distance)
+                    if (LocationHelpers.Instance.CalculateDistance(location, seachlocation) <= distance)
                     {
                         if (!result.Contains(item))
                             result.Add(item);
@@ -468,7 +920,25 @@ namespace EventZone.Helpers
         }
 
         /// <summary>
-        /// get event in date range from event list
+        ///     get list comment of event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<Comment> GetListComment(long eventID)
+        {
+            try
+            {
+                var listComment = (from a in db.Comments where a.EventID == eventID select a).ToList();
+                return listComment;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     get event in date range from event list
         /// </summary>
         /// <param name="startDate"></param>
         /// <param name="endDate"></param>
@@ -480,7 +950,7 @@ namespace EventZone.Helpers
             {
                 return null;
             }
-            List<Event> result = new List<Event>();
+            var result = new List<Event>();
 
             foreach (var item in listEvent)
             {
@@ -489,11 +959,23 @@ namespace EventZone.Helpers
             }
 
             return result;
-
         }
 
+    }
+
+    /// <summary>
+    ///     All function related to Location
+    /// </summary>
+    public class LocationHelpers : SingletonBase<LocationHelpers>
+    {
+        private readonly EventZoneEntities db;
+
+        private LocationHelpers()
+        {
+            db = new EventZoneEntities();
+        }
         /// <summary>
-        /// get all location in db
+        ///     get all location in db
         /// </summary>
         /// <returns></returns>
         public List<Location> GetAllLocation()
@@ -501,442 +983,131 @@ namespace EventZone.Helpers
             return db.Locations.ToList();
         }
 
+        /// <summary>
+        ///     get Location by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public Location GetLocationById(long id)
+        {
+            try
+            {
+                return db.Locations.Find(id);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        ///     Find Location by longtitude, latitude and Location name
+        /// </summary>
+        /// <param name="longitude"></param>
+        /// <param name="latitude"></param>
+        /// <param name="locationName"></param>
+        /// <returns></returns>
+        public long FindLocationByAllData(double longitude, double latitude, string locationName)
+        {
+            var listLocation = (from a in db.Locations
+                                where
+                                    a.Latitude.Equals(latitude) && a.Longitude.Equals(longitude) && a.LocationName.Equals(locationName)
+                                select a).ToList();
+            if (listLocation.Count == 0)
+                return -1;
+            return listLocation[0].LocationID;
+        }
+
+        /// <summary>
+        ///     Tinh khoang cach giua 2 location
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public double CalculateDistance(Location p1, Location p2)
+        {
+            // using formula in http://www.movable-type.co.uk/scripts/latlong.html
+            double R = 6371; // distance of the earth in km
+            var dLatitude = Radians(p1.Latitude - p2.Latitude); // different in Rad of latitude
+            var dLongitude = Radians(p1.Longitude - p2.Longitude); // different in Rad of longitude
+
+            var a = Math.Sin(dLatitude / 2) * Math.Sin(dLatitude / 2) +
+                    Math.Cos(Radians(p1.Latitude)) * Math.Cos(Radians(p2.Latitude))
+                    * Math.Sin(dLongitude / 2) * Math.Sin(dLongitude / 2);
+            var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1.0 - a));
+            return R * c;
+        }
+
+        private double Radians(double x)
+        {
+            return x * Math.PI / 180.0;
+        }
+
         public List<EventPlace> GetAllEventPlace()
         {
             return db.EventPlaces.ToList();
         }
+    }
 
-        public Location GetLocationById(long id)
+    public class CommonDataHelpers : SingletonBase<CommonDataHelpers>
+    {
+        private readonly EventZoneEntities db;
+
+        private CommonDataHelpers()
         {
-            return db.Locations.Find(id);
+            db = new EventZoneEntities();
         }
-
-        public long FindLocationByAllData(double longitude, double latitude, String locationName)
+        /// <summary>
+        /// get all category in database
+        /// </summary>
+        /// <returns></returns>
+        public List<Category> GetAllCategory()
         {
-            List<Location> listLocation = (from a in db.Locations
-                where
-                    a.Latitude.Equals(latitude) && a.Longitude.Equals(longitude) && a.LocationName.Equals(locationName)
-                select a).ToList();
-            if (listLocation.Count == 0)
-                return -1;
-            else
-                return listLocation[0].LocationID;
-        }
-
-        /// <summary>		
-        /// get all channel in DB		
-        /// </summary>		
-        /// <returns></returns>		
-        public List<Channel> GetAllChannel()
-        {
-            return db.Channels.ToList();
-        }
-
-        /// <summary>		
-        /// get Channel by userID		
-        /// </summary>		
-        /// <param name="userID"></param>		
-        /// <returns></returns>		
-        public Channel GetUserChannel(long userID)
-        {
-            Channel channel = new Channel();
-            channel = GetAllChannel().FindAll(i => i.UserID == userID)[0];
-            return channel;
-        }
-
-        public bool IsEventOwnedByUser(long eventID, long UserID)
-        {
-            try
-            {
-                Channel channel = GetUserChannel(UserID);
-                if (channel != null)
-                {
-                    Event evt = db.Events.Find(eventID);
-                    if (channel.ChannelID == evt.ChannelID) return true;
-                }
-                return false;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>		
-        /// Check xem user like or dislike event. Nếu chưa like hoặc dislike trả lại 0;		
-        /// </summary>		
-        /// <param name="userId"></param>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public LikeDislike FindLike(long userId, long eventID)
-        {
-            try
-            {
-
-                LikeDislike like =
-                    (from a in db.LikeDislikes where a.UserID == userId && a.EventID == eventID select a).ToList()[0];
-                if (like != null)
-                {
-                    return like;
-                }
-                return null;
-
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        /// <summary>		
-        /// Like event		
-        /// </summary>		
-        /// <param name="userID"></param>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public bool InsertLike(long userID, long eventID)
-        {
-            try
-            {
-                //Check user liked this event or not		
-                LikeDislike findLike = FindLike(userID, eventID);
-                //Check user liked this event or not		
-                if (findLike != null)
-                {
-                    findLike.Type = EventZoneConstants.Like;
-                    db.Entry(findLike).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return true;
-                }
-                //If user dont like or dislike this event before		
-                else
-                {
-                    LikeDislike like = new LikeDislike();
-                    like.Type = EventZoneConstants.Like;
-                    like.UserID = userID;
-                    like.EventID = eventID;
-                    db.LikeDislikes.Add(like);
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>		
-        /// dislike event		
-        /// </summary>		
-        /// <param name="userID"></param>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public bool InsertDislike(long userID, long eventID)
-        {
-            try
-            {
-                //Check user liked this event or not		
-                LikeDislike findLike = FindLike(userID, eventID);
-                //Check user liked this event or not		
-                if (findLike != null)
-                {
-                    findLike.Type = EventZoneConstants.Dislike;
-                    db.Entry(findLike).State = EntityState.Modified;
-                    db.SaveChanges();
-                    return true;
-                }
-                //If user dont like or dislike this event before		
-                else
-                {
-                    LikeDislike like = new LikeDislike();
-                    like.Type = EventZoneConstants.Dislike;
-                    like.UserID = userID;
-                    like.EventID = eventID;
-                    db.LikeDislikes.Add(like);
-                    db.SaveChanges();
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>		
-        /// dem so like cua event		
-        /// </summary>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public int CountLike(long eventID)
-        {
-            int countLike =
-                (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Like select a)
-                    .Count();
-            return countLike;
+            return db.Categories.ToList();
         }
 
         /// <summary>
-        /// dem so dislike cua event		
-        /// </summary>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public int CountDisLike(long eventID)
+        /// count new event by category(new event is event that be defined as event is created in recent 7 days)
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public int CountNewEventByCategory(long categoryID)
         {
-            int disLike =
-                (from a in db.LikeDislikes where a.EventID == eventID && a.Type == EventZoneConstants.Dislike select a)
-                    .Count();
-            return disLike;
+            int count = 0;
+            DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(7);
+            count = (from a in db.Events where a.CategoryID == categoryID && (floorDateTime <= a.EventRegisterDate) select a).Count();
+            return count;
         }
-
-        /// <summary>		
-        /// Count number followers of an event		
-        /// </summary>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public int CountFollowerOfEvent(long eventID)
+        /// <summary>
+        ///  count live event by category(which event has streaming)
+        /// </summary>
+        /// <param name="categoryID"></param>
+        /// <returns></returns>
+        public int CountLiveEventByCategory(long categoryID)
         {
-            int NumberFollower = (from a in db.EventFollows where a.EventID == eventID select a).ToList().Count;
-            return NumberFollower;
-        }
-
-        /// <summary>		
-        /// add view for event		
-        /// </summary>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public bool AddView(long eventID)
-        {
-            Event evt = GetEventByID(eventID);
-            if (evt != null)
-            {
-                evt.View += 1;
-                db.Entry(evt).State = EntityState.Modified;
-                db.SaveChanges();
-                return true;
-            }
-            return false;
-        }
-
-        /// <summary>		
-        /// get Image by ID		
-        /// </summary>		
-        /// <param name="imageID"></param>		
-        /// <returns></returns>		
-        public Image GetImageByID(long? imageID)
-        {
-            return db.Images.Find(imageID);
-        }
-
-        /// <summary>		                                     
-        /// Check is user following a category		            
-        /// </summary>		              
-        /// <param name="userID"></param>		
-        /// <param name="categoryID"></param>		          
-        /// <returns></returns>		
-        public bool IsFollowingCategory(long userID, long categoryID)
-        {
-            CategoryFollow carFollow =
-                (from a in db.CategoryFollows where a.FollowerID == userID && a.CategoryID == categoryID select a)
-                    .ToList()[0];
-            if (carFollow != null)
-            {
-                return true;
-            }
-            return false;
-        }
-        /// <summary>		
-        /// User Follow a new category		
-        /// </summary>		
-        /// <param name="userID"></param>		
-        /// <param name="categoryID"></param>		
-        /// <returns></returns>		
-        public bool FollowCategory(long userID, long categoryID)
-        {
+            int count = 0;
+            var listEvent = (from a in db.Events where a.CategoryID == categoryID select a).ToList();
             try
             {
-                CategoryFollow carFollow = new CategoryFollow();
-                carFollow.FollowerID = userID;
-                carFollow.CategoryID = categoryID;
-                db.CategoryFollows.Add(carFollow);
-                db.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        /// <summary>		
-        /// Check is user following another user		
-        /// </summary>		
-        /// <param name="FollowerID"></param>		
-        /// <param name="FollowingID"></param>		
-        /// <returns></returns>		
-        public bool IsFollowingUser(long FollowerID, long FollowingID)
-        {
-            PeopleFollow people = (from a in db.PeopleFollows where a.FollowerUserID == FollowerID && a.FollowingUserID == FollowingID select a).ToList()[0];
-            if (people != null)
-            {
-                return true;
-            }
-            return false;
-        }
-        /// <summary>		
-        /// User Follows another user		
-        /// </summary>		
-        /// <param name="FollowerID"></param>		
-        /// <param name="FollowingID"></param>		
-        /// <returns></returns>		
-        public bool FollowingPeople(long FollowerID, long FollowingID)
-        {
-            try
-            {
-                PeopleFollow ppfollow = new PeopleFollow();
-                ppfollow.FollowerUserID = FollowerID;
-                ppfollow.FollowingUserID = FollowingID;
-                db.PeopleFollows.Add(ppfollow);
-                db.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        /// <summary>		
-        /// Check is user following a event		
-        /// </summary>		
-        /// <param name="userID"></param>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public bool IsFollowingEvent(long userID, long eventID)
-        {
-            try
-            {
-                EventFollow evtFollow = (from a in db.EventFollows where a.FollowerID == userID && a.EventID == eventID select a).ToList()[0];
-                if (evtFollow != null)
+                foreach (var item in listEvent)
                 {
-                    return true;
+                    if (EventDatabaseHelper.Instance.isLive(item.EventID))
+                    {
+                        count = count + 1;
+                    }
                 }
-                return false;
             }
-            catch
+            catch (Exception)
             {
-                return false;
+                return count;
             }
-        }
-        /// <summary>		
-        /// User follows event		
-        /// </summary>		
-        /// <param name="useID"></param>		
-        /// <param name="eventID"></param>		
-        /// <returns></returns>		
-        public bool FollowEvent(long useID, long eventID)
-        {
-            try
-            {
-                if (IsFollowingEvent(useID, eventID))
-                {
-                    UnFollowEvent(useID, eventID);
-                    return true;
-                }
-                EventFollow evtFollow = new EventFollow();
-                evtFollow.EventID = eventID;
-                evtFollow.FollowerID = useID;
-                db.EventFollows.Add(evtFollow);
-                db.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public bool UnFollowEvent(long userId, long eventId)
-        {
-            try
-            {
-                EventFollow follow = (from a in db.EventFollows where a.FollowerID == userId && a.EventID == eventId select a).ToList()[0];
-                db.EventFollows.Remove(follow);
-                db.SaveChanges();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        /// <summary>		
-        /// count numbers event of user		
-        /// </summary>		
-        /// <param name="userID"></param>		
-        /// <returns></returns>		
-        public int CountOwnedEvent(long userID)
-        {
-            try
-            {
-                long channelID = GetUserChannel(userID).ChannelID;
-                int k = (from a in db.Events where a.ChannelID == channelID select a).Count();
-                return k;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-        /// <summary>		
-        /// count number follower		
-        /// </summary>		
-        /// <param name="UserID"></param>		
-        /// <returns></returns>		
-        public int NumberFollower(long UserID)
-        {
-            try
-            {
-                int k = (from a in db.PeopleFollows where a.FollowingUserID == UserID select a).Count();
-                return k;
-            }
-            catch
-            {
-                return 0;
-            }
-        }
-        /// <summary>		
-        /// get thumb list user from list user for viewing		
-        /// </summary>		
-        /// <param name="listUser"></param>		
-        /// <returns></returns>		
-        public List<ViewThumbUserModel> GetUserThumbByList(List<User> listUser)
-        {
-            List<ViewThumbUserModel> listView = new List<ViewThumbUserModel>();
-            if (listUser == null) { return null; }
-            foreach (var item in listUser)
-            {
-                ViewThumbUserModel view = new ViewThumbUserModel();
-                view.UserID = item.UserID;
-                view.Avatar = item.AvatarLink;
-                view.Name = item.UserFirstName + (item.UserLastName == null || item.UserLastName == "" ? "" : item.UserLastName);
-                view.NumberFollower = NumberFollower(item.UserID);
-                view.NumberOwnedEvent = CountOwnedEvent(item.UserID);
-                listView.Add(view);
-            }
-            return listView;
-        }
-        public List<Comment> GetListComment(long eventID)
-        {
-            try
-            {
-                List<Comment> listComment = (from a in db.Comments where a.EventID == eventID select a).ToList();
-                return listComment;
-            }
-            catch
-            {
-                return null;
-            }
+            return count;
         }
 
+        public int CountFollowerByCategory(long categoryID)
+        {
+            var numberFollower = (from a in db.CategoryFollows where a.CategoryID == categoryID select a).ToList().Count;
+            return numberFollower;
+        }
     }
 }
-

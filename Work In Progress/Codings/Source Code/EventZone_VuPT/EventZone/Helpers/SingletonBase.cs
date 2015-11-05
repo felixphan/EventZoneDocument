@@ -1,28 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace EventZone.Helpers
 {
     public abstract class SingletonBase<T> where T : SingletonBase<T>
     {
-        private readonly static Lazy<T> _instance;
-
-        public static T Instance
-        {
-            get { return _instance.Value; }
-        }
+        private static readonly Lazy<T> _instance;
 
         static SingletonBase()
         {
             _instance = new Lazy<T>(InstanceFactory);
         }
 
+        public static T Instance
+        {
+            get { return _instance.Value; }
+        }
+
         private static T InstanceFactory()
         {
-            var type = typeof(T);
+            var type = typeof (T);
             var constructors = type.GetConstructors(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             if (constructors.Length != 1)
@@ -37,7 +34,7 @@ namespace EventZone.Helpers
                     new TypeAccessException(
                         "Type must contain a single (non-public) constructor if derived from SingletonBase<T>."));
 
-            var instance = ctor.Invoke(new object[] { }) as T;
+            var instance = ctor.Invoke(new object[] {}) as T;
 
             if (instance == null)
             {
