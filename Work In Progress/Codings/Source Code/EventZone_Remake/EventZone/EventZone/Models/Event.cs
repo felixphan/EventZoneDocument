@@ -45,11 +45,8 @@ namespace EventZone.Models
     
         public virtual ICollection<Appeal> Appeals { get; set; }
         public virtual Category Category { get; set; }
-        public virtual Channel Channel { get; set; }
-<<<<<<< HEAD
-=======
         public virtual ICollection<Comment> Comments { get; set; }
->>>>>>> 784d6a9fb062d6b9a29736b2d24ab4e3d46cdd1b
+        public virtual Channel Channel { get; set; }
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<EventPlace> EventPlaces { get; set; }
         public virtual ICollection<EventRank> EventRanks { get; set; }

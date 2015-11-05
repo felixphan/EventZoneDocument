@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ﻿// T4 code generation is enabled for model 'D:\EventZoneWorkspace\Work In Progress\Codings\Source Code\EventZone_Remake\EventZone\EventZone\Models\EventZone.edmx'. 
-=======
-﻿// T4 code generation is enabled for model 'D:\FPT\Capstone\Github_\EventZoneWorkspace\Work In Progress\Codings\Source Code\EventZone_Remake\EventZone\EventZone\Models\EventZone.edmx'. 
->>>>>>> 784d6a9fb062d6b9a29736b2d24ab4e3d46cdd1b
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.
