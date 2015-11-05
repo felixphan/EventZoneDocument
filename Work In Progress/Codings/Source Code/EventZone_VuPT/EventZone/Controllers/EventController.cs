@@ -6,15 +6,22 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using EventZone.Helpers;
 using EventZone.Models;
+<<<<<<< HEAD
 using System.Web;
 using System.IO;
 using System.Reflection;
 using System.Threading;
 using Amazon.S3;
+=======
+>>>>>>> 784d6a9fb062d6b9a29736b2d24ab4e3d46cdd1b
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Services;
 using Google.Apis.YouTube.v3;
 using Google.Apis.YouTube.v3.Data;
+<<<<<<< HEAD
+=======
+using Microsoft.Ajax.Utilities;
+>>>>>>> 784d6a9fb062d6b9a29736b2d24ab4e3d46cdd1b
 using Video = EventZone.Models.Video;
 
 namespace EventZone.Controllers

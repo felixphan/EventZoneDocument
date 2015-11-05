@@ -14,6 +14,7 @@ namespace EventZone.Models
     
     public partial class EventRank
     {
+        public long EventRankId { get; set; }
         public long EventId { get; set; }
         public long Score { get; set; }
         public long EventRankId { get; set; }

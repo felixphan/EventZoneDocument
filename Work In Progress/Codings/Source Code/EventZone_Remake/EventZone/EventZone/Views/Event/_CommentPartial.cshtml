@@ -42,6 +42,10 @@
                     cache: false,
                     data: { eventID: parseInt('@Model.eventID'), commentContent: $("#i_cmt_box").val() },
                     success: function (data) {
+<<<<<<< HEAD
+=======
+                        console.log(data);
+>>>>>>> 784d6a9fb062d6b9a29736b2d24ab4e3d46cdd1b
                         $("#comment-content").html("");
                         $("#comment-content").append(data);
                     },
