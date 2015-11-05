@@ -17,8 +17,8 @@ namespace EventZone.Models
         public User()
         {
             this.CategoryFollows = new HashSet<CategoryFollow>();
-            this.Comments = new HashSet<Comment>();
             this.Channels = new HashSet<Channel>();
+            this.Comments = new HashSet<Comment>();
             this.EventFollows = new HashSet<EventFollow>();
             this.Images = new HashSet<Image>();
             this.LikeDislikes = new HashSet<LikeDislike>();
@@ -47,8 +47,8 @@ namespace EventZone.Models
         public Nullable<System.DateTime> DataJoin { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
-        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<Channel> Channels { get; set; }
+        public virtual ICollection<Comment> Comments { get; set; }
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<Image> Images { get; set; }
         public virtual ICollection<LikeDislike> LikeDislikes { get; set; }

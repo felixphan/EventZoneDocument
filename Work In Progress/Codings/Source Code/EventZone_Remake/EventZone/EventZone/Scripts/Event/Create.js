@@ -1,7 +1,13 @@
 ﻿$(function() {
     //Datetime Picker
     $("#datetimepicker1").datetimepicker();
-    $("#datetimepicker2").datetimepicker();
+    $("#datetimepicker2").datetimepicker({
+        useCurrent: false
+    });
+        $('#datetimepicker2').data("DateTimePicker").minDate(moment());
+    $("#datetimepicker2").on("dp.change", function (e) {
+        $('#datetimepicker1').data("DateTimePicker").maxDate(e.date);
+    });
 
 //Description
     function initToolbarBootstrapBindings() {
@@ -75,29 +81,29 @@
     });
 
     //Binding Locations to One Location String
-    $("#btnSubmit").click(function() {
-        var LocationInputText = "";
-        var LongitudeInputText = "";
-        var LangitudeInputText = "";
+    $("#btnSubmit").click(function () {
+        var locationInputText = "";
+        var longitudeInputText = "";
+        var langitudeInputText = "";
         if (document.getElementById("Location-1") !== null) {
             $("[id^=Location-]").each(function(i, item) {
-                LocationInputText = LocationInputText + $(item).val() + ";";
+                locationInputText = locationInputText + $(item).val() + ";";
             });
             $("[id^=Longitude-]").each(function(i, item) {
-                LongitudeInputText = LongitudeInputText + $(item).val() + ";";
+                longitudeInputText = longitudeInputText + $(item).val() + ";";
             });
             $("[id^=Lattitude-]").each(function(i, item) {
-                LangitudeInputText = LangitudeInputText + $(item).val() + ";";
+                langitudeInputText = langitudeInputText + $(item).val() + ";";
             });
-            $("#LocationName").val(LocationInputText);
-            $("#Longitude").val(LongitudeInputText);
-            $("#Lattitude").val(LangitudeInputText);
+            $("#LocationName").val(locationInputText);
+            $("#Longitude").val(longitudeInputText);
+            $("#Lattitude").val(langitudeInputText);
         } else {
             $("#LocationName").val($("#Location-0").val() + ";");
             $("#Longitude").val($("#Longitude-0").val() + ";");
             $("#Lattitude").val($("#Lattitude-0").val() + ";");
         }
-
+        $("#descriptionInput").val($("#editor").val());
         $(this).parents("form").submit();
     });
     $("#IsLive").click(function() {

@@ -10,36 +10,29 @@ namespace EventZone.Models
         [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 5)]
         [Display(Name = "Title")]
         public string Title { get; set; }
-
         [Required]
         [Display(Name = "Start Time")]
         public DateTime StartTime { get; set; }
-
         [Required]
         [Display(Name = "End Time")]
         public DateTime EndTime { get; set; }
-
         [Required]
         [Display(Name = "Location")]
         public string LocationName { get; set; }
-
         public string Longitude { get; set; }
         public string Quality { get; set; }
-        public string PrivacyYoutube { get; set; }
+        public int PrivacyYoutube { get; set; }
         public string Lattitude { get; set; }
-
+        public string LocationLiveName { get; set; }
         [Required]
         [Display(Name = "Privacy")]
         public int Privacy { get; set; }
-
         [Required]
         [Display(Name = "Streaming")]
         public bool IsLive { get; set; }
-
         [Required]
         [Display(Name = "Category")]
         public long CategoryID { get; set; }
-
         public bool RequestUrgent { get; set; }
         public string Description { get; set; }
     }
@@ -74,6 +67,7 @@ namespace EventZone.Models
         public List<Video> eventVideo { get; set; }
         public List<Comment> eventComment { get; set; }
         public int Privacy { get; set; }
+        public String[] Category { get; set; }
     }
     public class ThumbEventHomePage {
         public long EventID { get; set; }

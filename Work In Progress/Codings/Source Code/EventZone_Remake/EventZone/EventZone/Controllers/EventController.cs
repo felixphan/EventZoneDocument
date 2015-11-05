@@ -8,7 +8,14 @@ using EventZone.Helpers;
 using EventZone.Models;
 using System.Web;
 using System.IO;
+using System.Reflection;
+using System.Threading;
 using Amazon.S3;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Services;
+using Google.Apis.YouTube.v3;
+using Google.Apis.YouTube.v3.Data;
+using Video = EventZone.Models.Video;
 
 namespace EventZone.Controllers
 {
@@ -31,20 +38,23 @@ namespace EventZone.Controllers
         {
             if (ModelState.IsValid)
             {
-                var LocationName = model.LocationName;
+                var locationName = model.LocationName;
                 var lattitude = model.Lattitude;
-                var Longitude = model.Longitude;
-                var locationList = Regex.Split(LocationName, ";");
-                var lattitudeList = Regex.Split(lattitude, ";");
-                var longitudeList = Regex.Split(Longitude, ";");
-                var locationID = new List<double>();
+                var longitude = model.Longitude;
+                string[] locationList = Regex.Split(locationName, ";");
+                string[] lattitudeList = Regex.Split(lattitude, ";");
+                string[] longitudeList = Regex.Split(longitude, ";");
+                var locationId = new List<double>();
+                List<EventPlace> listEventPlaces = new List<EventPlace>();
+
+                //Search for duplicated location before adding new location to database
                 for (var i = 0; i < locationList.Length - 1; i++)
                 {
-                    double tmp = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
+                    double locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
                         double.Parse(lattitudeList[i]),
                         locationList[i]);
                     if (
-                        tmp == -1)
+                        locationIdIndex == -1)
                     {
                         var newLocation = new Location();
                         newLocation.LocationName = locationList[i];
@@ -52,12 +62,14 @@ namespace EventZone.Controllers
                         newLocation.Longitude = double.Parse(longitudeList[i]);
                         db.Locations.Add(newLocation);
                         db.SaveChanges();
-                        tmp = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
+                        locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
                             double.Parse(lattitudeList[i]),
                             locationList[i]);
                     }
-                    locationID.Add(tmp);
+                    locationId.Add(locationIdIndex);
                 }
+
+                //Adding new event to database
                 var newEvent = new Event();
                 newEvent.EventName = model.Title;
                 var userChannel =
@@ -80,33 +92,149 @@ namespace EventZone.Controllers
                 db.SaveChanges();
 
                 //Insert to Event Place
-                for (var i = 0; i < locationID.Count; i++)
+                for (var i = 0; i < locationId.Count; i++)
                 {
                     var newEventPlace = new EventPlace();
-                    newEventPlace.LocationID = (long) locationID[i];
+                    newEventPlace.LocationID = (long)locationId[i];
                     newEventPlace.EventID = newEvent.EventID;
                     db.EventPlaces.Add(newEventPlace);
                     db.SaveChanges();
+                    listEventPlaces.Add(newEventPlace);
                 }
 
-                /*if (model.IsLive)
-                {
-                    string[] ViewDataResult =
-                        new EventController().Run(model.Title, model.StartTime, model.EndTime, model.Resolution,
-                            model.PrivacyYoutube).Result;
-                    ViewData["StreamName"] = ViewDataResult[0];
-                    ViewData["PrimaryServerURL"] = ViewDataResult[1];
-                    ViewData["BackupServerURL"] = ViewDataResult[2];
-                    ViewData["YoutubeURL"] = ViewDataResult[3];
-                }*/
-                return RedirectToAction("Details", "Event", new {id = newEvent.EventID});
-                //return RedirectToAction("Index", "Home");
-            }
+                //Add Event Rank
 
+                EventRank newEventRank = new EventRank();
+                newEventRank.EventId = newEvent.EventID;
+                newEventRank.Score = 0;
+                db.EventRanks.Add(newEventRank);
+                db.SaveChanges();
+
+                // Create Video if it is live event
+                if (model.IsLive)
+                {
+                    string[] viewDataResult =
+                        new EventController().Run(model.Title, model.StartTime, model.EndTime, model.Quality,
+                            model.PrivacyYoutube).Result;
+                    ViewData["StreamName"] = viewDataResult[0];
+                    ViewData["PrimaryServerURL"] = viewDataResult[1];
+                    ViewData["BackupServerURL"] = viewDataResult[2];
+                    ViewData["YoutubeURL"] = viewDataResult[3];
+                    var video = new Video();
+                    video.StartTime = model.StartTime;
+                    video.EndTime = model.EndTime;
+                    video.Privacy = model.PrivacyYoutube;
+                    for (int i = 0; i < locationList.Length; i++)
+                    {
+                        if (locationList[i].Equals(model.LocationLiveName))
+                        {
+                            foreach (EventPlace item in listEventPlaces)
+                            {
+                                if (item.LocationID ==
+                                    LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
+                                        double.Parse(lattitudeList[i]),
+                                        locationList[i]))
+                                {
+                                    video.EventPlaceID = item.EventPlaceID;
+                                }
+                            }
+                        }
+                    }
+                    video.VideoLink = viewDataResult[3];
+                    db.Videos.Add(video);
+                    db.SaveChanges();
+                }
+                return RedirectToAction("Details", "Event", new { id = newEvent.EventID });
+            }
             // If we got this far, something failed, redisplay form
             return RedirectToAction("Create", "Event");
         }
 
+        private async Task<string[]> Run(String broadcastTitle, DateTime startTime, DateTime endTime, String quality, int privacyYoutube)
+        {
+
+            UserCredential credential = null;
+
+            String path = Path.Combine(HttpRuntime.AppDomainAppPath, "Controllers/client_secrets_for_YoutubeAPI.json");
+            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            {
+                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    // This OAuth 2.0 access scope allows an application to upload files to the
+                    // authenticated user's YouTube channel, but doesn't allow other types of access.
+                    new[] { YouTubeService.Scope.Youtube },
+                    Environment.UserName,
+                    CancellationToken.None
+                    );
+
+            }
+
+            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
+            });
+
+            //Set Snippet
+            LiveBroadcastSnippet broadcastSnippet = new LiveBroadcastSnippet();
+            broadcastSnippet.Title = broadcastTitle;
+            if (startTime.CompareTo(DateTime.Now) < 0)
+            {
+                startTime = DateTime.Now;
+            }
+            broadcastSnippet.ScheduledStartTime = startTime;
+            broadcastSnippet.ScheduledEndTime = endTime;
+
+            // Set the broadcast's privacy status to "private". See:
+            // https://developers.google.com/youtube/v3/live/docs/liveBroadcasts#status.privacyStatus
+            LiveBroadcastStatus status = new LiveBroadcastStatus();
+            if (privacyYoutube == 0)
+            {
+                status.PrivacyStatus = "public";
+            }
+            else if (privacyYoutube == 1)
+            {
+                status.PrivacyStatus = "unlisted";
+            }
+            else
+            {
+                status.PrivacyStatus = "private";
+            }
+
+            //Set LiveBroadcast
+            LiveBroadcast broadcast = new LiveBroadcast();
+            broadcast.Kind = "youtube#liveBroadcast";
+            broadcast.Snippet = broadcastSnippet;
+            broadcast.Status = status;
+            LiveBroadcastsResource.InsertRequest liveBroadcastInsert = youtubeService.LiveBroadcasts.Insert(broadcast, "snippet,status");
+            LiveBroadcast returnBroadcast = liveBroadcastInsert.Execute();
+
+            //Set LiveStream Snippet
+            LiveStreamSnippet streamSnippet = new LiveStreamSnippet();
+            streamSnippet.Title = broadcastTitle + "Stream Title";
+            CdnSettings cdnSettings = new CdnSettings();
+            cdnSettings.Format = quality;
+            cdnSettings.IngestionType = "rtmp";
+
+            //Set LiveStream
+            LiveStream streamLive = new LiveStream();
+            streamLive.Kind = "youtube#liveStream";
+            streamLive.Snippet = streamSnippet;
+            streamLive.Cdn = cdnSettings;
+            LiveStream returnLiveStream = youtubeService.LiveStreams.Insert(streamLive, "snippet,cdn").Execute();
+            LiveBroadcastsResource.BindRequest liveBroadcastBind = youtubeService.LiveBroadcasts.Bind(
+                returnBroadcast.Id, "id,contentDetails");
+            liveBroadcastBind.StreamId = returnLiveStream.Id;
+            returnBroadcast = liveBroadcastBind.Execute();
+            //Return Value
+            String streamName = returnLiveStream.Cdn.IngestionInfo.StreamName;
+            String primaryServerUrl = returnLiveStream.Cdn.IngestionInfo.IngestionAddress;
+            String backupServerUrl = returnLiveStream.Cdn.IngestionInfo.BackupIngestionAddress;
+            String youtubeUrl = "https://www.youtube.com/watch?v=" + returnBroadcast.Id;
+            string[] result = new string[] { streamName, primaryServerUrl, backupServerUrl, youtubeUrl };
+
+            return result;
+        }
         public ActionResult Details(long? id)
         {
             User user = UserHelpers.GetCurrentUser(Session);

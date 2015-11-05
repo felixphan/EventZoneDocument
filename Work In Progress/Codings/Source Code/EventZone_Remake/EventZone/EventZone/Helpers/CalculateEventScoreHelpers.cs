@@ -13,7 +13,7 @@ namespace EventZone.Helpers
     {
         public void Execute(IJobExecutionContext context)
         {
-            using (var db = new EventZoneEntities())
+           using (var db = new EventZoneEntities())
             {
                 foreach (var item in db.Events.ToList())
                 {

@@ -19,7 +19,7 @@ namespace EventZone.Models
         public string VideoLink { get; set; }
         public System.DateTime StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
-        public bool Privacy { get; set; }
+        public int Privacy { get; set; }
     
         public virtual EventPlace EventPlace { get; set; }
     }
