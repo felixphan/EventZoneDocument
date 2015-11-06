@@ -8,8 +8,8 @@ $(document).ready(function(){
 	
 	/* chạy hiệu ứng Flip */
 	$("#card").flip({
-	  axis: 'y',
-	  trigger: 'hover'
+	  	axis: 'y',
+		trigger: 'hover'
 	});
 
 });	

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Result</title>
+  	<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Plugin Bootstrap -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
+    
+    <!-- myCSS -->
+    <link rel="stylesheet" type="text/css" href="../Content/myCSS_u_m_p.css">
+
+</head>
+
+<!-- u_m_p_ đánh dấu CSS USER MANAGE PROFILE -->
+<body class="d_u_m_p_body">
+
+<div class="col-xs-12 col-sm-12 col-md-8 col-ld-8 col-md-offset-2 col-ld-offset-2 d_container">
+	<ul class="nav nav-tabs" id="myTab">
+		<li class="active"><a href="#i_info_tab" data-toggle="tab">User Info</a></li>
+		<li><a href="#i_schedule_tab" data-toggle="tab">Schedule (10)</a></li>
+		<li><a href="#i_follow_tab" data-toggle="tab">Follow (4)</a></li>
+	</ul>
+	<div class="tab-content d_info_tab">
+		<!-- Khung chứa User info -->
+		<div class="tab-pane active" id="i_info_tab">
+			<iframe src="u_m_p_info.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
+		</div>
+		<!-- Khung chứa Schedule -->
+		<div class="tab-pane" id="i_schedule_tab">
+			<iframe src="u_m_p_schedule.html" name="targetframe" frameborder="0" id="i_frame_schedule"></iframe>
+		</div>
+		<!-- Khung chứa Follow -->
+		<div class="tab-pane" id="i_follow_tab">
+			<iframe src="u_m_p_follow.html" name="targetframe" frameborder="0" id="i_frame_follow"></iframe>
+		</div>
+	</div>
+</div>
+
+<!-- ALL SCRIPT HERE -->
+<!-- Default JQuery -->
+<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>
+
+<!-- Default Bootstrap -->
+<script type="text/javascript" src="../Scripts/bootstrap.js"></script>
+
+<!-- myJS
+<script type="text/javascript" src="../Scripts/myJS_index_2.js"></script> -->
+
+</body>
+</html>

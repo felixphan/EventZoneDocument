@@ -5,6 +5,9 @@ iframe{
 	border: 0;
 }
 /*********************************************** Sửa Bootstrap ***/
+.input-group{
+	margin-bottom: 0;
+}
 .form-horizontal .form-group {
     margin-right: 0px;
     margin-left: 0px;
@@ -320,6 +323,27 @@ li{
 .d_ft_footer_column_2{
 	height: 80%;
 	margin-top: 2%;	
+}
+
+/*********************************************** Loading GIF ***/
+#i_iframe_gif{
+    margin-top: -25px;
+}
+.d_ld_gif{
+	width: 15%;
+	float: left;
+	text-align: -webkit-right;
+}
+.d_ld_gif img{
+	height: 75px;
+	width: auto;
+}
+.d_ld_text{
+    color: turquoise;
+	float: left;
+	width: 85%;
+	padding-left: 5px;
+	margin-top: 27px;
 }
 
 /*********************************************** Decorate ***/
