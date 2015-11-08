@@ -1,0 +1,158 @@
+﻿@model IEnumerable<EventZone.Models.Report>
+@using EventZone.Models;
+@using System.Data;
+@using System.Data.Entity;
+@using EventZone.AdminHelpers;
+@{
+    ViewBag.Title = "ManageReport";
+}
+
+@if (Session.Count != 0)
+{
+   
+
+    User sessionvar = UserAdminHelpers.GetCurrentUser(Session);
+
+
+    List<User> user = DataHelper.GetUsersByKeyword(sessionvar.UserName);
+
+    if (user[0].UserRoles == 2 || user[0].UserRoles == 3)
+    {
+
+<h2>Manage Reports</h2>
+
+
+using (Html.BeginForm("SearchEvent", "ReportsAdmin"))
+{
+   
+    <p>
+
+        Name event: @Html.TextBox("searchString")
+    </p>
+
+
+    <input type="submit" value="search" />
+}
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportContent)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportStatus)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ReportDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResultDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Event.EventName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.User.UserName)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportType)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportContent)
+        </td>
+        <td>
+            @if(item.ReportStatus == 0)
+            {
+                @Html.Label("Pending")
+            }
+            else if (item.ReportStatus == 1)
+            {
+                @Html.Label("Approved")
+            }
+            else
+            {
+                @Html.Label("Rejected")
+            }
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ReportDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResultDate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Event.EventName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.User.UserName)
+        </td>
+        <td>
+            @if (item.ReportStatus == 0 )
+            {
+                using (Html.BeginForm("Approve", "ReportsAdmin"))
+                {
+
+                    @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
+
+                    @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
+                        <input type="submit" value="Approve" />
+
+                }
+                using (Html.BeginForm("Reject", "ReportsAdmin"))
+                {
+                    @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
+                    @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
+
+
+                
+                    <input type="submit" value="Reject" />
+                }
+            }else if(item.ReportStatus ==1)
+            {
+                using (Html.BeginForm("Reject", "ReportsAdmin"))
+                {
+
+                    @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
+                 @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
+
+
+                    <input type="submit" value="Reject" />
+            }
+
+            }
+            else
+            {
+                using (Html.BeginForm("Approve", "ReportsAdmin"))
+                {
+
+                    @Html.HiddenFor(model => item.ReportID, new { @id = "ReportID", @Name = "ReportID" })
+
+                     @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
+                    <input type="submit" value="Approve" />
+
+                }
+            }
+            @*@Html.ActionLink("Edit", "Edit", new { id=item.ReportID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ReportID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ReportID })*@
+        </td>
+    </tr>
+}
+
+</table>
+    }
+
+
+}
+
+else
+{
+    <h2>Not found</h2>
+}

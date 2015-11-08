@@ -1,0 +1,29 @@
+﻿@using EventZone.AdminHelpers
+@{
+    ViewBag.Title = "EventRegisterMonth";
+}
+
+<h2>EventRegisterMonth</h2>
+
+@{
+    int wi = 1000;
+    int he = 600;
+    string the = ChartTheme.Green;
+    int[] x = DataHelper.MonthThisYearToNow();
+    int[] y = DataHelper.NumberEventRegisterThisYearPerMonth();
+
+
+    var myChart = new Chart(width: wi, height: he, theme: the)
+    .AddTitle("Number events register year " + DateTime.Now.Year)
+    .AddSeries(
+                name: "Number events register this year",
+        //x[0], x[1],, x[11], y[11]
+        //xValue: new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12" },
+        //xValue: new[] { 1,2,3,4,5,6,7,8,9,10,11,12, "Month"},
+
+                xValue: x,
+                yValues: y
+                )
+    .Write();
+
+}

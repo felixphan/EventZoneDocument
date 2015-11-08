@@ -1,0 +1,58 @@
+﻿@model IEnumerable<EventZone.Models.CollectionFollowUser>
+@using EventZone.AdminHelpers
+@using EventZone.Models
+@{
+    ViewBag.Title = "ViewStatitic";
+}
+@if (Session.Count != 0)
+{
+
+
+    User sessionvar = UserAdminHelpers.GetCurrentUser(Session);
+
+
+    List<User> user = DataHelper.GetUsersByKeyword(sessionvar.UserName);
+
+    if (user[0].UserRoles == 2 || user[0].UserRoles == 3)
+    {
+
+        <div>
+            <h2>Statitic Admin</h2>
+            <h4>@Html.Label("Number events in website: " + DataHelper.NumberEvent()) </h4>
+            <h4>@Html.Label("Number users in website: " + DataHelper.NumberUser()) </h4>
+            <h4>Top 10 users followed:</h4>
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.FollowingUserID)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Count)
+                    </th>
+                </tr>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FollowingUserID)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Count)
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <p>@Html.ActionLink("Top 10 events liked:", "StatiticEventView", "StatiticAdmin")</p>
+    <p>@Html.ActionLink(" Statitic user register year "+DateTime.Now.Year, "UserRegisterMonth", "StatiticAdmin")</p>
+            <p>@Html.ActionLink("Statitic event register year "+ DateTime.Now.Year, "EventRegisterMonth", "StatiticAdmin")</p>
+        </div>
+    
+   
+   
+    }
+
+}
+                    

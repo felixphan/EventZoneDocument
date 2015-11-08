@@ -1,0 +1,64 @@
+﻿@model EventZoneC.Models.Appeal
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Appeal</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppealContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppealContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppealStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppealStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResultDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.EventName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.EventName)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

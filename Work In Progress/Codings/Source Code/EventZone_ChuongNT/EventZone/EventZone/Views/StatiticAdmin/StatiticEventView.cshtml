@@ -1,0 +1,33 @@
+﻿@model IEnumerable<EventZone.Models.CollectionLikeEvent>
+@using EventZone.AdminHelpers
+@using EventZone.Models
+@{
+    ViewBag.Title = "_StatiticEventView";
+}
+
+<h2>_StatiticEventView</h2>
+<h4>Top 10 events liked:</h4>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.EventID)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Count)
+        </th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EventID)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.Count)
+            </td>
+        </tr>
+    }
+</table>
+

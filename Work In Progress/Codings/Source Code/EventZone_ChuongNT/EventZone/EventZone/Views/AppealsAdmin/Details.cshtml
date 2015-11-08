@@ -1,0 +1,58 @@
+﻿@model EventZoneC.Models.Appeal
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Appeal</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.AppealContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppealContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AppealStatus)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AppealStatus)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SendDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SendDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ResultDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ResultDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Event.EventName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Event.EventName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.AppealID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

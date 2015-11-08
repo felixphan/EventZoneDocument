@@ -1,0 +1,82 @@
+﻿@using EventZone.Models
+@{
+    var listEvent = ViewData["listEvent"] as List<ViewThumbEventModel>;
+    var listLiveStream = ViewData["listLiveStream"] as List<ViewThumbEventModel>;
+    var listUser = ViewData["listUser"] as List<ViewThumbUserModel>;
+    int listUserCount, listLiveStreamCount, listEventCount;
+    if (listUser == null)
+    {
+        listUserCount = 0;
+    }
+    else
+    {
+        listUserCount = listUser.Count;
+    }
+    if (listLiveStream == null)
+    {
+        listLiveStreamCount = 0;
+    }
+    else
+    {
+        listLiveStreamCount = listLiveStream.Count;
+    }
+    if (listEvent == null)
+    {
+        listEventCount = 0;
+    }
+    else
+    {
+        listEventCount = listEvent.Count;
+    }
+}
+<div class="d_result_container container-fluid" style="margin-top: 100px">
+    <div class="col-xs-9 d_overflow">
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div class="tab-pane active" id="event-r">
+                @if (listEvent != null)
+                {
+                    foreach (var item in listEvent)
+                    {
+                        <div>
+                            @Html.Partial("_EventThumbnail", item)
+                            <p>-------------------------------------------------------------</p>
+                        </div>
+                    }
+                }
+
+            </div>
+            <div class="tab-pane" id="live-r">
+            </div>
+            <div class="tab-pane" id="channel-r"></div>
+            <div class="tab-pane" id="user-r">
+                @if (listUser != null)
+                {
+                    foreach (var item in listUser)
+                    {
+                        <div>
+                            @Html.Partial("_UserThumbnail", item)
+                            <p>-------------------------------------------------------------</p>
+                        </div>
+                    }
+                }
+
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <!-- required for floating -->
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs tabs-right">
+            <li class="active">
+                <a href="search-result.html#event-r" data-toggle="tab">Event (@listEventCount)</a>
+            </li>
+            <li>
+                <a href="search-result.html#live-r" data-toggle="tab">Live Streaming (@listLiveStreamCount)</a>
+            </li>
+            <li>
+                <a href="search-result.html#user-r" data-toggle="tab">User(@listUserCount)</a>
+            </li>
+        </ul>
+    </div>
+</div>

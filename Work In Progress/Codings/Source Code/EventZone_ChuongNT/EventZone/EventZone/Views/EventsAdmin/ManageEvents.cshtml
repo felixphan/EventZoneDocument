@@ -1,0 +1,197 @@
+﻿@model IEnumerable<EventZone.Models.Event>
+
+@using EventZone.Models;
+@using System.Data;
+@using System.Data.Entity;
+@using EventZone.AdminHelpers;
+
+@{
+    ViewBag.Title = "ManageEvents";
+}
+@if (Session.Count != 0)
+{
+   
+
+    User sessionvar = UserAdminHelpers.GetCurrentUser(Session);
+
+
+
+    List<User> user = DataHelper.GetUsersByKeyword(sessionvar.UserName);
+    if (user[0].UserRoles == 2)
+    {
+        <h2>Manage Events</h2>
+            
+            using (Html.BeginForm("SearchEvent", "EventsAdmin"))
+            {
+            <p>
+
+                Name event: @Html.TextBox("eventName")
+            </p>
+                <p>
+                    Name user: @Html.TextBox("userName")
+                </p>
+                <p>
+                    Category: <select name="categoryName" id="listbox">
+                    @{
+                DbSet db = DataHelper.GetCategories();
+                <option value="All category">
+                    All category
+                </option>
+                    }
+
+                        @foreach (var item in db)
+                {
+                            Category ca = (Category)item;
+                            <option value="@ca.CategoryName">
+                                @ca.CategoryName
+                            </option>
+                }
+                    </select>
+                </p>
+
+
+                <input type="submit" value="search" />
+                }
+            <table class="table">
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventName)
+                    </th>
+                    @*<th>
+                        @Html.DisplayNameFor(model => model.EventStartDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventEndDate)
+                    </th>*@
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventDescription)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EventRegisterDate)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.View)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Privacy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Avatar)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EditBy)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EditTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.EditContent)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Status)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Category.CategoryName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Channel.ChannelName)
+                    </th>
+                    <th>Lock</th>
+                </tr>
+
+                @foreach (var item in Model) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventName)
+                        </td>
+                        @*<td>
+                            @Html.DisplayFor(modelItem => item.EventStartDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventEndDate)
+                        </td>*@
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EventRegisterDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.View)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Privacy)*@
+                            @if (item.Privacy == 1)
+                            {
+                                @Html.Label("Public")
+                            }
+                            else
+                            {
+                                @Html.Label("Private")
+                            }
+
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Avatar)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EditBy)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EditTime)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.EditContent)
+                        </td>
+                        <td>
+                            @*@Html.DisplayFor(modelItem => item.Status)*@
+                            @if (item.Status == true)
+                            {
+                                @Html.Label("Unlock")
+                            }
+                            else
+                            {
+                                @Html.Label("Locked")
+                            }
+
+
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Channel.ChannelName)
+                        </td>
+                        <td>
+                            @*@Html.ActionLink("View", "View", new { id = item.EventID})*@
+                            @using (Html.BeginForm("Lock", "EventsAdmin"))
+                            {
+
+                                @Html.HiddenFor(model => item.EventID, new { @id = "EventID", @Name = "EventID" })
+
+                                @Html.HiddenFor(model => user[0].UserID, new { @id = "AdminID", @Name = "AdminID" })
+
+                               if (item.Status == true)
+                               {
+                                <input type="submit" value="Lock" />
+                               }
+                               else
+                               {
+                                <input type="submit" value="Unlock" />
+                               }
+                            }
+                        </td>
+                    </tr>
+            }
+
+            </table> 
+    }
+        
+     
+}
+
+else
+{
+<h2>Not found</h2>
+}
