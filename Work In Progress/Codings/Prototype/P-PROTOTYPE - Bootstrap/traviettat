@@ -34,8 +34,9 @@ mflip: Làm hiệu ứng lật ra mặt sau
 	m.flip.css
 	jquery.m.flip.js
 
-perfect-scollbar: trang trí lại Thanh cuộn chuột.
-	perfect-scrollbar.jquery.js
+Plugin Thay Style Scrollbar:
+	jquery.slimscroll.min.js
+	jquery-ui.js
 
 daterangepicker: Giúp chọn dải ngày bằng cách hiện bảng Lịch
 	daterangepicker.css
@@ -53,3 +54,4 @@ Plugin Chọn ngày/giờ
 	bootstrap-datetimepicker.js
 	moment-with-locales.js
 	prettify-1.0.min.js
+

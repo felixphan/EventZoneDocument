@@ -7,13 +7,22 @@
 
     <!-- myCSS -->
 	<link rel="stylesheet" type="text/css" href="../Content/myCSS_u_m_p.css">
+
+	<!-- All script here -->
+	<!-- Default JQuery -->
+	<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>
+	<!-- Default Bootstrap -->
+	<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+	<script type="text/javascript" src="../Scripts/jquery-ui.js"></script>
+	<script type="text/javascript" src="../Scripts/jquery.slimscroll.min.js"></script>
+
 </head>
 
 <body>
 	<!-- ump_ đánh dấu CSS thuộc về USER MANAGE PROFILE -->
 	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-md-offset-0 col-lg-offset-0 d_ump_follow">
 		<div id="result-list" class="panel-group d_follow_item_cover"> <!--  -->
-		    <div class="panel panel-default">
+		    <div class="panel panel-default some-content-related-div">
 		        <div class="panel-heading d_panel_1">
 		            <h4 class="panel-title">
 		            	<!-- fl_ đánh dấu CSS FOLLOW -->
@@ -45,12 +54,13 @@
 		</div>
 	</div>
 
-
-<!-- All script here -->
-<!-- Default JQuery -->
-<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>
-<!-- Default Bootstrap -->
-<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('#i_fl_event').slimScroll({
+        height: '250px'
+    });
+});
+</script>
 
 </body>
 <footer>

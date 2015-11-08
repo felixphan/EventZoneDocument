@@ -6,6 +6,10 @@
 	<!-- Default BOOTSTRAP -->
 	<link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
 
+	<!-- BOOTSTRAP social -->
+	<link rel="stylesheet" type="text/css" href="../Content/bootstrap-social.css">
+	<link rel="stylesheet" type="text/css" href="../Content/font-awesome.min.css">
+
 	<!-- myCSS -->
 	<link rel="stylesheet" type="text/css" href="../Content/myCSS_u_w_e.css">
 
@@ -25,19 +29,288 @@
 				<div class="tab-content d_info_tab">
 					<!-- Khung chứa Basic info & Description -->
 					<div class="tab-pane active" id="i_info_tab">
-						<iframe src="u_w_e_event_info.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
+						<!-- THUMBNAIL -->
+						<div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 d_event_thumbnail">
+							<img src="../img/bg1.jpg" id="i_event_thumbnail">
+						</div>
+						<!-- DETAIL INFO -->
+						<div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_event_info">
+							<!-- TITLE -->
+							<div 	class="col-xs-9 col-sm-9 col-md-9 col-lg-9" 
+									id="i_event_title">
+								<p>Khai giảng các khóa học nghiệp vụ kế toán, nhân sự, thuế, xnk ngắn hạn</p>
+								<!-- DATE TIME -->
+								<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d_each_info">
+									<div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-list-ul">
+									</div>
+									<div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+										in <i>category</i>
+									</div>
+									<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-time">
+									</div>
+									<div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+										time
+									</div>
+									<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-map-marker">
+									</div>
+									<div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+										location 1
+									</div>
+									<div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 col-xs-offset-1 col-sm-offset-1 col-md-offset-2 col-lg-offset-1 d_event_time">
+										location 2
+									</div>
+								</div>
+							</div>
+							<!-- BUTTONS -->
+							<div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
+								<a class="btn btn-block btn-social btn-dropbox btn-xs">
+									<i class="fa fa-thumbs-o-up"></i> 1515
+								</a>
+								<a class="btn btn-block btn-social btn-dropbox btn-xs">
+									<i class="fa fa-thumbs-o-down"></i> 1122
+								</a>
+								<a class="btn btn-block btn-social btn-reddit btn-xs">
+									<i class="fa fa-star-o"></i> 1234
+								</a>
+								<a class="btn btn-block btn-social btn-facebook btn-xs">
+									<i class="fa fa-facebook"></i> 1234
+								</a>
+								<a class="btn btn-block btn-social btn-google btn-xs">
+									<i class="fa fa-google-plus"></i> 1234
+								</a>
+							</div>
+						</div>
+						<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des">
+							<div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
+							</div>
+							<div class="col-xs-4 col-sm-2 col-md-2 col-lg-2 d_text_des">
+								Description
+							</div>
+							<div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_content">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_fade">
+
+							</div>
+						</div>
 					</div>
 					<!-- Khung chứa Gallery -->
 					<div class="tab-pane" id="i_image_tab">
-						<iframe src="u_w_e_gallery.html" name="targetframe" frameborder="0" id="i_frame_gallery"></iframe>
+						<div class="container-fluid d_image_cover">
+							<div class="container-fluid d_thumbs_image_cover">
+								<p class="d_deco_text_location">Event at: Location 1</p>
+								<div class="d_each_group d_thumb_location_2">
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							    </div>
+							    <p class="d_deco_text_location">Event at: Location 2</p>
+								<div class="d_each_group d_thumb_location_2">
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							    </div>
+							    <p class="d_deco_text_location">Common gallery</p>
+								<div class="d_each_group d_thumb_common_gallery">
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							   	</div>
+							</div>
+						</div>
 					</div>
 					<!-- Khung chứa Video -->
 					<div class="tab-pane" id="i_video_tab">
-						<iframe src="u_w_e_video.html" name="targetframe" frameborder="0" id="i_frame_video"></iframe>
+						<div id="result-list" class="panel-group d_video_item_cover">
+							<div class="panel panel-default">
+							    <div class="panel-heading d_panel_1">
+							        <h4 class="panel-title">
+							            <a href="#i_event_video" data-toggle="collapse" data-parent="#result-list" class="" aria-expanded="true">
+							                <div class="xxx">Video sự kiện (12)</div>
+							            </a>
+							        </h4>
+							    </div>
+							    <div id="i_event_video" class="panel-collapse collapse in" aria-expanded="true">
+							        <div class="container-fluid d_video_cover">
+							            <div class="tab-pane active" id="i_video_tab">
+							                <div class="d_video_thumb_container">
+							                	<p class="d_deco_text_location">Videos at: Location 1</p>
+							        			<div class="d_each_group d_thumb_location_1">
+										        	<div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										            <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										        </div>
+										        <p class="d_deco_text_location">Videos at: Location 2</p>
+							        			<div class="d_each_group d_thumb_location_1">
+										            <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										            <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										            <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										            <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										            <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+										                <a class="thumbnail" href="#">
+										                    <img class="img-responsive" src="../img/sukien1.jpg">
+										                </a>
+										            </div>
+										        </div>
+											</div>
+										</div>
+							        </div>
+							    </div>
+							</div>
+							<div class="panel panel-default">
+							    <div class="panel-heading">
+							        <h4 class="panel-title">
+							            <a href="#i_streaming_link" data-toggle="collapse" data-parent="#result-list" class="collapsed" aria-expanded="false">
+							                <div class="xxx">Link xem sự kiện trực tiếp (8)</div>
+							            </a>
+							        </h4>
+							    </div>
+							    <div id="i_streaming_link" class="panel-collapse collapse" aria-expanded="false" style="height: 0px;">
+							        <div class="container-fluid d_link_cover">
+							            <div class="panel-body">
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+								            <div class="col-xs-3 col-sm-2 col-md-2 thumb">
+								                <a href="#">Link 1</a>
+								            </div>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+						</div>
 					</div>
-					<!-- Khung chứa Basic info & Description -->
+					<!--  -->
 					<div class="tab-pane" id="i_watch_video_tab">
-						<iframe src="u_w_e_watch_video.html" name="targetframe" frameborder="0" id="i_frame_watch"></iframe>
+						<!-- Khung Xem Video -->
+						<div class="d_watch_video_tab">
+							<div class="col-xs-12 col-sm-12 cold-md-12 col-lg-12 d_play_video">
+								<iframe src="https://www.youtube.com/embed/H6XQVGSWbdU" frameborder="0" allowfullscreen></iframe>
+							</div>
+							<!-- BUTTONS -->
+								<!-- wv_ đánh dấu CSS WATCH VIDEO -->
+							<div class="col-xs-12 col-sm-12 col-md-10 col-lg-10
+										col-xs-offset-0 col-sm-offset-0 col-md-offset-1 col-lg-offset-1
+										d_wv_button">
+								<a class="btn btn-social btn-github btn-xs col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<i class="fa fa-eye"></i> 1234
+								</a>
+								<a class="btn btn-social btn-dropbox btn-xs col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<i class="fa fa-thumbs-o-up"></i> 1515
+								</a>
+								<a class="btn btn-social btn-dropbox btn-xs col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<i class="fa fa-thumbs-o-down"></i> 1122
+								</a>
+								<a class="btn btn-social btn-facebook btn-xs col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<i class="fa fa-facebook"></i> 1234
+								</a>
+								<a class="btn btn-social btn-google btn-xs col-xs-2 col-sm-2 col-md-2 col-lg-2">
+									<i class="fa fa-google-plus"></i> 1234
+								</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
