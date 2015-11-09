@@ -17,8 +17,8 @@ namespace EventZone.Models
         public User()
         {
             this.CategoryFollows = new HashSet<CategoryFollow>();
-            this.Channels = new HashSet<Channel>();
             this.Comments = new HashSet<Comment>();
+            this.Channels = new HashSet<Channel>();
             this.EventFollows = new HashSet<EventFollow>();
             this.Images = new HashSet<Image>();
             this.LikeDislikes = new HashSet<LikeDislike>();
@@ -36,21 +36,22 @@ namespace EventZone.Models
         public string UserFirstName { get; set; }
         public string UserLastName { get; set; }
         public string UserEmail { get; set; }
-        public Nullable<System.DateTime> UserDOB { get; set; }
+        public System.DateTime UserDOB { get; set; }
         public string IDCard { get; set; }
         public int UserRoles { get; set; }
         public string Phone { get; set; }
         public string Place { get; set; }
         public bool AccountStatus { get; set; }
-        public Nullable<int> Gender { get; set; }
-        public string AvatarLink { get; set; }
+        public int Gender { get; set; }
+        public Nullable<long> Avartar { get; set; }
         public Nullable<System.DateTime> DataJoin { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
-        public virtual ICollection<Channel> Channels { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Channel> Channels { get; set; }
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<Image> Images { get; set; }
+        public virtual Image Image { get; set; }
         public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
         public virtual ICollection<PeopleFollow> PeopleFollows { get; set; }
         public virtual ICollection<PeopleFollow> PeopleFollows1 { get; set; }

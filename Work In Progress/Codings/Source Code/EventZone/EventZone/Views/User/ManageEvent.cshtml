@@ -1,9 +1,10 @@
 ﻿@using EventZone.Models;
+@using EventZone.Helpers;
 @{
     ViewBag.Title = "ManageProfile";
 }
 @{
-    var user = Session["user"] as User;
+    var user = UserHelpers.GetCurrentUser(Session);
     var task = ViewData["ManageEventTask"];
 
 }

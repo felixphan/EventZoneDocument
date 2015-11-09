@@ -1,56 +1,62 @@
-﻿@model EventZone.Models.LoginViewModel
+﻿@model EventZone.Models.SignInViewModel
 @{
-    ViewBag.Title = "Log in";
+    if (EventZone.Helpers.UserHelpers.GetCurrentUser(Session) != null)
+    {
+        Response.Redirect("~/Home");
+    }
+
 }
+<div id="i_signin_section" class="tab-pane fade in active">
+    @using (Ajax.BeginForm("SigninPost", "Account", null, new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnSuccess = "OnSignInRequestSucceeded"
+    }, new { id = "SignInForm" }))
+    {
+        @Html.AntiForgeryToken()
+        var alertStyle = "";
 
-<h2>@ViewBag.Title.</h2>
-<div class="row">
-    <div class="col-md-8">
-        <section id="loginForm">
-            @using (Html.BeginForm("Signin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-            {
-                @Html.AntiForgeryToken()
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                @Html.ValidationSummary(true)
-                <div class="form-group">
-                    @Html.LabelFor(model => model.UserName, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.UserName, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.UserName)
+        if (ViewData.ModelState == null || !ViewData.ModelState.Any(m => m.Value.Errors.Any()))
+        {
+            alertStyle = "display:none;margin-bottom:0px";
+        }
+        <div id='alertPanelSignIn'
+             class="alert alert-danger"
+             style='@alertStyle'>
+        </div>
+        <div class="my_function_cover f_sign_in">
+            <div class="panel-body">
+                <div style="margin-bottom: 10px" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
+                    @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", @placeholder = "Username" })
+                </div>
+                @Html.ValidationMessageFor(model => model.UserName)
+                <div style="margin-bottom: 10px" class="input-group">
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                    @Html.PasswordFor(model => model.Password, new { @id = "signin-password", @class = "form-control", @placeholder = "password", @type = "password" })
+                </div>
+                @Html.ValidationMessageFor(model => model.Password)
+                <div>
+                    <a data-toggle="modal" href="#myModal3" id="i_quen_mk">
+                        Forget password?
+                    </a>
+                </div>
+                <div class="input-group" style="margin-bottom: 35px">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(model => model.Remember) Remember me
                     </div>
                 </div>
-                <div class="form-group">
-                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
-                    <div class="col-md-10">
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Password)
+                <div style="margin-top: 10px" class="form-group">
+                    <!-- Button -->
+                    <div class="col-sm-12 controls">
+                        <button type="submit" id="btn-login" class="btn btn-success">Sign In </button>
+                        <a id="btn-fblogin" href="/Account/AuthenGoogle" class="btn btn-danger">Sign In with Google+</a>
                     </div>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Sign in" class="btn btn-default" />
-                    </div>
-                </div>
-                <p>
-                    @Html.ActionLink("Register", "Register","Äccount") if you don't have a local account.
-                    @Html.ActionLink("Reset Password", "ForgotAccount", "Account") if you forgot your password.
-                </p>
-            }
-        </section>
-    </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @using (Html.BeginForm("AuthenGoogle", "Account"))
-            {
-            @Html.AntiForgeryToken()
-
-             <button type="submit" class="btn btn-default" id="Google" name="provider" value="Google" title="Log in using your Google account">Google</button>
-
-            }
-        </section>
-    </div>
+            </div>
+        </div>
+        <!-- bao toàn bộ chức năng SIGN IN -->
+    }
 </div>
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+<script src="~/Scripts/Account/SignIn.js"></script>
+<script src="~/Scripts/jquery.md5.js"></script>
