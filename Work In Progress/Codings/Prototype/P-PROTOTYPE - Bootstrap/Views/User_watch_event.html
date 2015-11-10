@@ -13,12 +13,31 @@
 	<!-- myCSS -->
 	<link rel="stylesheet" type="text/css" href="../Content/myCSS_u_w_e.css">
 
+	<!-- All script here -->
+	<!-- Default JQuery -->
+	<script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="../Scripts/jquery-migrate-1.2.1.js"></script>
+	<!-- Default Bootstrap-->
+	<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+
+	<!-- Plugin Đổi style Scrollbar -->
+
+	<!-- END of Plugin Đổi style Scrollbar -->
+
+	<!-- Plugin basic Animation 2d -->
+	<script type="text/javascript" src="../Scripts/jquery.transform.js"></script>
+	<!-- Script cho Google Map -->
+	<script src="http://maps.google.com/maps/api/js?sensor=false"></script>		
+
+	<!-- myJS -->
+	<script type="text/javascript" src="../Scripts/myJS_u_w_e.js"></script>
+
 </head>
 
 <body class="d_uwe_body">
 
 	<div class="container">
-		<div class="d_all_function_cover">
+		<div class="d_all_function_cover col-sx-12 col-sm-12 col-md-12 col-lg-12">
 			<div class="col-sx-12 col-sm-12 col-md-8 col-lg-8 d_left_cover">
 				<ul class="nav nav-tabs" id="myTab">
 					<li class="active"><a href="#i_info_tab" data-toggle="tab">Event Info</a></li>
@@ -88,7 +107,13 @@
 							</div>
 							<div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_content">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_content_sample">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+								consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 								Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 								tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
 								quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
@@ -102,7 +127,8 @@
 								cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
 								proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 							</div>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_fade">
+							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_fade"
+										data-toggle="modal" data-target="#i_Modal_des">
 
 							</div>
 						</div>
@@ -111,7 +137,32 @@
 					<div class="tab-pane" id="i_image_tab">
 						<div class="container-fluid d_image_cover">
 							<div class="container-fluid d_thumbs_image_cover">
-								
+								<p class="d_deco_text_location">Event at: Location 1</p>
+								<div class="d_each_group d_thumb_location_2">
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							    </div>
+							    <p class="d_deco_text_location">Event at: Location 2</p>
+								<div class="d_each_group d_thumb_location_2">
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+							            <a class="thumbnail" href="#">
+							                <img class="img-responsive" src="../img/sukien1.jpg">
+							            </a>
+							        </div>
+							    </div>
 							    <p class="d_deco_text_location">Common gallery</p>
 								<div class="d_each_group d_thumb_common_gallery">
 							        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
@@ -307,29 +358,235 @@
 
 				<!-- Thẻ Tab Comment & Report -->
 				<div class="d_right_bottom">
+					<a class="d_reopen_map">Map</a>
 					<ul class="nav nav-tabs" id="myTab">
-						<li class="active"><a href="#i_comment_bg" data-toggle="tab">Comment</a></li>
+						<li class="active"><a href="#i_comment" data-toggle="tab">Comment</a></li>
 						<li><a href="#i_report_tab" data-toggle="tab">Report</a></li>
 					</ul>
 					<div class="tab-content">
 						<!-- Thẻ Tab Comment -->
-						<div class="tab-pane active" id="i_comment_bg">
-							<div class="b">
-								<!-- cm_ đánh dấu CSS của phần -->
-								<iframe src="u_w_e_comment.html" name="targetframe" frameborder="0" id="i_frame_comment"></iframe>
+						<div class="tab-pane active" id="i_comment">
+							<!-- Before: trạng thái trước khi ấn Write A Comment -->
+							<div class="d_cmt_before">
+								<div class="d_one_comment">
+									<div id="myCarousel" class="carousel slide" data-ride="carousel">
+									  <!-- Indicators -->
+									  <ol class="carousel-indicators">
+									    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+									    <li data-target="#myCarousel" data-slide-to="1"></li>
+									    <li data-target="#myCarousel" data-slide-to="2"></li>
+									    <li data-target="#myCarousel" data-slide-to="3"></li>
+									  </ol>
+
+									  <!-- Wrapper for slides -->
+									  <div class="carousel-inner" role="listbox">
+									    <div class="item active">
+									      <div class="d_carousel_cmt_cover">
+									      	<!-- ccmt_ đánh dấu Carousel Comment -->
+									      	<div class="d_ccmt_ava_user">
+									      		<div class="d_ccmt_ava">
+									      			<img src="../img/bg1.jpg">
+									      		</div>
+									      		<div class="d_ccmt_user">
+									      			<i>UserName 1</i>
+									      		</div>
+									      	</div>
+									      	<div class="d_ccmt_content">
+									      		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+									      		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+									      	</div>
+									      </div>
+									    </div>
+
+									    <div class="item">
+									      <div class="d_carousel_cmt_cover">
+									      	<!-- ccmt_ đánh dấu Carousel Comment -->
+									      	<div class="d_ccmt_ava_user">
+									      		<div class="d_ccmt_ava">
+									      			<img src="../img/bg1.jpg">
+									      		</div>
+									      		<div class="d_ccmt_user">
+									      			<i>UserName 2</i>
+									      		</div>
+									      	</div>
+									      	<div class="d_ccmt_content">
+									      		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+									      		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+									      	</div>
+									      </div>
+									    </div>
+
+									    <div class="item">
+									      <div class="d_carousel_cmt_cover">
+									      	<!-- ccmt_ đánh dấu Carousel Comment -->
+									      	<div class="d_ccmt_ava_user">
+									      		<div class="d_ccmt_ava">
+									      			<img src="../img/bg1.jpg">
+									      		</div>
+									      		<div class="d_ccmt_user">
+									      			<i>UserName 3</i>
+									      		</div>
+									      	</div>
+									      	<div class="d_ccmt_content">
+									      		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+									      		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+									      	</div>
+									      </div>
+									    </div>
+
+									    <div class="item">
+									      <div class="d_carousel_cmt_cover">
+									      	<!-- ccmt_ đánh dấu Carousel Comment -->
+									      	<div class="d_ccmt_ava_user">
+									      		<div class="d_ccmt_ava">
+									      			<img src="../img/bg1.jpg">
+									      		</div>
+									      		<div class="d_ccmt_user">
+									      			<i>UserName 4</i>
+									      		</div>
+									      	</div>
+									      	<div class="d_ccmt_content">
+									      		Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+									      		tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+									      	</div>
+									      </div>
+									    </div>
+									  </div>
+
+									  <!-- Left and right controls -->
+									  <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+									    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+									    <span class="sr-only">Previous</span>
+									  </a>
+									  <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+									    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+									    <span class="sr-only">Next</span>
+									  </a>
+									</div>
+								</div>
+								<div class="d_txt_write_cmt">
+									<a>Write a comment</a>
+								</div>
+								<!--
+								<div class="form-group d_write_comment">
+									<textarea   id="i_cmt_box"
+												class="form-control" rows="1"
+												placeholder="Write your comment..."></textarea>
+									<button type="button" class="btn btn-success col-xs-2 col-sm-2 col-md-2 col-lg-2"
+											id="i_send_cmt">
+										<span class="glyphicon glyphicon-send"></span>
+									</button>
+								</div>
+								-->
 							</div>
-							<div class="form-group d_write_comment">
-								<textarea   id="i_cmt_box"
-											class="form-control col-md-10" rows="1" id="comment"
-											placeholder="Write your comment..."></textarea>
-								<button type="button" class="btn btn-success col-md-2" id="i_send_cmt">
-									<span class="glyphicon glyphicon-send"></span>
-								</button>
+							<div class="d_cmt_after">
+								<div class="d_cmt_container">
+									<div class="d_each_event">
+										<!-- ee_ đánh dấu Each Event -->
+										<div class="d_ee_ava_user">
+											<div class="d_ee_ava">
+												<img src="../img/bg1.jpg">
+											</div>
+											<div class="d_ee_user">
+												<i>UserName 4</i>
+											</div>
+											<div class="d_ee_time">
+												<i>Time</i>
+											</div>
+										</div>
+										<div class="d_ee_content">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+										</div>
+									</div>
+									<div class="d_each_event">
+										<!-- ee_ đánh dấu Each Event -->
+										<div class="d_ee_ava_user">
+											<div class="d_ee_ava">
+												<img src="../img/bg1.jpg">
+											</div>
+											<div class="d_ee_user">
+												<i>UserName 4</i>
+											</div>
+											<div class="d_ee_time">
+												<i>Time</i>
+											</div>
+										</div>
+										<div class="d_ee_content">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+										</div>
+									</div>
+									<div class="d_each_event">
+										<!-- ee_ đánh dấu Each Event -->
+										<div class="d_ee_ava_user">
+											<div class="d_ee_ava">
+												<img src="../img/bg1.jpg">
+											</div>
+											<div class="d_ee_user">
+												<i>UserName 4</i>
+											</div>
+											<div class="d_ee_time">
+												<i>Time</i>
+											</div>
+										</div>
+										<div class="d_ee_content">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+										</div>
+									</div>
+									<div class="d_each_event">
+										<!-- ee_ đánh dấu Each Event -->
+										<div class="d_ee_ava_user">
+											<div class="d_ee_ava">
+												<img src="../img/bg1.jpg">
+											</div>
+											<div class="d_ee_user">
+												<i>UserName 4</i>
+											</div>
+											<div class="d_ee_time">
+												<i>Time</i>
+											</div>
+										</div>
+										<div class="d_ee_content">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+										</div>
+									</div>
+									<div class="d_each_event">
+										<!-- ee_ đánh dấu Each Event -->
+										<div class="d_ee_ava_user">
+											<div class="d_ee_ava">
+												<img src="../img/bg1.jpg">
+											</div>
+											<div class="d_ee_user">
+												<i>UserName 4</i>
+											</div>
+											<div class="d_ee_time">
+												<i>Time</i>
+											</div>
+										</div>
+										<div class="d_ee_content">
+											Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+											tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim ven
+										</div>
+									</div>								
+								</div>
+								<div class="d_write_cmt">
+									<div class="form-group d_write_report col-xs-10 col-sm-10 col-md-10 col-lg-10">
+										<textarea   id="i_cmt_box" autofocus
+													class="form-control" rows="1" id="comment"
+													placeholder="Your comment..."></textarea>
+										<button type="button" class="btn btn-success col-xs-2 col-sm-2 col-md-2 col-lg-2" id="i_btn_send">
+											<span class="glyphicon glyphicon-send"></span>
+										</button>
+									</div>
+								</div>
 							</div>
 						</div>
 						<!-- Thẻ Tab Report -->
 						<div class="tab-pane" id="i_report_tab">
-							<div class="d_reason_container b">
+							<div class="d_reasons_container b">
 								<div class="checkbox" id="i_reason1">
 								  <label><input type="checkbox" value="">Reason 1</label>
 								</div>
@@ -340,11 +597,11 @@
 								  <label><input type="checkbox" value="">Reason 3</label>
 								</div>
 							</div>
-							<div class="form-group d_write_report">
+							<div class="form-group d_write_report col-xs-10 col-sm-10 col-md-10 col-lg-10">
 								<textarea   id="i_report_box"	
-											class="form-control col-md-10" rows="1" id="comment"
+											class="form-control" rows="1" id="comment"
 											placeholder="Write your reason..."></textarea>
-								<button type="button" class="btn btn-success col-md-2" id="i_send_report">
+								<button type="button" class="btn btn-success col-xs-2 col-sm-2 col-md-2 col-lg-2" id="i_btn_send">
 									<span class="glyphicon glyphicon-send"></span>
 								</button>
 							</div>
@@ -355,30 +612,70 @@
 		</div>
 	</div>
 
+	<!-- ALL MODALS HERE -->
+	<!-- Modal EVENT DESCRIPTION: phần popup hiện ra -->
+	<div class="modal fade" id="i_Modal_des" role="dialog"> 
+		<div class="modal-dialog">
+
+		  <!-- Modal Description content: gồm tên & Phần Description -->
+		  <div class="panel panel-info">
+		      <div class="panel-heading">
+		          <div class="panel-title">Khai giảng các khóa học nghiệp vụ kế toán, nhân sự, thuế, xnk ngắn hạn</div>
+		          <div style="float:right; font-size: 80%; position: relative; top: -40px"><a href="#" data-dismiss="modal" id="i_close_modal">Close</a></div>
+		      </div>
+		      <div style="padding-top:10px" class="panel-body">
+		    	<div class="d_des_content">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		    	</div>
+		      </div>
+		    </div>
+
+		  <!-- Iframe mới
+		  <iframe src="t_m_modal_ad_search.html"></iframe> -->
+		</div>
+	</div>
 
 <!-- Chứa Code đang test
 
 -->
 
 
-<!-- All script here -->
-<!-- Default JQuery -->
-<script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>
-<script type="text/javascript" src="../Scripts/jquery-migrate-1.2.1.js"></script>
-<!-- Default Bootstrap-->
-<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
 
-<!-- Plugin Đổi style Scrollbar -->
-
-<!-- END of Plugin Đổi style Scrollbar -->
-
-<!-- Plugin basic Animation 2d -->
-<script type="text/javascript" src="../Scripts/jquery.transform.js"></script>
-<!-- Script cho Google Map -->
-<script src="http://maps.google.com/maps/api/js?sensor=false"></script>		
-
-<!-- myJS -->
-<script type="text/javascript" src="../Scripts/myJS_u_w_e.js"></script>
 
 </body>
 

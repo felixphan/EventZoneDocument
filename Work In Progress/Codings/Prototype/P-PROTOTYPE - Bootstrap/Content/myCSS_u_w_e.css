@@ -54,15 +54,55 @@ body{
 .panel-title{
 	color: gray;
 }
-
+.form-group{
+	margin-bottom: 0px;
+}
+.form-control{
+	width: auto;
+}
+.carousel{
+	height: 26%;
+}
+.carousel-indicators{
+	top: 125px;
+}
+.carousel-control{
+	border-radius: 50px;
+    background-color: transparent;
+    background-image: none;
+    position: static;
+}
+.carousel-control.right,
+.carousel-control.left{
+	background-image: none;
+	margin-top: 6px;
+}
+.carousel-control .glyphicon-chevron-left, .carousel-control .glyphicon-chevron-right, .carousel-control .icon-prev, .carousel-control .icon-next{
+	font-size: 15px;
+	color: gray;
+}
+.carousel-control .icon-next, .carousel-control .glyphicon-chevron-right{
+	right: 5%;
+}
+.carousel-control .icon-prev, .carousel-control .glyphicon-chevron-left{
+	left: 85%;
+}
+.carousel-indicators li{
+	border-color: grey;
+	height: 8px;
+	width: 8px;
+}
+.container{
+	padding: 0;
+}
 /**************************************************** Khung chức năng TỔNG QUÁT ***/
 .d_uwe_body{
 	font-family: segoe ui;
 	overflow-y: scroll;
+	margin-top: 80px;
 }
 .d_all_function_cover{
-	border: 0px blue dashed;
-	margin: 30px auto;
+	padding: 0;
 	min-width: 430px;
 }
 .d_left_cover,
@@ -73,8 +113,11 @@ body{
 	padding: 0;
 	border-radius: 4px;
 }
+.d_left_cover{
+	height: 550px;
+}
 .d_right_bottom{
-	height: 184px;
+	height: 230px;
 }
 
 /**************************************************** Event Info Tab **/
@@ -143,33 +186,39 @@ iframe #i_frame_gallery{
 	height: 14px;
 	border-bottom: 1px lightgray solid;
 }
-.d_des_fade{
+.d_des_content_sample{
 	margin-top: 30px;
-	position: absolute;
-    width: 95%;
+	height: 260px;
+	border-radius: 4px;
+	background-color: white;
+	color: black;
+	font-size: 15px;
+	overflow-y: hidden;
+	text-align: justify;
+}
+.d_des_fade{
+	margin: 0;
+	margin-top: -270px;
 	border: 1px solid lightgrey;
 	border-top-left-radius: 4px;
 	border-top-right-radius: 4px;
-	height: 220px;
+	height: 280px;
 	background: -webkit-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Safari 5.1 to 6.0 */
     background: -o-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Opera 11.1 to 12.0 */
     background: -moz-linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* For Firefox 3.6 to 15 */
     background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0), rgba(255,255,255,1)); /* Standard syntax (must be last) */
     border-bottom: 0px;
 }
-.d_des_content{
-	margin-top: 30px;
-    position: absolute;
-    width: 95%;
-	height: 220px;
-	border-radius: 4px;
-	background-color: white;
-	padding: 10px;
-	color: black;
-	font-size: 15px;
-	overflow-y: hidden;
+#i_Modal_des .panel-body{
+	overflow-y: auto;
+	height: 500px;
+	width: 100%;
 }
-
+#i_Modal_des .panel-title{
+    color: gray;
+    font-weight: bold;
+    width: 94%;
+}
 /**************************************************** Image tab **/
 #i_image_tab{
 	border: 0px solid white;
@@ -233,6 +282,10 @@ iframe #i_frame_gallery{
 .d_wv_button a {
 	margin-right: 10px;
 }
+/**************************************************** Khung chức năng PHẢI ***/
+.d_right_cover{
+	padding-right: 0;
+}
 
 /**************************************************** Map tab **/
 #map-container{
@@ -241,36 +294,97 @@ iframe #i_frame_gallery{
 }
 
 /**************************************************** Comment tab **/
+.d_reopen_map {
+    position: absolute;
+    top: 16px;
+    right: 10px;
+    z-index: 1;
+}
+.d_right_bottom{
+	position: relative;
+}
 .d_write_comment,
 .d_write_report{
-	position: relative;
-    color: gray;
-    bottom: -10px;
+	width: 100%;
+	padding: 0;
+    top: 6px;
 }
 #i_cmt_box,
 #i_report_box{
 	float: left;
-    width: 80%;
+    width: 82%;
+    max-width: 82%;
 }
-#i_send_cmt,
-#i_send_report{
+#i_btn_send{
 	float: right;
-    height: initial;
 }
-#i_frame_comment{
+.d_txt_write_cmt{
+    margin-top: 23px;
+    text-align: center;
+    font-size: smaller;
+}
+.d_one_comment,
+.d_reasons_container{
+    zborder: 1px #ddd solid;
+    height: 125px;
+    width: initial;
+    border-radius: 4px;
+    padding: 0;
+}
+.d_cmt_container{
+	height: 445px;
+	overflow-y: auto;
+}
+.d_each_event{
+	height: auto;
+}
+.d_ee_content{
+	margin-bottom: 10px;
+	border-bottom: 1px lightgrey solid;
+}
+/**************************************************** Comment tab > Chạy ngang comment ***/
+.d_ccmt_ava_user{
+	display: flex;
 	width: 100%;
 }
-.d_cm_each_comment{
-
+.d_ee_ava img,
+.d_ccmt_ava img{
+	width: 35px;
+	height: 35px;
+	border-radius: 4px;
+	margin-right: 10px;
+	margin-left: 6px;
+}
+.d_ee_user,
+.d_ccmt_user{
+	margin-top: 5px;
+}
+.d_ee_content,
+.d_ccmt_content{
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-top: 5px;
+}
+/**************************************************** Comment tab > bổ sung load sau ***/
+.d_ee_ava_user{
+}
+.d_ee_ava{
+	float: left;
+}
+.d_ee_user{
+	margin: 0;
+	width: 80%;
+	float: left;
+}
+.d_ee_time{
+	margin: 0;
+	width: 80%;
+	float: left;
 }
 
-/**************************************************** Khung chức năng PHẢI ***/
-
-/**************************************************** Comment Tab ***/
-.d_comment{
-	background-color: white;
-	height: 145px;
+/**************************************************** Report Tab ***/
+#i_reason1{
+	margin-top: 0;
 }
-
 
 /**************************************************** Decorate CSS ***/
