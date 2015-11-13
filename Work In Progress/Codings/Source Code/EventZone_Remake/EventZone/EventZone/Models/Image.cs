@@ -14,13 +14,19 @@ namespace EventZone.Models
     
     public partial class Image
     {
+        public Image()
+        {
+            this.EventImages = new HashSet<EventImage>();
+            this.Users = new HashSet<User>();
+        }
+    
         public long ImageID { get; set; }
-        public long EventID { get; set; }
         public long UserID { get; set; }
         public string ImageLink { get; set; }
         public System.DateTime UploadDate { get; set; }
     
-        public virtual Event Event { get; set; }
+        public virtual ICollection<EventImage> EventImages { get; set; }
         public virtual User User { get; set; }
+        public virtual ICollection<User> Users { get; set; }
     }
 }

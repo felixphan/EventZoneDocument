@@ -20,6 +20,8 @@ namespace EventZone.Models
         public System.DateTime StartTime { get; set; }
         public Nullable<System.DateTime> EndTime { get; set; }
         public int Privacy { get; set; }
+        public string PrimaryServer { get; set; }
+        public string BackupServer { get; set; }
     
         public virtual EventPlace EventPlace { get; set; }
     }

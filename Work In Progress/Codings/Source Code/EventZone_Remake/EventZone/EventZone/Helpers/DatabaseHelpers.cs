@@ -44,6 +44,7 @@ namespace EventZone.Helpers
             if (user.Count == 0)
             {
                 return false;
+                
             }
             if (user[0].UserPassword != password)
             {
@@ -97,7 +98,26 @@ namespace EventZone.Helpers
                 return false;
             }
         }
+        /// <summary>
+        /// user change avatar
+        /// </summary>
+        /// <param name="imageId"></param>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public bool UpdateAvatar(User user, Image image)
+        {
+            try {
+                db.Images.Add(image);
+                db.SaveChanges();
+                user.Avartar = image.ImageID;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }catch{
+                return false;
+            }
 
+        }
         /// <summary>
         ///     get all channel in DB
         /// </summary>
@@ -167,9 +187,10 @@ namespace EventZone.Helpers
             }
             foreach (var item in listUser)
             {
+                
                 var view = new ViewThumbUserModel();
                 view.UserID = item.UserID;
-                view.Avatar = item.AvatarLink;
+                view.Avatar = item.Avartar;
                 view.Name = item.UserFirstName +
                             (item.UserLastName == null || item.UserLastName == "" ? "" : item.UserLastName);
                 view.NumberFollower = NumberFollower(item.UserID);
@@ -208,6 +229,7 @@ namespace EventZone.Helpers
         {
             try
             {
+                
                 var ppfollow = new PeopleFollow();
                 ppfollow.FollowerUserID = FollowerID;
                 ppfollow.FollowingUserID = FollowingID;
@@ -295,7 +317,46 @@ namespace EventZone.Helpers
                 return false;
             }
         }
+        /// <summary>
+        /// get all event is created by a given user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public List<Event> GetUserEvent(long userID) {
+            
+            List<Event> myEvent = new List<Event>();
+            try { 
+                long channelID= GetUserChannel(userID).ChannelID;
+                myEvent = (from a in db.Events where a.ChannelID == channelID select a).ToList();
+            }
+            catch { }
+            return myEvent;
+        }
+        public List<Event> GetFollowingEvent(long userID)
+        {
+            try
+            {
+                List<Event> result= new List<Event>();
+                List<long> listEventID = (from a in db.EventFollows where a.FollowerID == userID select a.EventID).ToList();
+                if (listEventID != null)
+                {
+                    foreach (var eventID in listEventID) {
+                        try
+                        {
+                            result.Add(EventDatabaseHelper.Instance.GetEventByID(eventID));
+                        }
+                        catch {
+                            continue;
+                        }
+                    }
+                }
+                return result;
 
+            }
+            catch {
+                return null;
+            }
+        }
         /// <summary>
         ///     Check xem user like or dislike event. Nếu chưa like hoặc dislike trả lại 0;
         /// </summary>
@@ -555,18 +616,40 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public List<User> SearchUserByKeyword(string keyword)
         {
+            var listResult = new List<User>();
             if (keyword == "" || keyword == null)
             {
-                return db.Users.ToList();
+                listResult = db.Users.ToList();
+                return listResult;
             }
             keyword = keyword.ToLower();
-
-            var listResult = new List<User>();
-
-            var retrievedResult = (from x in listResult
+            var retrievedResult = (from x in db.Users
                                    where x.UserFirstName.ToLower().Contains(keyword) || x.UserLastName.ToLower().Contains(keyword)
                                    select x).ToList();
             return retrievedResult;
+        }
+        public bool ChangePassword(User user, string password) {
+            try
+            {
+                user.UserPassword = password;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                return true;
+            }
+            catch {
+                return false;
+            }
+        }
+        public string GetUserDisplayName(long UserID) {
+            string result = "";
+            try {
+                User user = GetUserByID(UserID);
+                result = user.UserFirstName + " "+(string.IsNullOrEmpty(user.UserLastName) ? "" : user.UserLastName);
+            }
+            catch
+            {
+            }
+            return result;
         }
     }
 
@@ -626,7 +709,8 @@ namespace EventZone.Helpers
         {
             try
             {
-                return db.Events.Find(id);
+                Event evt = db.Events.Find(id);
+                return evt;
             }
             catch
             {
@@ -641,6 +725,7 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public bool AddViewEvent(long eventID)
         {
+            
             var evt = Instance.GetEventByID(eventID);
             if (evt != null)
             {
@@ -652,17 +737,6 @@ namespace EventZone.Helpers
             return false;
         }
 
-        public bool AddImageToEvent(Image image) {
-            try {
-                db.Images.Add(image);
-                db.SaveChanges();
-                return true;
-            }
-            catch { }
-            return false;
-        }
-
-
         /// <summary>
         ///     Get all image of an event
         /// </summary>
@@ -670,13 +744,27 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public List<Image> GetEventImage(long? id)
         {
-            var eventImage = new List<Image>();
-            var allImage = db.Images.ToList();
-            if (allImage.Count != 0)
+            try
             {
-                eventImage = allImage.FindAll(i => i.EventID == id);
-                return eventImage;
+                List<EventImage> eventImage = (from a in db.EventImages where a.EventID == id select a).ToList();
+                if (eventImage != null) {
+                    var listImage = new List<Image>();
+                        foreach (var item in eventImage) {
+                            listImage.Add(GetImageByID(item.ImageID));
+                        }
+                        
+                return listImage;
+                    
+                    
+                }
             }
+            catch {
+                return null;
+            }
+            
+            
+           
+            
             return null;
         }
 
@@ -707,7 +795,6 @@ namespace EventZone.Helpers
             }
             return null;
         }
-
         /// <summary>
         ///     Get all comment of an event
         /// </summary>
@@ -732,8 +819,9 @@ namespace EventZone.Helpers
         {
              try
             {
-                Event eventResult = db.Events.Find(id);
-                return eventResult.Category.ToString();
+                 Event evt= db.Events.Find(id);
+                 Category category= (from a in db.Categories where a.CategoryID==evt.CategoryID select a).ToList()[0];
+                 return category.CategoryName;
             }
             catch
             {
@@ -822,12 +910,47 @@ namespace EventZone.Helpers
             }
             keyword = keyword.ToLower();
             var listResult = new List<Event>();
-            var retrievedResult = (from x in listResult
+            var retrievedResult = (from x in db.Events
                                    where x.EventName.ToLower().Contains(keyword) || x.EventDescription.ToLower().Contains(keyword)
                                    select x).ToList();
             return retrievedResult;
         }
+        /// <summary>
+        /// check is live streaming video or not?
+        /// </summary>
+        /// <param name="video"></param>
+        /// <returns></returns>
+        public bool IsLiveVideo(Video video) {
+            try
+            {
+                DateTime currentTime = DateTime.Now;
+                var start = video.StartTime;
+                var end = video.EndTime;
+                if (end != null && start.CompareTo(currentTime) <= 0 && currentTime.CompareTo(end) < 0)
+                {
+                    return true;
+                }
+            }
+            catch { }
+            return false;
+        }
+        /// <summary>
+        /// Get List Live streaming video in list video
+        /// </summary>
+        /// <returns></returns>
+        public List<Video> GetListLiveVideo(List<Video> listVideo) {
+            List<Video> result = new List<Video>();
+            try
+            {
+                foreach (var video in listVideo)
+                {
+                    if (IsLiveVideo(video)) result.Add(video);
+                }
+            }
+            catch { }
+            return result;
 
+        }
         /// <summary>
         ///     trả lại live event
         /// </summary>
@@ -879,24 +1002,21 @@ namespace EventZone.Helpers
         {
             var listThumbEvent = new List<ViewThumbEventModel>();
             if (listEvent == null) return listThumbEvent;
-            foreach (var item in listEvent)
+            try
             {
-                var thumbEventModel = new ViewThumbEventModel();
-                thumbEventModel.eventId = item.EventID;
-                try
+                foreach (var item in listEvent)
                 {
-                    thumbEventModel.avatar = GetImageByID(item.Avatar).ImageLink;
+                    ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
+                    thumbEventModel.evt = item;
+                    thumbEventModel.numberLike = EventDatabaseHelper.Instance.CountLike(item.EventID);
+                    thumbEventModel.numberDislike = EventDatabaseHelper.Instance.CountDisLike(item.EventID);
+                    thumbEventModel.numberFollow = EventDatabaseHelper.Instance.CountFollowerOfEvent(item.EventID);
+                    thumbEventModel.location = EventDatabaseHelper.Instance.GetEventLocation(item.EventID);
+                    listThumbEvent.Add(thumbEventModel);
                 }
-                catch
-                {
-                    thumbEventModel.avatar = null;
-                }
-                thumbEventModel.numberView = item.View;
-                thumbEventModel.eventName = item.EventName;
-                thumbEventModel.StartTime = item.EventStartDate;
-                thumbEventModel.EndTime = item.EventEndDate;
-                thumbEventModel.location = Instance.GetEventLocation(item.EventID);
-                listThumbEvent.Add(thumbEventModel);
+            }
+            catch { 
+            
             }
             return listThumbEvent;
         }
@@ -929,6 +1049,81 @@ namespace EventZone.Helpers
             return listEvent;
 
         }
+
+
+        /// <summary>
+        /// add image to event
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="evtID"></param>
+        /// <returns></returns>
+        public bool AddImageToEvent(Image image, long evtID) {
+            try
+            {
+                db.Images.Add(image);
+                db.SaveChanges();
+                EventImage evtImage = new EventImage { EventID=evtID,ImageID=image.ImageID};
+                db.EventImages.Add(evtImage);
+                db.SaveChanges();
+                return true;
+                
+            }
+            catch {
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// add live video
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="locationList"></param>
+        /// <param name="listEventPlaces"></param>
+        /// <returns></returns>
+        public string[] AddLiveVideo(CreateEventModel model, List<Location> locationList, List<EventPlace> listEventPlaces)
+        {
+            string[] viewDataResult = new string[20];
+            try
+            {
+                viewDataResult =
+                    new EventDatabaseHelper().Run(model.Title, (DateTime)model.StartTimeYoutube,
+                        (DateTime)model.EndTimeYoutube,
+                        model.Quality,
+                        model.PrivacyYoutube).Result;
+                var video = new Video();
+                video.StartTime = model.StartTimeYoutube;
+                video.EndTime = model.EndTimeYoutube;
+                video.Privacy = model.PrivacyYoutube;
+                for (int i = 0; i < locationList.Count; i++)
+                {
+                    if (locationList[i].LocationName.Equals(model.LocationLiveName))
+                    {
+                        foreach (EventPlace item in listEventPlaces)
+                        {
+                            if (item.LocationID ==
+                                LocationHelpers.Instance.FindLocationByAllData(locationList[i].Longitude,
+                                    locationList[i].Latitude,
+                                    locationList[i].LocationName))
+                            {
+                                video.EventPlaceID = item.EventPlaceID;
+                            }
+                        }
+                    }
+                }
+                video.VideoLink = viewDataResult[3];
+                video.PrimaryServer = viewDataResult[1];
+                video.BackupServer = viewDataResult[2];
+                db.Videos.Add(video);
+                db.SaveChanges();
+            }
+            catch
+            {
+                viewDataResult[0] = "Error with Youtube Site";
+            }
+            return viewDataResult;
+        }
+
 
         /// <summary>
         ///     Lọc event theo nhóm category từ list event
@@ -1039,7 +1234,7 @@ namespace EventZone.Helpers
             List<Event> result = new List<Event>();
             try {
                 List<long> listEventID;
-                listEventID = (from a in db.EventRanks orderby a.Score select a.EventId).Take(50).ToList();
+                listEventID = (from a in db.EventRanks orderby a.Score descending select a.EventId).Take(50).ToList();
                 foreach (var item in listEventID) {
                     Event evt = db.Events.Find(item);
                     if (evt != null) {
@@ -1157,20 +1352,21 @@ namespace EventZone.Helpers
         /// <param name="userID"></param>
         /// <param name="commentContent"></param>
         /// <returns></returns>
-        public bool AddCommentToEvent(long eventID, long userID, string commentContent)
+        public Comment AddCommentToEvent(long eventID, long userID, string commentContent)
         {
 
             Comment comment = new Comment();
             comment.EventID = eventID;
             comment.UserID = userID;
             comment.CommentContent = commentContent;
+            comment.DateIssue = DateTime.Now;
             try
             {
                 db.Comments.Add(comment);
                 db.SaveChanges();
-                return true;
+                return comment;
             }
-            catch { return false; }
+            catch { return null; }
         }
 
         /// <summary>
@@ -1205,21 +1401,21 @@ namespace EventZone.Helpers
                 return null;
             }
             var result = new List<Event>();
-
+            DateTime today = DateTime.Now;
             foreach (var item in listEvent)
             {
-                if (item.EventStartDate.CompareTo(endDate) <= 0 && item.EventStartDate.CompareTo(startDate) >= 0)
+                if (item.EventStartDate.CompareTo(today) <= 0 && item.EventEndDate.CompareTo(today) >= 0)
                     result.Add(item);
             }
 
             return result;
         }
-                public Event AddNewEvent(CreateEventModel model, string userid)
+        public Event AddNewEvent(CreateEventModel model, string userid)
         {
             var newEvent = new Event();
             newEvent.EventName = model.Title;
             var userChannel =
-                db.Channels.ToList().Find(c => c.UserID.Equals(long.Parse(userid)));
+            db.Channels.ToList().Find(c => c.UserID.Equals(long.Parse(userid)));
             newEvent.ChannelID = userChannel.ChannelID;
             newEvent.EventStartDate = model.StartTime;
             newEvent.EventEndDate = model.EndTime;
@@ -1232,10 +1428,20 @@ namespace EventZone.Helpers
             newEvent.EditBy = long.Parse(userid);
             newEvent.EditTime = DateTime.Now;
             newEvent.EditContent = null;
-            newEvent.Status = true;
+            newEvent.Status = true; 
             // insert Event to Database
-            db.Events.Add(newEvent);
-            db.SaveChanges();
+            try
+            {
+                db.Events.Add(newEvent);
+                db.SaveChanges();
+                EventRank eventRank = new EventRank { EventId = newEvent.EventID, Score = 0 };
+                db.EventRanks.Add(eventRank);
+                db.SaveChanges();
+            }
+            catch {
+                return null;
+            }
+            
             return newEvent;
         }
 
@@ -1252,38 +1458,6 @@ namespace EventZone.Helpers
                 listEventPlaces.Add(newEventPlace);
             }
             return listEventPlaces;
-        }
-
-        public string[] AddLiveVideo(CreateEventModel model, string[] locationList, List<EventPlace> listEventPlaces,
-    string[] longitudeList, string[] lattitudeList)
-        {
-            string[] viewDataResult =
-                new EventDatabaseHelper().Run(model.Title, model.StartTime, model.EndTime, model.Quality,
-                    model.PrivacyYoutube).Result;
-            var video = new Video();
-            video.StartTime = model.StartTime;
-            video.EndTime = model.EndTime;
-            video.Privacy = model.PrivacyYoutube;
-            for (int i = 0; i < locationList.Length; i++)
-            {
-                if (locationList[i].Equals(model.LocationLiveName))
-                {
-                    foreach (EventPlace item in listEventPlaces)
-                    {
-                        if (item.LocationID ==
-                            LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
-                                double.Parse(lattitudeList[i]),
-                                locationList[i]))
-                        {
-                            video.EventPlaceID = item.EventPlaceID;
-                        }
-                    }
-                }
-            }
-            video.VideoLink = viewDataResult[3];
-            db.Videos.Add(video);
-            db.SaveChanges();
-            return viewDataResult;
         }
 
 
@@ -1344,7 +1518,7 @@ namespace EventZone.Helpers
             broadcast.Snippet = broadcastSnippet;
             broadcast.Status = status;
             LiveBroadcastsResource.InsertRequest liveBroadcastInsert = youtubeService.LiveBroadcasts.Insert(broadcast, "snippet,status");
-            LiveBroadcast returnBroadcast = liveBroadcastInsert.Execute();
+            LiveBroadcast returnBroadcast = liveBroadcastInsert.Execute();//die o day
 
             //Set LiveStream Snippet
             LiveStreamSnippet streamSnippet = new LiveStreamSnippet();
@@ -1393,7 +1567,33 @@ namespace EventZone.Helpers
         {
             return db.Locations.ToList();
         }
-
+        public List<double> GetLocationIdOfEvent(List<Location> locationList )
+        {
+            var locationId = new List<double>();
+                        //Search for duplicated location before adding new location to database
+                        for (var i = 0; i < locationList.Count; i++)
+                        {
+                            Location tmpLocation = locationList[i];
+                            double locationIdIndex =LocationHelpers.Instance.FindLocationByAllData(tmpLocation.Longitude,
+                                                    tmpLocation.Latitude,
+                                                    tmpLocation.LocationName);
+                            if (locationIdIndex == -1)
+                            {
+                                Location newLocation = new Location();
+                                newLocation.LocationName = tmpLocation.LocationName;
+                                newLocation.Latitude = tmpLocation.Latitude;
+                                newLocation.Longitude = tmpLocation.Longitude;
+                                db.Locations.Add(newLocation);
+                                db.SaveChanges();
+                                locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(tmpLocation.Longitude,
+                                    tmpLocation.Latitude,
+                                    tmpLocation.LocationName);
+                            }
+                            locationId.Add(locationIdIndex);
+                        }
+                        return locationId;
+        }
+    
         /// <summary>
         ///     get Location by id
         /// </summary>
@@ -1403,7 +1603,8 @@ namespace EventZone.Helpers
         {
             try
             {
-                return db.Locations.Find(id);
+                Location loc = db.Locations.Find(id);
+                return loc;
             }
             catch
             {
@@ -1456,9 +1657,10 @@ namespace EventZone.Helpers
 
         public List<EventPlace> GetAllEventPlace()
         {
-            return db.EventPlaces.ToList();
+            List<EventPlace> listeventPlace = db.EventPlaces.ToList();
+            return listeventPlace;
         }
-                public List<double> GetLocationIdOfEvent(string[] locationList, string[] longitudeList, string[] lattitudeList)
+        public List<double> GetLocationIdOfEvent(string[] locationList, string[] longitudeList, string[] lattitudeList)
         {
             var locationId = new List<double>();
 
@@ -1501,16 +1703,22 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public List<Category> GetAllCategory()
         {
-            return db.Categories.ToList();
+            try
+            {
+                List<Category> listCate = db.Categories.ToList();
+                return listCate;
+            }
+            catch { }
+            return null;
         }
         public Category GetCategoryById(long id) {
             try
             {
-                return db.Categories.Find(id);
+                Category cate = db.Categories.Find(id);
+                return cate;
             }
-            catch {
-                return null;
-            }
+            catch { }
+            return null;
         }
         /// <summary>
         /// count new event by category(new event is event that be defined as event is created in recent 7 days)
@@ -1554,6 +1762,31 @@ namespace EventZone.Helpers
         {
             var numberFollower = (from a in db.CategoryFollows where a.CategoryID == categoryID select a).ToList().Count;
             return numberFollower;
+        }
+
+        public List<Video> GetVideoInLocation(List<Video> listVideo, Location location) {
+            List<Video> result = new List<Video>();
+            try {
+                List<EventPlace> listEventPlace = new List<EventPlace>();
+                foreach (var video in listVideo) {
+                    var eventPlace = (from a in db.EventPlaces where a.EventPlaceID == video.EventPlaceID select a).ToList()[0];
+                    if (eventPlace != null) {
+                        listEventPlace.Add(eventPlace);
+                    }
+                }
+               
+                foreach (var item in listEventPlace) {
+                    if (item.LocationID == location.LocationID) {
+                        foreach (var video in listVideo) {
+                            if (video.EventPlaceID == item.EventPlaceID) {
+                                result.Add(video);
+                            }
+                        } 
+                    }
+                }
+            }
+            catch { }
+            return result;
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿@using EventZone.Helpers
 @{
     var user = UserHelpers.GetCurrentUser(Session);
+    List<EventZone.Models.Category> category = CommonDataHelpers.Instance.GetAllCategory();
 }
 <!DOCTYPE html>
 <html>
@@ -14,7 +15,7 @@
     <!--Script-->
     <script src="~/Scripts/_Layout/modernizr-2.8.3.js"></script>
     <script src="~/Scripts/_Layout/jquery-2.1.4.min.js"></script>
-
+    <script src="~/Scripts/ErrorAlert.js"></script>
     <script src="~/Scripts/_Layout/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.ajaxform.js"></script>
     <script src="~/Scripts/_Layout/respond.js"></script>
@@ -23,6 +24,17 @@
     <script src="~/Scripts/_Layout/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.bootstrap.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        @if (TempData["errorTitle"] != null)
+        {
+            <text>
+        errorShow('@TempData["errorTitle"]', '@TempData["errorMessage"]')
+        </text>
+        }
+    })
+    </script>
     <script>
     //check cookie
     $(document).ready(function () {
@@ -31,35 +43,35 @@
                     string userName= Request.Cookies["userName"].Value;
                     string password= Request.Cookies["password"].Value;
                     if (UserDatabaseHelper.Instance.ValidateUser(userName, password)) {
-                        <text>
-        $.ajax({
-            url: "/Account/CheckCookie",
-            type: "POST",
-            dataType: "json",
-            success: function (data) {
-                if (data.state == 0) {
-                    alert(data.message)
-                } else if (data.state == 1) {
-                    /// window.location.reload();
-                }
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR);
-                console.log(textStatus);
-                console.log(errorThrown);
-            }
-        })
-
-        </text>
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                          <text>
+                            $.ajax({
+                                url: "/Account/CheckCookie",
+                                type: "POST",
+                                dataType: "json",
+                                success: function (data) {
+                                    if (data.state == 0) {
+                                        alert(data.message)
+                                    } else if (data.state == 1) {
+                                        /// window.location.reload();
+                                    }
+                                },
+                                error: function (jqXHR, textStatus, errorThrown) {
+                                    console.log(jqXHR);
+                                    console.log(textStatus);
+                                    console.log(errorThrown);
+                                }
+                            })
+                           </text>
                     }
                 }
             }
-
     })
-    </script>
+</script>
 
 </head>
 <body>
+    @Html.Partial("_Error")
 <!-- i_2_ đánh dấu CSS Index_2.html -->
 <!-- TOP MENU -->
 <nav class="navbar navbar-inverse navbar-fixed-top d_topmenu_bg">
@@ -90,13 +102,21 @@
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
                     <ul class="dropdown-menu" style="width: 200px;">
-                        @Html.Action("Index", "Categories")
+                        @if (category != null) { 
+                        foreach (var item in category)
+                            {
+                                <li>
+                                    <a href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
+                                </li>
+
+                            }
+                        }
                     </ul>
                 </li>
             </ul>
             @Html.Action("Search", "Search")
             <ul class="nav navbar-nav navbar-right" id="SignUl">
-                @if (Session["authenticated"] == null || Session["authenticated"].ToString().IsEmpty())
+                @if (user==null)
                 {
                     <li>
                         <button data-toggle="modal" data-target="#myModal2" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
@@ -144,18 +164,18 @@
                         </form>
                     </li>
                     <li>
-                        <img id="i_avatar" src="~/img/bg3.jpg">
+                        <img id="i_avatar" src="@EventDatabaseHelper.Instance.GetImageByID(@user.Avartar).ImageLink">
                         <div id="i_noti">
                             <p>8</p>x
                         </div>
                     </li>
                     <li class="dropdown">
                         <a href="#" class="has-submenu" aria-haspopup="true" aria-expanded="false">
-                            @Session["userName"] <span class="caret"></span></a>
+                            @user.UserName <span class="caret"></span></a>
                         <ul class="dropdown-menu sm-nowrap d_user_dropdown" role="group" aria-hidden="true" aria-expanded="false">
                             <li class="dropdown-header">Manage</li>
                             <li>
-                                <a href="index.html">My Profile</a>
+                                <a href="@Url.Action("ManageProfile", "User")">My Profile</a>
                             </li>
                             <li>
                                 <a href="#">My Events</a>
@@ -231,6 +251,7 @@
 </div>
 <script>
     function clearError() {
+        $("#error-modal").modal('hide');
         $(".field-validation-error").empty();
     }
 </script>

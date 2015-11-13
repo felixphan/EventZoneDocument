@@ -25,7 +25,7 @@
                         <div class="back">
                             <div class="d_ee_thumb_back">
                                 <button type="button" onclick="followEvent(this.value)" class="d_ee_follow" value="@item.EventID" >
-                                    <span id="follow-@item.EventID-status">
+                                    <span class="follow-@item.EventID-status">
                                     @if (user != null && UserDatabaseHelper.Instance.IsFollowingEvent(user.UserID,@item.EventID)) { 
                                         <text>Followed</text>
                                     }
@@ -35,8 +35,8 @@
                                     }                                         
                                     </span>
                                 </button>
-                                <button class="d_ee_share" onclick = "share(@item.EventID)">
-                                   Share
+                                <button class="d_ee_share" onclick="share(@item.EventID)">
+                                    Share
                                 </button>
                             </div>
                         </div>
@@ -86,9 +86,9 @@
      success: function (data) {
          if (data.success) {
              if (data.state == 0) {
-                 $("#follow-" + eventID + "-status").text("Follow");
+                 $(".follow-" + eventID + "-status").text("Follow");
              } else if (data.state == 1) {
-                 $("#follow-" + eventID + "-status").text("Followed");
+                 $(".follow-" + eventID + "-status").text("Followed");
              }
          } else {
              alert("ops.. somthing wrong!Please try again later...");
@@ -100,12 +100,13 @@
          console.log(errorThrown);
      }
  })
- </text>
+        </text>
         }
         else {
             <text>
- alert("please login to do this action!")
- </text>
+        var x=
+        errorShow('Require Signin','Please signin to follow this event')
+            </text>
         }
 
     }

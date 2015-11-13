@@ -1,9 +1,21 @@
 ﻿@using EventZone.Helpers
-@model IEnumerable<EventZone.Models.Category>
 @{
     var user = UserHelpers.GetCurrentUser(Session);
     ViewBag.Title = "Home Page";
+    List<EventZone.Models.Category> listCategory= CommonDataHelpers.Instance.GetAllCategory();
 }
+<script>
+    $(document).ready(function () {
+        @if (TempData["errorTitle"] != null)
+        {
+            <text>
+            errorShow('@TempData["errorTitle"]', '@TempData["errorMessage"]')
+            </text>
+        }
+    })
+        
+
+</script>
 
 <link href="~/Content/Home/Index.css" rel="stylesheet"/>
 <link href="~/Content/Home/bootstrap-social.css" rel="stylesheet" />
@@ -12,8 +24,8 @@
 
 <div class="full-screen-bg">
     <video class="fullscreen-bg__video" autoplay loop muted>
-        <source src="~/img/bgvideo1080-cut.mp4" type="video/mp4">
-        <source src="~/img/bgvideo1080-cut.webm" type="video/webm"/>
+        <source src="https://s3-us-west-2.amazonaws.com/eventzone/bgvideo1080-cut.mp4" type="video/mp4">
+        <source src="https://s3-us-west-2.amazonaws.com/eventzone/bgvideo1080-cut.webm" type="video/webm" />
     </video>
 </div>
 <div class="d_middle_category" style="margin-top: 200px">
@@ -28,12 +40,12 @@
             </a>
         </div>
         <div class="d_mc_category">
-            @if (Model != null)
+            @if (listCategory != null)
             {
-                foreach (var item in Model)
+                foreach (var item in listCategory)
                 {
                     <div class="btn-group d_btn_middle">
-                        <a type="button" class="btn btn-default" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
+                        <a type="button" class="btn btn-default" data-hover="dropdown" aria-haspopup="true" aria-expanded="false" href="/Search/CategorySearch?categoryid=@item.CategoryID">@item.CategoryName</a>
                         <ul class="dropdown-menu" style="color: black">
                             <div class="d_mc_cate_stat_body">
                                 <div class="d_stat_cover">
@@ -155,8 +167,10 @@
                }
                else {
                    <text>
-        alert("please login to do this action!")
-        </text>
+                    var x= 'Require Signin';
+                    var y='Please signin to follow this Category';
+                    errorShow(x, y);
+                    </text>
                }
 
     }

@@ -78,39 +78,52 @@
       <HintPath>..\packages\Google.Apis.1.9.3\lib\net40\Google.Apis.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Auth">
-      <HintPath>..\..\..\EventZone_VuPT\packages\Google.Apis.Auth.1.9.3\lib\net40\Google.Apis.Auth.dll</HintPath>
+      <HintPath>..\..\..\..\EventZoneWorkspace\Work In Progress\Codings\Source Code\EventZone_VuPT\packages\Google.Apis.Auth.1.9.3\lib\net40\Google.Apis.Auth.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Auth.Mvc4, Version=1.9.3.19381, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Apis.Auth.Mvc.1.9.3\lib\net40\Google.Apis.Auth.Mvc4.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.Auth.PlatformServices">
-      <HintPath>..\..\..\EventZone_VuPT\packages\Google.Apis.Auth.1.9.3\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
+      <HintPath>..\..\..\..\EventZoneWorkspace\Work In Progress\Codings\Source Code\EventZone_VuPT\packages\Google.Apis.Auth.1.9.3\lib\net40\Google.Apis.Auth.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="Google.Apis.Core">
       <HintPath>..\packages\Google.Apis.Core.1.9.3\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Drive.v2, Version=1.9.2.189, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Drive.v2.1.9.2.1890\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Drive.v2.dll</HintPath>
+    <Reference Include="Google.Apis.Drive.v2, Version=1.9.2.192, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Drive.v2.1.9.2.1920\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Drive.v2.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.Oauth2.v2, Version=1.9.2.96, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Oauth2.v2.1.9.2.960\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Oauth2.v2.dll</HintPath>
+    <Reference Include="Google.Apis.Oauth2.v2, Version=1.9.2.97, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Oauth2.v2.1.9.2.970\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.Oauth2.v2.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Google.Apis.PlatformServices">
       <HintPath>..\packages\Google.Apis.1.9.3\lib\net40\Google.Apis.PlatformServices.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Google.Apis.YouTube.v3">
-      <HintPath>..\packages\Google.Apis.YouTube.v3.1.9.2.1500\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.YouTube.v3.dll</HintPath>
+    <Reference Include="Google.Apis.YouTube.v3, Version=1.9.2.151, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.YouTube.v3.1.9.2.1510\lib\portable-net40+sl50+win+wpa81+wp80\Google.Apis.YouTube.v3.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.2.2.0\lib\net45\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb, Version=2.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.SystemWeb.2.2.0\lib\net45\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Owin">
       <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.1.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.Owin.Security">
       <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
@@ -216,6 +229,7 @@
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LookAroundController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
@@ -228,6 +242,7 @@
     <Compile Include="Helpers\MailHelpers.cs" />
     <Compile Include="Helpers\SingletonBase.cs" />
     <Compile Include="Helpers\UserHelpers.cs" />
+    <Compile Include="Hubs\ChatHub.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Action.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
@@ -251,6 +266,9 @@
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EventFollow.cs">
+      <DependentUpon>EventZone.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EventImage.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\EventPlace.cs">
@@ -294,9 +312,6 @@
     <Compile Include="Models\Share.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>EventZone.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\TrackingAction.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
@@ -308,6 +323,7 @@
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -315,7 +331,9 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Event\bootstrap-datetimepicker.min.css" />
+    <Content Include="Content\Event\bootstrap-social.css" />
     <Content Include="Content\Event\Create.css" />
+    <Content Include="Content\Event\font-awesome.min.css" />
     <Content Include="Content\Event\jquery.m.flip.css" />
     <Content Include="Content\Event\m.flip.css" />
     <Content Include="Content\Event\Details.css" />
@@ -324,8 +342,11 @@
     <Content Include="Content\Home\Index.css" />
     <Content Include="Content\Home\jquery.m.flip.css" />
     <Content Include="Content\Home\myCSS_index_2.css" />
+    <Content Include="Content\Event\myCSS_u_w_e.css" />
     <Content Include="Content\Search\SearchAdvance.css" />
     <Content Include="Content\Search\SearchResult.css" />
+    <Content Include="Content\User\myCSS_s_r.css" />
+    <Content Include="Content\User\myCSS_u_m_p.css" />
     <Content Include="Content\_Layout\Site.css" />
     <Content Include="Content\_Layout\_Layout.css" />
     <Content Include="favicon.ico" />
@@ -376,19 +397,30 @@
       <DependentUpon>EventZone.edmx</DependentUpon>
       <LastGenOutput>EventZone.cs</LastGenOutput>
     </Content>
+    <None Include="Properties\PublishProfiles\EventZone - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\EventZone - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\Account\ForgotAccount.js" />
+    <Content Include="Scripts\Account\SignUpGoogle.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="Scripts\ErrorAlert.js" />
     <Content Include="Scripts\Event\base.js" />
     <Content Include="Scripts\Event\bootstrap-datetimepicker.min.js" />
     <Content Include="Scripts\Event\bootstrap-wysiwyg.js" />
     <Content Include="Scripts\Event\Create.js" />
+    <Content Include="Scripts\Event\jquery-1.10.2.js" />
+    <Content Include="Scripts\Event\jquery-migrate-1.2.1.js" />
+    <Content Include="Scripts\Event\jquery-ui-1.10.4.custom.js" />
+    <Content Include="Scripts\Event\jquery-ui-1.10.4.custom.min.js" />
+    <Content Include="Scripts\Event\jquery-ui.js" />
     <Content Include="Scripts\Event\jquery.hotkeys.js" />
     <Content Include="Scripts\Event\jquery.m.flip.js" />
     <Content Include="Scripts\Event\jquery.transform.js" />
     <Content Include="Scripts\Event\moment-with-locales.min.js" />
     <Content Include="Scripts\Event\Details.js" />
+    <Content Include="Scripts\Event\moment.js" />
+    <Content Include="Scripts\Event\myJS_u_w_e.js" />
     <Content Include="Scripts\Event\perfect-scrollbar.jquery.js" />
     <Content Include="Scripts\Event\prettify-1.0.min.js" />
     <Content Include="Content\Home\bootstrap-social.css" />
@@ -402,6 +434,8 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <Content Include="Scripts\jquery-2.1.4.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.js" />
+    <Content Include="Scripts\jquery.signalR-2.2.0.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
@@ -413,6 +447,8 @@
     <Content Include="Scripts\Account\SignIn.js" />
     <Content Include="Scripts\Account\SignUp.js" />
     <Content Include="Scripts\shareFacebook.js" />
+    <Content Include="Scripts\User\ChangePass.js" />
+    <Content Include="Scripts\User\myJS_s_r.js" />
     <Content Include="Scripts\_Layout\jquery.smartmenus.bootstrap.js" />
     <Content Include="Scripts\_Layout\jquery.smartmenus.js" />
     <Content Include="Scripts\_Layout\jquery.unobtrusive-ajax.js" />
@@ -444,7 +480,7 @@
     </Content>
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\_Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
@@ -454,11 +490,9 @@
     <Content Include="Views\Search\SearchAdvance.cshtml" />
     <Content Include="Views\Search\SearchResult.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\SignIn.cshtml" />
     <Content Include="Views\Account\SignUp.cshtml" />
     <Content Include="Views\Categories\Index.cshtml" />
-    <Content Include="Views\Shared\_EventThumbnail.cshtml" />
     <Content Include="Views\Shared\_UserThumbnail.cshtml" />
     <Content Include="Views\Event\Create.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
@@ -473,12 +507,17 @@
     <Content Include="Views\User\Index.cshtml" />
     <Content Include="Views\User\ManageEvent.cshtml" />
     <Content Include="Views\User\ManageProfile.cshtml" />
-    <Content Include="Views\User\_EditProfilePartial.cshtml" />
     <Content Include="Views\User\_MyEventPartial.cshtml" />
-    <Content Include="Views\User\_UserInfoPartial.cshtml" />
     <Content Include="Views\Home\_ThumbEventHomepage.cshtml" />
     <Content Include="Views\Home\Policy.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
+    <Content Include="Views\User\_AvatarPartial.cshtml" />
+    <Content Include="Views\User\ChangePassword.cshtml" />
+    <Content Include="Views\User\UpdateInfo.cshtml" />
+    <Content Include="Views\User\_ManageFollow.cshtml" />
+    <Content Include="Views\Shared\_ThumbEvent.cshtml" />
+    <Content Include="Views\LookAround\LookAround.cshtml" />
+    <Content Include="Views\Shared\_ViewEventInPlace.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

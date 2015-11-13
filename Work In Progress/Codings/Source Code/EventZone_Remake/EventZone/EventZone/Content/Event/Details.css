@@ -175,6 +175,7 @@ iframe #i_frame_gallery{
 }
 .d_image_cover{
 	height: 100%;
+    overflow-y:auto;
 }
 .d_each_group {
 	overflow: hidden;

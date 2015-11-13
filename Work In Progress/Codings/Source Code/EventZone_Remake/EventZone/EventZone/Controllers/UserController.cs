@@ -8,6 +8,8 @@ using EventZone.Models;
 using System.Net;
 using System.Data.Entity;
 using System.Web.Helpers;
+using System.IO;
+using Amazon.S3;
 
 namespace EventZone.Controllers
 {
@@ -17,19 +19,42 @@ namespace EventZone.Controllers
         // GET: /User/
         public ActionResult ManageProfile()
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                        }
+                        else {
+                            UserHelpers.SetCurrentUser(Session, user);
+                        }
+                        
+                    }
+                }
+            }
             if (UserHelpers.GetCurrentUser(Session) == null)
             {
-                return RedirectToAction("RequireSignin", "Account");
+                TempData["errorTitle"] = "Require Signin";
+                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                return View();
             }
-            ViewData["UserSession"] = UserHelpers.GetCurrentUser(Session);
-            if (TempData["ManageProfileTask"] == null)
+            else if (TempData["errorTitle"] != null)
             {
-                TempData["ManageProfileTask"] = "UserInfo";
+                TempData["errorTitle"] = TempData["errorTitle"];
+                TempData["errorMessage"] = TempData["errorMessage"];
             }
-            if (TempData["editUserModel"] != null)
-            {
-                EditUserModel editUserModel = TempData["editUserModel"] as EditUserModel;
-                return View(editUserModel);
+            else {
+                TempData["errorTitle"] = null;
+                TempData["errorMessage"] = null;
             }
             return View();
         }
@@ -56,89 +81,11 @@ namespace EventZone.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-
             ViewData["UserSession"] = user;
             TempData["ManageProfileTask"] = "UserInfo";
             return RedirectToAction("ManageProfile");
         }
 
-        //
-        // GET: /User/Edit/5
-        public ActionResult EditProfile()
-        {
-            User userSession = UserHelpers.GetCurrentUser(Session);
-
-            if (userSession == null)
-            {
-                return RedirectToAction("RequireSignin", "Account");
-            }
-            EditUserModel editUserModel = new EditUserModel();
-            editUserModel.UserID = userSession.UserID;
-            editUserModel.Password = userSession.UserPassword;
-            editUserModel.UserDOB = userSession.UserDOB;
-            editUserModel.UserFirstName = userSession.UserFirstName;
-            editUserModel.UserLastName = userSession.UserLastName;
-            editUserModel.AvatarLink = userSession.AvatarLink;
-            editUserModel.Phone = userSession.Phone;
-            editUserModel.Place = userSession.Place;
-            editUserModel.IDCard = userSession.IDCard;
-            TempData["ManageProfileTask"] = "EditProfile";
-            TempData["editUserModel"] = editUserModel;
-            return RedirectToAction("ManageProfile");
-        }
-
-        //
-        // POST: /User/Edit/5
-        [HttpPost]
-        public ActionResult EditProfile(EditUserModel editUserModel)
-        {
-            try
-            {
-                // TODO: Add update logic here
-                if (ModelState.IsValid)
-                {
-
-                    User user = UserDatabaseHelper.Instance.GetUserByID(editUserModel.UserID);
-                    if (user == null)
-                    {
-                        ModelState.AddModelError("", "You are signed out!");
-                        return RedirectToAction("SignIn", "Account");
-                    }
-                    user.UserPassword = editUserModel.Password;
-                    user.UserFirstName = editUserModel.UserFirstName;
-                    user.UserLastName = editUserModel.UserLastName;
-                    user.UserDOB = editUserModel.UserDOB;
-                    user.IDCard = editUserModel.IDCard;
-                    user.Gender = editUserModel.Gender;
-                    user.AvatarLink = editUserModel.AvatarLink;
-                    user.Phone = editUserModel.Phone;
-                    user.Place = editUserModel.Place;
-
-                    if (UserDatabaseHelper.Instance.UpdateUser(user))
-                    {
-                        UserHelpers.SetCurrentUser(Session, user);
-                        TempData["ManageProfileTask"] = "UserInfo";
-                        return RedirectToAction("ManageProfile");
-                    }
-                    else
-                    {
-                        TempData["ManageProfileTask"] = "EditProfile";
-                        ModelState.AddModelError("", "Something went wrong! Please try again!");
-                        return RedirectToAction("EditProfile");
-                    }
-                }
-                TempData["ManageProfileTask"] = "EditProfile";
-                ModelState.AddModelError("", "Something went wrong! Please try again!");
-                return RedirectToAction("EditProfile");
-            }
-            catch (Exception ex)
-            {
-                TempData["ManageProfileTask"] = "EditProfile";
-                ModelState.AddModelError("", "Something went wrong! Please try again!");
-                return RedirectToAction("EditProfile");
-            }
-
-        }
         /// <summary>
         /// manage event
         /// </summary>
@@ -184,19 +131,7 @@ namespace EventZone.Controllers
             {
                 return RedirectToAction("ManageEvent");
             }
-
-            List<ViewThumbEventModel> listThumbEvent = new List<ViewThumbEventModel>();
-            foreach (var item in myEvent)
-            {
-                ViewThumbEventModel thumbEventModel = new ViewThumbEventModel();
-                thumbEventModel.eventId = item.EventID;
-                thumbEventModel.avatar = EventDatabaseHelper.Instance.GetImageByID(item.Avatar).ImageLink;
-                thumbEventModel.eventName = item.EventName;
-                thumbEventModel.StartTime = item.EventStartDate;
-                thumbEventModel.EndTime = item.EventEndDate;
-                thumbEventModel.location = EventDatabaseHelper.Instance.GetEventLocation(item.EventID);
-                listThumbEvent.Add(thumbEventModel);
-            }
+            List<ViewThumbEventModel> listThumbEvent = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(myEvent);
             ViewData["ListThumbEvent"] = listThumbEvent;
             ViewData["MyEvent"] = myEvent;
             return RedirectToAction("ManageEvent");
@@ -253,12 +188,13 @@ namespace EventZone.Controllers
         {
             User user = UserHelpers.GetCurrentUser(Session);
             Boolean success = false;
-            int followState = 0;
+            int followState = 0;// trang thai khong follow
             if (user != null)
             {
                 success = UserDatabaseHelper.Instance.FollowEvent(user.UserID, eventId);
                 if (UserDatabaseHelper.Instance.IsFollowingEvent(user.UserID, eventId))
                 {
+                    //trang thai tu unfollow sang follow
                     followState = 1;
                 }
             }
@@ -293,7 +229,203 @@ namespace EventZone.Controllers
            );
         }
 
+        public ActionResult UploadAvatar(HttpPostedFileBase file)
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                TempData["errorTitle"]="Require Signin";
+                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                Image photo = new Image();
+                try
+                {
+                    if (file != null)
+                    {
+                        string[] whiteListedExt = { ".jpg", ".gif", ".png", ".tiff" };
+                        Stream stream = file.InputStream;
+                        string extension = Path.GetExtension(file.FileName);
+                        if (whiteListedExt.Contains(extension))
+                        {
+                            string pic = Guid.NewGuid() + user.UserID.ToString() + extension;
+                            using (AmazonS3Client s3Client = new AmazonS3Client(Amazon.RegionEndpoint.USWest2))
+                                EventZoneUtility.FileUploadToS3("eventzone", pic, stream, true, s3Client);
+                            Image image = new Image();
+                            image.ImageLink = "https://s3-us-west-2.amazonaws.com/eventzone/" + pic;
+                            image.UserID = user.UserID;
+                            image.UploadDate = DateTime.Today;
+                            if (UserDatabaseHelper.Instance.UpdateAvatar(user, image))
+                            {
+                                TempData["errorTitle"] = null;
+                                TempData["errorMessage"] = null;
+                                return RedirectToAction("ManageProfile");
+                            }
+                            else
+                            {
+                                TempData["errorTitle"] = "Database Error";
+                                TempData["errorMessage"] = "Ops... Some error is ocurred while we save to database! Please try again later!";
+                                return RedirectToAction("ManageProfile");
+                            }
+
+                        }
+                        else
+                        {
+                            TempData["errorTitle"] = "Database Error";
+                            TempData["errorMessage"] = "Ops... Some error is ocurred while we save to database! Please try again later!";
+                            return RedirectToAction("ManageProfile");
+                        }
+                    }
+                    else
+                    {
+                        TempData["errorTitle"] = "Not select file";
+                        TempData["errorMessage"] = "It's look like you fogot select an image! Are you getting old?";
+                        return RedirectToAction("ManageProfile");
+                    }
+                }
+                catch
+                {
+                    TempData["errorTitle"] = "Unknow Error";
+                    TempData["errorMessage"] = "Oops..Something wrong is happened! Please try again later...";
+                    return RedirectToAction("ManageProfile");
+                }
+            }
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return PartialView();
+        }
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePasswordPost(ChangePasswordView chgpwd) {
+            if (!ModelState.IsValid)
+            return Json(new
+            {
+                state = 0,
+                message = "Invalid model"
+            });
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                TempData["errorTitle"] = "Require Signin";
+                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                return Json(new
+                {
+                    state = 0,
+                    message = "require signin"
+                });
+            }
+            else {
+                if (!UserDatabaseHelper.Instance.ValidateUser(user.UserName, chgpwd.OldPassword))
+                {
+                    TempData["errorTitle"] = "Wrong old password";
+                    TempData["errorMessage"] = "Ops.. It's look like you enter wrong old password!";
+                    return Json(new
+                    {
+                        state = 0,
+                        message = "wrong old passsword"
+                    });
+
+                }
+                else if (UserDatabaseHelper.Instance.ChangePassword(user, chgpwd.NewPassword))
+                {
+                    return Json(new
+                    {
+                        state = 1,
+                        message = ""
+                    });
+                }
+                else {
+                    return Json(new
+                    {
+                        state = 0,
+                        message = "something wrong!"
+                    });
+                }
+            }
+            
+        }
+        public ActionResult UpdateInfo() {
+            User userSession = UserHelpers.GetCurrentUser(Session);
+
+            if (userSession == null)
+            {
+                TempData["errorTitle"] = "Require Signin";
+                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                return RedirectToAction("Index", "Home");
+            }
+            EditUserModel editUserModel = new EditUserModel();
+            editUserModel.UserID = userSession.UserID;
+            editUserModel.UserDOB = userSession.UserDOB;
+            editUserModel.UserFirstName = userSession.UserFirstName;
+            editUserModel.UserLastName = userSession.UserLastName;
+            editUserModel.Phone = userSession.Phone;
+            editUserModel.Place = userSession.Place;
+            editUserModel.IDCard = userSession.IDCard;
+            return PartialView(editUserModel);
+        
+        }
+        public ActionResult UpdateInfoPost(EditUserModel editUserModel)
+        {
+            try
+            {
+                // TODO: Add update logic here
+                if (ModelState.IsValid)
+                {
+                    User user = UserHelpers.GetCurrentUser(Session);
+                    if (user == null)
+                    {
+                        ModelState.AddModelError("", "You are signed out!Please signin to do this!");
+                        return RedirectToAction("EditProfile");
+                    }
+                    user.UserFirstName = editUserModel.UserFirstName;
+                    user.UserLastName = editUserModel.UserLastName;
+                    user.UserDOB = editUserModel.UserDOB;
+                    user.IDCard = editUserModel.IDCard;
+                    user.Gender = editUserModel.Gender;
+                    user.Phone = editUserModel.Phone;
+                    user.Place = editUserModel.Place;
+
+                    if (UserDatabaseHelper.Instance.UpdateUser(user))
+                    {
+                        UserHelpers.SetCurrentUser(Session, user);
+                        return RedirectToAction("ManageProfile");
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("", "Something went wrong! Please try again!");
+                        return RedirectToAction("EditProfile");
+                    }
+                }
+                ModelState.AddModelError("", "Something went wrong! Please try again!");
+                return RedirectToAction("EditProfile");
+            }
+            catch (Exception ex)
+            {
+                TempData["ManageProfileTask"] = "EditProfile";
+                ModelState.AddModelError("", "Something went wrong! Please try again!");
+                return RedirectToAction("EditProfile");
+            }
+        }
+        public ActionResult ManageFollow() {
+            User user= UserHelpers.GetCurrentUser(Session);
+            if(user==null){
+                TempData["errorTitle"] = "Require Signin";
+                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                return PartialView("_ManageFollow");
+            }
+
+            List<ViewThumbEventModel> listviewThumb = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(UserDatabaseHelper.Instance.GetFollowingEvent(user.UserID));
+            TempData["ListEventThumb"] = listviewThumb;
+            TempData["ListUserThumb"] = null;
+            return PartialView("_ManageFollow");
+        }
 
     }
+   
 }
 

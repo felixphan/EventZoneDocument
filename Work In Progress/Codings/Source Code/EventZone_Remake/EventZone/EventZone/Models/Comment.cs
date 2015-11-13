@@ -18,6 +18,7 @@ namespace EventZone.Models
         public long EventID { get; set; }
         public long UserID { get; set; }
         public string CommentContent { get; set; }
+        public Nullable<System.DateTime> DateIssue { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual User User { get; set; }

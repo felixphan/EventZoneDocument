@@ -6,6 +6,7 @@ namespace EventZone.Models
 {
     public class CreateEventModel
     {
+        public string AvatarSource { get; set; }
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 5)]
         [Display(Name = "Title")]
@@ -18,11 +19,11 @@ namespace EventZone.Models
         public DateTime EndTime { get; set; }
         [Required]
         [Display(Name = "Location")]
-        public string LocationName { get; set; }
-        public string Longitude { get; set; }
+        public List<Location> Location { get; set; }
         public string Quality { get; set; }
         public int PrivacyYoutube { get; set; }
-        public string Lattitude { get; set; }
+        public DateTime StartTimeYoutube { get; set; }
+        public DateTime EndTimeYoutube { get; set; }
         public string LocationLiveName { get; set; }
         [Required]
         [Display(Name = "Privacy")]
@@ -33,18 +34,15 @@ namespace EventZone.Models
         [Required]
         [Display(Name = "Category")]
         public long CategoryID { get; set; }
-        public bool RequestUrgent { get; set; }
         public string Description { get; set; }
     }
 
     public class ViewThumbEventModel
     {
-        public long eventId { get; set; }
-        public string avatar { get; set; }
-        public long numberView { get; set; }
-        public string eventName { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        public Event evt { get; set; }
+        public long numberLike { get; set; }
+        public long numberDislike { get; set; }
+        public long numberFollow { get; set; }
         public List<Location> location { get; set; }
     }
 
@@ -53,6 +51,7 @@ namespace EventZone.Models
         public long eventId { get; set; }
         public string eventAvatar { get; set; }
         public string eventName { get; set; }
+        public long numberView { get; set; }
         public int NumberLike { get; set; }
         public int NumberDisLike { get; set; }
         public LikeDislike FindLike { get; set; }
@@ -60,8 +59,8 @@ namespace EventZone.Models
         public string eventDescription { get; set; }
         public bool isFollowing { get; set; }
         public bool isOwningEvent { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
         public List<Location> eventLocation { get; set; }
         public List<Image> eventImage { get; set; }
         public List<Video> eventVideo { get; set; }

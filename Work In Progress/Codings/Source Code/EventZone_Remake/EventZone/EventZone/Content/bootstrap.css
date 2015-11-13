@@ -1587,6 +1587,7 @@ pre code {
   padding-left: 15px;
   margin-right: auto;
   margin-left: auto;
+  padding-top: 20px;
 }
 @media (min-width: 768px) {
   .container {
@@ -5914,7 +5915,7 @@ button.close {
 }
 .modal {
   position: fixed;
-  top: 0;
+  top: 20px;
   right: 0;
   bottom: 0;
   left: 0;

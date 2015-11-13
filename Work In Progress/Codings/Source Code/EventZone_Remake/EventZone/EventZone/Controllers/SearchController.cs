@@ -12,16 +12,81 @@ namespace EventZone.Controllers
     {
         public ActionResult Search()
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                        }
+                        else {
+                            UserHelpers.SetCurrentUser(Session, user);
+                        }
+                       
+                    }
+                }
+            }
             return PartialView();
         }
 
         public ActionResult SearchAdvance()
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                        }
+                        else {
+                            UserHelpers.SetCurrentUser(Session, user);
+                        }
+                        
+                    }
+                }
+            }
             return PartialView(new AdvanceSearch());
         }
 
         public ActionResult CategorySearch(long categoryid)
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
             List<Event> listEvent = new List<Event>();
             List<Event> liveEvent= new List<Event>();
             listEvent = EventDatabaseHelper.Instance.SearchEventByCategoryID(categoryid);
@@ -38,6 +103,27 @@ namespace EventZone.Controllers
         [HttpPost]
         public ActionResult BasicSearch(BasicSearch model)
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
             string keyword;
             if (model.Keyword.IsNullOrWhiteSpace())
             {
@@ -54,14 +140,34 @@ namespace EventZone.Controllers
             TempData["listLiveStream"] =
                 EventDatabaseHelper.Instance.GetThumbEventListByListEvent(
                     EventDatabaseHelper.Instance.SearchLiveStreamByKeyword(keyword));
-            TempData["listUser"] = UserDatabaseHelper.Instance.SearchUserByKeyword(keyword);
+            TempData["listUser"] = UserDatabaseHelper.Instance.GetUserThumbByList(UserDatabaseHelper.Instance.SearchUserByKeyword(keyword));
             TempData["task"] = "Search";
             return View("SearchResult");
         }
 
-        // GET: Search/Details/5
         public ActionResult AdvanceSearch(AdvanceSearch model, int datepick)
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
             List<Event> listEvent = new List<Event>();
             AdvanceSearch myModel = model;
             List<Event> listLiveStream = new List<Event>();

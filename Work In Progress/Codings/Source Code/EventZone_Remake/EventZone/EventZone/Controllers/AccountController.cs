@@ -16,37 +16,17 @@ namespace EventZone.Controllers
     {
         private readonly EventZoneEntities db = new EventZoneEntities();
        
-
-        private Uri RedirectUriGoogle
-        {
-
-            get
-            {
-                var uriBuilder = new UriBuilder(Request.Url)
-                {
-                    Query = null,
-                    Fragment = null,
-                    Path = Url.Action("GoogleCallback")
-                };
-                return uriBuilder.Uri;
-            }
-        }
-
         // GET: Account
         public ActionResult SignIn()
         {
-            //if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null) {
-            //    string username = Request.Cookies["userName"].Value;
-            //    string password = Request.Cookies["password"].Value;
-            //    if(UserDatabaseHelper.Instance.ValidateUser(username,password)){
-            //        var user = UserDatabaseHelper.Instance.GetUserByUserName(username);
-            //        Session["authenticated"] = true;
-            //        Session["userName"] = user.UserName;
-            //        Session["userAva"] = user.AvatarLink;
-            //        Session["UserId"] = user.UserID;
-            //        UserHelpers.SetCurrentUser(Session, user);
-            //    }
-            //}
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user != null) {
+                TempData["errorTittle"] = "Bad request";
+                TempData["errorMessage"] = "You are already signed in the system";
+                return RedirectToAction("Index", "Home");
+            }
+            TempData["errorTitle"] = null;
+            TempData["errorMessage"] = null;
             return PartialView();
         }
         [HttpPost]
@@ -85,10 +65,6 @@ namespace EventZone.Controllers
                     Response.Cookies.Add(password);
                 }
                 var user = UserDatabaseHelper.Instance.GetUserByUserName(model.UserName);
-                Session["authenticated"] = true;
-                Session["userName"] = user.UserName;
-                Session["userAva"] = user.AvatarLink;
-                Session["UserId"] = user.UserID;
                 UserHelpers.SetCurrentUser(Session, user);
             }
             else
@@ -114,6 +90,15 @@ namespace EventZone.Controllers
         // GET: Account/Details/5
         public ActionResult SignUp()
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user != null)
+            {
+                TempData["errorTittle"] = "Bad request";
+                TempData["errorMessage"] = "You are already signed in the system";
+                return RedirectToAction("Index", "Home");
+            }
+            TempData["errorTitle"] = null;
+            TempData["errorMessage"] = null;
             return PartialView();
         }
 
@@ -158,20 +143,15 @@ namespace EventZone.Controllers
                     user.UserLastName = model.UserLastName;
                 }
                 user.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
-                if (string.IsNullOrWhiteSpace(user.AvatarLink)) //set default avatar
+                if (user.Avartar==null) //set default avatar
                 {
-                    user.AvatarLink = "/img/default-avatar.jpg";
+                    user.Avartar = 3;
                 }
                 user.UserRoles = EventZoneConstants.IsUser; //set UserRole
                 // insert user to Database
                 db.Users.Add(user);
                 db.SaveChanges();
-                Session["registerMessageError"] = "";
-                //set all session for 
-                Session["authenticated"] = true;
-                Session["userName"] = user.UserName;
-                Session["userAva"] = user.AvatarLink;
-                Session["UserId"] = user.UserID;
+              
                 UserHelpers.SetCurrentUser(Session, user);
 
                 //Create Channel
@@ -194,6 +174,20 @@ namespace EventZone.Controllers
             });
         }
 
+        private Uri RedirectUriGoogle
+        {
+
+            get
+            {
+                var uriBuilder = new UriBuilder(Request.Url)
+                {
+                    Query = null,
+                    Fragment = null,
+                    Path = Url.Action("GoogleCallback")
+                };
+                return uriBuilder.Uri;
+            }
+        }
         public ActionResult AuthenGoogle()
         {
             GoogleConnect.ClientId = "753316382181-58p94cof0aum06tigijhq3e1vlkqlgi8.apps.googleusercontent.com";
@@ -221,29 +215,28 @@ namespace EventZone.Controllers
                             email = e.Value;
                         }
                     }
-                    string avatar = google.image.url.Value;
-                    avatar = avatar.Substring(0, avatar.LastIndexOf("?sz=") + 4) + "200";
-                    var addressList = new JArray();
-                    if (google.placesLived != null)
-                    {
-                        addressList = new JArray(google.placesLived);
-                    }
-                    var address = "";
-                    foreach (var x in addressList)
-                    {
-                        var a = x.ToObject<Address>();
-                        if (a.Primary)
-                        {
-                            address = a.Value;
-                        }
-                    }
+                    
                     // select from DB
                     var newUser = UserDatabaseHelper.Instance.GetUserByEmail(email);
-
-
                     //if this is first time login
                     if (newUser == null)
                     {
+                        string avatar = google.image.url.Value;
+                        avatar = avatar.Substring(0, avatar.LastIndexOf("?sz=") + 4) + "200";
+                        var addressList = new JArray();
+                        if (google.placesLived != null)
+                        {
+                            addressList = new JArray(google.placesLived);
+                        }
+                        var address = "";
+                        foreach (var x in addressList)
+                        {
+                            var a = x.ToObject<Address>();
+                            if (a.Primary)
+                            {
+                                address = a.Value;
+                            }
+                        }
                         var ggModel = new GoogleAccountModel
                         {
                             Email = email,
@@ -258,80 +251,97 @@ namespace EventZone.Controllers
                     {
                         // user is Locked
                         GoogleConnect.Clear();
-                        ModelState.AddModelError("",
-                            "Your account has been locked! Please contact us follow email: EventZone.system@gmail.com");
-                        return RedirectToAction("SignIn", "Account");
+                        TempData["errorTitle"] = "Locked user";
+                        TempData["errorMessage"] = "Ops...Your account is locked! Please contact with our support!";
+                        return RedirectToAction("Index", "Home");
                     }
-
-                    // Set the auth cookie
-                    Session["authenticated"] = true;
-                    Session["userName"] = newUser.UserName;
-                    Session["userAva"] = newUser.AvatarLink;
-                    Session["UserId"] = newUser.UserID;
-                    Session["loginMessageError"] = "";
+                    TempData["errorTitle"] = null;
+                    TempData["errorMessage"] = null;
                     UserHelpers.SetCurrentUser(Session, newUser);
+                    return RedirectToAction("Index", "Home");
                 }
-
-                return RedirectToAction("Index", "Home");
+                else if (!string.IsNullOrEmpty(Request.QueryString["error"]))
+                {
+                    TempData["errorTitle"] = "Signin Error";
+                    TempData["errorMessage"] = Request.QueryString["error"].ToString();
+                    return RedirectToAction("Index", "Home");
+                }
+                else {
+                    UserHelpers.SetCurrentUser(Session, null);
+                    return RedirectToAction("Index", "Home");
+                }
+               
             }
             catch
             {
-                return View("ErrorLoginGoogle");
+                TempData["errorTitle"] = "Social Signin Error";
+                TempData["errorMessage"] = "Failed to connect with Google! Check your connection please...";
+                UserHelpers.SetCurrentUser(Session, null);
+                return RedirectToAction("Index", "Home");
             }
         }
 
         public ActionResult ConfirmRegisterGoogle(GoogleAccountModel model)
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user != null)
+            {
+                TempData["errorTittle"] = "Bad request";
+                TempData["errorMessage"] = "You are already signed in the system";
+                return RedirectToAction("Index", "Home");
+            }
+            TempData["errorTitle"] = null;
+            TempData["errorMessage"] = null;
             return View(model);
         }
 
         public ActionResult ExternalLoginConfirmation(GoogleAccountModel model)
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user != null) {
+                TempData["errorTittle"] = "Bad request";
+                TempData["errorMessage"] = "You are already signed in the system";
+                return RedirectToAction("Index", "Home");
+            }
             if (ModelState.IsValid)
             {
-                var user = new User();
-                var listUser = new List<User>();
-                listUser = db.Users.ToList();
-                var newUser = listUser.FindAll(a => a.UserName.Equals(model.UserName));
-                if (newUser.Count != 0)
+                User newUser = UserDatabaseHelper.Instance.GetUserByUserName(model.UserName);
+                if (newUser!= null)
                 {
                     ModelState.AddModelError("", "UserName is already exist. Please choose another.");
+                    TempData["errorTitle"] = null;
+                    TempData["errorMessage"] = null;
                     return View("ConfirmRegisterGoogle", model);
                 }
-                user.UserEmail = model.Email;
-                user.UserName = model.UserName;
-                user.UserPassword = model.Password;
-                user.UserDOB = model.UserDOB;
-                user.Place = model.Place;
-                user.UserFirstName = model.UserFirstName;
-                user.DataJoin = DateTime.Today;
+                newUser = new User();
+                newUser.UserEmail = model.Email;
+                newUser.UserName = model.UserName;
+                newUser.UserPassword = model.Password;
+                newUser.UserDOB = model.UserDOB;
+                newUser.Place = model.Place;
+                newUser.UserFirstName = model.UserFirstName;
+                newUser.DataJoin = DateTime.Today;
                 if (model.UserLastName != null && model.UserLastName != "")
                 {
-                    user.UserLastName = model.UserLastName;
+                    newUser.UserLastName = model.UserLastName;
                 }
-                user.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
-                if (string.IsNullOrWhiteSpace(user.AvatarLink)) //set default avatar
-                {
-                    user.AvatarLink = "/img/default-avatar.jpg";
-                }
-                user.UserRoles = EventZoneConstants.IsUser; //set UserRole
+                newUser.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
+                newUser.Avartar = 3;
+                newUser.UserRoles = EventZoneConstants.IsUser; //set UserRole
                 // insert user to Database
-                db.Users.Add(user);
+                db.Users.Add(newUser);
                 db.SaveChanges();
-                Session["registerMessageError"] = "";
-                //set all session for 
-                Session["authenticated"] = true;
-                Session["userName"] = user.UserName;
-                Session["userAva"] = user.AvatarLink;
-                Session["UserId"] = user.UserID;
-                UserHelpers.SetCurrentUser(Session, user);
+                UserHelpers.SetCurrentUser(Session, newUser);
                 //Send email confirm
-                MailHelpers.Instance.SendMailWelcome(user.UserEmail, user.UserFirstName, user.UserLastName);
-                return RedirectToAction("RegisterSuccess", "Account");
+                MailHelpers.Instance.SendMailWelcome(newUser.UserEmail, newUser.UserFirstName, newUser.UserLastName);
+                TempData["errorTitle"] = "Sucessfull SignUp";
+                TempData["errorMessage"] = "Thank you for signing up in EventZone! We sent you a welcome message! Hope you have more fun and comfortable by joining with us";
+                return RedirectToAction("Index", "Home");
             }
-
+            TempData["errorTitle"] = "Invald input";
+            TempData["errorMessage"] = "Invalid input! Please try again";
             // If we got this far, something failed, redisplay form
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction("ExternalLoginConfirmation", "Account",model);
         }
 
         public ActionResult Signout()
@@ -358,16 +368,11 @@ namespace EventZone.Controllers
                 password.Expires = DateTime.Now.AddDays(-1);
                 Request.Cookies.Add(password);
             }
-            Session["authenticated"] = "";
-            Session["userName"] = "";
-            Session["userAva"] = "";
-            Session["UserId"] = "";
-            Session["loginMessageError"] = "";
             UserHelpers.SetCurrentUser(Session, null);
-
+            TempData["errorTitle"] = null;
+            TempData["errorMessage"] = null;
             return RedirectToAction("Index", "Home");
         }
-
         private class Email
         {
             public string Value { get; set; }
@@ -382,6 +387,8 @@ namespace EventZone.Controllers
 
         public ActionResult ForgotPassword()
         {
+            TempData["errorTitle"] = null;
+            TempData["errorMessage"] = null;
             return PartialView();
         }
 
@@ -415,7 +422,6 @@ namespace EventZone.Controllers
                         message = "Something Wrong! Please Try Again Later"
                     });
                 }
-
                 return Json(new
                 {
                     state = 0,
@@ -428,12 +434,9 @@ namespace EventZone.Controllers
                 message = "Something Wrong! Please Try Again Later"
             });
         }
-        public ActionResult RequireSignin()
+        public ActionResult CheckCookie(string url)
         {
-            return View();
-        }
-        public ActionResult CheckCookie()
-        {
+            
             if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
             {
                 string userName = Request.Cookies["userName"].Value;
@@ -449,10 +452,6 @@ namespace EventZone.Controllers
                             message = "Your account have been locked! Please contact with admin to active it!"
                         });
                     }
-                    Session["authenticated"] = true;
-                    Session["userName"] = user.UserName;
-                    Session["userAva"] = user.AvatarLink;
-                    Session["UserId"] = user.UserID;
                     UserHelpers.SetCurrentUser(Session, user);
                     return Json(new
                     {
@@ -475,5 +474,7 @@ namespace EventZone.Controllers
                 message = "Cookie is empty!"
             });
         }
+        
+
     }
 }

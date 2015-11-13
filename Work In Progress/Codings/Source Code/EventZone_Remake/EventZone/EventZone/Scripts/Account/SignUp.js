@@ -21,10 +21,6 @@ function OnSignUpRequestSucceeded(data) {
         $("#signup-Password").val("");
         $("#signup-ConfirmPassword").val("");
         location.reload();
-        $("#myModal2").modal("toggle");
-        $(".modal-backdrop").remove();
-        $("#SignUl").load(location.href + " #SignUl");
-        alert("Thank for signing up for our system! We sent you an welcome email! Return home to start looking for events.");
     } else {
         $("#signup-Password").val("");
         $("#signup-ConfirmPassword").val("");

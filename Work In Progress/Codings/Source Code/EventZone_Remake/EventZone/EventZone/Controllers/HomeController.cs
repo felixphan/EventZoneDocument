@@ -11,28 +11,137 @@ namespace EventZone.Controllers
         private readonly EventZoneEntities db = new EventZoneEntities();
         public ActionResult Index()
         {
-            return View(db.Categories.ToList());
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
+            return View();
         }
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
 
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
+           
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
 
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
             return View();
         }
         public ActionResult Policy()
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
             return View();
         }
         public ActionResult Help()
         {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
             return View();
         }
         /// <summary>
@@ -45,30 +154,53 @@ namespace EventZone.Controllers
             listEvent= EventDatabaseHelper.Instance.GetListNewEvent();
             listEvent = EventDatabaseHelper.Instance.RemoveLockedEventInList(listEvent);
             User user= UserHelpers.GetCurrentUser(Session);
+            if (user == null) {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                            listThumb = EventDatabaseHelper.Instance.GetThumbEventHomepage(listEvent);
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                }
+            }
             if (user != null) {
                 listEvent = EventDatabaseHelper.Instance.GetListNewEventByUser(user.UserID);
             }
             listThumb = EventDatabaseHelper.Instance.GetThumbEventHomepage(listEvent);
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
             return PartialView("_ThumbEventHomepage", listThumb);
         }
         public ActionResult HotEvent()
         {
             List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();
             List<Event> listEvent = new List<Event>();
-
             listEvent = EventDatabaseHelper.Instance.GetHotEvent();
             listEvent = EventDatabaseHelper.Instance.RemoveLockedEventInList(listEvent);
             listThumb = EventDatabaseHelper.Instance.GetThumbEventHomepage(listEvent);
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
             return PartialView("_ThumbEventHomepage",listThumb);
         }
         public ActionResult LiveEvent()
         {
             List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();
             List<Event> listEvent = new List<Event>();
-
             listEvent = EventDatabaseHelper.Instance.SearchLiveStreamByKeyword("");
             listEvent = EventDatabaseHelper.Instance.RemoveLockedEventInList(listEvent);
             listThumb = EventDatabaseHelper.Instance.GetThumbEventHomepage(listEvent);
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
             return PartialView("_ThumbEventHomepage");
         }
     }
