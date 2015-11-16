@@ -1,0 +1,103 @@
+/**************************************************** thêm CSS ***/
+
+/**************************************************** Sửa CSS BOOTSTRAP ***/
+body{
+	background-color: white;
+	color: grey;
+	font-family: segoe ui;
+	min-width: 400px;
+}
+.container-fluid{
+	padding: 0;
+}
+#myTab {
+	padding-left: 10px;
+	padding-top: 5px;
+	background-color: rgba(0, 0, 0, .1);
+}
+.tab-content{
+	padding: 10px 5px 0 5px;
+	background-color: white;
+	border-radius: 4px;
+}
+.d_tab-content_cover{
+	overflow: auto;
+    zheight: 441px;
+}
+.panel-body{
+	padding: none;
+	padding-top: 10px;
+}
+.panel-default {
+	border: none;
+	border-bottom: lightgrey;
+}
+.panel-default > .panel-heading {
+    color: #AFAFAF;
+    background-color: rgba(0,0,0, 0);
+}
+.panel-title{
+	color: gray;
+}
+.form-group{
+	margin-bottom: 0px;
+}
+.form-control{
+	width: auto;
+}
+.container{
+	padding: 0;
+}
+.well{
+	margin-top: 5px;
+	margin-bottom: 0;
+}
+/**************************************************** Khung chức năng TỔNG QUÁT ***/
+.d_ume_body{
+	font-family: segoe ui;
+	overflow-y: scroll;
+	margin-top: 80px;
+}
+.d_left_cover,
+.d_right_cover{
+	margin-bottom: 10px;
+	border: 1px lightgrey solid;
+	padding: 0;
+	border-radius: 4px;
+	height: 550px;
+}
+.d_right_cover{
+	border: 0;
+}
+.d_top_stat{
+	height: 550px;
+	border: 1px solid lightgrey;
+	border-radius: 4px;
+	width: 98%;
+	float: right;
+}
+/**************************************************** Event Info Tab **/
+
+/**************************************************** Event Info tab - Thumb & info */
+
+/**************************************************** Event Info tab - Description */
+
+/**************************************************** Image tab **/
+
+/**************************************************** Video tab **/
+
+/**************************************************** Watch Video tab **/
+
+/**************************************************** Khung chức năng PHẢI ***/
+
+/**************************************************** Map tab **/
+
+/**************************************************** Comment tab **/
+
+/**************************************************** Comment tab > Chạy ngang comment ***/
+
+/**************************************************** Comment tab > bổ sung load sau ***/
+
+/**************************************************** Report Tab ***/
+
+/**************************************************** Decorate CSS ***/

@@ -27,11 +27,12 @@ video{
 	height: auto;
 	position: fixed;
 	z-index: -1;
+	margin-top: -50px;
 }
 
 /*********************************************** Top Menu ***/
 .d_navbar{
-	background-color: rgba(100, 200, 255, .8);
+	background-color: rgba(100, 200, 255, .4);
 	color: #fff;
 	border: 0px;
 }
@@ -108,6 +109,9 @@ li{
 		height: 50px;
 	}
 }
+.d_btn_middle .dropdown-menu{
+	left: -190px;
+}
 .dropdown-header{
 	margin-left: -10px;
 	color: gray;
@@ -123,7 +127,7 @@ li{
 
 /*********************************************** MIDDLE Category ***/
 .d_md_body{
-	margin-top: 200px;
+	zmargin-top: 200px;
 	font-family: segoe ui;
 	color: #fff;
 	background-color: transparent;
@@ -134,7 +138,8 @@ li{
 	text-align: center;
 }
 .d_mc_text_1{
-	font-size: 60px;
+    margin-top: 110px;
+    font-size: 60px;
 }
 .d_mc_text_2{
 	font-size: 30px;
@@ -144,12 +149,16 @@ li{
 .d_mc_text_2 a:hover{
 	color: #fff
 }
+.d_mc_text_2 p{
+	font-size: 20px;
+	margin-bottom: 30px;	
+}
 .d_mc_category{
 	margin-top: 50px;
 	margin-bottom: 250px;
 }
 .d_mc_category button{
-	color: #fff;
+	color: whitesmoke;
 	border: 0px;
 	border-radius: 5px;
 	margin-bottom: 10px;
@@ -158,8 +167,16 @@ li{
 }
 .d_mc_category button:hover{
 	color: #fff;
-	background-color: rgba(255,255,255,.5);
+	background-color: rgba(255,255,255,.4);
 }
+.d_follow_cate button,
+.d_follow_cate button:hover{
+	color: black;
+}
+.d_follow_cate button{
+	border: 1px grey solid;
+}
+
 /*********************************************** Middle Category > Statistic for each button ***/
 .d_stat_cover{
 	zborder: 1px red solid;
@@ -167,6 +184,7 @@ li{
 	height: 100px;
 	width: 500px;
 	display: flex;
+	color: gray;
 }
 .d_stat_new_event,
 .d_stat_new_follower,
@@ -180,6 +198,7 @@ li{
 }
 .d_follow_cate{
 	border: 0px;
+	color: black;
 }
 .d_data,
 .d_data_name{
@@ -198,9 +217,6 @@ li{
 }
 .d_follow_cate .btn{
 	margin-top: 20%;
-}
-.dropdown-menu iframe{
-	width: 500px;
 }
 /*********************************************** d_3_column ***/
 .d_cc_body{

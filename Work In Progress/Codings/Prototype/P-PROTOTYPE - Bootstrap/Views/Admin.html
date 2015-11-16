@@ -5,6 +5,10 @@
     <!-- Plugin Bootstrap -->
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
 
+    <!-- BOOTSTRAP social -->
+    <link rel="stylesheet" type="text/css" href="../Content/bootstrap-social.css">
+    <link rel="stylesheet" type="text/css" href="../Content/font-awesome.min.css">
+
     <!-- myCSS -->
     <link rel="stylesheet" type="text/css" href="../Content/myCSS_admin.css">
 </head>
@@ -28,7 +32,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-        <li class="active"><a href="#stat-r" data-toggle="tab">Statistic</a></li>
+          <li class="active"><a href="#stat-r" data-toggle="tab">Statistic</a></li>
           <li class=""><a href="#event-r" data-toggle="tab">Manage Event</a></li>
           <li class=""><a href="#channel-r" data-toggle="tab">Manage User</a></li>
           <li class=""><a href="#user-r" data-toggle="tab">Reported Event (10)</a></li>
@@ -58,7 +62,7 @@
     </div><!-- /.container-fluid -->
   </nav>
 
-  <div class="d_all_result b">
+  <div class="d_all_result">
     <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8 d_result_container">
       <!-- Tab panes -->
       <div class="tab-content">
@@ -66,27 +70,61 @@
         <div class="">
           
         </div>
-        <div class="tab-pane active b" id="event-r">
-          <div class="d_me_btn_group b">
-            <button class="btn btn-primary">User last filter</button>
-            <button class="btn btn-primary">Recent</button>
-            <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Filter
-            </button>
-            <div class="collapse" id="collapseExample">
-              <div class="well">
-                Advanced Search here
+        <div class="tab-pane active" id="stat-r">
+          Statistic
+        </div>
+        <div class="tab-pane" id="event-r">
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
+              <!-- e_ để đánh dấu CSS EVENT -->
+              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
+                <img src="../img/bg1.jpg">
+                <div class="d_txt_live">
+                  Live
+                </div>
+              </div>
+              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
+                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
+                  Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
+                </div>
+                <div class="btn-group d_e_btn_more">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                  </button>
+                  <ul class="dropdown-menu d_e_drop_menu">
+                    <li><a href="#">Like</a></li>
+                    <li><a href="#">Dislike</a></li>
+                    <li><a href="#">Share Fb</a></li>
+                  </ul>
+                </div>
+                <div class="d_e_cate">
+                  <i class="fa fa-list-ul"></i>
+                  <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
+                </div>
+                <div class="d_e_follower">
+                  <i class="fa fa-star"></i>
+                  <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+                </div>
+                <div class="d_e_date">
+                  <i class="fa fa-calendar-check-o"></i>
+                  <div class="d_fill_in">Date: 14/11/2015</div>
+                </div>
+                <div class="d_e_time">
+                  <i class="fa fa-clock-o"></i>
+                  <div class="d_fill_in">Time: 00:00 - 11:11</div>
+                </div>
+                <div class="d_e_user">
+                  <i class="fa fa-user"></i>
+                  <div class="d_fill_in">by: User X</div>
+                </div>
+                <div class="d_e_location">
+                  <i class="fa fa-map-o"></i>
+                  <div class="d_fill_in">Location: Hai Bà Trưng, Hà Nội</div><a> (+3)</a>
+                </div>
+                <div class="d_e_btn_desciption">
+                  <i class="fa fa-file-text"></i>
+                  <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_me_container">
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_event.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_event.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_event.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-          </div>
         </div>
         <!-- CHANNEL Result: mu_ đánh dấu CSS MANAGE USER -->
         <div class="tab-pane b" id="channel-r">
@@ -141,7 +179,7 @@
       </div>
     </div>
 
-    <div class="col-xs-12 col-sm-4 col-md-4 col-lg-4 d_recommend_container">
+    <div class="d_recommend_container">
       Recommended Events
     </div>
   </div>

@@ -222,7 +222,7 @@ iframe #i_frame_gallery{
 /**************************************************** Image tab **/
 #i_image_tab{
 	border: 0px solid white;
-    height: 435px;
+    height: 490px;
     overflow-y: auto;
 }
 .d_image_cover{
@@ -250,7 +250,7 @@ iframe #i_frame_gallery{
 }
 .d_video_cover{
 	width: 100%;
-    height: 365px;
+    height: 415px;
     overflow-y: overlay;
     position: relative;
 }
@@ -364,6 +364,8 @@ iframe #i_frame_gallery{
 	padding-left: 6px;
 	padding-right: 6px;
 	margin-top: 5px;
+	float: left;
+    width: 100%;
 }
 /**************************************************** Comment tab > bổ sung load sau ***/
 .d_ee_ava_user{

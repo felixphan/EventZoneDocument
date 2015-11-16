@@ -4,10 +4,115 @@
 .navbar-inverse {
     border-radius: 0;
 }
-
+/****************************************************** Khung hiện Event TRÁI: CSS chung ***/
+.d_sum_result strong{
+	font-size: 17px;
+}
+.d_result_container{
+	padding: 0;
+    overflow-y: auto;
+    height: 500px;
+}
+.d_e_result_container, .d_c_result_container, .d_u_result_container, .d_l_result_container {
+	padding-right: 5px;
+	padding-left: 5px;
+}
+.d_e_thumb,
+.d_u_thumb,
+.d_c_thumb{
+	padding: 0;
+}
+.d_e_thumb img,
+.d_u_thumb img,
+.d_c_thumb img{
+	width: 100%;
+	height: auto;
+}
+.d_u_result_container{
+	width: 100%;
+	padding: 0;
+}
+.d_e_title,
+.d_u_title,
+.d_c_title{
+	font-weight: bold;
+	padding-right: 0;
+}
+.d_e_info_cover,
+.d_u_info_cover,
+.d_c_info_cover{
+	padding: 0;
+}
+.d_c_result_container,
+.d_e_result_container,
+.d_u_result_container{
+	overflow-y: inherit;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.d_event_card_cover,
+.d_user_card_cover,
+.d_channel_card_cover{
+	padding: 5px;
+	border-radius: 4px;
+	border: 1px lightgrey solid;
+}
 /**************************************************** Khung STATISTIC ***/
 
 /**************************************************** Khung MANAGE EVENT ***/
+/******************************************************* MANAGE EVENT > Từng Event **/
+.d_event_card_cover{
+	margin-bottom: 10px;
+}
+.d_e_title{
+	max-height: 42px;
+	overflow-y: hidden;
+}
+.d_txt_live{
+	padding: 5px 10px;
+	color: white;
+	font-style: italic;
+	background-color: rgba(0,0,0,0.6);
+	position: absolute;
+	top: 3%;
+	left: 3%;
+}
+.d_e_drop_menu{
+	left: -120px;
+}
+.d_e_info_cover .fa{
+	width: 26px;
+	height: auto;
+}
+.d_e_cate,
+.d_e_date,
+.d_e_follower,
+.d_e_time,
+.d_e_user,
+.d_e_location,
+.d_e_btn_desciption{
+	display: -webkit-inline-box;
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 35%;
+	float: left;
+}
+.d_e_follower,
+.d_e_time,
+.d_e_location{
+	width: 50%;
+}
+.d_e_info_cover .fa,
+.d_e_info_cover .d_fill_in{
+	color: lightgray;
+	padding-right: 10px;
+}
+.d_e_info_cover p{
+	margin-bottom: 0px;
+}
+.d_e_btn_more{
+	float: right;
+}
 
 /**************************************************** Khung MANAGE USER ***/
 
@@ -21,7 +126,8 @@
 }
 .d_result_container{
 	padding: 10px;
-	padding-left: 15px;
+	margin-right: 10px;
+	margin-left: 10px;
 	border: 1px red solid;
 	border-radius: 5px;
 }
