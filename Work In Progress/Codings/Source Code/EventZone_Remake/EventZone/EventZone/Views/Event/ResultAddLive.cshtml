@@ -1,0 +1,23 @@
+﻿@model EventZone.Models.Video
+@using EventZone.Helpers
+@{
+    if (Model == null) {
+        Response.Redirect("~/Home");
+    }
+}
+<style>
+    .body {
+    padding-top:100px
+    }
+</style>
+<div class="body">
+    Your live stream information:
+    Start time : @Model.StartTime
+    End Time : @Model.EndTime
+    Primary server: @Model.PrimaryServer
+    Back up server: @Model.BackupServer
+    Privacy: @Model.Privacy
+    Location:@LocationHelpers.Instance.GetLocationByEventPlaceID(Model.EventPlaceID).LocationName
+    Link watch only: @Model.VideoLink
+    @Html.ActionLink("View Event Detail", "Details", "Event", new { id = EventDatabaseHelper.Instance.GetEventPlaceByID(@Model.EventPlaceID).EventID },null)
+</div>

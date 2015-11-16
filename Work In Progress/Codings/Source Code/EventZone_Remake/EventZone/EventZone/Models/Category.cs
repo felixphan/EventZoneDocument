@@ -22,6 +22,7 @@ namespace EventZone.Models
     
         public long CategoryID { get; set; }
         public string CategoryName { get; set; }
+        public Nullable<long> CategoryAvatar { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
         public virtual ICollection<Event> Events { get; set; }

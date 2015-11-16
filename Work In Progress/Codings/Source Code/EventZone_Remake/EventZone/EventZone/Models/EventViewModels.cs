@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace EventZone.Models
 {
     public class CreateEventModel
     {
-        public string AvatarSource { get; set; }
+       
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 5)]
         [Display(Name = "Title")]
@@ -29,12 +30,24 @@ namespace EventZone.Models
         [Display(Name = "Privacy")]
         public int Privacy { get; set; }
         [Required]
-        [Display(Name = "Streaming")]
-        public bool IsLive { get; set; }
-        [Required]
         [Display(Name = "Category")]
         public long CategoryID { get; set; }
         public string Description { get; set; }
+    }
+    public class LiveStreamingModel {
+        public long eventID { get; set; }
+
+        [Required(ErrorMessage = "Please enter your Title")]
+        [RegularExpression("(^[a-zA-Z0-9 ,.'-]+$)", ErrorMessage = "Only Allowed Alphabet, numberic and white Character In Title")]
+        [MaxLength(50, ErrorMessage = "Title must less than 50 characters.")]
+        public string Title { get; set; }
+        public long EventPlaceID { get; set; }
+        public string Quality { get; set; }
+        [Required]
+        public int PrivacyYoutube { get; set; }
+        [Required]
+        public DateTime StartTimeYoutube { get; set; }
+        public DateTime EndTimeYoutube { get; set; }
     }
 
     public class ViewThumbEventModel

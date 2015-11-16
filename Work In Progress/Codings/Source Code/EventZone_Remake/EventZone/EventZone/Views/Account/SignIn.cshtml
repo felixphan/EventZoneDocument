@@ -15,7 +15,7 @@
     {
         @Html.AntiForgeryToken()
         var alertStyle = "";
-
+        
         if (ViewData.ModelState == null || !ViewData.ModelState.Any(m => m.Value.Errors.Any()))
         {
             alertStyle = "display:none;margin-bottom:0px";

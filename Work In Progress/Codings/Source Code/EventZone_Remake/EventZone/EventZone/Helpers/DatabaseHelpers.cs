@@ -16,6 +16,7 @@ using Google.Apis.YouTube.v3.Data;
 using Channel = EventZone.Models.Channel;
 using Comment = EventZone.Models.Comment;
 using Video = EventZone.Models.Video;
+using Amazon.S3;
 
 namespace EventZone.Helpers
 {
@@ -847,7 +848,22 @@ namespace EventZone.Helpers
             }
             return null;
         }
+        /// <summary>
+        /// get event place by eventPlaceID
+        /// </summary>
+        /// <param name="eventPlaceID"></param>
+        /// <returns></returns>
+        public EventPlace GetEventPlaceByID(long eventPlaceID)
+        {
+            EventPlace result = new EventPlace();
+            try {
+                result = db.EventPlaces.Find(eventPlaceID);
+                
+            }
+            catch { }
+            return result;
 
+        }
         //Check is event owned by user or not
         public bool IsEventOwnedByUser(long eventID, long UserID)
         {
@@ -934,6 +950,40 @@ namespace EventZone.Helpers
             catch { }
             return false;
         }
+        /// <summary>
+        /// get list event Place by event ID
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<EventPlace> GetEventPlaceByEvent(long eventID){
+            List<EventPlace> result = new List<EventPlace>();
+            try
+            {
+                result = (from a in db.EventPlaces where a.EventID == eventID select a).ToList();
+            }
+            catch { 
+
+            }
+            return result;
+        }
+        /// <summary>
+        /// add Video to DB
+        /// </summary>
+        /// <param name="video"></param>
+        /// <returns></returns>
+        public bool AddVideo(Video video) {
+            try
+            {
+                db.Videos.Add(video);
+                db.SaveChanges();
+                return true;
+            }
+            catch { 
+            
+            }
+            return false; 
+        }
+        
         /// <summary>
         /// Get List Live streaming video in list video
         /// </summary>
@@ -1075,57 +1125,6 @@ namespace EventZone.Helpers
 
 
         /// <summary>
-        /// add live video
-        /// </summary>
-        /// <param name="model"></param>
-        /// <param name="locationList"></param>
-        /// <param name="listEventPlaces"></param>
-        /// <returns></returns>
-        public string[] AddLiveVideo(CreateEventModel model, List<Location> locationList, List<EventPlace> listEventPlaces)
-        {
-            string[] viewDataResult = new string[20];
-            try
-            {
-                viewDataResult =
-                    new EventDatabaseHelper().Run(model.Title, (DateTime)model.StartTimeYoutube,
-                        (DateTime)model.EndTimeYoutube,
-                        model.Quality,
-                        model.PrivacyYoutube).Result;
-                var video = new Video();
-                video.StartTime = model.StartTimeYoutube;
-                video.EndTime = model.EndTimeYoutube;
-                video.Privacy = model.PrivacyYoutube;
-                for (int i = 0; i < locationList.Count; i++)
-                {
-                    if (locationList[i].LocationName.Equals(model.LocationLiveName))
-                    {
-                        foreach (EventPlace item in listEventPlaces)
-                        {
-                            if (item.LocationID ==
-                                LocationHelpers.Instance.FindLocationByAllData(locationList[i].Longitude,
-                                    locationList[i].Latitude,
-                                    locationList[i].LocationName))
-                            {
-                                video.EventPlaceID = item.EventPlaceID;
-                            }
-                        }
-                    }
-                }
-                video.VideoLink = viewDataResult[3];
-                video.PrimaryServer = viewDataResult[1];
-                video.BackupServer = viewDataResult[2];
-                db.Videos.Add(video);
-                db.SaveChanges();
-            }
-            catch
-            {
-                viewDataResult[0] = "Error with Youtube Site";
-            }
-            return viewDataResult;
-        }
-
-
-        /// <summary>
         ///     Lọc event theo nhóm category từ list event
         /// </summary>
         /// <param name="listEvent"></param>
@@ -1218,7 +1217,7 @@ namespace EventZone.Helpers
             try
             {
                 List<Event> result = new List<Event>();
-                listEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) && (o.Status == EventZoneConstants.isActive));
+                listEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.isActive));
                 result = listEvent;
                 return result;
             }
@@ -1410,12 +1409,59 @@ namespace EventZone.Helpers
 
             return result;
         }
-        public Event AddNewEvent(CreateEventModel model, string userid)
+
+        public Image UserAddImage(HttpPostedFileBase file, long userID)
+        {
+            User user = db.Users.Find(userID);
+            if (user == null)
+            {
+                return null;
+            }
+            else {
+                Image photo = new Image();
+                try
+                {
+                    if (file != null)
+                    {
+                        string[] whiteListedExt = { ".jpg", ".gif", ".png", ".tiff" };
+                        Stream stream = file.InputStream;
+                        string extension = Path.GetExtension(file.FileName);
+                        if (whiteListedExt.Contains(extension))
+                        {
+                            string pic = Guid.NewGuid() + user.UserID.ToString() + extension;
+                            using (AmazonS3Client s3Client = new AmazonS3Client(Amazon.RegionEndpoint.USWest2))
+                                EventZoneUtility.FileUploadToS3("eventzone", pic, stream, true, s3Client);
+                            Image image = new Image();
+                            image.ImageLink = "https://s3-us-west-2.amazonaws.com/eventzone/" + pic;
+                            image.UserID = user.UserID;
+                            image.UploadDate = DateTime.Today;
+                            if (UserDatabaseHelper.Instance.UpdateAvatar(user, image))
+                            {
+                                return image;
+                            }
+                        } 
+                    }
+                }
+                catch
+                {
+                }
+            }
+            return null;
+
+
+        }
+        /// <summary>
+        /// add new event to database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="userid"></param>
+        /// <returns></returns>
+        public Event AddNewEvent(CreateEventModel model, HttpPostedFileBase file,long userid)
         {
             var newEvent = new Event();
             newEvent.EventName = model.Title;
             var userChannel =
-            db.Channels.ToList().Find(c => c.UserID.Equals(long.Parse(userid)));
+            db.Channels.ToList().Find(c => c.UserID==userid);
             newEvent.ChannelID = userChannel.ChannelID;
             newEvent.EventStartDate = model.StartTime;
             newEvent.EventEndDate = model.EndTime;
@@ -1424,11 +1470,18 @@ namespace EventZone.Helpers
             newEvent.View = 0;
             newEvent.CategoryID = model.CategoryID;
             newEvent.Privacy = model.Privacy;
-            newEvent.Avatar = 3;
-            newEvent.EditBy = long.Parse(userid);
+            if (file == null)
+            {
+                newEvent.Avatar = CommonDataHelpers.Instance.GetCategoryById(model.CategoryID).CategoryAvatar;
+            }
+            else {
+                Image newImage = UserAddImage(file,userid);
+                if (newImage != null) newEvent.Avatar = newImage.ImageID;
+            }
+            newEvent.EditBy = userid;
             newEvent.EditTime = DateTime.Now;
             newEvent.EditContent = null;
-            newEvent.Status = true; 
+            newEvent.Status = EventZoneConstants.isActive; 
             // insert Event to Database
             try
             {
@@ -1441,17 +1494,16 @@ namespace EventZone.Helpers
             catch {
                 return null;
             }
-            
             return newEvent;
         }
 
-        public List<EventPlace> AddEventPlace(List<double> locationId, Event newEvent)
+        public List<EventPlace> AddEventPlace(List<Location> listLocation, Event newEvent)
         {
             List<EventPlace> listEventPlaces = new List<EventPlace>();
-            for (var i = 0; i < locationId.Count; i++)
+            for (var i = 0; i < listLocation.Count; i++)
             {
                 var newEventPlace = new EventPlace();
-                newEventPlace.LocationID = (long)locationId[i];
+                newEventPlace.LocationID = listLocation[i].LocationID;
                 newEventPlace.EventID = newEvent.EventID;
                 db.EventPlaces.Add(newEventPlace);
                 db.SaveChanges();
@@ -1460,24 +1512,28 @@ namespace EventZone.Helpers
             return listEventPlaces;
         }
 
-
         private async Task<string[]> Run(String broadcastTitle, DateTime startTime, DateTime endTime, String quality, int privacyYoutube)
         {
 
             UserCredential credential = null;
-
-            String path = Path.Combine(HttpRuntime.AppDomainAppPath, "Controllers/client_secrets_for_YoutubeAPI.json");
-            using (var stream = new FileStream(path, FileMode.Open, FileAccess.Read))
+            
+            try
             {
                 credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    GoogleClientSecrets.Load(stream).Secrets,
-                    // This OAuth 2.0 access scope allows an application to upload files to the
-                    // authenticated user's YouTube channel, but doesn't allow other types of access.
+                    new ClientSecrets
+                    {
+                        ClientId = "815951169778-7i99o0mfqcpdmemb5brvla602cplhhgl.apps.googleusercontent.com",
+                        ClientSecret = "j3hrwvB0v44-ARFK1ZgwETN5",
+                    },
                     new[] { YouTubeService.Scope.Youtube },
-                    Environment.UserName,
+                    "user",
                     CancellationToken.None
-                    );
-
+                );
+            }
+            catch
+            {
+                credential.RevokeTokenAsync(CancellationToken.None).Wait();
+                return new string[] { "Something wrong when authenticate with google, please try again!" };
             }
 
             var youtubeService = new YouTubeService(new BaseClientService.Initializer()
@@ -1512,14 +1568,23 @@ namespace EventZone.Helpers
                 status.PrivacyStatus = "private";
             }
 
+
             //Set LiveBroadcast
             LiveBroadcast broadcast = new LiveBroadcast();
-            broadcast.Kind = "youtube#liveBroadcast";
-            broadcast.Snippet = broadcastSnippet;
-            broadcast.Status = status;
-            LiveBroadcastsResource.InsertRequest liveBroadcastInsert = youtubeService.LiveBroadcasts.Insert(broadcast, "snippet,status");
-            LiveBroadcast returnBroadcast = liveBroadcastInsert.Execute();//die o day
-
+            LiveBroadcast returnBroadcast = new LiveBroadcast();
+            try
+            {
+                broadcast.Kind = "youtube#liveBroadcast";
+                broadcast.Snippet = broadcastSnippet;
+                broadcast.Status = status;
+                LiveBroadcastsResource.InsertRequest liveBroadcastInsert = youtubeService.LiveBroadcasts.Insert(broadcast, "snippet,status");
+                returnBroadcast = liveBroadcastInsert.Execute();
+            }
+            catch (Exception ex)
+            {
+                credential.RevokeTokenAsync(CancellationToken.None).Wait();
+                return new string[] { ex.Message };
+            }
             //Set LiveStream Snippet
             LiveStreamSnippet streamSnippet = new LiveStreamSnippet();
             streamSnippet.Title = broadcastTitle + "Stream Title";
@@ -1543,7 +1608,7 @@ namespace EventZone.Helpers
             String backupServerUrl = returnLiveStream.Cdn.IngestionInfo.BackupIngestionAddress;
             String youtubeUrl = "https://www.youtube.com/watch?v=" + returnBroadcast.Id;
             string[] result = new string[] { streamName, primaryServerUrl, backupServerUrl, youtubeUrl };
-
+            credential.RevokeTokenAsync(CancellationToken.None).Wait();
             return result;
         }
     }
@@ -1567,31 +1632,53 @@ namespace EventZone.Helpers
         {
             return db.Locations.ToList();
         }
-        public List<double> GetLocationIdOfEvent(List<Location> locationList )
+        /// <summary>
+        /// add new Location from location list. If there is location in database dont add it
+        /// </summary>
+        /// <param name="locationList"></param>
+        /// <returns></returns>
+        /// 
+        public Location GetLocationByEventPlaceID(long eventPlaceID) {
+            try
+            {
+                Location result = new Location();
+                EventPlace evtPlace = db.EventPlaces.Find(eventPlaceID);
+                if (evtPlace != null)
+                {
+                    result = db.Locations.Find(evtPlace.LocationID);
+                    
+                }
+                return result;
+            }
+            catch {
+                return null;
+            }
+        }
+        public List<Location> AddNewLocation(List<Location> locationList )
         {
-            var locationId = new List<double>();
-                        //Search for duplicated location before adding new location to database
-                        for (var i = 0; i < locationList.Count; i++)
-                        {
-                            Location tmpLocation = locationList[i];
-                            double locationIdIndex =LocationHelpers.Instance.FindLocationByAllData(tmpLocation.Longitude,
-                                                    tmpLocation.Latitude,
-                                                    tmpLocation.LocationName);
-                            if (locationIdIndex == -1)
-                            {
-                                Location newLocation = new Location();
-                                newLocation.LocationName = tmpLocation.LocationName;
-                                newLocation.Latitude = tmpLocation.Latitude;
-                                newLocation.Longitude = tmpLocation.Longitude;
-                                db.Locations.Add(newLocation);
-                                db.SaveChanges();
-                                locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(tmpLocation.Longitude,
-                                    tmpLocation.Latitude,
-                                    tmpLocation.LocationName);
-                            }
-                            locationId.Add(locationIdIndex);
-                        }
-                        return locationId;
+            var Location = new List<Location>();
+            //Search for duplicated location before adding new location to database
+            for (var i = 0; i < locationList.Count; i++)
+            {
+                Location tmpLocation = locationList[i];
+                long locationIdIndex =LocationHelpers.Instance.FindLocationByAllData(tmpLocation.Longitude,
+                                        tmpLocation.Latitude,
+                                        tmpLocation.LocationName);
+                if (locationIdIndex == -1)
+                {
+                    Location newLocation = new Location();
+                    newLocation.LocationName = tmpLocation.LocationName;
+                    newLocation.Latitude = tmpLocation.Latitude;
+                    newLocation.Longitude = tmpLocation.Longitude;
+                    db.Locations.Add(newLocation);
+                    db.SaveChanges();
+                    locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(tmpLocation.Longitude,
+                        tmpLocation.Latitude,
+                        tmpLocation.LocationName);
+                }
+                Location.Add(GetLocationById(locationIdIndex));
+            }
+            return Location;
         }
     
         /// <summary>

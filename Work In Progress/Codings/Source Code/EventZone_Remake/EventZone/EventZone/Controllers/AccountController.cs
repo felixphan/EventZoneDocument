@@ -145,7 +145,7 @@ namespace EventZone.Controllers
                 user.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
                 if (user.Avartar==null) //set default avatar
                 {
-                    user.Avartar = 3;
+                    user.Avartar = 10032;
                 }
                 user.UserRoles = EventZoneConstants.IsUser; //set UserRole
                 // insert user to Database
@@ -221,8 +221,6 @@ namespace EventZone.Controllers
                     //if this is first time login
                     if (newUser == null)
                     {
-                        string avatar = google.image.url.Value;
-                        avatar = avatar.Substring(0, avatar.LastIndexOf("?sz=") + 4) + "200";
                         var addressList = new JArray();
                         if (google.placesLived != null)
                         {
@@ -326,7 +324,7 @@ namespace EventZone.Controllers
                     newUser.UserLastName = model.UserLastName;
                 }
                 newUser.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
-                newUser.Avartar = 3;
+                newUser.Avartar = 10032;
                 newUser.UserRoles = EventZoneConstants.IsUser; //set UserRole
                 // insert user to Database
                 db.Users.Add(newUser);
@@ -353,6 +351,7 @@ namespace EventZone.Controllers
             }
             catch (Exception e)
             {
+
             }
             //remove cookie userName
             if (Request.Cookies["userName"] != null)

@@ -226,6 +226,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AuthCallbackController.cs" />
     <Compile Include="Controllers\CategoriesController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -235,6 +236,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\AppFlowMetadata.cs" />
     <Compile Include="Helpers\DatabaseHelpers.cs" />
     <Compile Include="Helpers\CalculateEventScoreHelpers.cs" />
     <Compile Include="Helpers\EventZoneConstants.cs" />
@@ -518,9 +520,12 @@
     <Content Include="Views\Shared\_ThumbEvent.cshtml" />
     <Content Include="Views\LookAround\LookAround.cshtml" />
     <Content Include="Views\Shared\_ViewEventInPlace.cshtml" />
+    <Content Include="Views\Event\AddLiveStream.cshtml" />
+    <Content Include="Views\Event\ResultAddLive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\AuthCallback\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

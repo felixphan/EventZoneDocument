@@ -33,8 +33,6 @@
     $("#dtpEndTimeYoutube").on("dp.change", function (e) {
         $('#dtpStartTimeYoutube').data("DateTimePicker").maxDate(e.date);
     });
-    if ($("#IsLive").is(":checked")) $("#YoutubeOption").show();
-
 
 //Description
     function initToolbarBootstrapBindings() {
@@ -102,26 +100,35 @@
             "<button type=\"button\" id=\"btnRemove-"+length+"\"class=\"btn btn-primary btnRemoveLocation\">Remove</button>" +
             "</div>" +
             "</div>");
+        //$("#i_location_1").empty();
+        //$('[id^=Location-]').each(function (i, item) {
+        //    var x = $(item).val();
+        //    if (x.toString() != "Remove Location")
+        //        $("#i_location_1").append(new Option($(item).val(), $(item).val(), true, true));
+        //});
     });
     $("#LocationInput").on("click", ".btnRemoveLocation", function () { //user click on remove text
         $(this).parent("div").parent("div").hide();
         var id = this.id.substring(10, 11);
         var LocationId = "Location-" + id;
         document.getElementById(LocationId).value = "Remove Location";
-        $("#i_location_1 option[value='Remove Location']").remove();
+        //$("#i_location_1").empty();
+        //$('[id^=Location-]').each(function (i, item) {
+        //    var x = $(item).val();
+        //    if (x.toString() != "Remove Location")
+        //        $("#i_location_1").append(new Option($(item).val(), $(item).val(), true, true));
+        //});
     });
     $("#editor").change(function () {
         $("#event-description").val($("#editor").val());
     });
     //Binding Locations to One Location String
     $("#btnSubmit").click(function () {
-
         $(this).parents("form").submit();
     });
-    $("#IsLive").click(function() {
-        if ($(this).is(":checked")) $("#YoutubeOption").show();
-    });
 
+
+    //xu ly browse avatar
     function handleFileSelect(evt) {
         var files = evt.target.files; // FileList object
 
@@ -152,4 +159,5 @@
         }
     }
     document.getElementById('image-upload-btn').addEventListener('change', handleFileSelect, false);
+    //end xu ly browse avatar
 });

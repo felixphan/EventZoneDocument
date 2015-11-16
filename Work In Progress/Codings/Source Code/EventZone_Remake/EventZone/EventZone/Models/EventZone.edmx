@@ -29,6 +29,7 @@
           </Key>
           <Property Name="CategoryID" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="CategoryName" Type="nvarchar" MaxLength="256" Nullable="false" />
+          <Property Name="CategoryAvatar" Type="bigint" />
         </EntityType>
         <EntityType Name="CategoryFollow">
           <Key>
@@ -710,6 +711,7 @@
           </Key>
           <Property Name="CategoryID" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="CategoryName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CategoryAvatar" Type="Int64" />
           <NavigationProperty Name="CategoryFollows" Relationship="Self.FK_CategoryFollow_Category" FromRole="Category" ToRole="CategoryFollow" />
           <NavigationProperty Name="Events" Relationship="Self.FK_Event_Category" FromRole="Category" ToRole="Event" />
         </EntityType>
@@ -1445,6 +1447,7 @@
               <MappingFragment StoreEntitySet="Category">
                 <ScalarProperty Name="CategoryID" ColumnName="CategoryID" />
                 <ScalarProperty Name="CategoryName" ColumnName="CategoryName" />
+                <ScalarProperty Name="CategoryAvatar" ColumnName="CategoryAvatar" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
