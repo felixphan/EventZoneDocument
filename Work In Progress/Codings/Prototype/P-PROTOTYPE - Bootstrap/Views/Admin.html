@@ -34,9 +34,9 @@
         <ul class="nav navbar-nav">
           <li class="active"><a href="#stat-r" data-toggle="tab">Statistic</a></li>
           <li class=""><a href="#event-r" data-toggle="tab">Manage Event</a></li>
-          <li class=""><a href="#channel-r" data-toggle="tab">Manage User</a></li>
-          <li class=""><a href="#user-r" data-toggle="tab">Reported Event (10)</a></li>
-          <li class=""><a href="#location-r" data-toggle="tab">Appealed Event (5)</a></li>
+          <li class=""><a href="#user-r" data-toggle="tab">Manage User</a></li>
+          <li class=""><a href="#reported-r" data-toggle="tab">Reported Event (10)</a></li>
+          <li class=""><a href="#appealed-r" data-toggle="tab">Appealed Event (5)</a></li>
         </ul>
         
         <ul class="nav navbar-nav navbar-right">
@@ -74,106 +74,204 @@
           Statistic
         </div>
         <div class="tab-pane" id="event-r">
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
-              <!-- e_ để đánh dấu CSS EVENT -->
-              <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
-                <img src="../img/bg1.jpg">
-                <div class="d_txt_live">
-                  Live
-                </div>
-              </div>
-              <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
-                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
-                  Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
-                </div>
-                <div class="btn-group d_e_btn_more">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
-                  </button>
-                  <ul class="dropdown-menu d_e_drop_menu">
-                    <li><a href="#">Like</a></li>
-                    <li><a href="#">Dislike</a></li>
-                    <li><a href="#">Share Fb</a></li>
-                  </ul>
-                </div>
-                <div class="d_e_cate">
-                  <i class="fa fa-list-ul"></i>
-                  <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
-                </div>
-                <div class="d_e_follower">
-                  <i class="fa fa-star"></i>
-                  <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
-                </div>
-                <div class="d_e_date">
-                  <i class="fa fa-calendar-check-o"></i>
-                  <div class="d_fill_in">Date: 14/11/2015</div>
-                </div>
-                <div class="d_e_time">
-                  <i class="fa fa-clock-o"></i>
-                  <div class="d_fill_in">Time: 00:00 - 11:11</div>
-                </div>
-                <div class="d_e_user">
-                  <i class="fa fa-user"></i>
-                  <div class="d_fill_in">by: User X</div>
-                </div>
-                <div class="d_e_location">
-                  <i class="fa fa-map-o"></i>
-                  <div class="d_fill_in">Location: Hai Bà Trưng, Hà Nội</div><a> (+3)</a>
-                </div>
-                <div class="d_e_btn_desciption">
-                  <i class="fa fa-file-text"></i>
-                  <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
-                </div>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
+            <!-- e_ để đánh dấu CSS EVENT -->
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
+              <img src="../img/bg1.jpg">
+              <div class="d_txt_live">
+                Live
               </div>
             </div>
-        </div>
-        <!-- CHANNEL Result: mu_ đánh dấu CSS MANAGE USER -->
-        <div class="tab-pane b" id="channel-r">
-          <div class="d_mu_btn_group b">
-            <div class="d_mu_btn_group b">
-              <button class="btn btn-primary">User last filter</button>
-              <button class="btn btn-primary">Recent</button>
-              <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                Filter
-              </button>
-              <div class="collapse" id="collapseExample">
-                <div class="well">
-                  Advanced Search here
-                </div>
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
+              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
+                Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
+              </div>
+              <div class="btn-group d_e_btn_more">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu d_e_drop_menu">
+                  <li><a href="#">Like</a></li>
+                  <li><a href="#">Dislike</a></li>
+                  <li><a href="#">Share Fb</a></li>
+                </ul>
+              </div>
+              <div class="d_e_cate">
+                <i class="fa fa-list-ul"></i>
+                <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
+              </div>
+              <div class="d_e_follower">
+                <i class="fa fa-star"></i>
+                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+              </div>
+              <div class="d_e_date">
+                <i class="fa fa-calendar-check-o"></i>
+                <div class="d_fill_in">Date: 14/11/2015</div>
+              </div>
+              <div class="d_e_time">
+                <i class="fa fa-clock-o"></i>
+                <div class="d_fill_in">Time: 00:00 - 11:11</div>
+              </div>
+              <div class="d_e_user">
+                <i class="fa fa-user"></i>
+                <div class="d_fill_in">by: User X</div>
+              </div>
+              <div class="d_e_location">
+                <i class="fa fa-map-o"></i>
+                <div class="d_fill_in">Location: Hai Bà Trưng, Hà Nội</div><a> (+3)</a>
+              </div>
+              <div class="d_e_btn_desciption">
+                <i class="fa fa-file-text"></i>
+                <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
               </div>
             </div>
           </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_mu_container b">
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_channel.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_channel.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_channel.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_channel.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-          </div>
         </div>
-        <!-- USER Result: re_ đánh dấu CSS REPORTED EVENT -->
+        <!-- USER Result: mu_ đánh dấu CSS MANAGE USER -->
         <div class="tab-pane b" id="user-r">
-          <div class="d_re_btn_group b">
-            BUTTON
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_re_container">
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_user.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_user.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
-            <iframe class="col-xs-12 col-sm-12 col-md-6 col-lg-6"
-                    src="s_r_each_user.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_user_card_cover">
+            <!-- e_ để đánh dấu CSS EVENT -->
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_u_thumb">
+              <img src="../img/bg1.jpg">
+            </div>
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_u_info_cover">
+              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_u_title">
+                User name
+              </div>
+              <div class="btn-group d_u_btn_more">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu d_u_drop_menu">
+                  <li><a href="#">Like</a></li>
+                  <li><a href="#">Dislike</a></li>
+                  <li><a href="#">Share Fb</a></li>
+                </ul>
+              </div>
+              <div class="d_u_cate">
+                <i class="fa fa-font"></i>
+                <div class="d_fill_in">Channel: <a href=""><i>Channel-name</i></a></div>
+              </div>
+              <div class="d_u_follower">
+                <i class="fa fa-star"></i>
+                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+              </div>
+              <div class="d_u_date">
+                <i class="fa fa-calendar-check-o"></i>
+                <div class="d_fill_in">Created Date: 14/11/2015</div>
+              </div>
+              <div class="d_u_time">
+                <i class="fa fa-clock-o"></i>
+                <div class="d_fill_in">Created Time: 00:00 - 11:11</div>
+              </div>
+            </div>
           </div>
         </div>
-        <!-- LOCATION Result: ae_ đánh dấu CSS APPEALED EVENT -->
-        <div class="tab-pane b" id="location-r">
-          <div class="d_ae_btn_group b">
-            BUTTON
+        <!-- REPORTED Result: r_ đánh dấu CSS REPORTED EVENT -->
+        <div class="tab-pane b" id="reported-r">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
+            <!-- e_ để đánh dấu CSS EVENT -->
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
+              <img src="../img/bg1.jpg">
+              <div class="d_txt_live">
+                Live
+              </div>
+            </div>
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
+              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
+                Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
+              </div>
+              <div class="btn-group d_e_btn_more">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu d_e_drop_menu">
+                  <li><a href="#">Like</a></li>
+                  <li><a href="#">Dislike</a></li>
+                  <li><a href="#">Share Fb</a></li>
+                </ul>
+              </div>
+              <div class="d_e_cate">
+                <i class="fa fa-list-ul"></i>
+                <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
+              </div>
+              <div class="d_e_follower">
+                <i class="fa fa-star"></i>
+                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+              </div>
+              <div class="d_e_date">
+                <i class="fa fa-calendar-check-o"></i>
+                <div class="d_fill_in">Date: 14/11/2015</div>
+              </div>
+              <div class="d_e_time">
+                <i class="fa fa-clock-o"></i>
+                <div class="d_fill_in">Time: 00:00 - 11:11</div>
+              </div>
+              <div class="d_e_user">
+                <i class="fa fa-user"></i>
+                <div class="d_fill_in">by: User X</div>
+              </div>
+              <div class="d_e_location">
+                <i class="fa fa-map-o"></i>
+                <div class="d_fill_in">Location: Hai Bà Trưng, Hà Nội</div><a> (+3)</a>
+              </div>
+              <div class="d_e_btn_desciption">
+                <i class="fa fa-file-text"></i>
+                <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
+              </div>
+            </div>
           </div>
-          <div class="d_ae_container b">
-            AE container
+        </div>
+        <!-- REPEALED Result: a_ đánh dấu CSS APPEALED EVENT -->
+        <div class="tab-pane b" id="appealed-r">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
+            <!-- e_ để đánh dấu CSS EVENT -->
+            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
+              <img src="../img/bg1.jpg">
+              <div class="d_txt_live">
+                Live
+              </div>
+            </div>
+            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
+              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
+                Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
+              </div>
+              <div class="btn-group d_e_btn_more">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                </button>
+                <ul class="dropdown-menu d_e_drop_menu">
+                  <li><a href="#">Like</a></li>
+                  <li><a href="#">Dislike</a></li>
+                  <li><a href="#">Share Fb</a></li>
+                </ul>
+              </div>
+              <div class="d_a_cate">
+                <i class="fa fa-list-ul"></i>
+                <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
+              </div>
+              <div class="d_a_follower">
+                <i class="fa fa-star"></i>
+                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+              </div>
+              <div class="d_a_user">
+                <i class="fa fa-user"></i>
+                <div class="d_fill_in">by: User X</div>
+              </div>
+              <div class="d_a_btn_desciption">
+                <i class="fa fa-file-text"></i>
+                <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
+              </div>
+              <div class="d_a_txt_reason">
+                Proportion:
+              </div>
+              <div class="d_a_data">10%</div>
+              <div class="d_a_data">10%</div>
+              <div class="d_a_data">10%</div>
+              <div class="d_a_data">10%</div>
+              <div class="d_a_data">10%</div>
+              <div class="d_a_txt_total">
+                Total:
+              </div>
+              <div class="d_a_data">50%</div>
+              <div class="item_social social_fb hidden_320" style="overflow: visible;"><div class="fb-like fb_iframe_widget" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-href="http://vnexpress.net/tin-tuc/thoi-su/canh-sat-co-dong-tat-cdv-nu-bi-dinh-chi-3313500.html" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;container_width=0&amp;href=http%3A%2F%2Fvnexpress.net%2Ftin-tuc%2Fthoi-su%2Fcanh-sat-co-dong-tat-cdv-nu-bi-dinh-chi-3313500.html&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=false&amp;show_faces=true&amp;width=450"><span style="vertical-align: bottom; width: 79px; height: 20px;"><iframe name="f33afc4624" width="450px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="http://www.facebook.com/plugins/like.php?app_id=&amp;channel=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter%2FwjDNIDNrTQG.js%3Fversion%3D41%23cb%3Df2a22f6d4%26domain%3Dvnexpress.net%26origin%3Dhttp%253A%252F%252Fvnexpress.net%252Ff23711e634%26relation%3Dparent.parent&amp;container_width=0&amp;href=http%3A%2F%2Fvnexpress.net%2Ftin-tuc%2Fthoi-su%2Fcanh-sat-co-dong-tat-cdv-nu-bi-dinh-chi-3313500.html&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=false&amp;show_faces=true&amp;width=450" style="border: none; visibility: visible; width: 79px; height: 20px;" class=""></iframe></span></div></div>
+            </div>
           </div>
         </div>
       </div>

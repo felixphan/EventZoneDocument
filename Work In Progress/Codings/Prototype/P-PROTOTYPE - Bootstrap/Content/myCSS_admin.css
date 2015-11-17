@@ -115,16 +115,83 @@
 }
 
 /**************************************************** Khung MANAGE USER ***/
+/******************************************************* MANAGE USER > Từng User **/
+.d_user_card_cover{
+	margin-bottom: 10px;
+}
+.d_u_title{
+	max-height: 45px;
+	overflow-y: hidden;
+}
+.d_u_drop_menu{
+	left: -120px;
+}
+.d_u_info_cover .fa{
+	width: 26px;
+	height: auto;
+}
+.d_u_cate,
+.d_u_date,
+.d_u_follower,
+.d_u_time,
+.d_u_user,
+.d_u_location,
+.d_u_btn_desciption{
+	display: -webkit-inline-box;
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 35%;
+	float: left;
+}
+.d_u_follower,
+.d_u_time,
+.d_u_location{
+	width: 50%;
+}
+.d_u_info_cover .fa,
+.d_u_info_cover .d_fill_in{
+	color: lightgray;
+	padding-right: 10px;
+}
+.d_u_info_cover p{
+	margin-bottom: 0px;
+}
+.d_u_btn_more{
+	float: right;
+}
 
 /**************************************************** Khung REPORT ***/
 
 /**************************************************** Khung APPEAL ***/
-
+.d_a_cate,
+.d_a_follower,
+.d_a_user,
+.d_a_btn_desciption,
+.d_a_txt_reason,
+.d_a_txt_total,
+.d_a_data{
+	display: -webkit-inline-box;
+	padding-left: 15px;
+	padding-right: 15px;
+	width: 35%;
+	float: left;
+}
+.d_a_btn_desciption{
+	width: 65%;
+}
+.d_a_data{
+	width: 10%;
+}
+.d_a_txt_total,
+.d_a_txt_reason{
+	width: 15%;
+}
 /**************************************************** Decorate khác ***/
 .d_admin_body{
 	overflow-y: scroll;
 }
 .d_result_container{
+	height: 600px;
 	padding: 10px;
 	margin-right: 10px;
 	margin-left: 10px;
