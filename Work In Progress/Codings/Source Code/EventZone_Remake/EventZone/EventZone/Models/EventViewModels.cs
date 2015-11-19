@@ -20,7 +20,6 @@ namespace EventZone.Models
         public DateTime EndTime { get; set; }
         [Required]
         [Display(Name = "Location")]
-        [Required]
         public List<Location> Location { get; set; }
         public string Quality { get; set; }
         public int PrivacyYoutube { get; set; }
