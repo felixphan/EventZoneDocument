@@ -86,20 +86,21 @@ namespace EventZone.Controllers
                 //        return View("FailedCreateEvent");
                 //    }
                 //}
-                LiveStreamingModel liveModel = new LiveStreamingModel();
-                liveModel.eventID = newEvent.EventID;
+                LiveStreamingModel liveModel = new LiveStreamingModel { eventID = newEvent.EventID, Title = newEvent.EventName };
                 
-                return RedirectToAction("AddLiveStream", "Event", liveModel);
+                return RedirectToAction("AddLiveStream", "Event",liveModel);
             }
             // If we got this far, something failed, redisplay form
             return View(model);
         }
-        public ActionResult AddLiveStream(LiveStreamingModel liveModel)
+        public ActionResult AddLiveStream(LiveStreamingModel model)
         {
             List<EventPlace> listPlace= new List<EventPlace>();
-            listPlace = EventDatabaseHelper.Instance.GetEventPlaceByEvent(liveModel.eventID);
+           
+            listPlace = EventDatabaseHelper.Instance.GetEventPlaceByEvent(model.eventID);
+            
             TempData["EventPlace"] = listPlace;           
-            return View(liveModel);
+            return View(model);
         }
 
         public async Task<ActionResult> IndexAsync(LiveStreamingModel liveModel, CancellationToken cancellationToken)
@@ -115,13 +116,10 @@ namespace EventZone.Controllers
                         HttpClientInitializer = result.Credential,
                         ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
                     });
-
                     LiveBroadcastSnippet broadcastSnippet = new LiveBroadcastSnippet();
                     broadcastSnippet.Title = liveModel.Title;
-
                     broadcastSnippet.ScheduledStartTime = liveModel.StartTimeYoutube.CompareTo(DateTime.Now) < 0 ? (DateTime.Now) : liveModel.StartTimeYoutube;
                     broadcastSnippet.ScheduledEndTime = liveModel.EndTimeYoutube;
-
                     // Set the broadcast's privacy status to "private". See:
                     // https://developers.google.com/youtube/v3/live/docs/liveBroadcasts#status.privacyStatus
                     LiveBroadcastStatus status = new LiveBroadcastStatus();
@@ -152,7 +150,7 @@ namespace EventZone.Controllers
                         TempData["errorTitle"] = "Error";
                         TempData["errorMessage"] = ex.Message;
                         result.Credential.RevokeTokenAsync(CancellationToken.None).Wait();
-                        return RedirectToAction("AddLiveStream", "Event", new { liveModel = liveModel, cancellationToken = cancellationToken });
+                        return RedirectToAction("AddLiveStream", "Event", new { liveModel = liveModel});
                     }
                     
                     //Set LiveStream Snippet
@@ -187,6 +185,7 @@ namespace EventZone.Controllers
                     String primaryServerUrl = returnLiveStream.Cdn.IngestionInfo.IngestionAddress;
                     String backupServerUrl = returnLiveStream.Cdn.IngestionInfo.BackupIngestionAddress;
                     String youtubeUrl = "https://www.youtube.com/watch?v=" + returnBroadcast.Id;
+                    
                     //youtubeReturnModel model = new youtubeReturnModel { streamName = streamName, primaryServerUrl = primaryServerUrl,backupServerUrl=backupServerUrl,youtubeUrl=youtubeUrl };
                     Video video = new Video { EventPlaceID = liveModel.EventPlaceID,
                                                VideoLink = youtubeUrl,
@@ -196,7 +195,7 @@ namespace EventZone.Controllers
                                                EndTime = liveModel.EndTimeYoutube,
                                                BackupServer = backupServerUrl};
                     EventDatabaseHelper.Instance.AddVideo(video);
-                    result.Credential.RevokeTokenAsync(CancellationToken.None).Wait();
+                    TempData["StreamName"] = streamName;
                     return View("ResultAddLive", video);
             }
             else
@@ -206,11 +205,15 @@ namespace EventZone.Controllers
             }
             //TempData["errorTitle"] = "Error";
             //TempData["errorMessage"] = "Invalid Input, please try again";
+            
             return RedirectToAction("AddLiveStream", "Event", liveModel);
         }
         public ActionResult Details(long? id)
         {
-            if (id == null||EventDatabaseHelper.Instance.GetEventByID(id)==null)
+            if (id == null||
+                EventDatabaseHelper.Instance.GetEventByID(id)==null||
+                EventDatabaseHelper.Instance.GetEventByID(id).Status==EventZoneConstants.Lock||
+                EventDatabaseHelper.Instance.GetEventByID(id).Privacy==EventZoneConstants.privateEvent)
             {
                 TempData["errorTitle"] = "Failed to load event";
                 TempData["errorMessage"] = "This event is not available! It may be locked or set private!";
@@ -492,6 +495,21 @@ namespace EventZone.Controllers
                      return PartialView("_ImagePartial", listImage);
                  }
              }
+         }
+         public ActionResult ManageEvent() {
+             User user = UserHelpers.GetCurrentUser(Session);
+             if (user == null)
+             {
+                 TempData["errorTitle"] = "Require Signin";
+                 TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                 return RedirectToAction("Index", "Home");
+             }
+             else { 
+                 List<Event> myevent= UserDatabaseHelper.Instance.GetUserEvent(user.UserID);
+                 List<ViewThumbEventModel> listThumb= EventDatabaseHelper.Instance.GetThumbEventListByListEvent(myevent);
+                 return View();
+             }
+         
          }
     }
 }

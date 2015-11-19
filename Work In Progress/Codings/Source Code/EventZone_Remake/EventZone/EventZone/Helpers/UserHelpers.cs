@@ -6,6 +6,7 @@ namespace EventZone.Helpers
     public class UserHelpers
     {
         private const string User = "user";
+        private const string Admin = "admin";
 
         public static User GetCurrentUser(HttpSessionStateBase session)
         {
@@ -24,5 +25,18 @@ namespace EventZone.Helpers
         {
             session[User] = user;
         }
+        public static User GetCurrentAdmin(HttpSessionStateBase session) {
+            var adminSession = session[Admin];
+            if (adminSession == null || adminSession.ToString().Length == 0)
+            {
+                return null;
+            }
+            var user = (User) adminSession;
+            return user;
+        }
+        public static void SetCurrentAdmin(HttpSessionStateBase session, User admin) {
+            session[Admin] = admin;
+        }
+
     }
 }

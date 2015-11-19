@@ -7,32 +7,15 @@
         useCurrent: false,
         keyBinds: false
     });
-    $("#dtpStartTimeYoutube").datetimepicker({
-        keyBinds: false
-    });
-    $("#dtpEndTimeYoutube").datetimepicker({
-        keyBinds: false
-    });
     $('#dtpEndTime').data("DateTimePicker").minDate(moment());
 
     $("#dtpStartTime").on("dp.change", function (e) {
-        $('#dtpStartTimeYoutube').data("DateTimePicker").date(e.date);
-        $('#dtpEndTimeYoutube').data("DateTimePicker").date(e.date);
-        $('#dtpStartTimeYoutube').data("DateTimePicker").minDate(e.date);
-        $('#dtpEndTimeYoutube').data("DateTimePicker").minDate(e.date);
         $('#dtpEndTime').data("DateTimePicker").minDate(e.date);
     });
     $("#dtpEndTime").on("dp.change", function (e) {
         $('#dtpStartTime').data("DateTimePicker").maxDate(e.date);
-        $('#dtpEndTimeYoutube').data("DateTimePicker").maxDate(e.date);
-        $('#dtpStartTimeYoutube').data("DateTimePicker").maxDate(e.date);
     });
-    $("#dtpStartTimeYoutube").on("dp.change", function (e) {
-        $('#dtpEndTimeYoutube').data("DateTimePicker").minDate(e.date);
-    });
-    $("#dtpEndTimeYoutube").on("dp.change", function (e) {
-        $('#dtpStartTimeYoutube').data("DateTimePicker").maxDate(e.date);
-    });
+
 
 //Description
     function initToolbarBootstrapBindings() {
@@ -119,8 +102,8 @@
         //        $("#i_location_1").append(new Option($(item).val(), $(item).val(), true, true));
         //});
     });
-    $("#editor").change(function () {
-        $("#event-description").val($("#editor").val());
+    $("#editor").bind("DOMSubtreeModified", function () {		    
+        $("#event-description").val($("#editor").text());		        
     });
     //Binding Locations to One Location String
     $("#btnSubmit").click(function () {

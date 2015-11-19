@@ -52,10 +52,10 @@
             </div>
             <!-- Live Event Result: c_ đánh dấu CSS Live Event -->
             <div class="tab-pane b" id="liveEvent-r">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_c_result_container b">
+                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_c_result_container">
                     @if (listLiveStream != null)
                     {
-                        foreach (var item in listEvent)
+                        foreach (var item in listLiveStream)
                         {
                             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 @Html.Partial("_ThumbEvent", item)
@@ -89,7 +89,7 @@
                 <a href="search-result.html#event-r" data-toggle="tab">Event (@listEventCount)</a>
             </li>
             <li>
-                <a href="search-result.html#live-r" data-toggle="tab">Live Streaming (@listLiveStreamCount)</a>
+                <a href="search-result.html#liveEvent-r" data-toggle="tab">Live Streaming (@listLiveStreamCount)</a>
             </li>
             @if (task == "Search")
             {

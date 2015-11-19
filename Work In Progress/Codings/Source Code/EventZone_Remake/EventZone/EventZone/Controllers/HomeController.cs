@@ -182,11 +182,12 @@ namespace EventZone.Controllers
         }
         public ActionResult HotEvent()
         {
+            
             List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();
             List<Event> listEvent = new List<Event>();
-            listEvent = EventDatabaseHelper.Instance.GetHotEvent().Take(5).ToList();
+            listEvent = EventDatabaseHelper.Instance.GetHotEvent();
             listEvent = EventDatabaseHelper.Instance.RemoveLockedEventInList(listEvent);
-            listThumb = EventDatabaseHelper.Instance.GetThumbEventHomepage(listEvent);
+            listThumb = EventDatabaseHelper.Instance.GetThumbEventHomepage(listEvent).Take(5).ToList();
             TempData["errorTitle"] = TempData["errorTitle"];
             TempData["errorMessage"] = TempData["errorMessage"];
             return PartialView("_ThumbEventHomepage",listThumb);

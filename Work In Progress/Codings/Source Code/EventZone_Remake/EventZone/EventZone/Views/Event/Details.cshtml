@@ -10,7 +10,7 @@
         numberImage = Model.eventImage.Count;
     }
     int numberVideo = 0;
-    if (Model != null && Model.eventImage.Count != 0)
+    if (Model != null && Model.eventVideo.Count != 0)
     {
         numberVideo = Model.eventVideo.Count;
     }
@@ -195,7 +195,6 @@
                                                 {
                                                     foreach (var location in Model.eventLocation)
                                                     {
-
                                                         List<Video> videoInLocation = CommonDataHelpers.Instance.GetVideoInLocation(Model.eventVideo, location);
                                                         if (videoInLocation.Count != 0)
                                                         {
@@ -203,19 +202,22 @@
                                                             <div class="d_each_group d_thumb_location_1">
                                                                 @foreach (var video in videoInLocation)
                                                                 {
-                                                                    string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
-                                                                    <div class="col-md-4 col-sm-3 col-xs-4 thumb">
-                                                                        <a class="thumbnail" href="#">
-                                                                            <img class="img-responsive" src="@thumbVideo" onclick="viewVideo('@video.VideoLink')">
-                                                                        </a>
-                                                                    </div>
+                                                                    if (!EventDatabaseHelper.Instance.IsLiveVideo(video))
+                                                                    {
+                                                                        string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
+                                                                        <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+                                                                            <a class="thumbnail" href="#">
+                                                                                <img class="img-responsive" src="@thumbVideo" onclick="viewVideo('@video.VideoLink')">
+                                                                            </a>
+                                                                        </div>
+                                                                    }
+
                                                                 }
                                                             </div>
                                                         }
                                                     }
                                                     <button class="col-md-4 col-sm-3 col-xs-4 btn btn-primary btn-sm" id="btn-addlink-video">Add link video</button>
                                                 }
-
                                             </div>
                                         </div>
                                     </div>
@@ -234,8 +236,11 @@
                                         <div class="panel-body">
                                             @foreach (var video in EventDatabaseHelper.Instance.GetListLiveVideo(Model.eventVideo))
                                             {
-                                                <div class="col-xs-3 col-sm-2 col-md-2 thumb">
-                                                    <a href="#">Link 1</a>
+                                                string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
+                                                <div class="col-md-4 col-sm-3 col-xs-4 thumb">
+                                                    <a class="thumbnail" href="#">
+                                                        <img class="img-responsive" src="@thumbVideo" onclick="viewVideo('@video.VideoLink')">
+                                                    </a>
                                                 </div>
                                             }
                                         </div>

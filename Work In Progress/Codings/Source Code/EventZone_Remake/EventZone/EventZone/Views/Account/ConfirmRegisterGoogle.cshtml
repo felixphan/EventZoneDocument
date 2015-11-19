@@ -5,7 +5,7 @@
 <h2>@ViewBag.Title.</h2>
 <h3>Associate your Google account.</h3>
 
-@using (Html.BeginForm("ExternalLoginConfirmation", "Account", FormMethod.Post, new {@class = "form-horizontal", role = "form"}))
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", FormMethod.Post, new {@id="ConfirmGoogleForm",@class = "form-horizontal", role = "form"}))
 {
     @Html.AntiForgeryToken()
 
@@ -29,14 +29,14 @@
     <div class="form-group">
         @Html.LabelFor(m => m.Password, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.Password, new {@class = "form-control"})
+            @Html.PasswordFor(m => m.Password, new {@id="gg-pass",@class = "form-control"})
         </div>
     </div>
     //confirm password
     <div class="form-group">
         @Html.LabelFor(m => m.ConfirmPassword, new {@class = "col-md-2 control-label"})
         <div class="col-md-10">
-            @Html.PasswordFor(m => m.ConfirmPassword, new {@class = "form-control"})
+            @Html.PasswordFor(m => m.ConfirmPassword, new {@id="confirm-gg-pass",@class = "form-control"})
         </div>
     </div>
 

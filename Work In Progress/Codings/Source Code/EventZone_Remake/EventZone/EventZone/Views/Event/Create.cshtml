@@ -5,16 +5,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @{
-    var ListResolutionItem = new List<ListItem>
-    {
-        new ListItem {Text = "240p", Value = "240p"},
-        new ListItem {Text = "360p", Value = "360p"},
-        new ListItem {Text = "480p", Value = "480p"},
-        new ListItem {Text = "720p", Value = "720p"},
-        new ListItem {Text = "720p_hfr", Value = "720p_hfr"},
-        new ListItem {Text = "1080p", Value = "1080p"},
-        new ListItem {Text = "1080p_hfr", Value = "1080p_hfr"}
-    };
     var ListPrivacy = new List<ListItem>
     {
         new ListItem {Text = "Public", Value = "0"},
@@ -275,7 +265,7 @@
                     </div>
                     <input type="text" data-edit="inserttext" id="voiceBtn" x-webkit-speech="">
                 </div>
-                <textarea id="editor" contenteditable="true">Enter your description</textarea>
+                <div id="editor" contenteditable="true">Enter your description</div>
                 @Html.HiddenFor(model => model.Description, new { @id="event-description"})
                 @Html.ValidationMessageFor(model => model.Description)
             </div>

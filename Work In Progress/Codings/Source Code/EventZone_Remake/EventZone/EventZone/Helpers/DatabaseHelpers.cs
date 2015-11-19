@@ -67,7 +67,7 @@ namespace EventZone.Helpers
             {
                 return false;
             }
-            if (user[0].AccountStatus == EventZoneConstants.IsUserLock)
+            if (user[0].AccountStatus == EventZoneConstants.LockedUser)
             {
                 return true;
             }
@@ -113,6 +113,7 @@ namespace EventZone.Helpers
                 user.Avartar = image.ImageID;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Entry(user).Reload();
                 return true;
             }catch{
                 return false;
@@ -400,6 +401,7 @@ namespace EventZone.Helpers
                     findLike.Type = EventZoneConstants.Like;
                     db.Entry(findLike).State = EntityState.Modified;
                     db.SaveChanges();
+                    db.Entry(findLike).Reload();
                     return true;
                 }
                 //If user dont like or dislike this event before		
@@ -435,6 +437,7 @@ namespace EventZone.Helpers
                     findLike.Type = EventZoneConstants.Dislike;
                     db.Entry(findLike).State = EntityState.Modified;
                     db.SaveChanges();
+                    db.Entry(findLike).Reload();
                     return true;
                 }
                 //If user dont like or dislike this event before		
@@ -555,7 +558,21 @@ namespace EventZone.Helpers
             }
             return null;
         }
-
+        /// <summary>
+        /// get user by account information
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public User GetUserByAccount(string userName, string password) {
+            User result = null;
+            try
+            {
+                result = (from a in db.Users where a.UserName == userName && a.UserPassword == password select a).ToList()[0];  
+            }
+            catch { }
+            return result;
+        }
         /// <summary>
         ///     Get user by userId, return null if not found
         /// </summary>
@@ -571,7 +588,19 @@ namespace EventZone.Helpers
             }
             return null;
         }
-
+        /// <summary>
+        /// Get All user in database
+        /// </summary>
+        /// <returns></returns>
+        public List<User> GetAllUser(){
+            List<User> result = null;
+            try {
+                EventZoneEntities db = new EventZoneEntities();
+                result = (from a in db.Users select a).ToList();
+            }
+            catch { }
+            return result;
+        }
         /// <summary>
         ///     Update User to database
         /// </summary>
@@ -583,6 +612,7 @@ namespace EventZone.Helpers
             {
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Entry(user).Reload();
                 return true;
             }
             catch
@@ -605,6 +635,7 @@ namespace EventZone.Helpers
                 user.UserPassword = password;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Entry(user).Reload();
                 return true;
             }
             return false;
@@ -635,6 +666,7 @@ namespace EventZone.Helpers
                 user.UserPassword = password;
                 db.Entry(user).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Entry(user).Reload();
                 return true;
             }
             catch {
@@ -664,6 +696,16 @@ namespace EventZone.Helpers
         private EventDatabaseHelper()
         {
             db = new EventZoneEntities();
+        }
+
+        public List<Event> GetAllEvent() {
+            List<Event> result = new List<Event>();
+            try {
+                EventZoneEntities db = new EventZoneEntities();
+                result = (from a in db.Events select a).ToList();
+            }
+            catch { }
+            return result;
         }
         /// <summary>
         ///     get all event of an user
@@ -711,6 +753,7 @@ namespace EventZone.Helpers
             try
             {
                 Event evt = db.Events.Find(id);
+                db.Entry(evt).Reload();
                 return evt;
             }
             catch
@@ -733,6 +776,7 @@ namespace EventZone.Helpers
                 evt.View += 1;
                 db.Entry(evt).State = EntityState.Modified;
                 db.SaveChanges();
+                db.Entry(evt).Reload();                  
                 return true;
             }
             return false;
@@ -777,24 +821,17 @@ namespace EventZone.Helpers
         public List<Video> GetEventVideo(long? id)
         {
             var eventVideo = new List<Video>();
-            var allEventPlace = db.EventPlaces.ToList(); //retrieve data from table EventPlace
-            //find all video of event;
-            var listPlace = allEventPlace.FindAll(i => i.EventID == id);
-            var allVideo = db.Videos.ToList(); // retrieve data from talble Video
-            if (listPlace.Count != 0)
-            {
-                foreach (var item in listPlace)
-                {
-                    var listVideo = allVideo.FindAll(i => i.EventPlaceID == item.EventPlaceID);
-                    foreach (var video in listVideo)
-                    {
-                        eventVideo.Add(video);
-                    }
-                }
 
-                return eventVideo;
+            List<EventPlace> listEventPlace = (from a in db.EventPlaces where a.EventID == id select a).ToList();
+
+            if (listEventPlace.Count != 0) { 
+                foreach(var item in listEventPlace){
+                    List<Video> video = (from a in db.Videos where a.EventPlaceID == item.EventPlaceID select a).ToList();
+                    eventVideo.AddRange(video);
+                }
             }
-            return null;
+            eventVideo = eventVideo.Distinct().ToList();
+            return eventVideo;
         }
         /// <summary>
         ///     Get all comment of an event
@@ -998,6 +1035,7 @@ namespace EventZone.Helpers
                 }
             }
             catch { }
+            result = result.Distinct().ToList();
             return result;
 
         }
@@ -1048,6 +1086,11 @@ namespace EventZone.Helpers
             return false;
         }
 
+        /// <summary>
+        /// Get Thumb Event List By List Event
+        /// </summary>
+        /// <param name="listEvent"></param>
+        /// <returns></returns>
         public List<ViewThumbEventModel> GetThumbEventListByListEvent(List<Event> listEvent)
         {
             var listThumbEvent = new List<ViewThumbEventModel>();
@@ -1163,7 +1206,7 @@ namespace EventZone.Helpers
             {
                  DateTime floorDateTime = DateTime.Today.Date - TimeSpan.FromDays(7);
                  result = (from a in db.Events where a.EventRegisterDate >= floorDateTime select a).ToList();
-                 result= result.OrderBy(o => o.EventRegisterDate).ToList();
+                 result = result.OrderByDescending(o => o.EventRegisterDate).ToList();
             }
             catch { }
             return result;
@@ -1174,14 +1217,18 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public List<Event> GetListNewEventByUser (long userID){
             List<Event> result = new List<Event>();
+            List<Event> newEvent = GetListNewEvent();
             try
             {
                 long[] listCategoryID = UserDatabaseHelper.Instance.GetListFollowingCategoryByUser(userID).ToArray();
-                List<Event> newEvent = GetListNewEvent();
                 result = SearchByListCategory(newEvent, listCategoryID);
             }
             catch { 
-            
+            }
+            result = result.OrderByDescending(o => o.EventRegisterDate).ToList();
+            if (result.Count < 5)
+            {
+                result.AddRange(newEvent.Take(5).ToList());
             }
             return result;
         }
@@ -1217,7 +1264,7 @@ namespace EventZone.Helpers
             try
             {
                 List<Event> result = new List<Event>();
-                listEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.isActive));
+                listEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.Active));
                 result = listEvent;
                 return result;
             }
@@ -1233,10 +1280,12 @@ namespace EventZone.Helpers
             List<Event> result = new List<Event>();
             try {
                 List<long> listEventID;
+                db.EventRanks.Load();
                 listEventID = (from a in db.EventRanks orderby a.Score descending select a.EventId).Take(50).ToList();
                 foreach (var item in listEventID) {
                     Event evt = db.Events.Find(item);
                     if (evt != null) {
+                        db.Entry(evt).Reload();
                         result.Add(evt);
                     }
                 }
@@ -1409,7 +1458,6 @@ namespace EventZone.Helpers
 
             return result;
         }
-
         public Image UserAddImage(HttpPostedFileBase file, long userID)
         {
             User user = db.Users.Find(userID);
@@ -1447,8 +1495,6 @@ namespace EventZone.Helpers
                 }
             }
             return null;
-
-
         }
         /// <summary>
         /// add new event to database
@@ -1481,7 +1527,7 @@ namespace EventZone.Helpers
             newEvent.EditBy = userid;
             newEvent.EditTime = DateTime.Now;
             newEvent.EditContent = null;
-            newEvent.Status = EventZoneConstants.isActive; 
+            newEvent.Status = EventZoneConstants.Active; 
             // insert Event to Database
             try
             {
@@ -1496,7 +1542,6 @@ namespace EventZone.Helpers
             }
             return newEvent;
         }
-
         public List<EventPlace> AddEventPlace(List<Location> listLocation, Event newEvent)
         {
             List<EventPlace> listEventPlaces = new List<EventPlace>();
@@ -1510,106 +1555,6 @@ namespace EventZone.Helpers
                 listEventPlaces.Add(newEventPlace);
             }
             return listEventPlaces;
-        }
-
-        private async Task<string[]> Run(String broadcastTitle, DateTime startTime, DateTime endTime, String quality, int privacyYoutube)
-        {
-
-            UserCredential credential = null;
-            
-            try
-            {
-                credential = await GoogleWebAuthorizationBroker.AuthorizeAsync(
-                    new ClientSecrets
-                    {
-                        ClientId = "815951169778-7i99o0mfqcpdmemb5brvla602cplhhgl.apps.googleusercontent.com",
-                        ClientSecret = "j3hrwvB0v44-ARFK1ZgwETN5",
-                    },
-                    new[] { YouTubeService.Scope.Youtube },
-                    "user",
-                    CancellationToken.None
-                );
-            }
-            catch
-            {
-                credential.RevokeTokenAsync(CancellationToken.None).Wait();
-                return new string[] { "Something wrong when authenticate with google, please try again!" };
-            }
-
-            var youtubeService = new YouTubeService(new BaseClientService.Initializer()
-            {
-                HttpClientInitializer = credential,
-                ApplicationName = Assembly.GetExecutingAssembly().GetName().Name
-            });
-
-            //Set Snippet
-            LiveBroadcastSnippet broadcastSnippet = new LiveBroadcastSnippet();
-            broadcastSnippet.Title = broadcastTitle;
-            if (startTime.CompareTo(DateTime.Now) < 0)
-            {
-                startTime = DateTime.Now;
-            }
-            broadcastSnippet.ScheduledStartTime = startTime;
-            broadcastSnippet.ScheduledEndTime = endTime;
-
-            // Set the broadcast's privacy status to "private". See:
-            // https://developers.google.com/youtube/v3/live/docs/liveBroadcasts#status.privacyStatus
-            LiveBroadcastStatus status = new LiveBroadcastStatus();
-            if (privacyYoutube == 0)
-            {
-                status.PrivacyStatus = "public";
-            }
-            else if (privacyYoutube == 1)
-            {
-                status.PrivacyStatus = "unlisted";
-            }
-            else
-            {
-                status.PrivacyStatus = "private";
-            }
-
-
-            //Set LiveBroadcast
-            LiveBroadcast broadcast = new LiveBroadcast();
-            LiveBroadcast returnBroadcast = new LiveBroadcast();
-            try
-            {
-                broadcast.Kind = "youtube#liveBroadcast";
-                broadcast.Snippet = broadcastSnippet;
-                broadcast.Status = status;
-                LiveBroadcastsResource.InsertRequest liveBroadcastInsert = youtubeService.LiveBroadcasts.Insert(broadcast, "snippet,status");
-                returnBroadcast = liveBroadcastInsert.Execute();
-            }
-            catch (Exception ex)
-            {
-                credential.RevokeTokenAsync(CancellationToken.None).Wait();
-                return new string[] { ex.Message };
-            }
-            //Set LiveStream Snippet
-            LiveStreamSnippet streamSnippet = new LiveStreamSnippet();
-            streamSnippet.Title = broadcastTitle + "Stream Title";
-            CdnSettings cdnSettings = new CdnSettings();
-            cdnSettings.Format = quality;
-            cdnSettings.IngestionType = "rtmp";
-
-            //Set LiveStream
-            LiveStream streamLive = new LiveStream();
-            streamLive.Kind = "youtube#liveStream";
-            streamLive.Snippet = streamSnippet;
-            streamLive.Cdn = cdnSettings;
-            LiveStream returnLiveStream = youtubeService.LiveStreams.Insert(streamLive, "snippet,cdn").Execute();
-            LiveBroadcastsResource.BindRequest liveBroadcastBind = youtubeService.LiveBroadcasts.Bind(
-                returnBroadcast.Id, "id,contentDetails");
-            liveBroadcastBind.StreamId = returnLiveStream.Id;
-            returnBroadcast = liveBroadcastBind.Execute();
-            //Return Value
-            String streamName = returnLiveStream.Cdn.IngestionInfo.StreamName;
-            String primaryServerUrl = returnLiveStream.Cdn.IngestionInfo.IngestionAddress;
-            String backupServerUrl = returnLiveStream.Cdn.IngestionInfo.BackupIngestionAddress;
-            String youtubeUrl = "https://www.youtube.com/watch?v=" + returnBroadcast.Id;
-            string[] result = new string[] { streamName, primaryServerUrl, backupServerUrl, youtubeUrl };
-            credential.RevokeTokenAsync(CancellationToken.None).Wait();
-            return result;
         }
     }
 
@@ -1747,33 +1692,8 @@ namespace EventZone.Helpers
             List<EventPlace> listeventPlace = db.EventPlaces.ToList();
             return listeventPlace;
         }
-        public List<double> GetLocationIdOfEvent(string[] locationList, string[] longitudeList, string[] lattitudeList)
-        {
-            var locationId = new List<double>();
 
-            //Search for duplicated location before adding new location to database
-            for (var i = 0; i < locationList.Length - 1; i++)
-            {
-                double locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
-                    double.Parse(lattitudeList[i]),
-                    locationList[i]);
-                if (
-                    locationIdIndex == -1)
-                {
-                    var newLocation = new Location();
-                    newLocation.LocationName = locationList[i];
-                    newLocation.Latitude = double.Parse(lattitudeList[i]);
-                    newLocation.Longitude = double.Parse(longitudeList[i]);
-                    db.Locations.Add(newLocation);
-                    db.SaveChanges();
-                    locationIdIndex = LocationHelpers.Instance.FindLocationByAllData(double.Parse(longitudeList[i]),
-                        double.Parse(lattitudeList[i]),
-                        locationList[i]);
-                }
-                locationId.Add(locationIdIndex);
-            }
-            return locationId;
-        }
+
     }
 
     public class CommonDataHelpers : SingletonBase<CommonDataHelpers>
@@ -1861,7 +1781,6 @@ namespace EventZone.Helpers
                         listEventPlace.Add(eventPlace);
                     }
                 }
-               
                 foreach (var item in listEventPlace) {
                     if (item.LocationID == location.LocationID) {
                         foreach (var video in listVideo) {
@@ -1873,7 +1792,201 @@ namespace EventZone.Helpers
                 }
             }
             catch { }
+            result=result.Distinct().ToList();
             return result;
+        }
+        public int CountNumberReport() {
+            int result = 0;
+            try {
+                result = (from a in db.Reports select a).ToList().Count;
+            }
+            catch {
+            } 
+            return result;
+        }
+        public int CountUnHandleReport()
+        {
+            int result = 0;
+            try
+            {
+                result = (from a in db.Reports where a.ReportStatus == EventZoneConstants.Pendding select a).ToList().Count();
+            }
+            catch { 
+            }
+            return result;
+        }
+    }
+    public class AdminDataHelpers : SingletonBase<AdminDataHelpers> { 
+        private EventZoneEntities db;
+        /// <summary>
+        /// constructor
+        /// </summary>
+        private AdminDataHelpers()
+        {
+            db = new EventZoneEntities();
+        }
+        public User FindAdmin(string userName, string password) {
+            User admin = UserDatabaseHelper.Instance.GetUserByAccount(userName,password);
+            if (admin != null) {
+                if (admin.UserRoles == EventZoneConstants.Admin)
+                {
+                    return admin;
+                }
+            }
+            return null;
+        }
+        /// <summary>
+        /// Admin lock an event
+        /// </summary>
+        /// <param name="adminID"></param>
+        /// <param name="EventID"></param>
+        /// <returns></returns>
+        public bool LockEvent(long adminID, long eventID, string reason) {
+            try {
+                Event evt = db.Events.Find(eventID);
+                evt.Status = EventZoneConstants.Lock;
+                evt.EditBy = adminID;
+                evt.EditContent = reason;
+                evt.EditTime = DateTime.Now;
+                db.Entry(evt).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(evt).Reload();
+                TrackingAction newAction = new TrackingAction { SenderID=adminID,
+                                                                SenderType=EventZoneConstants.Admin,
+                                                                ReceiverID=EventDatabaseHelper.Instance.GetAuthorEvent(eventID).UserID,
+                                                                ReceiverType=EventZoneConstants.User,
+                                                                ActionID=EventZoneConstants.LockEvent,
+                                                                ActionTime=DateTime.Now
+                                                               };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch {
+            }
+            return false;
+        }
+        /// <summary>
+        /// admin unlock Event
+        /// </summary>
+        /// <param name="adminID"></param>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public bool UnlockEvent(long adminID, long eventID)
+        {
+            try
+            {
+                Event evt = db.Events.Find(eventID);
+                evt.Status = EventZoneConstants.Active;
+                evt.EditBy = adminID;
+                evt.EditContent = "";
+                evt.EditTime = DateTime.Now;
+                db.Entry(evt).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(evt).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = EventZoneConstants.Admin,
+                    ReceiverID = EventDatabaseHelper.Instance.GetAuthorEvent(eventID).UserID,
+                    ReceiverType = EventZoneConstants.User,
+                    ActionID = EventZoneConstants.UnlockEvent,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+        /// <summary>
+        /// Admin Lock User
+        /// </summary>
+        /// <param name="adminID"></param>
+        /// <returns></returns>
+        public bool LockUser(long adminID,long userID) {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.AccountStatus = EventZoneConstants.Lock;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = EventZoneConstants.Admin,
+                    ReceiverID = userID,
+                    ReceiverType = EventZoneConstants.User,
+                    ActionID = EventZoneConstants.LockEvent,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+        public bool UnlockUser(long adminID, long userID)
+        {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.AccountStatus = EventZoneConstants.Active;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = EventZoneConstants.Admin,
+                    ReceiverID = userID,
+                    ReceiverType = EventZoneConstants.User,
+                    ActionID = EventZoneConstants.UnLockUser,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+
+        public bool ChangeUserEmail(long adminID, long userID, string email)
+        {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.UserEmail = email;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = EventZoneConstants.Admin,
+                    ReceiverID = userID,
+                    ReceiverType = EventZoneConstants.User,
+                    ActionID = EventZoneConstants.ChangeUserEmail,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
         }
     }
 }

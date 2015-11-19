@@ -32,7 +32,7 @@ namespace EventZone.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult SignInPost(SignInViewModel model)
+        public JsonResult SignInPost(SignInViewModel model)
         {
             if (!ModelState.IsValid)
                 return Json(new
@@ -77,14 +77,12 @@ namespace EventZone.Controllers
                 });
             }
 
-
-            // If we got this far, something failed, redisplay form
             return Json(new
             {
                 state = 1,
                 message = "Signin Successfully"
             });
-            ;
+            
         }
 
         // GET: Account/Details/5
@@ -142,12 +140,12 @@ namespace EventZone.Controllers
                 {
                     user.UserLastName = model.UserLastName;
                 }
-                user.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
+                user.AccountStatus = EventZoneConstants.ActiveUser; //set Active account
                 if (user.Avartar==null) //set default avatar
                 {
                     user.Avartar = 10032;
                 }
-                user.UserRoles = EventZoneConstants.IsUser; //set UserRole
+                user.UserRoles = EventZoneConstants.User; //set UserRole
                 // insert user to Database
                 db.Users.Add(user);
                 db.SaveChanges();
@@ -323,9 +321,9 @@ namespace EventZone.Controllers
                 {
                     newUser.UserLastName = model.UserLastName;
                 }
-                newUser.AccountStatus = EventZoneConstants.IsUserActive; //set Active account
+                newUser.AccountStatus = EventZoneConstants.ActiveUser; //set Active account
                 newUser.Avartar = 10032;
-                newUser.UserRoles = EventZoneConstants.IsUser; //set UserRole
+                newUser.UserRoles = EventZoneConstants.User; //set UserRole
                 // insert user to Database
                 db.Users.Add(newUser);
                 db.SaveChanges();

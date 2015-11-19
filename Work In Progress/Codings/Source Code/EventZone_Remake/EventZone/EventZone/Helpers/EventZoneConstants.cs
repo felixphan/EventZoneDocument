@@ -8,8 +8,12 @@
         public static int UploadedImageMaxHeightPixcel = 800;
         public static string[] ImageFileExtensions = {".jpg", ".png", ".jpeg"};
         public static int RecordsPerPage = 20;
-        public static int IsUser = 0;
-        public static int IsMod = 1;
+        public static int User = 0;
+        public static int Mod = 1;
+        public static int Admin = 2;
+        public static int Pendding = 0;
+        public static int Approved = 1;
+        public static int Rejected = 2;
 
         public static int publicEvent = 0;
         public static int unlistedEvent = 1;
@@ -22,9 +26,21 @@
         public static int isMale = 0;
         public static int isFemale = 1;
 
-        public static bool isActive = true;
-        public static bool isLock = false;
-        public static bool IsUserActive = true;
-        public static bool IsUserLock = false;
+        public static bool Active = true;
+        public static bool Lock = false;
+        public static bool ActiveUser = true;
+        public static bool LockedUser = false;
+
+        //phan constants cua tracking action
+        public static int Event = 4;
+        public static int Report = 5;
+        public static int Appeal = 6;
+        public static int LockEvent = 1;
+        public static int UnlockEvent = 2;
+        public static int LockUser = 3;
+        public static int UnLockUser = 4;
+        public static int ChangeUserEmail = 5;
+
+
     }
 }

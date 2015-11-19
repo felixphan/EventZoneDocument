@@ -44,7 +44,7 @@ namespace EventZone.Models
         public bool AccountStatus { get; set; }
         public int Gender { get; set; }
         public Nullable<long> Avartar { get; set; }
-        public Nullable<System.DateTime> DataJoin { get; set; }
+        public System.DateTime DataJoin { get; set; }
     
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }

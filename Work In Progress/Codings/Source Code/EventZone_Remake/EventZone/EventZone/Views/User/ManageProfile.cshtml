@@ -3,6 +3,10 @@
 @{
     var errorTitle = TempData["errorTitle"];
     var errorMessage = TempData["errorMessage"];
+    if (EventZone.Helpers.UserHelpers.GetCurrentUser(Session) == null)
+    {
+        Response.Redirect("~/Home");
+    }
     User user = UserHelpers.GetCurrentUser(Session);
     var task = TempData["task"];
 }
@@ -34,7 +38,7 @@ else {
             <div class="tab-pane active" id="i_info_tab">
                 @*<iframe src="u_m_p_info.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>*@
                     <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2 form-group d_ump_info">
-                        @Html.Partial("_AvatarPartial",user.Image)
+                        @Html.Partial("_AvatarPartial",EventDatabaseHelper.Instance.GetImageByID(user.Avartar))
                         <div class="row b">
                             <!-- row UserName -->
                             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
@@ -216,6 +220,7 @@ else {
     </div>
 
 </body>
+<script src="~/Scripts/Home/jquery.flip.min.js"></script>
 <script>
     $(document).ready(function () {
         @if (task == "userInfor") {

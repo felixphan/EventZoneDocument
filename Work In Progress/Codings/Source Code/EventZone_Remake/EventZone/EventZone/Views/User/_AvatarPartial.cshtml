@@ -2,11 +2,6 @@
 @using EventZone.Models
 @using EventZone.Helpers
 
-@{
-    var errorTitle = TempData["errorTitle"];
-    var errorMessage = TempData["errorMessage"];
-    User user = UserHelpers.GetCurrentUser(Session);
-}
 <style>
     .thumb_anh {
         vertical-align: middle;

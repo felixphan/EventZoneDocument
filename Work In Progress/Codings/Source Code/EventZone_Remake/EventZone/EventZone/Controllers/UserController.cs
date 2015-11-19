@@ -281,7 +281,7 @@ namespace EventZone.Controllers
                     else
                     {
                         TempData["errorTitle"] = "Not select file";
-                        TempData["errorMessage"] = "It's look like you fogot select an image! Are you getting old?";
+                        TempData["errorMessage"] = "It's look like you forgot select an image! Are you getting old?";
                         return RedirectToAction("ManageProfile");
                     }
                 }

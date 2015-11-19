@@ -1,13 +1,12 @@
 ﻿
-  window.fbAsyncInit = function() {
-      FB.init({
-          //1722319744663376- facebook localhost
-          appId: '192308807773103',//eventzone.azure
-          //appId: '1722319744663376',
-          xfbml      : true,
-          version    : 'v2.5'
-      });
-  };
+//appId: '192308807773103',//eventzone.azure
+window.fbAsyncInit = function () {
+    FB.init({
+        appId: '1722319744663376',
+        xfbml: true,
+        version: 'v2.5'
+    });
+};
 
 (function(d, s, id){
     var js, fjs = d.getElementsByTagName(s)[0];

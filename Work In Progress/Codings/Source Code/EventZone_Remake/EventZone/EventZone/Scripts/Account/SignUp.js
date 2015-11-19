@@ -10,6 +10,10 @@
         $("#signup-ConfirmPassword").val("");
         return false;
     }
+    if (!($('#policy').is(':checked'))) {
+        $('#policyError').show();
+        return false;
+    }
     //hash password
     $("#signup-Password").val($.md5($("#signup-Password").val()));
     $("#signup-ConfirmPassword").val($.md5($("#signup-ConfirmPassword").val()));
