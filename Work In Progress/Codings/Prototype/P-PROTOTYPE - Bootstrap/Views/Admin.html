@@ -11,6 +11,17 @@
 
     <!-- myCSS -->
     <link rel="stylesheet" type="text/css" href="../Content/myCSS_admin.css">
+
+    <!-- All script here -->
+    <!-- Default JQuery -->
+    <script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>
+
+    <!-- Default Bootstrap -->
+    <script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
+
+    <!-- myJS -->
+    <script type="text/javascript" src="../Scripts/myJS_s_r.js"></script>
+
 </head>
 
 <body class="d_admin_body">
@@ -36,7 +47,6 @@
           <li class=""><a href="#event-r" data-toggle="tab">Manage Event</a></li>
           <li class=""><a href="#user-r" data-toggle="tab">Manage User</a></li>
           <li class=""><a href="#reported-r" data-toggle="tab">Reported Event (10)</a></li>
-          <li class=""><a href="#appealed-r" data-toggle="tab">Appealed Event (5)</a></li>
         </ul>
         
         <ul class="nav navbar-nav navbar-right">
@@ -101,58 +111,7 @@
               </div>
               <div class="d_e_follower">
                 <i class="fa fa-star"></i>
-                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
-              </div>
-              <div class="d_e_date">
-                <i class="fa fa-calendar-check-o"></i>
-                <div class="d_fill_in">Date: 14/11/2015</div>
-              </div>
-              <div class="d_e_time">
-                <i class="fa fa-clock-o"></i>
-                <div class="d_fill_in">Time: 00:00 - 11:11</div>
-              </div>
-              <div class="d_e_user">
-                <i class="fa fa-user"></i>
-                <div class="d_fill_in">by: User X</div>
-              </div>
-              <div class="d_e_location">
-                <i class="fa fa-map-o"></i>
-                <div class="d_fill_in">Location: Hai Bà Trưng, Hà Nội</div><a> (+3)</a>
-              </div>
-              <div class="d_e_btn_desciption">
-                <i class="fa fa-file-text"></i>
-                <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
-              </div>
-            </div>
-          </div>
-		   <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
-            <!-- e_ để đánh dấu CSS EVENT -->
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
-              <img src="../img/bg1.jpg">
-              <div class="d_txt_live">
-                Live
-              </div>
-            </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
-              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
-                Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
-              </div>
-              <div class="btn-group d_e_btn_more">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
-                </button>
-                <ul class="dropdown-menu d_e_drop_menu">
-                  <li><a href="#">Like</a></li>
-                  <li><a href="#">Dislike</a></li>
-                  <li><a href="#">Share Fb</a></li>
-                </ul>
-              </div>
-              <div class="d_e_cate">
-                <i class="fa fa-list-ul"></i>
-                <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
-              </div>
-              <div class="d_e_follower">
-                <i class="fa fa-star"></i>
-                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+                <div class="d_fill_in">Followed: 54321</div>
               </div>
               <div class="d_e_date">
                 <i class="fa fa-calendar-check-o"></i>
@@ -203,7 +162,7 @@
               </div>
               <div class="d_u_follower">
                 <i class="fa fa-star"></i>
-                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
+                <div class="d_fill_in">Followed: 54321</div>
               </div>
               <div class="d_u_date">
                 <i class="fa fa-calendar-check-o"></i>
@@ -220,24 +179,30 @@
         <div class="tab-pane b" id="reported-r">
           <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
             <!-- e_ để đánh dấu CSS EVENT -->
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
-              <img src="../img/bg1.jpg">
-              <div class="d_txt_live">
-                Live
-              </div>
-            </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
-              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
+            <div class="d_e_info_cover">
+              <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_e_title">
                 Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
               </div>
-              <div class="btn-group d_e_btn_more">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
-                </button>
-                <ul class="dropdown-menu d_e_drop_menu">
-                  <li><a href="#">Like</a></li>
-                  <li><a href="#">Dislike</a></li>
-                  <li><a href="#">Share Fb</a></li>
-                </ul>
+              <div class="col-lg-4 d_group_btn_right">
+                <div class="d_e_btn_more">
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
+                  </button>
+                  <ul class="dropdown-menu d_e_drop_menu">
+                    <li><a href="#">Like</a></li>
+                    <li><a href="#">Dislike</a></li>
+                    <li><a href="#">Share Fb</a></li>
+                  </ul>
+                </div>
+                <div class="d_e_btn_lock">
+                  <button type="button" class="btn" >
+                    <span class="fa fa-unlock d_fa_icon"></span>
+                  </button>
+                </div>
+                <div class="d_e_btn_live">
+                  <button type="button" class="btn" data-toggle="modal" data-target="#i_a_modal">
+                    50% reported
+                  </button>
+                </div>
               </div>
               <div class="d_e_cate">
                 <i class="fa fa-list-ul"></i>
@@ -245,86 +210,21 @@
               </div>
               <div class="d_e_follower">
                 <i class="fa fa-star"></i>
-                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
-              </div>
-              <div class="d_e_date">
-                <i class="fa fa-calendar-check-o"></i>
-                <div class="d_fill_in">Date: 14/11/2015</div>
-              </div>
-              <div class="d_e_time">
-                <i class="fa fa-clock-o"></i>
-                <div class="d_fill_in">Time: 00:00 - 11:11</div>
+                <div class="d_fill_in">Followed: 54321</div>
               </div>
               <div class="d_e_user">
                 <i class="fa fa-user"></i>
                 <div class="d_fill_in">by: User X</div>
               </div>
-              <div class="d_e_location">
-                <i class="fa fa-map-o"></i>
-                <div class="d_fill_in">Location: Hai Bà Trưng, Hà Nội</div><a> (+3)</a>
-              </div>
               <div class="d_e_btn_desciption">
                 <i class="fa fa-file-text"></i>
-                <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
+                <div class="d_fill_in"><a href="" data-toggle="modal" data-target="#i_Modal_des"><i>View Description</i></a></div>
               </div>
             </div>
           </div>
         </div>
         <!-- REPEALED Result: a_ đánh dấu CSS APPEALED EVENT -->
-        <div class="tab-pane b" id="appealed-r">
-          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
-            <!-- e_ để đánh dấu CSS EVENT -->
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
-              <img src="../img/bg1.jpg">
-              <div class="d_txt_live">
-                Live
-              </div>
-            </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
-              <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
-                Chương trình dạy kĩ năng “Beauty show_điểm đến của những giấc mơ làm đẹp” số đầu tiên: Make up course
-              </div>
-              <div class="btn-group d_e_btn_more">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-option-vertical"></span>
-                </button>
-                <ul class="dropdown-menu d_e_drop_menu">
-                  <li><a href="#">Like</a></li>
-                  <li><a href="#">Dislike</a></li>
-                  <li><a href="#">Share Fb</a></li>
-                </ul>
-              </div>
-              <div class="d_a_cate">
-                <i class="fa fa-list-ul"></i>
-                <div class="d_fill_in">in <a href=""><i>Category</i></a></div>
-              </div>
-              <div class="d_a_follower">
-                <i class="fa fa-star"></i>
-                <div class="d_fill_in">Followed: 54321 <a href=""><i>follow</i></a></div>
-              </div>
-              <div class="d_a_user">
-                <i class="fa fa-user"></i>
-                <div class="d_fill_in">by: User X</div>
-              </div>
-              <div class="d_a_btn_desciption">
-                <i class="fa fa-file-text"></i>
-                <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
-              </div>
-              <div class="d_a_txt_reason">
-                Proportion:
-              </div>
-              <div class="d_a_data">10%</div>
-              <div class="d_a_data">10%</div>
-              <div class="d_a_data">10%</div>
-              <div class="d_a_data">10%</div>
-              <div class="d_a_data">10%</div>
-              <div class="d_a_txt_total">
-                Total:
-              </div>
-              <div class="d_a_data">50%</div>
-              <div class="item_social social_fb hidden_320" style="overflow: visible;"><div class="fb-like fb_iframe_widget" data-send="false" data-layout="button_count" data-width="450" data-show-faces="true" data-href="http://vnexpress.net/tin-tuc/thoi-su/canh-sat-co-dong-tat-cdv-nu-bi-dinh-chi-3313500.html" fb-xfbml-state="rendered" fb-iframe-plugin-query="app_id=&amp;container_width=0&amp;href=http%3A%2F%2Fvnexpress.net%2Ftin-tuc%2Fthoi-su%2Fcanh-sat-co-dong-tat-cdv-nu-bi-dinh-chi-3313500.html&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=false&amp;show_faces=true&amp;width=450"><span style="vertical-align: bottom; width: 79px; height: 20px;"><iframe name="f33afc4624" width="450px" height="1000px" frameborder="0" allowtransparency="true" allowfullscreen="true" scrolling="no" title="fb:like Facebook Social Plugin" src="http://www.facebook.com/plugins/like.php?app_id=&amp;channel=http%3A%2F%2Fstatic.ak.facebook.com%2Fconnect%2Fxd_arbiter%2FwjDNIDNrTQG.js%3Fversion%3D41%23cb%3Df2a22f6d4%26domain%3Dvnexpress.net%26origin%3Dhttp%253A%252F%252Fvnexpress.net%252Ff23711e634%26relation%3Dparent.parent&amp;container_width=0&amp;href=http%3A%2F%2Fvnexpress.net%2Ftin-tuc%2Fthoi-su%2Fcanh-sat-co-dong-tat-cdv-nu-bi-dinh-chi-3313500.html&amp;layout=button_count&amp;locale=en_US&amp;sdk=joey&amp;send=false&amp;show_faces=true&amp;width=450" style="border: none; visibility: visible; width: 79px; height: 20px;" class=""></iframe></span></div></div>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
 
@@ -333,20 +233,189 @@
     </div>
   </div>
 
+  <!-- Modal -->
+  <div id="i_a_modal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Appeal statistic for <b>Event name</b>
+            by <b>User X</b>
+          </h4>
+        </div>
+        <div class="modal-body">
+          <div class="d_a_each_reason">
+            <div class="d_a_txt_reason">
+              Reason 1
+            </div>
+            <div class="d_a_txt_percent">
+              10%
+            </div>
+            <hr>
+            <p id="i_a_txt_owner">Owner's appeal:</p>
+            <div class="d_a_txt_appeal_content">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </div>
+          <div class="d_a_each_reason">
+            <div class="d_a_txt_reason">
+              Reason 2
+            </div>
+            <div class="d_a_txt_percent">
+              10%
+            </div>
+            <hr>
+            <p id="i_a_txt_owner">Owner's appeal:</p>
+            <div class="d_a_txt_appeal_content">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </div>
+          <div class="d_a_each_reason">
+            <div class="d_a_txt_reason">
+              Reason 3
+            </div>
+            <div class="d_a_txt_percent">
+              10%
+            </div>
+            <hr>
+            <p id="i_a_txt_owner">Owner's appeal:</p>
+            <div class="d_a_txt_appeal_content">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </div>
+          <div class="d_a_each_reason">
+            <div class="d_a_txt_reason">
+              Reason 4
+            </div>
+            <div class="d_a_txt_percent">
+              10%
+            </div>
+            <hr>
+            <p id="i_a_txt_owner">Owner's appeal:</p>
+            <div class="d_a_txt_appeal_content">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </div>
+          <div class="d_a_each_reason">
+            <div class="d_a_txt_reason">
+              Reason 5
+            </div>
+            <div class="d_a_txt_percent">
+              10%
+            </div>
+            <hr>
+            <p id="i_a_txt_owner">Owner's appeal:</p>
+            <div class="d_a_txt_appeal_content">
+              Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+              tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+              quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+              cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+              proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </div>
+          </div>
+          <div class="d_a_btn_reply">
+            <div class="form-group">
+              <textarea class="form-control" rows="1" id="i_texarea_reply"></textarea>
+              <button type="button" class="btn btn-success d_btn_send_reply">
+                <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal EVENT DESCRIPTION: phần popup hiện ra -->
+  <div class="modal fade" id="i_Modal_des" role="dialog"> 
+    <div class="modal-dialog">
+
+      <!-- Modal Description content: gồm tên & Phần Description -->
+      <div class="panel panel-info">
+          <div class="panel-heading">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <div class="panel-title"><b>Event Name</b></div>
+          </div>
+          <div style="padding-top:10px" class="panel-body">
+          <div class="d_des_content">
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+          tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+          quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+          cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+          proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+          </div>
+          </div>
+        </div>
+
+      <!-- Iframe mới
+      <iframe src="t_m_modal_ad_search.html"></iframe> -->
+    </div>
+  </div>
+
 <!--
 Test Code
 
 -->
 
-<!-- All script here -->
-<!-- Default JQuery -->
-<script type="text/javascript" src="../Scripts/jquery-1.11.3.min.js"></script>
 
-<!-- Default Bootstrap -->
-<script type="text/javascript" src="../Scripts/bootstrap.min.js"></script>
-
-<!-- myJS -->
-<script type="text/javascript" src="../Scripts/myJS_s_r.js"></script>
 
 
 </body>

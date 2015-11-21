@@ -65,6 +65,7 @@
 	margin-bottom: 10px;
 }
 .d_e_title{
+	height: 42px;
 	max-height: 42px;
 	overflow-y: hidden;
 }
@@ -78,7 +79,7 @@
 	left: 3%;
 }
 .d_e_drop_menu{
-	left: -120px;
+	zleft: -120px;
 }
 .d_e_info_cover .fa{
 	width: 26px;
@@ -94,13 +95,13 @@
 	display: -webkit-inline-box;
 	padding-left: 15px;
 	padding-right: 15px;
-	width: 35%;
+	width: 25%;
 	float: left;
 }
 .d_e_follower,
 .d_e_time,
 .d_e_location{
-	width: 50%;
+	zwidth: 50%;
 }
 .d_e_info_cover .fa,
 .d_e_info_cover .d_fill_in{
@@ -110,9 +111,7 @@
 .d_e_info_cover p{
 	margin-bottom: 0px;
 }
-.d_e_btn_more{
-	float: right;
-}
+
 
 /**************************************************** Khung MANAGE USER ***/
 /******************************************************* MANAGE USER > Từng User **/
@@ -127,7 +126,7 @@
 	left: -120px;
 }
 .d_u_info_cover .fa{
-	width: 26px;
+	width: 20px;
 	height: auto;
 }
 .d_u_cate,
@@ -161,6 +160,48 @@
 }
 
 /**************************************************** Khung REPORT ***/
+.d_e_info_cover{
+	padding: 0;
+}
+.d_e_title{
+	padding: 0;
+}
+.d_group_btn_right{
+	height: 42px;
+	padding: 0;
+}
+.d_e_btn_live .btn{
+	font-weight: 900;
+	color: grey;
+}
+.d_e_btn_more .dropdown-menu{
+	right: 2px;
+    top: 85%;
+    left: initial;
+}
+.d_e_btn_live,
+.d_e_btn_lock,
+.d_e_btn_more{
+	float: right;
+    margin-left: 4px;
+    height: 32px;
+}
+.d_e_btn_live,
+.d_e_btn_lock{
+	background-color: transparent;
+}
+.d_e_btn_more .btn{
+	height: inherit;
+}
+.d_e_btn_live .btn,
+.d_e_btn_lock .btn{
+	border: 0;
+	border-radius: 5px;
+}
+.d_e_btn_lock .fa{
+	padding: 0;
+	color: grey;
+}
 
 /**************************************************** Khung APPEAL ***/
 .d_a_cate,
@@ -180,15 +221,73 @@
 	width: 65%;
 }
 .d_a_data{
-	width: 10%;
+	width: 8%;
 }
 .d_a_txt_total,
 .d_a_txt_reason{
 	width: 15%;
 }
+
+/**************************************************** Khung MODAL ***/
+/**************************************************** MODAL REPORT, Appeal ***/
+#i_a_modal > .modal-dialog{
+	width: 90%;
+}
+#i_a_modal .modal-body{
+	height: 540px;
+}
+#i_a_modal .d_a_each_reason{
+	width: 20%;
+	zborder: 1px solid red;
+	height: 465px;
+	float: left;
+	margin-bottom: 10px;
+	padding: 10px;
+	text-align: justify;
+	border-left: 1px grey solid;
+}
+#i_a_modal .d_a_each_reason:first-child{
+	border: 0;
+}
+#i_a_modal .d_a_txt_reason{
+	text-align: center;
+	font-weight: bold;
+	width: 50%;
+    float: left;
+    padding: 0;
+}
+.d_a_txt_percent{
+    font-size: 25px;
+	text-align: right;
+	font-weight: bold;
+	width: 50%;
+    float: left;
+}
+#i_a_txt_owner{
+	color: lightgray;
+}
+.d_a_txt_appeal_content{
+	height: 345px;
+	overflow-y: auto;
+}
+#i_texarea_reply{
+	width: 95%;
+	max-width: 95%;
+	float: left;
+}
+.d_btn_send_reply{
+	float: right;
+}
+/**************************************************** MODAL Description ***/
+#i_Modal_des .panel-body{
+	height: 600px;
+    width: 100%;
+	overflow-y: auto;
+}
+
 /**************************************************** Decorate khác ***/
 .d_admin_body{
-	overflow-y: scroll;
+	zoverflow-y: scroll;
 }
 .d_result_container{
 	height: 600px;
