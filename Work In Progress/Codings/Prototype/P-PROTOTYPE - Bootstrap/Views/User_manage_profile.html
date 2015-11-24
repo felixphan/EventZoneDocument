@@ -6,45 +6,273 @@
     <!-- Plugin Bootstrap -->
     <link rel="stylesheet" type="text/css" href="../Content/bootstrap.css">
     
+	<!-- BOOTSTRAP social -->
+	<link rel="stylesheet" type="text/css" href="../Content/bootstrap-social.css">
+	<link rel="stylesheet" type="text/css" href="../Content/font-awesome.min.css">
+
     <!-- myCSS -->
     <link rel="stylesheet" type="text/css" href="../Content/myCSS_u_m_p.css">
 
+    <!-- ALL SCRIPT HERE -->
+	<!-- Default JQuery -->
+	<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>
+
+	<!-- Default Bootstrap -->
+	<script type="text/javascript" src="../Scripts/bootstrap.js"></script>
+
+	<!-- myJS
+	<script type="text/javascript" src="../Scripts/myJS_index_2.js"></script> -->
+
 </head>
 
-<!-- u_m_p_ đánh dấu CSS USER MANAGE PROFILE -->
-<body class="d_u_m_p_body">
+<body class="d_body">
 
-<div class="col-xs-12 col-sm-12 col-md-8 col-ld-8 col-md-offset-2 col-ld-offset-2 d_container">
+<div class="d_left_side">
 	<ul class="nav nav-tabs" id="myTab">
-		<li class="active"><a href="#i_info_tab" data-toggle="tab">User Info</a></li>
+		<li class="active"><a href="#i_tab_info" data-toggle="tab">User Info</a></li>
 		<li><a href="#i_schedule_tab" data-toggle="tab">Schedule (10)</a></li>
-		<li><a href="#i_follow_tab" data-toggle="tab">Follow (4)</a></li>
+		<li><a href="#i_tab_follow" data-toggle="tab">Follow (4)</a></li>
 	</ul>
-	<div class="tab-content d_info_tab">
+	<div class="tab-content i_tab_info">
 		<!-- Khung chứa User info -->
-		<div class="tab-pane active" id="i_info_tab">
-			<iframe src="u_m_p_info.html" name="targetframe" frameborder="0" id="i_frame_info"></iframe>
+		<div class="tab-pane active" id="i_tab_info">
+			<div class="d_info_tren">
+				<div class="d_ava">
+					<img src="../img/bg3.jpg">
+				</div>
+				<div class="d_info">
+					<div class="d_user_name">
+						UserName
+					</div>
+					<div class="row">
+						<div class="d_icon">
+							<span class="fa fa-tv"></span>
+						</div>
+						<div class="d_icon_info">
+							Channel: abc
+						</div>
+					</div>
+					<div class="row">
+						<div class="d_icon">
+							<span class="fa fa-calendar-plus-o"></span>
+						</div>
+						<div class="d_icon_info">
+							Ngày tạo: abc
+						</div>
+					</div>
+					<div class="row">
+						<div class="d_icon">
+							<span class="fa fa-bookmark-o"></span>
+						</div>
+						<div class="d_icon_info">
+							Events: 5
+						</div>
+					</div>
+					<div class="row">
+						<div class="d_icon">
+							<span class="fa fa-youtube-play"></span>
+						</div>
+						<div class="d_icon_info">
+							Live events: 5
+						</div>
+					</div>
+					<div class="row">
+						<div class="d_icon">
+							<span class="fa fa-users"></span>
+						</div>
+						<div class="d_icon_info">
+							Followers: 12345
+						</div>
+					</div>
+					<div class="row">
+						<div class="d_icon">
+							<span class="fa fa-envelope"></span>
+						</div>
+						<div class="d_icon_info">
+							E-mail: abc@cba.abc
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="d_info_duoi">
+				<div class="row">
+					<div class="d_criteria">
+						Tên chủ tài khoản:
+					</div>
+					<div class="d_value">
+						A Văn B
+					</div>
+				</div>
+				<div class="row">
+					<div class="d_criteria">
+						Ngày sinh:
+					</div>
+					<div class="d_value">
+						abc
+					</div>
+				</div>
+				<div class="row">
+					<div class="d_criteria">
+						Số điện thoại:
+					</div>
+					<div class="d_value">
+						123
+					</div>
+				</div>
+				<div class="row">
+					<div class="d_criteria">
+						<p></p>
+					</div>
+					<div class="d_value">
+						<a type="button" class="btn btn-primary btn-sm" id="i_btn_edit">Edit</a>
+					</div>
+				</div>
+			</div>
 		</div>
 		<!-- Khung chứa Schedule -->
-		<div class="tab-pane" id="i_schedule_tab">
-			<iframe src="u_m_p_schedule.html" name="targetframe" frameborder="0" id="i_frame_schedule"></iframe>
+		<div class="tab-pane" id="i_schedule_tab" style="text-align: center; margin-top: 200px">
+			Function is being building...
 		</div>
 		<!-- Khung chứa Follow -->
-		<div class="tab-pane" id="i_follow_tab">
-			<iframe src="u_m_p_follow.html" name="targetframe" frameborder="0" id="i_frame_follow"></iframe>
+		<div class="tab-pane" id="i_tab_follow">
+			<div id="result-list" class="panel-group">
+				<div class="panel panel-default">
+				    <div class="panel-heading d_panel_1">
+				        <h4 class="panel-title">
+				        	<!-- _fl viết tắt cho Follow -->
+				            <a href="#i_fl_event" data-toggle="collapse" data-parent="#result-list" class="" aria-expanded="true">
+				                <div class="xxx">Followed Events(4)</div>
+				            </a>
+				        </h4>
+				    </div>
+				    <div id="i_fl_event" class="panel-collapse collapse in" aria-expanded="true">
+						<div class="tab-pane active d_events_cover">
+							<div class="d_each_event">
+								<div class="d_thumb">
+									<img src="../img/bg3.jpg">
+								</div>
+								<div class="d_info">
+									<div class="d_title">
+										Title Title TitleTitle Title Title 
+									</div>
+									<div class="d_time_left">
+										5 days left
+									</div>
+								</div>
+							</div>
+						</div>
+				    </div>
+				</div>
+				<div class="panel panel-default">
+				    <div class="panel-heading">
+				        <h4 class="panel-title">
+				        	<!-- _fl viết tắt cho Follow -->
+				            <a href="#i_fl_user" data-toggle="collapse" data-parent="#result-list" class="collapsed" aria-expanded="false">
+				                <div>Followed User (10)</div>
+				            </a>
+				        </h4>
+				    </div>
+				    <div id="i_fl_user" class="panel-collapse collapse" aria-expanded="false">
+						<div class="panel-body d_user_cover">
+							<div class="d_each_user">
+								<div class="d_thumb">
+									<img src="../img/bg3.jpg">
+								</div>
+								<div class="d_info">
+									<div class="d_title">
+										UserName
+									</div>
+									<div class="d_time_left">
+										5 days left
+									</div>
+								</div>
+								<div class="d_btn_more">
+									<a type="button" class="btn btn-default btn-sm dropdown-toggle"id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+										<span class="glyphicon glyphicon-option-vertical"></span>
+									</a>
+									<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+									    <li><a href="#">Action</a></li>
+									    <li><a href="#">Another action</a></li>
+									    <li><a href="#">Something else here</a></li>
+									    <li><a href="#">Separated link</a></li>
+									  </ul>
+								</div>
+							</div>
+						</div>
+				    </div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>
-
-<!-- ALL SCRIPT HERE -->
-<!-- Default JQuery -->
-<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>
-
-<!-- Default Bootstrap -->
-<script type="text/javascript" src="../Scripts/bootstrap.js"></script>
-
-<!-- myJS
-<script type="text/javascript" src="../Scripts/myJS_index_2.js"></script> -->
-
+<div class="d_right_side_top">
+	<ul class="nav nav-tabs" id="myTab">
+		<li class="active"><a href="#i_events" data-toggle="tab">Latest Events</a></li>
+	</ul>
+	<div class="tab-content d_info_tab">
+		<!-- Khung chứa User info -->
+		<div class="tab-pane active" id="i_events">
+			<div class="d_events_cover">
+				<div class="d_each_event">
+					<div class="d_thumb">
+						<img src="../img/bg3.jpg">
+					</div>
+					<div class="d_info">
+						<div class="d_title">
+							Title Title TitleTitle Title Title 
+						</div>
+						<div class="d_time_left">
+							5 days left
+						</div>
+					</div>
+				</div>
+				<div class="d_each_event">
+					<div class="d_thumb">
+						<img src="../img/bg3.jpg">
+					</div>
+					<div class="d_info">
+						<div class="d_title">
+							Title Title TitleTitle Title Title 
+						</div>
+						<div class="d_time_left">
+							5 days left
+						</div>
+					</div>
+				</div>
+				<div class="d_each_event">
+					<div class="d_thumb">
+						<img src="../img/bg3.jpg">
+					</div>
+					<div class="d_info">
+						<div class="d_title">
+							Title Title TitleTitle Title Title 
+						</div>
+						<div class="d_time_left">
+							5 days left
+						</div>
+					</div>
+				</div>
+				<div class="d_txt_show_all" style="text-align: center;">
+					<a>More...</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="d_right_side_bottom">
+	<ul class="nav nav-tabs" id="myTab">
+		<li class="active"><a href="#i_noti" data-toggle="tab">Notification</a></li>
+	</ul>
+	<div class="tab-content d_tab_noti">
+		<!-- Khung chứa User info -->
+		<div class="tab-pane active" id="i_noti">
+			<div class="d_noti_cover">
+				<div class="d_each_noti">
+					<b>abc</b> blah blah
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 </body>
 </html>

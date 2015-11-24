@@ -1,18 +1,32 @@
 /**************************************** USER MANAGE PROFILE ***/
 
 /**************************************** Sửa Bootstrap ***/
+.row{
+	margin: 0;
+}
 .panel-group {
-    margin-bottom: 0px;
+	margin-bottom: 0px;
+}
+.panel-default > .panel-heading{
+	border-radius: 0px;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
 }
 
 /**************************************** Decorate ***/
-.d_container{
+.d_body{
+	padding: 10px 200px;
+}
+.d_left_side{
+	height: 560px;
 	padding: 5px;
+	width: 59%;
 	background-color: #f5f5f5;
 	min-width: 500px;
 	border-radius: 5px;
-	margin-top: 50px;
+	zmargin-top: 50px;
 	border: 1px solid lightgrey;
+	float: left;
 }
 #i_frame_info,
 #i_frame_schedule,
@@ -33,69 +47,238 @@
 }
 
 /**************************************** User Info ***/
-.d_ava img{
-	width: 100px;
-	height: auto;
-	margin-bottom: 10px;
+
+
+/**************************************** User Info >> trên ***/
+.d_events_cover,
+.d_noti_cover,
+.d_info_tren{
+    margin-bottom: 6px;
+	height: 200px;
+	padding: 10px;
+	background-color: white;
+	border: 1px solid;
+	border-color: #DDDDDD;
+	border-top: 0;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+.d_info_tren .d_ava{
+	width: 25%;
+    height: inherit;
+    float: left;
+}
+.d_info_tren .d_ava img{
+	width: 100%;
+}
+.d_info_tren .d_info{
+    width: 73%;
+    margin-left: 2%;
+    float: left;
+}
+.d_info_tren .d_info .row{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+.d_info_tren .d_user_name{
+	font-weight: bold;
+	font-size: 17px;
+}
+.d_info_tren .row .d_icon{
+	text-align: center;
+	width: 7%;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.d_info_tren .row .d_icon_info{
+	width: 90%;
+	float: left;
 }
 
+/**************************************** User Info >> dưới ***/
+.d_info_duoi{
+    height: 300px;
+	padding: 10px;
+	background-color: white;
+	border: 1px solid;
+	border-color: #DDDDDD;
+	border-radius: 5px;
+}
+.d_info_duoi .row {
+	margin: 5px 0;
+}
+.d_info_duoi .row .d_criteria{
+	width: 33%;
+	float: left;
+	text-align: right;
+}
+.d_info_duoi .row .d_value{
+	width: 60%;
+	float: left;
+	margin-left: 2%;
+}
+#i_btn_edit{
+	margin-top: 10px;
+}
 /**************************************** Schedule ***/
 
 /**************************************** Follow **/
-.d_watch_video_tab{
-	border: 0px red solid;
+#i_tab_follow{
+	margin-top: 5px;
 }
-.d_play_video iframe{
-	height: 400px;
+#i_fl_event .d_events_cover{
+	padding: 10px;
+	max-height: 412px;
 }
-.d_wv_button {
+#i_fl_user .d_user_cover{
+	padding: 10px;
+	max-height: 412px;
 }
-.d_wv_button a {
-	margin-right: 10px;
-}
-/**************************************** Follow > Each Event Card**/
-#i_fl_event{
-	padding-top: 5px;
-	max-height: 396px;
-    overflow-y: auto;
-}
-.d_ump_follow{
-	overflow-y: hidden;
-}
-#i_iframe_event{
+
+/**************************************** Follow > Each Event **/
+#i_fl_event .d_events_cover {
 	border: 0;
-	width: 100%;
+	height: initial;
+	overflow-y: auto;
 }
-.d_umpf_event{
-	width: 98%;
-	margin: 0 auto;
-	border: 1px solid;
-	border-color: rgba(0, 0, 0, 0.1);
-	border-radius: 3px;
-	padding: 5px;
-	margin-left: 1%;
+#i_fl_event .d_events_cover .d_each_event{
+	border-bottom: 1px solid #eee;
+	margin-bottom: 5px;
+	height: 80px;
 }
-.d_event_info{
-	padding-left: 5px;
+#i_fl_event .d_events_cover .d_each_event .d_thumb{
+	width: 25%;
+	float: left;
+	height: inherit;
 }
-#i_event_thumbnail{
-	width: 100%;
+#i_fl_event .d_events_cover .d_each_event img{
+	float: left;
 	height: auto;
-	max-height: 100px;
+	width: 100%;
 }
-#i_event_title{
-	padding: 0;
+#i_fl_event .d_events_cover .d_each_event .d_title,
+#i_fl_event .d_events_cover .d_each_event .d_time_left{
+	float: left;
+	width: 70%;
+	margin-left: 2%;
 }
-#i_event_title p{
+#i_fl_event .d_events_cover .d_each_event .d_title{
 	font-weight: bold;
+	font-size: 15px;
+    max-height: 45px;
+    overflow-y: hidden;
 }
-.d_each_info{
-	color: rgba(0, 0, 0, 0.2);
-	padding-left: 0;
+#i_fl_event .d_events_cover .d_each_event .d_time_left{
+	color: #999;
 }
-.d_button_group{
-	padding-right: 0;
+/**************************************** Follow > Each User **/
+#i_fl_user .d_user_cover {
+	border: 0;
+	height: initial;
+	overflow-y: auto;
 }
+#i_fl_user .d_user_cover .d_each_user{
+	border-bottom: 1px solid #eee;
+	margin-bottom: 5px;
+	height: 80px;
+}
+#i_fl_user .d_user_cover .d_each_user .d_thumb{
+	width: 25%;
+	float: left;
+	height: inherit;
+}
+#i_fl_user .d_user_cover .d_each_user img{
+	float: left;
+	height: auto;
+	width: 100%;
+}
+#i_fl_user .d_user_cover .d_each_user .d_title,
+#i_fl_user .d_user_cover .d_each_user .d_time_left{
+	float: left;
+	width: 70%;
+	margin-left: 2%;
+}
+#i_fl_user .d_user_cover .d_each_user .d_title{
+	font-weight: bold;
+	font-size: 15px;
+    max-height: 45px;
+    overflow-y: hidden;
+}
+#i_fl_user .d_user_cover .d_each_user .d_time_left{
+	color: #999;
+}
+#i_fl_user .d_user_cover .d_each_user .d_btn_more {
+    height: 0;
+    width: 1px;
+    position: relative;
+    top: -100%;
+    left: 93%;
+}
+ul.dropdown-menu {
+    left: -139px;
+    position: inherit;
+}
+/********************************************* Right_side **/
+/**************************************** Some Events **/
+.d_right_side_top,
+.d_right_side_bottom{
+	float: right;
+	width: 40%;
+	background-color: whitesmoke;
+	height: 305px;
+	margin-bottom: 10px;
+	border: 1px solid lightgrey;
+	border-radius: 5px;
+	padding: 5px;
+}
+.d_right_side_top .d_events_cover {
+	height: 250px;
+	padding: 10px;
+}
+.d_events_cover .d_each_event{
+	border-bottom: 1px solid #eee;
+	margin-bottom: 5px;
+	height: 65px;
+}
+.d_events_cover .d_each_event .d_thumb{
+	width: 25%;
+	float: left;
+	height: inherit;
+}
+.d_events_cover .d_each_event img{
+	float: left;
+	height: auto;
+	width: 100%;
+}
+.d_events_cover .d_each_event .d_title,
+.d_events_cover .d_each_event .d_time_left{
+	float: left;
+	width: 70%;
+	margin-left: 2%;
+}
+.d_events_cover .d_each_event .d_title{
+	font-weight: bold;
+	font-size: 15px;
+    max-height: 45px;
+    overflow-y: hidden;
+}
+.d_events_cover .d_each_event .d_time_left{
+	color: #999;
+}
+/**************************************** Notification Area **/
+.d_right_side_bottom{
+	height: 245px;
+}
+.d_right_side_bottom .d_noti_cover{
+	height: 191px;
+	overflow-y: auto;
+}
+.d_each_noti{
+	border-bottom: 1px solid #eee;
+	margin-bottom: 5px;
+}
+
 /**************************************** thêm ***/
 
 /**************************************** thêm ***/

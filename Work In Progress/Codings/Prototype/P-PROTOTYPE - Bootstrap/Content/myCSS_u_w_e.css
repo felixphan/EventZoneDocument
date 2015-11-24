@@ -101,6 +101,9 @@ body{
 	overflow-y: scroll;
 	margin-top: 80px;
 }
+.d_uwe_body .container{
+	width: 75%;
+}
 .d_all_function_cover{
 	padding: 0;
 	min-width: 430px;
@@ -118,6 +121,13 @@ body{
 }
 .d_right_bottom{
 	height: 230px;
+}
+.d_left_cover{
+	width: 66%;
+    float: left;
+}
+.d_right_cover{
+	float: right;
 }
 
 /**************************************************** Event Info Tab **/
@@ -239,7 +249,8 @@ iframe #i_frame_gallery{
 
 /**************************************************** Video tab **/
 .d_info_tab{
-	height: 455px;
+	height: 500px;
+    overflow-y: hidden;
     padding: 10px 0;
     background-color: #fff;
     border-bottom-right-radius: 5px;

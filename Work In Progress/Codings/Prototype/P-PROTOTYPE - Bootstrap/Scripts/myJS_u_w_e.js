@@ -13,10 +13,10 @@ $(document).ready(function(){
 		    queue: false,   //queue: false giúp các Animation chạy đồng thời
 		    complete: function() { /* Animation complete */ }
 		});
-		$('.d_right_top').slideToggle( "slow" ); //Hide Map đi
-		$('.d_cmt_before').slideToggle( "slow" ); //Hide Sample comment
-		$('.d_cmt_after').slideToggle( "slow" ); //Display Comment
-		$('.d_reopen_map').slideToggle( "slow" ); //Display nút Re-open Map
+		$('.d_right_top').slideUp( "slow" ); //Hide Map đi
+		$('.d_cmt_before').slideUp( "slow" ); //Hide Sample comment
+		$('.d_cmt_after').slideDown( "slow" ); //Display Comment
+		$('.d_reopen_map').slideDown( "slow" ); //Display nút Re-open Map
 	});
 
 /******************************************** Animation Hide Comment, Mở Map ***/
