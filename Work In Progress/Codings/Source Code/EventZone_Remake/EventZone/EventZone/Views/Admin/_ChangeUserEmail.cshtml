@@ -15,7 +15,7 @@
                 </div>
             </div>
             <div style="padding-top: 10px" class="panel-body">
-                @using (Ajax.BeginForm("ChangeUserEmailPost", "Account", FormMethod.Post, new AjaxOptions
+                @using (Ajax.BeginForm("ChangeUserEmailPost", "Admin", FormMethod.Post, new AjaxOptions
                 {
                     HttpMethod = "POST",
                     OnSuccess = "OnChangeEmailSucess"
@@ -29,7 +29,9 @@
                             <span class="input-group-addon"><i class="glyphicon glyphicon-envelope"></i></span>
                             @Html.TextBoxFor(m => m.Email, new { @id="new-email",@class = "form-control", placeholder = "Email" })
                         </div>
+                        @Html.ValidationMessageFor(model => model.Email)
                     </div>
+                    
                     @Html.HiddenFor(m => m.UserID, new { id="change-email-userID"})
                     <div class="form-group">
                         <div class="col-md-offset-2 col-md-10">
@@ -41,4 +43,3 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/Account/ForgotAccount.js"></script>

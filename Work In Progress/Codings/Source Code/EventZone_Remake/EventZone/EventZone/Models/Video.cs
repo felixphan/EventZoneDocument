@@ -22,6 +22,7 @@ namespace EventZone.Models
         public int Privacy { get; set; }
         public string PrimaryServer { get; set; }
         public string BackupServer { get; set; }
+        public string StreamName { get; set; }
     
         public virtual EventPlace EventPlace { get; set; }
     }

@@ -17,7 +17,7 @@
     for (int i = 0; i < allUser.Count; i++)
     {
         User user = allUser[i];
-        @Html.Action("ChangeUserEmail","Admin",new ChangeUserEmail { UserID = user.UserID })
+        @Html.Action("ChangeUserEmail","Admin",new ChangeUserEmail { UserID = user.UserID, Email=user.UserEmail})
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_user_card_cover">
             <!-- e_ để đánh dấu CSS EVENT -->
             <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_u_thumb">
@@ -137,3 +137,4 @@
         })
     }
 </script>
+<script src="~/Scripts/Admin/ChangeUserEmail.js"></script>

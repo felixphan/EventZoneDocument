@@ -9,7 +9,8 @@ namespace EventZone.Models
     {
        
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must more than {2} characters.", MinimumLength = 5)]
+        [MaxLength(60, ErrorMessage = "The Title must less than 60 characters.")]
+        [StringLength(100, ErrorMessage = "The {0} must be greater than {2} characters.", MinimumLength = 6)]
         [Display(Name = "Title")]
         public string Title { get; set; }
         [Required]
@@ -32,6 +33,7 @@ namespace EventZone.Models
         [Required]
         [Display(Name = "Category")]
         public long CategoryID { get; set; }
+        [MaxLength(500, ErrorMessage = "The Description must less than 500 characters.")]
         public string Description { get; set; }
     }
     public class LiveStreamingModel {

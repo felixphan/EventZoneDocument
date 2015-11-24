@@ -87,18 +87,30 @@ namespace EventZone.Controllers
                 //    }
                 //}
                 LiveStreamingModel liveModel = new LiveStreamingModel { eventID = newEvent.EventID, Title = newEvent.EventName };
-                
+                HttpCookie newEventID = new HttpCookie("CreateEventID");
+                newEventID.Value = newEvent.EventID.ToString();
+                newEventID.Expires=DateTime.Now.AddDays(1);
+                Response.Cookies.Add(newEventID);
                 return RedirectToAction("AddLiveStream", "Event",liveModel);
             }
             // If we got this far, something failed, redisplay form
-            return View(model);
+            ViewBag.CategoryID = new SelectList(db.Categories, "CategoryId", "CategoryName");
+            TempData["errorTitle"] = "Error";
+            TempData["errorMessage"] = "Please select location from suggestion!"; 
+            return View("Create", model);
         }
         public ActionResult AddLiveStream(LiveStreamingModel model)
         {
             List<EventPlace> listPlace= new List<EventPlace>();
-           
+            TempData["errorTitle"] = TempData["errorTitle"];
+            TempData["errorMessage"] = TempData["errorMessage"];
+            if (Request.Cookies["CreateEventID"] != null)
+            {
+                model.eventID = long.Parse(Request.Cookies["CreateEventID"].Value);
+                model.Title = EventDatabaseHelper.Instance.GetEventByID(model.eventID).EventName;
+
+            }
             listPlace = EventDatabaseHelper.Instance.GetEventPlaceByEvent(model.eventID);
-            
             TempData["EventPlace"] = listPlace;           
             return View(model);
         }
@@ -187,15 +199,19 @@ namespace EventZone.Controllers
                     String youtubeUrl = "https://www.youtube.com/watch?v=" + returnBroadcast.Id;
                     
                     //youtubeReturnModel model = new youtubeReturnModel { streamName = streamName, primaryServerUrl = primaryServerUrl,backupServerUrl=backupServerUrl,youtubeUrl=youtubeUrl };
-                    Video video = new Video { EventPlaceID = liveModel.EventPlaceID,
+                    Video video = new Video {  EventPlaceID = liveModel.EventPlaceID,
                                                VideoLink = youtubeUrl,
                                                PrimaryServer = primaryServerUrl,
                                                StartTime = liveModel.StartTimeYoutube,
                                                Privacy = liveModel.PrivacyYoutube,
                                                EndTime = liveModel.EndTimeYoutube,
-                                               BackupServer = backupServerUrl};
+                                               BackupServer = backupServerUrl,
+                                               StreamName= streamName};
                     EventDatabaseHelper.Instance.AddVideo(video);
-                    TempData["StreamName"] = streamName;
+                    
+                    HttpCookie newEventID = new HttpCookie("CreateEventID");
+                    newEventID.Expires = DateTime.Now.AddDays(-1);
+                    Request.Cookies.Add(newEventID);
                     return View("ResultAddLive", video);
             }
             else
@@ -203,9 +219,9 @@ namespace EventZone.Controllers
                 return new RedirectResult(result.RedirectUri);
             }
             }
-            //TempData["errorTitle"] = "Error";
-            //TempData["errorMessage"] = "Invalid Input, please try again";
-            
+            TempData["errorTitle"] = "Error";
+            TempData["errorMessage"] = "Invalid Input, please try again";
+           
             return RedirectToAction("AddLiveStream", "Event", liveModel);
         }
         public ActionResult Details(long? id)

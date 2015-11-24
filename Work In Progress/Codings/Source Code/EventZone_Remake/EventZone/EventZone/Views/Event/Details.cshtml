@@ -36,7 +36,7 @@
                     <li class="active" id="li-event-info"><a href="#i_info_tab" data-toggle="tab">Event Info</a></li>
                     <li id="li-gallery"><a href="#i_image_tab" data-toggle="tab">Gallery (@numberImage)</a></li>
                     <li id="li-video"><a href="#i_video_tab" data-toggle="tab">Video (@numberVideo)</a></li>
-                    <li id="li-video-title"><a href="#i_watch_video_tab" data-toggle="tab">Video title...</a></li>
+                    <li id="li-video-title"><a href="#i_watch_video_tab" data-toggle="tab">Watching video panel</a></li>
                 </ul>
                 <div class="tab-content d_info_tab">
                     <!-- Khung chứa Basic info & Description -->
@@ -73,7 +73,6 @@
                                     <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
                                         @Model.eventLocation[0].LocationName
                                     </div>
-
                                     @if (Model.eventLocation.Count > 1)
                                     {
                                         for (int i = 1; i < Model.eventLocation.Count; i++)
@@ -117,7 +116,6 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des_fade"
                                  data-toggle="modal" data-target="#i_Modal_des">
-
                             </div>
                         </div>
                     </div>
@@ -138,7 +136,6 @@
                                         }
                                     }
                                 </div>
-
                                 <button data-toggle="modal" data-target="#user-upload-image-event-modal" class="btn btn-primary btn-sm">Upload</button>
                                 <!--upload modal-->
                                 <div class="modal fade" id="user-upload-image-event-modal" role="dialog">
@@ -156,11 +153,11 @@
                                                     <div class="tab-content">
                                                         <!--thumb uploaded image-->
                                                         <div class="col-md-4 col-sm-3 col-xs-4 thumb" style="width:inherit">
-                                                            <div id="image-contain"></div>
+                                                            <div id="image-contain" style="height:200px;width:200px"></div>
                                                         </div>
                                                         @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new { enctype = "multipart/form-data", id = "UploadImageForm" }))
                                                         {
-                                                            <input id="uploadBtn" type="file" class="upload" name="file" />
+                                                            <input id="uploadBtn" type="file" class="upload" name="file" accept="image/x-png, image/gif, image/jpeg" />
                                                             <input hidden name="eventID" value="@Model.eventId"/>
                                                             <p>
                                                                 <input type="submit" class="btn btn-primary btn-sm" value="Upload" />
@@ -172,7 +169,6 @@
                                         </div>
                                     </div>
                                 </div>
-                              
                             </div>
                         </div>
                     </div>
@@ -183,7 +179,7 @@
                                 <div class="panel-heading d_panel_1">
                                     <h4 class="panel-title">
                                         <a href="#i_event_video" data-toggle="collapse" data-parent="#result-list" class="" aria-expanded="true">
-                                            <span class="xxx">Video sự kiện (@numberVideo)</span>
+                                            <span class="xxx">Videos (@numberVideo)</span>
                                         </a>
                                     </h4>
                                 </div>
@@ -211,7 +207,6 @@
                                                                             </a>
                                                                         </div>
                                                                     }
-
                                                                 }
                                                             </div>
                                                         }
@@ -227,7 +222,7 @@
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
                                         <a href="#i_streaming_link" data-toggle="collapse" data-parent="#result-list" class="collapsed" aria-expanded="false">
-                                            <span class="xxx">Link xem sự kiện trực tiếp (@EventDatabaseHelper.Instance.GetListLiveVideo(Model.eventVideo).Count())</span>
+                                            <span class="xxx">Live streaming and upcoming videos (@EventDatabaseHelper.Instance.GetListLiveVideo(Model.eventVideo).Count())</span>
                                         </a>
                                     </h4>
                                 </div>
@@ -519,7 +514,7 @@
                     // Render thumbnail.
                     $("#image-contain").empty();
                     var span = document.createElement('span');
-                    span.innerHTML = ['<img class="thumb_anh" src="', e.target.result,
+                    span.innerHTML = ['<img style="height:200px;width:200px" class="thumb_anh" src="', e.target.result,
                                       '" title="', escape(theFile.name), '"/>'].join('');
                     document.getElementById('image-contain').insertBefore(span, null);
                 };
@@ -537,7 +532,7 @@
     /*** OUTSOURCE: Google Map ***/
     /*** OUTSOURCE: Google Map ***/
     function init_map() {
-        var var_location = new google.maps.LatLng(21.013629, 105.526556);
+        var var_location = new google.maps.LatLng('@Model.eventLocation[0].Latitude', '@Model.eventLocation[0].Longitude');
         var var_mapoptions = {
             center: var_location,
             zoom: 9

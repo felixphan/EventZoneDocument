@@ -50,7 +50,7 @@
                 <div id="CreateLiveEventModal" class="tab-pane active">
                     <div style="text-align: center">
                         <p>Congratulation! Your event has been created! Do you want to create live event. "Yes" for create and "No" for redirecting to view event page</p>
-                        @using (Html.BeginForm("Details", "Event", new { id = @Model.eventID }))
+                        @using (Html.BeginForm("Details", "Event", FormMethod.Post, new { id = @Model.eventID }))
                         {
                             <button id="ConfirmYes" class="btn btn-success" type="button">Yes</button>
                             <button id="ConfirmNo" class="btn btn-danger" type="submit">No</button>

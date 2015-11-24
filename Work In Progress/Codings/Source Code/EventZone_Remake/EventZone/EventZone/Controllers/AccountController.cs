@@ -64,6 +64,17 @@ namespace EventZone.Controllers
                     password.Value = model.Password;
                     Response.Cookies.Add(password);
                 }
+                else {
+                    HttpCookie userName = new HttpCookie("userName");
+                    userName.Expires = DateTime.Now.AddHours(1);
+                    userName.Value = model.UserName;
+                    Response.Cookies.Add(userName);
+
+                    HttpCookie password = new HttpCookie("password");
+                    password.Expires = DateTime.Now.AddHours(1);
+                    password.Value = model.Password;
+                    Response.Cookies.Add(password);
+                }
                 var user = UserDatabaseHelper.Instance.GetUserByUserName(model.UserName);
                 UserHelpers.SetCurrentUser(Session, user);
             }
@@ -365,9 +376,14 @@ namespace EventZone.Controllers
                 password.Expires = DateTime.Now.AddDays(-1);
                 Request.Cookies.Add(password);
             }
+            Response.Cache.SetCacheability(HttpCacheability.NoCache);
+            Response.Cache.SetExpires(DateTime.Now.AddHours(-1));
+            Response.Cache.SetNoStore();
             UserHelpers.SetCurrentUser(Session, null);
             TempData["errorTitle"] = null;
             TempData["errorMessage"] = null;
+           
+         
             return RedirectToAction("Index", "Home");
         }
         private class Email
@@ -428,7 +444,7 @@ namespace EventZone.Controllers
             return Json(new
             {
                 state = 0,
-                message = "Something Wrong! Please Try Again Later"
+                message = "The E-mail format is wrong !"
             });
         }
         public ActionResult CheckCookie(string url)

@@ -118,8 +118,8 @@ namespace EventZone.Helpers
             }catch{
                 return false;
             }
-
         }
+
         /// <summary>
         ///     get all channel in DB
         /// </summary>
@@ -942,7 +942,7 @@ namespace EventZone.Helpers
         public long CalculateEventScore(long eventId) {
             long score = 0;
             try {
-                score = GetEventByID(eventId).View + (CountDisLike(eventId) + CountLike(eventId))*2 + CountUniqueUserComment(eventId) * 3 + CountFollowerOfEvent(eventId)*4;
+                score = GetEventByID(eventId).View * 4 + (CountDisLike(eventId) + CountLike(eventId))*20 + CountUniqueUserComment(eventId) * 30 + CountFollowerOfEvent(eventId) * 40;
             }
             catch
             {
@@ -1452,7 +1452,7 @@ namespace EventZone.Helpers
             DateTime today = DateTime.Now;
             foreach (var item in listEvent)
             {
-                if (item.EventStartDate.CompareTo(today) <= 0 && item.EventEndDate.CompareTo(today) >= 0)
+                if (item.EventStartDate.CompareTo(startDate) >= 0 && item.EventEndDate.CompareTo(endDate) <= 0)
                     result.Add(item);
             }
 
@@ -1483,9 +1483,13 @@ namespace EventZone.Helpers
                             image.ImageLink = "https://s3-us-west-2.amazonaws.com/eventzone/" + pic;
                             image.UserID = user.UserID;
                             image.UploadDate = DateTime.Today;
-                            if (UserDatabaseHelper.Instance.UpdateAvatar(user, image))
+                            try
                             {
+                                db.Images.Add(image);
+                                db.SaveChanges();
                                 return image;
+                            }
+                            catch {
                             }
                         } 
                     }

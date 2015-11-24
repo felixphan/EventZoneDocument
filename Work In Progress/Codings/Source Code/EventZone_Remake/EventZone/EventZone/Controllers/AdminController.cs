@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using EventZone.Models;
+using System.Threading.Tasks;
 
 namespace EventZone.Controllers
 {
@@ -320,7 +321,11 @@ namespace EventZone.Controllers
             return PartialView("_ChangeUserEmail",model);
 
         }
-        public JsonResult ChangeUserEmailPost(ChangeUserEmail model) {
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeUserEmailPost(ChangeUserEmail model)
+        {
 
             if (ModelState.IsValid)
             {
@@ -335,6 +340,13 @@ namespace EventZone.Controllers
                 }
                 if (admin.AccountStatus != EventZoneConstants.LockedUser)
                 {
+                    if (UserDatabaseHelper.Instance.GetUserByEmail(model.Email) != null) {
+                        return Json(new
+                        {
+                            state = 0,
+                            message="This email already used in system! Please choose another!"
+                        });
+                    }
                     if (AdminDataHelpers.Instance.ChangeUserEmail(admin.UserID, model.UserID,model.Email))
                     {
                         return Json(new
@@ -348,14 +360,14 @@ namespace EventZone.Controllers
                 return Json(new
                 {
                     state = 0,
-                    message = "somthing wrong!..."
+                    message = "somthing wrong! Please try again..."
                 });
             }
             else {
                 return Json(new
                 {
                     state=0,
-                    message="somthing wrong!..."
+                    message="Wrong email format! Please try again..."
                 });
             }
         }

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="EventZoneModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Action">
           <Key>
             <PropertyRef Name="ActionID" />
@@ -209,6 +209,7 @@
           <Property Name="Privacy" Type="int" Nullable="false" />
           <Property Name="PrimaryServer" Type="nvarchar" MaxLength="50" />
           <Property Name="BackupServer" Type="nvarchar" MaxLength="50" />
+          <Property Name="StreamName" Type="nvarchar" MaxLength="50" />
         </EntityType>
         <Association Name="FK_Appeal_Event1">
           <End Role="Event" Type="Self.Event" Multiplicity="1" />
@@ -680,7 +681,8 @@
             <End Role="Video" EntitySet="Video" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EventZoneModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -916,7 +918,7 @@
           <Property Name="AccountStatus" Type="Boolean" Nullable="false" />
           <Property Name="Gender" Type="Int32" Nullable="false" />
           <Property Name="Avartar" Type="Int64" />
-          <Property Name="DataJoin" Type="DateTime" Precision="0" Nullable="false" />
+          <Property Name="DataJoin" Type="DateTime" Nullable="false" Precision="0" />
           <NavigationProperty Name="CategoryFollows" Relationship="Self.FK_CategoryFollow_User" FromRole="User" ToRole="CategoryFollow" />
           <NavigationProperty Name="Comments" Relationship="Self.FK_Comment_User" FromRole="User" ToRole="Comment" />
           <NavigationProperty Name="Channels" Relationship="Self.FK_Channel_User" FromRole="User" ToRole="Channel" />
@@ -943,6 +945,7 @@
           <Property Name="Privacy" Type="Int32" Nullable="false" />
           <Property Name="PrimaryServer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="BackupServer" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StreamName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="EventPlace" Relationship="Self.FK_Video_EventPlace" FromRole="Video" ToRole="EventPlace" />
         </EntityType>
         <Association Name="FK_TrackingAction_ActorAction">
@@ -1643,6 +1646,7 @@
                 <ScalarProperty Name="Privacy" ColumnName="Privacy" />
                 <ScalarProperty Name="PrimaryServer" ColumnName="PrimaryServer" />
                 <ScalarProperty Name="BackupServer" ColumnName="BackupServer" />
+                <ScalarProperty Name="StreamName" ColumnName="StreamName" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
