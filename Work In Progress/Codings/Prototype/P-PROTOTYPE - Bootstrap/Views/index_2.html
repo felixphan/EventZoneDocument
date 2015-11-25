@@ -89,12 +89,12 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
           <ul class="dropdown-menu" style="width: 200px;">
             <li><a href="#">Music</a></li>
-		    <li><a href="#">Food and Drink</a></li>
-		    <li><a href="#">Classes</a></li>
-		    <li><a href="#">Arts</a></li>
-		    <li><a href="#">Parties</a></li>
-		    <li><a href="#">Sports and wellness</a></li>
-		    <li><a href="#">Networking</a></li>
+    		    <li><a href="#">Food and Drink</a></li>
+    		    <li><a href="#">Classes</a></li>
+    		    <li><a href="#">Arts</a></li>
+    		    <li><a href="#">Parties</a></li>
+    		    <li><a href="#">Sports and wellness</a></li>
+    		    <li><a href="#">Networking</a></li>
           </ul>
         </li>
       </ul>
@@ -737,12 +737,130 @@
       <!-- Modal 1 content: Advanced Search -->
       <div class="panel panel-info d_margin_top">
           <div class="panel-heading">
-              <div class="panel-title">Advanced Search</div>
-              <div style="float:right; font-size: 80%; position: relative; top: -17px"><a href="#" data-dismiss="modal" id="i_close_modal">Close</a></div>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+            <div class="panel-title">Advanced Search</div>
           </div>
           <div style="padding-top:10px" class="panel-body">
             <!-- md_ đánh dấu CSS của MODAL -->
-            <iframe src="tm_modal_ad_search.html" frameborder="0" id="i_frame_md_ad_search"></iframe>              
+            <div class="table-responsive">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th style="width: 100px">Criteria</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      Search
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" id="" placeholder="">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Category</td>
+                    <td>
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>
+                              <div class="d_checkbox" style="width: 200px;">  
+                                <label><input type="checkbox" value="" id="i_chbox_All" class="item_checked">  All</label>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_Music" class="item_checked">  Music</label>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_FaD" class="item_checked">  Food and Drink</label>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_Classes" class="item_checked">  Classes</label>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_Arts" class="item_checked"> Arts</label>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_Parties" class="item_checked">  Parties</label>
+                              </div>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_SaW" class="item_checked">  Sports and wellness</label>
+                              </div>
+                            </td>
+                            <td>
+                              <div class="d_checkbox">
+                                <label><input type="checkbox" value="" id="i_chbox_Networking" class="item_checked">  Networking</label>
+                              </div>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Location</td>
+                    <td>
+                      <input type="text" class="form-control" id="" placeholder="Eg: Hà Nội">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Streaming</td>
+                    <td>
+                      <input type="checkbox">
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>Date</td>
+                    <td>
+                      <div>
+                        <div class="radio-inline">
+                          <label><input type="radio" name="optradio" checked="true">Today</label>
+                        </div>
+                        <div class="radio-inline">
+                          <label><input type="radio" name="optradio">3 next days</label>
+                        </div>
+                        <div class="radio-inline">
+                          <label><input type="radio" name="optradio" >7 next days</label>
+                        </div>
+                      </div>
+                    <div class="input-daterange input-group" id="date">
+                      <input type="date" class="input-sm form-control" name="start" />
+                      <span class="input-group-addon">to</span>
+                      <input type="date" class="input-sm form-control" name="end" />
+                    </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <form id="loginform" class="form-horizontal" role="form">
+              <div class="form-group d_md_ad_search">
+                <a href="#" class="btn btn-success">Look around!</a>
+                <a href="#" class="btn btn-success">Search</a>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -758,8 +876,10 @@
       <!-- Modal content-->
       <div class="panel panel-info d_margin_top" >
         <div class="panel-heading">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
           <div class="panel-title">Welcome to Event Zone</div>
-          <div style="float:right; font-size: 80%; position: relative; top: -17px"><a href="#" data-dismiss="modal" id="i_close_modal">Close</a></div>
         </div>
           <div style="padding-top:10px" class="panel-body" >
             <iframe src="tm_modal_sign_in.html" frameborder="0" id="i_frame_signin"></iframe>
@@ -775,8 +895,10 @@
       <!-- Modal content-->
       <div class="panel panel-info d_margin_top" >
         <div class="panel-heading">
-            <div class="panel-title">Forget Password</div>
-            <div style="float:right; font-size: 80%; position: relative; top: -17px"><a href="#" data-dismiss="modal" id="i_close_modal">Close</a></div>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+          <div class="panel-title">Forget Password</div>
         </div>
         <div style="padding-top:10px" class="panel-body" >
             <div class="cover_all_functions" style="text-align: -webkit-center;">

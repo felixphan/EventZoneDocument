@@ -1,103 +1,244 @@
-/**************************************************** thêm CSS ***/
+/**************************************** USER MANAGE EVENT ***/
+.d_off{
+	display: none;
+}
 
-/**************************************************** Sửa CSS BOOTSTRAP ***/
-body{
-	background-color: white;
-	color: grey;
-	font-family: segoe ui;
-	min-width: 400px;
+/**************************************** Sửa Bootstrap ***/
+.row{
+	margin: 0;
 }
-.container-fluid{
-	padding: 0;
-}
-#myTab {
-	padding-left: 10px;
-	padding-top: 5px;
-	background-color: rgba(0, 0, 0, .1);
-}
-.tab-content{
-	padding: 10px 5px 0 5px;
-	background-color: white;
-	border-radius: 4px;
-}
-.d_tab-content_cover{
-	overflow: auto;
-    zheight: 441px;
-}
-.panel-body{
-	padding: none;
-	padding-top: 10px;
-}
-.panel-default {
-	border: none;
-	border-bottom: lightgrey;
-}
-.panel-default > .panel-heading {
-    color: #AFAFAF;
-    background-color: rgba(0,0,0, 0);
-}
-.panel-title{
-	color: gray;
-}
-.form-group{
+.panel-group {
 	margin-bottom: 0px;
 }
-.form-control{
-	width: auto;
+.panel-default > .panel-heading{
+	border-radius: 0px;
+	border-top-right-radius: 5px;
+	border-top-left-radius: 5px;
 }
-.container{
-	padding: 0;
+.dropdown{
+    width: 0%;
 }
-.well{
-	margin-top: 5px;
-	margin-bottom: 0;
+
+
+/**************************************** Decorate ***/
+.d_body{
+	padding: 10px 200px;
 }
-/**************************************************** Khung chức năng TỔNG QUÁT ***/
-.d_ume_body{
-	font-family: segoe ui;
-	overflow-y: scroll;
-	margin-top: 80px;
-}
-.d_left_cover,
-.d_right_cover{
-	margin-bottom: 10px;
-	border: 1px lightgrey solid;
-	padding: 0;
-	border-radius: 4px;
-	height: 550px;
-}
-.d_right_cover{
-	border: 0;
-}
-.d_top_stat{
-	height: 550px;
+.d_left_side{
+	height: 560px;
+	padding: 5px;
+	width: 59%;
+	background-color: #f5f5f5;
+	min-width: 500px;
+	border-radius: 5px;
+	zmargin-top: 50px;
 	border: 1px solid lightgrey;
-	border-radius: 4px;
-	width: 98%;
-	float: right;
+	float: left;
 }
-/**************************************************** Event Info Tab **/
 
-/**************************************************** Event Info tab - Thumb & info */
+/**************************************** Tab EVENTS ***/
+#i_tab_report,
+#i_tab_stat,
+#i_tab_follower,
+#i_tab_event{
+	margin-bottom: 6px;
+	height: 505px;
+	padding: 10px;
+	padding-right: 0;
+	background-color: white;
+	border: 1px solid;
+	border-color: #DDDDDD;
+	border-top: 0;
+	border-bottom-left-radius: 5px;
+	border-bottom-right-radius: 5px;
+}
+#i_btn_e_filter{
+	margin-bottom: 10px;
+}
+#i_tab_event .d_events_cover{
+	overflow-y: auto;
+    height: 460px;
+}
+.i_tab_event .d_each_event{
+	margin-right: 10px;
+	height: 18%;
+	border-bottom: 1px solid #DDDDDD;
+	margin-bottom: 5px;
+}
+.i_tab_event .d_events_cover .d_thumb{
+	width: 25%;
+	height: inherit;
+	float: left;
+}
+.i_tab_event .d_events_cover .d_thumb img{
+	width: 100%;
+}
+.i_tab_event .d_events_cover .d_info{
+	width: 66%;
+	margin-left: 2%;
+	float: left;
+}
+.i_tab_event .d_events_cover .d_info{
+}
+.i_tab_event .d_events_cover .d_info .d_title{
+    font-weight: bold;
+    height: 50px;
+    max-height: 50px;
+    font-size: 17px;
+    overflow-y: hidden;
+}
+.i_tab_event .d_events_cover .d_info .d_icon{
+	text-align: center;
+	width: 7%;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.i_tab_event .d_events_cover .d_info .d_icon_info{
+	width: 90%;
+	float: left;
+}
+#i_btn_more{
+	position: absolute;
+    left: 66%;
+}
+.d_btn_more .dropdown-menu {
+    left: inherit;
+    right: 0;
+}
+/**************************************** Tab REPORT ***/
+#i_btn_e_filter{
+	margin-bottom: 10px;
+}
+#i_tab_report .d_events_cover{
+	overflow-y: auto;
+    height: 460px;
+}
+.i_tab_report .d_each_event{
+	margin-right: 10px;
+	height: 18%;
+	border-bottom: 1px solid #DDDDDD;
+	margin-bottom: 5px;
+}
+.i_tab_report .d_events_cover .d_thumb{
+	width: 25%;
+	height: inherit;
+	float: left;
+}
+.i_tab_report .d_events_cover .d_thumb img{
+	width: 100%;
+}
+.i_tab_report .d_events_cover .d_info{
+	width: 66%;
+	margin-left: 2%;
+	float: left;
+}
+.i_tab_report .d_events_cover .d_info{
+}
+.i_tab_report .d_events_cover .d_info .d_title{
+    font-weight: bold;
+    height: 50px;
+    max-height: 50px;
+    font-size: 17px;
+    overflow-y: hidden;
+}
+.i_tab_report .d_events_cover .d_info .d_icon{
+	text-align: center;
+	width: 7%;
+	float: left;
+	margin-left: 5px;
+	margin-right: 5px;
+}
+.i_tab_report .d_events_cover .d_info .d_icon_info{
+	width: 90%;
+	float: left;
+}
+#i_btn_more{
+	position: absolute;
+    left: 66%;
+}
+.d_btn_more .dropdown-menu {
+    left: inherit;
+    right: 0;
+}
 
-/**************************************************** Event Info tab - Description */
+/**************************************** Tab Follower **/
+.d_users_cover{
+	height: 460px;
+	overflow-y: auto;
+}
+.d_each_user {
+	border-bottom: 1px solid #dddddd;
+	height: 18%;
+	margin-right: 10px;
+    margin-bottom: 5px;
+}
+.d_each_user .d_thumb{
+	width: 25%;
+	float: left;
+}
+.d_each_user .d_thumb img{
+	width: 100%;
+}
+.d_each_user .d_info{
+	width: 66%;
+	float: left;
+	margin-left: 2%;
+}
+.d_each_user .d_title{
+	font-size: 15px;
+    font-weight: bold;
+}
+.d_each_user .d_detail{
+    display: -webkit-box;
+}
+.d_each_user .d_detail .d_icon{
+	width: 5%;
+	margin-right: 5px;
 
-/**************************************************** Image tab **/
+}
+.d_each_user .d_detail .d_icon_info{
+	width: 90%;
+}
+/********************************************* Right_side: thống kê **/
+#i_tab_stat{
 
-/**************************************************** Video tab **/
+}
+.d_right_side{
+	float: right;
+	width: 40%;
+	background-color: whitesmoke;
+	height: 560px;
+	margin-bottom: 10px;
+	border: 1px solid lightgrey;
+	border-radius: 5px;
+	padding: 5px;
+}
+.d_right_side .d_stat_cover{
+	height: 191px;
+	overflow-y: auto;
+}
+.d_each_stat{
+	border-bottom: 1px solid #eee;
+	margin-bottom: 5px;
+    height: 30%;
+}
+#i_tab_stat .d_each_stat .d_number{
+	width: 20%;
+    float: left;
+    font-size: xx-large;
+    margin: 5px;
+    border-right: 1px solid #eee;
+    text-align: center;
+}
+#i_tab_stat .d_each_stat .d_number_info{
+	width: 70%;
+    margin: 18px 10px;
+	float: left;
+}
+/**************************************** thêm ***/
 
-/**************************************************** Watch Video tab **/
+/**************************************** thêm ***/
 
-/**************************************************** Khung chức năng PHẢI ***/
+/**************************************** thêm ***/
 
-/**************************************************** Map tab **/
-
-/**************************************************** Comment tab **/
-
-/**************************************************** Comment tab > Chạy ngang comment ***/
-
-/**************************************************** Comment tab > bổ sung load sau ***/
-
-/**************************************************** Report Tab ***/
-
-/**************************************************** Decorate CSS ***/
