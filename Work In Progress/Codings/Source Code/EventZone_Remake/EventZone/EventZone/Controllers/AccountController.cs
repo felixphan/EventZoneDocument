@@ -142,26 +142,8 @@ namespace EventZone.Controllers
                         message = "Email is already registered. Please choose another."
                     });
                 }
-                user.UserEmail = model.Email;
-                user.UserName = model.UserName;
-                user.UserPassword = model.Password;
-                user.UserDOB = model.UserDOB;
-                user.UserFirstName = model.UserFirstName;
-                user.DataJoin = DateTime.Today;
-                if (model.UserLastName != null && model.UserLastName != "")
-                {
-                    user.UserLastName = model.UserLastName;
-                }
-                user.AccountStatus = EventZoneConstants.ActiveUser; //set Active account
-                if (user.Avartar==null) //set default avatar
-                {
-                    user.Avartar = 10032;
-                }
-                user.UserRoles = EventZoneConstants.User; //set UserRole
-                // insert user to Database
-                db.Users.Add(user);
-                db.SaveChanges();
-              
+                UserDatabaseHelper.Instance.AddNewUser(model, user);
+
                 UserHelpers.SetCurrentUser(Session, user);
 
                 //Create Channel
@@ -183,6 +165,7 @@ namespace EventZone.Controllers
                 message = "Something Wrong"
             });
         }
+
 
         private Uri RedirectUriGoogle
         {

@@ -53,6 +53,28 @@ namespace EventZone.Helpers
             }
             return true;
         }
+        public void AddNewUser(SignUpViewModel model, User user)
+        {
+            user.UserEmail = model.Email;
+            user.UserName = model.UserName;
+            user.UserPassword = model.Password;
+            user.UserDOB = model.UserDOB;
+            user.UserFirstName = model.UserFirstName;
+            user.DataJoin = DateTime.Today;
+            if (model.UserLastName != null && model.UserLastName != "")
+            {
+                user.UserLastName = model.UserLastName;
+            }
+            user.AccountStatus = EventZoneConstants.ActiveUser; //set Active account
+            if (user.Avartar == null) //set default avatar
+            {
+                user.Avartar = 10032;
+            }
+            user.UserRoles = EventZoneConstants.User; //set UserRole
+            // insert user to Database
+            db.Users.Add(user);
+            db.SaveChanges();
+        }
 
         /// <summary>
         ///     Check is user's status locked or not. If user's status is locked, return true else return false
@@ -1666,6 +1688,8 @@ namespace EventZone.Helpers
             }
             return newEvent;
         }
+
+
         public List<EventPlace> AddEventPlace(List<Location> listLocation, Event newEvent)
         {
             List<EventPlace> listEventPlaces = new List<EventPlace>();
