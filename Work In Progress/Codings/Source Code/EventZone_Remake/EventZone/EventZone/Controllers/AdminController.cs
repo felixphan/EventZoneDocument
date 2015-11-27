@@ -58,7 +58,7 @@ namespace EventZone.Controllers
                 ModelState.AddModelError("", "Your account is locked! Please contact with our support");
             }
             var admin = AdminDataHelpers.Instance.FindAdmin(model.UserName, model.Password);
-            if (admin!=null&&admin.UserRoles==EventZoneConstants.Admin)
+            if (admin!=null&&(admin.UserRoles==EventZoneConstants.Admin||admin.UserRoles==EventZoneConstants.RootAdmin))
             {
                 if (model.Remember)
                 {
@@ -316,15 +316,7 @@ namespace EventZone.Controllers
                 message = "Ops... Somthing went wrong! Please try again!",
             });
         }
-        public ActionResult ChangeUserEmail(ChangeUserEmail model)
-        {
-            return PartialView("_ChangeUserEmail",model);
-
-        }
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> ChangeUserEmailPost(ChangeUserEmail model)
+        public JsonResult ChangeUserEmail(long userID, string newEmail)
         {
 
             if (ModelState.IsValid)
@@ -340,26 +332,29 @@ namespace EventZone.Controllers
                 }
                 if (admin.AccountStatus != EventZoneConstants.LockedUser)
                 {
-                    if (UserDatabaseHelper.Instance.GetUserByEmail(model.Email) != null) {
+                    if (UserDatabaseHelper.Instance.GetUserByEmail(newEmail) != null)
+                    {
                         return Json(new
                         {
                             state = 0,
+                            error = "Email is exists",
                             message="This email already used in system! Please choose another!"
                         });
                     }
-                    if (AdminDataHelpers.Instance.ChangeUserEmail(admin.UserID, model.UserID,model.Email))
+                    if (AdminDataHelpers.Instance.ChangeUserEmail(admin.UserID, userID, newEmail))
                     {
                         return Json(new
                         {
                             state = 1,
-                            userID = model.UserID,
-                            newEmail = model.Email
+                            userID = userID,
+                            newEmail = newEmail
                         });
                     }
                 }
                 return Json(new
                 {
                     state = 0,
+                    error= "Error",
                     message = "somthing wrong! Please try again..."
                 });
             }
@@ -367,9 +362,326 @@ namespace EventZone.Controllers
                 return Json(new
                 {
                     state=0,
+                    erorr= " Wrong format",
                     message="Wrong email format! Please try again..."
                 });
             }
+        }
+        public ActionResult SetMod(long userID) {
+            User admin = UserHelpers.GetCurrentAdmin(Session);
+            if (admin == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error= "Require signin!",
+                    message = "You are not signed in..."
+                });
+            }
+            else if (admin.AccountStatus == EventZoneConstants.LockedUser) {
+                return Json(new
+                {
+                    state = 0,
+                    error="Locked account",
+                    message = "Your account is locked. You cant use this feature!"
+                });
+            }
+            if (admin.AccountStatus != EventZoneConstants.LockedUser)
+            {
+                User user = UserDatabaseHelper.Instance.GetUserByID(userID);
+                if (user != null)
+                {
+                    if (AdminDataHelpers.Instance.SetMod(admin.UserID, user.UserID))
+                    {
+                        return Json(new
+                        {
+                            state = 1,
+                            userID = userID
+                        });
+                    }
+                }
+            }
+            return Json(new
+            {
+                state = 0,
+                error = "Erorr",
+                message = "Something wrong! Please try again!"
+            });
+        }
+        public ActionResult UnSetMod(long userID)
+        {
+            User admin = UserHelpers.GetCurrentAdmin(Session);
+            if (admin == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Require signin!",
+                    message = "You are not signed in..."
+                });
+            }
+            else if (admin.AccountStatus == EventZoneConstants.LockedUser)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Locked account",
+                    message = "Your account is locked. You cant use this feature!"
+                });
+            }
+            if (admin.AccountStatus != EventZoneConstants.LockedUser)
+            {
+                User user = UserDatabaseHelper.Instance.GetUserByID(userID);
+                if (user != null)
+                {
+                    if (AdminDataHelpers.Instance.UnSetMod(admin.UserID, user.UserID))
+                    {
+                        return Json(new
+                        {
+                            state = 1,
+                            userID = userID
+                        });
+                    }
+                }
+            }
+            return Json(new
+            {
+                state = 0,
+                error = "Erorr",
+                message = "Something wrong! Please try again!"
+            });
+        }
+        public ActionResult SetAdmin(long userID)
+        {
+            User admin = UserHelpers.GetCurrentAdmin(Session);
+            if (admin == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Require signin!",
+                    message = "You are not signed in..."
+                });
+            }
+            else if (admin.AccountStatus == EventZoneConstants.LockedUser)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Locked account",
+                    message = "Your account is locked. You cant use this feature!"
+                });
+            }
+            else if (admin.UserRoles != EventZoneConstants.RootAdmin) {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Permission denied",
+                    message = "Only root admin can use this feature!"
+                });
+            }
+            if (admin.AccountStatus != EventZoneConstants.LockedUser)
+            {
+                User user = UserDatabaseHelper.Instance.GetUserByID(userID);
+                if (user != null)
+                {
+                    if (AdminDataHelpers.Instance.SetAdmin(admin.UserID, user.UserID))
+                    {
+                        return Json(new
+                        {
+                            state = 1,
+                            userID = userID
+                        });
+                    }
+                }
+            }
+            return Json(new
+            {
+                state = 0,
+                error = "Erorr",
+                message = "Something wrong! Please try again!"
+            });
+        }
+        public ActionResult UnSetAdmin(long userID)
+        {
+            User admin = UserHelpers.GetCurrentAdmin(Session);
+            if (admin == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Require signin!",
+                    message = "You are not signed in..."
+                });
+            }
+            else if (admin.AccountStatus == EventZoneConstants.LockedUser)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Locked account",
+                    message = "Your account is locked. You cant use this feature!"
+                });
+            }
+            else if (admin.UserRoles != EventZoneConstants.RootAdmin)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Permission denied",
+                    message = "Only root admin can use this feature!"
+                });
+            }
+            if (admin.AccountStatus != EventZoneConstants.LockedUser)
+            {
+                User user = UserDatabaseHelper.Instance.GetUserByID(userID);
+                if (user != null)
+                {
+                    if (AdminDataHelpers.Instance.UnSetAdmin(admin.UserID, user.UserID))
+                    {
+                        return Json(new
+                        {
+                            state = 1,
+                            userID = userID
+                        });
+                    }
+                }
+            }
+            return Json(new
+            {
+                state = 0,
+                error = "Erorr",
+                message = "Something wrong! Please try again!"
+            });
+        }
+        public ActionResult ManageReport()
+        {
+            if (Request.Cookies["Admin_userName"] != null && Request.Cookies["Admin_password"] != null)
+            {
+                string userName = Request.Cookies["Admin_userName"].Value;
+                string password = Request.Cookies["Admin_password"].Value;
+                var admin = AdminDataHelpers.Instance.FindAdmin(userName, password);
+                if (admin != null)
+                {
+                    if (admin.AccountStatus != EventZoneConstants.LockedUser)
+                    {
+                        UserHelpers.SetCurrentAdmin(Session, admin);
+                    }
+                }
+            }
+            return View();
+        }
+        public ActionResult ViewDetailReport(long eventID=-1)
+        {
+            List<Report> listReport = new List<Report>();
+            listReport = EventDatabaseHelper.Instance.GetEventReport(eventID);
+            return PartialView("ViewDetailReport", listReport);
+        }
+        public ActionResult ApproveReport(long reportID) {
+            User admin = UserHelpers.GetCurrentAdmin(Session);
+            if (admin == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Require signin!",
+                    message = "You are not signed in..."
+                });
+            }
+            else if (admin.AccountStatus == EventZoneConstants.LockedUser)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Locked account",
+                    message = "Your account is locked. You cant use this feature!"
+                });
+            }
+            else if (admin.UserRoles != EventZoneConstants.RootAdmin&&admin.UserRoles!=EventZoneConstants.Admin)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Permission denied",
+                    message = "This feature not avaiable for you!"
+                });
+            }
+            if (admin.AccountStatus != EventZoneConstants.LockedUser)
+            {
+                Report newReport=AdminDataHelpers.Instance.ApproveReport(admin.UserID, reportID);
+               
+                    if (newReport!=null)
+                    {
+                     
+                        return Json(new
+                        {
+                            state = 1,
+                            handleDate= newReport.HandleDate.ToString(),
+                            handleBy=admin.UserName
+                        });
+                    }
+                
+            }
+            return Json(new
+            {
+                state = 0,
+                error = "Erorr",
+                message = "Something wrong! Please try again!"
+            });
+        }
+
+        public ActionResult RejectReport(long reportID)
+        {
+            User admin = UserHelpers.GetCurrentAdmin(Session);
+            if (admin == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Require signin!",
+                    message = "You are not signed in..."
+                });
+            }
+            else if (admin.AccountStatus == EventZoneConstants.LockedUser)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Locked account",
+                    message = "Your account is locked. You cant use this feature!"
+                });
+            }
+            else if (admin.UserRoles != EventZoneConstants.RootAdmin && admin.UserRoles != EventZoneConstants.Admin)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Permission denied",
+                    message = "This feature not avaiable for you!"
+                });
+            }
+            if (admin.AccountStatus != EventZoneConstants.LockedUser)
+            {
+                Report newReport = AdminDataHelpers.Instance.RejectReport(admin.UserID, reportID);
+
+                if (newReport != null)
+                {
+
+                    return Json(new
+                    {
+                        state = 1,
+                        handleDate = newReport.HandleDate.ToString(),
+                        handleBy = admin.UserName
+                    });
+                }
+
+            }
+            return Json(new
+            {
+                state = 0,
+                error = "Erorr",
+                message = "Something wrong! Please try again!"
+            });
         }
     }
 }

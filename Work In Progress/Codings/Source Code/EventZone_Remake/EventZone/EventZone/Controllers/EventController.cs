@@ -26,6 +26,7 @@ namespace EventZone.Controllers
     public class EventController : Controller
     {
         private readonly EventZoneEntities db = new EventZoneEntities();
+
         //
         // GET: /Event
         // GET: Event

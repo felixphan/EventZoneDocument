@@ -61,13 +61,15 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public bool isLookedUser(string userName)
         {
-            var listUser = db.Users.ToList();
-            var user = listUser.FindAll(i => i.UserName == userName);
-            if (user.Count == 0)
+            
+            var user = (from a in db.Users where a.UserName==userName select a).ToList()[0];
+           
+            if (user==null)
             {
                 return false;
             }
-            if (user[0].AccountStatus == EventZoneConstants.LockedUser)
+            db.Entry(user).Reload();
+            if (user.AccountStatus == EventZoneConstants.LockedUser)
             {
                 return true;
             }
@@ -161,12 +163,11 @@ namespace EventZone.Helpers
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public int CountOwnedEvent(long userID)
+        public int CountOwnedEvent(long userID, bool owner=false)
         {
             try
             {
-                var channelID = GetUserChannel(userID).ChannelID;
-                var k = (from a in db.Events where a.ChannelID == channelID select a).Count();
+                var k=GetUserEvent(userID, -1, owner).Count;
                 return k;
             }
             catch
@@ -200,6 +201,20 @@ namespace EventZone.Helpers
                 listView.Add(view);
             }
             return listView;
+        }
+
+        public Report IsReportedEvent(long userID, long eventID)
+        {
+            try {
+                Report result = (from a in db.Reports where a.SenderID == userID && a.EventID == eventID select a).ToList()[0];
+                if (result != null) {
+                    return result;
+                }
+                   
+            }
+            catch { 
+            }
+            return null;
         }
        
         /// <summary>
@@ -244,7 +259,27 @@ namespace EventZone.Helpers
                 return false;
             }
         }
+        public Report ReportEvent(long userID, long eventID, int reportID, string reportContent) {
 
+            Report newReport = new Report
+            {
+                EventID = eventID,
+                SenderID = userID,
+                ReportType= reportID,
+                ReportContent=reportContent,
+                ReportStatus=EventZoneConstants.Pending,
+                ReportDate=DateTime.Now,
+            };
+            try
+            {
+                db.Reports.Add(newReport);
+                db.SaveChanges();
+                return newReport;
+            }
+            catch {
+                return null;
+            }
+        }
         /// <summary>
         ///     Check is user following a event
         /// </summary>
@@ -308,8 +343,7 @@ namespace EventZone.Helpers
             try
             {
                 var follow =
-                    (from a in db.EventFollows where a.FollowerID == userId && a.EventID == eventId select a).ToList()[0
-                        ];
+                    (from a in db.EventFollows where a.FollowerID == userId && a.EventID == eventId select a).ToList()[0];
                 db.EventFollows.Remove(follow);
                 db.SaveChanges();
                 return true;
@@ -324,12 +358,19 @@ namespace EventZone.Helpers
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public List<Event> GetUserEvent(long userID) {
+        public List<Event> GetUserEvent(long userID, int numberEvent=-1,bool isOwner=true) {
             
             List<Event> myEvent = new List<Event>();
             try { 
                 long channelID= GetUserChannel(userID).ChannelID;
+                
                 myEvent = (from a in db.Events where a.ChannelID == channelID select a).ToList();
+                if (!isOwner) {
+                    myEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.Active));
+                }
+                 if (numberEvent != -1) {
+                    myEvent = myEvent.Take(numberEvent).ToList();
+                }
             }
             catch { }
             return myEvent;
@@ -684,6 +725,40 @@ namespace EventZone.Helpers
             }
             return result;
         }
+
+        public User ReloadUser(User user)
+        {
+            db.Entry(user).Reload();
+            return user;
+        }
+        /// <summary>
+        /// get all following of an user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public List<User> GetListFollowingOfUser(long userID)
+        {
+            try{
+            List<User> result= (from a in db.Users join b in db.PeopleFollows on a.UserID equals b.FollowingUserID where b.FollowerUserID==userID select a).ToList();
+            return result;
+            }catch{}
+            return null;
+        }
+        /// <summary>
+        /// get list follower of an user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public List<User> GetListFollowerOfUser(long userID)
+        {
+            try
+            {
+                List<User> result = (from a in db.Users join b in db.PeopleFollows on a.UserID equals b.FollowerUserID where b.FollowingUserID == userID select a).ToList();
+                return result;
+            }
+            catch { }
+            return null;
+        }
     }
 
     /// <summary>
@@ -1004,6 +1079,37 @@ namespace EventZone.Helpers
             return result;
         }
         /// <summary>
+        /// get all reported event
+        /// </summary>
+        /// <returns></returns>
+        public List<Event> GetAllReportedEvent() {
+            try {
+                List<Event> result = (from evt in db.Events join report in db.Reports on evt.EventID equals report.EventID select evt).Distinct().ToList();
+                return result;
+            }
+            catch { 
+            
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// get list report of event
+        /// </summary>
+        /// <param name="eventID"></param>
+        /// <returns></returns>
+        public List<Report> GetListReportOfEvent(long eventID) {
+
+            try {
+                List<Report> result = (from a in db.Reports where a.EventID == eventID select a).OrderByDescending(m => m.ReportDate).ToList();
+                return result;
+            }
+            catch { 
+            
+            }
+            return null;
+        }
+        /// <summary>
         /// add Video to DB
         /// </summary>
         /// <param name="video"></param>
@@ -1113,6 +1219,21 @@ namespace EventZone.Helpers
             }
             return listThumbEvent;
         }
+        /// <summary>
+        /// get all reports of an event
+        /// </summary>
+        /// <returns></returns>
+        public List<Report> GetEventReport(long eventID) {
+            List<Report> result = new List<Report>();
+            try {
+                result = (from a in db.Reports where a.EventID == eventID select a).ToList();
+                foreach (var item in result) {
+                    db.Entry(item).Reload();
+                }
+            }
+            catch { }
+            return result;
+        }
 
         /// <summary>
         ///     get Image by ID
@@ -1120,12 +1241,9 @@ namespace EventZone.Helpers
         /// <param name="imageID"></param>
         /// <returns></returns>
         public Image GetImageByID(long? imageID)
-        {
-            
+        {   
             return db.Images.Find(imageID);
         }
-
-        
         /// <summary>
         /// Search all event by CategoryID
         /// </summary>
@@ -1230,6 +1348,7 @@ namespace EventZone.Helpers
             {
                 result.AddRange(newEvent.Take(5).ToList());
             }
+            result=result.Distinct().ToList();
             return result;
         }
         public List<ThumbEventHomePage> GetThumbEventHomepage(List<Event> ListEvent)
@@ -1458,6 +1577,12 @@ namespace EventZone.Helpers
 
             return result;
         }
+        /// <summary>
+        /// Upload image to amazone
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="userID"></param>
+        /// <returns></returns>
         public Image UserAddImage(HttpPostedFileBase file, long userID)
         {
             User user = db.Users.Find(userID);
@@ -1722,6 +1847,23 @@ namespace EventZone.Helpers
             catch { }
             return null;
         }
+        public List<ReportDefine> GetAllReportType() {
+            try
+            {
+                List<ReportDefine> listReport = db.ReportDefines.ToList();
+                return listReport;
+            }
+            catch {
+                return null;
+            }
+
+        }
+
+        /// <summary>
+        /// get category by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         public Category GetCategoryById(long id) {
             try
             {
@@ -1813,15 +1955,25 @@ namespace EventZone.Helpers
             int result = 0;
             try
             {
-                result = (from a in db.Reports where a.ReportStatus == EventZoneConstants.Pendding select a).ToList().Count();
+                result = (from a in db.Reports where a.ReportStatus == EventZoneConstants.Pending select a).ToList().Count();
             }
             catch { 
             }
             return result;
         }
+
+        public List<Report> GetAllReport()
+        {
+            try {
+                List<Report> result = db.Reports.OrderByDescending(model=>model.ReportDate).ToList();
+                return result;
+            }
+            catch { }
+            return null;
+        }
     }
     public class AdminDataHelpers : SingletonBase<AdminDataHelpers> { 
-        private EventZoneEntities db;
+        private static EventZoneEntities db;
         /// <summary>
         /// constructor
         /// </summary>
@@ -1832,7 +1984,7 @@ namespace EventZone.Helpers
         public User FindAdmin(string userName, string password) {
             User admin = UserDatabaseHelper.Instance.GetUserByAccount(userName,password);
             if (admin != null) {
-                if (admin.UserRoles == EventZoneConstants.Admin)
+                if (admin.UserRoles == EventZoneConstants.Admin||admin.UserRoles==EventZoneConstants.RootAdmin)
                 {
                     return admin;
                 }
@@ -1856,9 +2008,9 @@ namespace EventZone.Helpers
                 db.SaveChanges();
                 db.Entry(evt).Reload();
                 TrackingAction newAction = new TrackingAction { SenderID=adminID,
-                                                                SenderType=EventZoneConstants.Admin,
+                                                                SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
                                                                 ReceiverID=EventDatabaseHelper.Instance.GetAuthorEvent(eventID).UserID,
-                                                                ReceiverType=EventZoneConstants.User,
+                                                                ReceiverType = EventDatabaseHelper.Instance.GetAuthorEvent(eventID).UserRoles,
                                                                 ActionID=EventZoneConstants.LockEvent,
                                                                 ActionTime=DateTime.Now
                                                                };
@@ -1891,9 +2043,9 @@ namespace EventZone.Helpers
                 TrackingAction newAction = new TrackingAction
                 {
                     SenderID = adminID,
-                    SenderType = EventZoneConstants.Admin,
+                    SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
                     ReceiverID = EventDatabaseHelper.Instance.GetAuthorEvent(eventID).UserID,
-                    ReceiverType = EventZoneConstants.User,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(eventID).UserRoles,
                     ActionID = EventZoneConstants.UnlockEvent,
                     ActionTime = DateTime.Now
                 };
@@ -1922,9 +2074,9 @@ namespace EventZone.Helpers
                 TrackingAction newAction = new TrackingAction
                 {
                     SenderID = adminID,
-                    SenderType = EventZoneConstants.Admin,
+                    SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
                     ReceiverID = userID,
-                    ReceiverType = EventZoneConstants.User,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
                     ActionID = EventZoneConstants.LockEvent,
                     ActionTime = DateTime.Now
                 };
@@ -1949,9 +2101,9 @@ namespace EventZone.Helpers
                 TrackingAction newAction = new TrackingAction
                 {
                     SenderID = adminID,
-                    SenderType = EventZoneConstants.Admin,
+                    SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
                     ReceiverID = userID,
-                    ReceiverType = EventZoneConstants.User,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
                     ActionID = EventZoneConstants.UnLockUser,
                     ActionTime = DateTime.Now
                 };
@@ -1977,9 +2129,9 @@ namespace EventZone.Helpers
                 TrackingAction newAction = new TrackingAction
                 {
                     SenderID = adminID,
-                    SenderType = EventZoneConstants.Admin,
+                    SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
                     ReceiverID = userID,
-                    ReceiverType = EventZoneConstants.User,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
                     ActionID = EventZoneConstants.ChangeUserEmail,
                     ActionTime = DateTime.Now
                 };
@@ -1991,6 +2143,182 @@ namespace EventZone.Helpers
             {
             }
             return false;
+        }
+        /// <summary>
+        /// set user to mod
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public bool SetMod(long adminID, long userID)
+        {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.UserRoles = EventZoneConstants.Mod;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
+                    ReceiverID = userID,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
+                    ActionID = EventZoneConstants.SetMod,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+        /// <summary>
+        /// set mod to user
+        /// </summary>
+        /// <param name="adminID"></param>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public bool UnSetMod(long adminID, long userID)
+        {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.UserRoles = EventZoneConstants.User;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
+                    ReceiverID = userID,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
+                    ActionID = EventZoneConstants.UnSetMod,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+        /// <summary>
+        /// set user to admin, only root admin can use this feature
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public bool SetAdmin(long adminID, long userID)
+        {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.UserRoles = EventZoneConstants.Admin;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = EventZoneConstants.RootAdmin,
+                    ReceiverID = userID,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
+                    ActionID = EventZoneConstants.SetAdmin,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+        /// <summary>
+        /// set admin to user, only root admin can use this feature
+        /// </summary>
+        /// <param name="p1"></param>
+        /// <param name="p2"></param>
+        /// <returns></returns>
+        public bool UnSetAdmin(long adminID, long userID)
+        {
+            try
+            {
+                User user = db.Users.Find(userID);
+                user.UserRoles = EventZoneConstants.User;
+                db.Entry(user).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(user).Reload();
+                TrackingAction newAction = new TrackingAction
+                {
+                    SenderID = adminID,
+                    SenderType = EventZoneConstants.RootAdmin,
+                    ReceiverID = userID,
+                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(userID).UserRoles,
+                    ActionID = EventZoneConstants.UnSetAdmin,
+                    ActionTime = DateTime.Now
+                };
+                db.TrackingActions.Add(newAction);
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+            }
+            return false;
+        }
+        /// <summary>
+        /// admin approve report
+        /// </summary>
+        /// <param name="adminID"></param>
+        /// <param name="reportID"></param>
+        /// <returns></returns>
+        public Report ApproveReport(long adminID, long reportID)
+        {
+            try { 
+               Report currReport= db.Reports.Find(reportID);
+               Event evt = (from a in db.Events where a.EventID==currReport.EventID select a).ToList()[0];
+               var some = db.Reports.Where(x => x.EventID == evt.EventID).ToList();
+               some.ForEach(a => a.ReportStatus = EventZoneConstants.Closed);
+               db.SaveChanges();
+               currReport.ReportStatus = EventZoneConstants.Approved;
+               currReport.HandleDate = DateTime.Now;
+               currReport.HandleBy = adminID;
+               db.Entry(currReport).State = EntityState.Modified;
+               db.SaveChanges();
+               evt.Status = EventZoneConstants.Lock;
+               db.Entry(evt).State = EntityState.Modified;
+               db.SaveChanges();
+
+               return currReport;
+            }   
+            catch { }
+            return null;
+        }
+
+        public Report RejectReport(long adminID, long reportID)
+        {
+            try
+            {
+                Report currReport = db.Reports.Find(reportID);
+                currReport.ReportStatus = EventZoneConstants.Rejected;
+                currReport.HandleDate = DateTime.Now;
+                currReport.HandleBy = adminID;
+                db.Entry(currReport).State = EntityState.Modified;
+                db.SaveChanges();
+                return currReport;
+            }
+            catch { }
+            return null;
         }
     }
 }

@@ -1,6 +1,11 @@
 ﻿@using EventZone.Helpers
 @{
     var user = UserHelpers.GetCurrentUser(Session);
+    if (user != null)
+    {
+        user = UserDatabaseHelper.Instance.ReloadUser(user);
+    }
+    
     List<EventZone.Models.Category> category = CommonDataHelpers.Instance.GetAllCategory();
 }
 <!DOCTYPE html>
@@ -63,10 +68,31 @@
                                     console.log(errorThrown);
                                 }
                             })
-                           </text>
+        </text>
                     }
                 }
+        }
+        else if (user != null)
+        {
+            if (user.AccountStatus == EventZoneConstants.Lock) { 
+                <text>
+                $.ajax({
+                    url: "/Account/Signout",
+                    type: "POST",
+                    dataType: "html",
+                    success: function () {
+                        location.reload();
+                        errorShow("Locked Account", "Your account has been locked! Please contact with our support");
+                    },
+                    error: function (jqXHR, textStatus, errorThrown) {
+                        console.log(jqXHR);
+                        console.log(textStatus);
+                        console.log(errorThrown);
+                    }
+                })
+                </text>
             }
+        }
     })
 </script>
 
@@ -109,7 +135,6 @@
                                 <li>
                                     <a href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
                                 </li>
-
                             }
                         }
                     </ul>
@@ -176,10 +201,10 @@
                         <ul class="dropdown-menu sm-nowrap d_user_dropdown" role="group" aria-hidden="true" aria-expanded="false">
                             <li class="dropdown-header">Manage</li>
                             <li>
-                                <a href="@Url.Action("ManageProfile", "User")">My Profile</a>
+                                <a href="@Url.Action("Index", "User")">My Profile</a>
                             </li>
                             <li>
-                                <a href="@Url.Action("ManageEvent","Event")">My Events</a>
+                                <a href="@Url.Action("Event","User")">My Events</a>
                             </li>
                             <li class="dropdown-header">Quick access</li>
                             <li class="">

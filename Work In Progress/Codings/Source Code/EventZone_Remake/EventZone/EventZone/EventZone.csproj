@@ -312,6 +312,9 @@
     <Compile Include="Models\Report.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReportDefine.cs">
+      <DependentUpon>EventZone.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\SearchViewModels.cs" />
     <Compile Include="Models\Share.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
@@ -333,6 +336,7 @@
     <Content Include="Content\Admin\bootstrap-social.css" />
     <Content Include="Content\Admin\font-awesome.min.css" />
     <Content Include="Content\Admin\myCSS_admin.css" />
+    <Content Include="Content\Admin\myCSS_s_r.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -344,16 +348,18 @@
     <Content Include="Content\Event\jquery.m.flip.css" />
     <Content Include="Content\Event\m.flip.css" />
     <Content Include="Content\Event\Details.css" />
+    <Content Include="Content\User\myCSS_u_m_e.css" />
     <Content Include="Content\Event\perfect-scrollbar.css" />
     <Content Include="Content\Home\font-awesome.min.css" />
     <Content Include="Content\Home\Index.css" />
     <Content Include="Content\Home\jquery.m.flip.css" />
-    <Content Include="Content\Home\myCSS_index_2.css" />
     <Content Include="Content\Event\myCSS_u_w_e.css" />
+    <Content Include="Content\myCSS_u_m_p.css" />
     <Content Include="Content\Search\SearchAdvance.css" />
     <Content Include="Content\Search\SearchResult.css" />
     <Content Include="Content\User\myCSS_s_r.css" />
     <Content Include="Content\User\myCSS_u_m_p.css" />
+    <Content Include="Content\Home\myCSS_index_2.css" />
     <Content Include="Content\_Layout\Site.css" />
     <Content Include="Content\_Layout\_Layout.css" />
     <Content Include="favicon.ico" />
@@ -383,7 +389,6 @@
     <Content Include="img\test.gif" />
     <Content Include="img\upload.png" />
     <Content Include="img\bgvideo1080-cut.webm" />
-    <Content Include="Controllers\client_secrets_for_YoutubeAPI.json" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -538,6 +543,10 @@
     <Content Include="Views\Admin\ManageEvent.cshtml" />
     <Content Include="Views\Admin\ManageUser.cshtml" />
     <Content Include="Views\Admin\_ChangeUserEmail.cshtml" />
+    <Content Include="Views\Admin\ManageReport.cshtml" />
+    <Content Include="Views\Admin\ViewDetailReport.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
+    <Content Include="Views\User\Event.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

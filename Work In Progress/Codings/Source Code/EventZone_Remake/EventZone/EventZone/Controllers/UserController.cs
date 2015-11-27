@@ -58,6 +58,56 @@ namespace EventZone.Controllers
             }
             return View();
         }
+        public ActionResult Index(long userID=-1) {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (userID == -1)
+            {
+                if (user == null)
+                {
+                    if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                    {
+                        string userName = Request.Cookies["userName"].Value;
+                        string password = Request.Cookies["password"].Value;
+                        if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                        {
+                            user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                            if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                            {
+                                TempData["errorTitle"] = "Locked User";
+                                TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                            }
+                            else
+                            {
+                                UserHelpers.SetCurrentUser(Session, user);
+                            }
+
+                        }
+                    }
+                }
+                if (user == null)
+                {
+                    TempData["errorTitle"] = "Require Signin";
+                    TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else {
+                user = UserDatabaseHelper.Instance.GetUserByID(userID);
+                if (user == null)
+                {
+                    TempData["errorTitle"] = "Not Avaiable";
+                    TempData["errorMessage"] = "Ops.. This user does not exists in the system!";
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (user.AccountStatus == EventZoneConstants.Lock) {
+                    TempData["errorTitle"] = "Locked User";
+                    TempData["errorMessage"] = "Ops.. This user has been locked!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View(user);
+       }
+        
 
         /// <summary>
         /// view detail user info
@@ -135,10 +185,6 @@ namespace EventZone.Controllers
             ViewData["ListThumbEvent"] = listThumbEvent;
             ViewData["MyEvent"] = myEvent;
             return RedirectToAction("ManageEvent");
-        }
-        public ActionResult Index()
-        {
-            return View();
         }
 
         public JsonResult Like(long eventId)
@@ -261,13 +307,13 @@ namespace EventZone.Controllers
                             {
                                 TempData["errorTitle"] = null;
                                 TempData["errorMessage"] = null;
-                                return RedirectToAction("ManageProfile");
+                                return RedirectToAction("Index");
                             }
                             else
                             {
                                 TempData["errorTitle"] = "Database Error";
                                 TempData["errorMessage"] = "Ops... Some error is ocurred while we save to database! Please try again later!";
-                                return RedirectToAction("ManageProfile");
+                                return RedirectToAction("Index");
                             }
 
                         }
@@ -275,21 +321,21 @@ namespace EventZone.Controllers
                         {
                             TempData["errorTitle"] = "Database Error";
                             TempData["errorMessage"] = "Ops... Some error is ocurred while we save to database! Please try again later!";
-                            return RedirectToAction("ManageProfile");
+                            return RedirectToAction("Index");
                         }
                     }
                     else
                     {
                         TempData["errorTitle"] = "Not select file";
                         TempData["errorMessage"] = "It's look like you forgot select an image! Are you getting old?";
-                        return RedirectToAction("ManageProfile");
+                        return RedirectToAction("Index");
                     }
                 }
                 catch
                 {
                     TempData["errorTitle"] = "Unknow Error";
                     TempData["errorMessage"] = "Oops..Something wrong is happened! Please try again later...";
-                    return RedirectToAction("ManageProfile");
+                    return RedirectToAction("Index");
                 }
             }
         }
@@ -311,8 +357,7 @@ namespace EventZone.Controllers
             User user = UserHelpers.GetCurrentUser(Session);
             if (user == null)
             {
-                TempData["errorTitle"] = "Require Signin";
-                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+              
                 return Json(new
                 {
                     state = 0,
@@ -322,8 +367,7 @@ namespace EventZone.Controllers
             else {
                 if (!UserDatabaseHelper.Instance.ValidateUser(user.UserName, chgpwd.OldPassword))
                 {
-                    TempData["errorTitle"] = "Wrong old password";
-                    TempData["errorMessage"] = "Ops.. It's look like you enter wrong old password!";
+                   
                     return Json(new
                     {
                         state = 0,
@@ -393,7 +437,7 @@ namespace EventZone.Controllers
                     if (UserDatabaseHelper.Instance.UpdateUser(user))
                     {
                         UserHelpers.SetCurrentUser(Session, user);
-                        return RedirectToAction("ManageProfile");
+                        return RedirectToAction("Index");
                     }
                     else
                     {
@@ -411,18 +455,130 @@ namespace EventZone.Controllers
                 return RedirectToAction("EditProfile");
             }
         }
-        public ActionResult ManageFollow() {
+        public ActionResult ManageFollow(long userID = -1)
+        {
             User user= UserHelpers.GetCurrentUser(Session);
-            if(user==null){
-                TempData["errorTitle"] = "Require Signin";
-                TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
-                return PartialView("_ManageFollow");
+            if (userID == -1) {
+                if (user == null)
+                {
+                    TempData["errorTitle"] = "Require Signin";
+                    TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                    return PartialView("_ManageFollow");
+                }
+                else userID = user.UserID;
+            }
+            List<ViewThumbEventModel> listviewThumb = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(UserDatabaseHelper.Instance.GetFollowingEvent(userID));
+            List<User> listFollowingUser = UserDatabaseHelper.Instance.GetListFollowingOfUser(userID);
+            List<User> listFollower = UserDatabaseHelper.Instance.GetListFollowerOfUser(userID);
+            TempData["ListEventThumb"] = listviewThumb;
+            TempData["ListFollowing"] = listFollowingUser;
+            TempData["ListFollower"] = listFollower;
+            return PartialView("_ManageFollow");
+        }
+        public ActionResult ReportEvent(int typeReport=-1, string reportContent="", long eventId=-1 )
+        {
+            if (eventId == -1 || typeReport == -1)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Error",
+                    message = "Somthing wrong..."
+                });
             }
 
-            List<ViewThumbEventModel> listviewThumb = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(UserDatabaseHelper.Instance.GetFollowingEvent(user.UserID));
-            TempData["ListEventThumb"] = listviewThumb;
-            TempData["ListUserThumb"] = null;
-            return PartialView("_ManageFollow");
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Require Signin",
+                    message = "Ops.. It's look like you are current is not signed in system! Please sign in first!",
+                });
+            }
+            else if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(eventId).UserID)
+            {
+                return Json(new
+                {
+                    state = 0,
+                    error = "Error",
+                    message = "You cant report your event!",
+                });
+            }
+            else {
+
+                Report newReport = UserDatabaseHelper.Instance.ReportEvent(user.UserID, eventId, typeReport, reportContent);
+                if (newReport != null)
+                {
+                    return Json(new
+                    {
+                        state = 1,
+                        newReportType= newReport.ReportType,
+                        newReportDate= newReport.ReportDate.ToString()
+                    });
+                }
+                return Json(new
+                {
+                    state = 0,
+                    error="Error",
+                    message="Somthing wrong..."
+                });
+                
+            }
+        
+        }
+        public ActionResult Event(long userID=-1)
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (userID == -1)
+            {
+                if (user == null)
+                {
+                    if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                    {
+                        string userName = Request.Cookies["userName"].Value;
+                        string password = Request.Cookies["password"].Value;
+                        if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                        {
+                            user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                            if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                            {
+                                TempData["errorTitle"] = "Locked User";
+                                TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+                            }
+                            else
+                            {
+                                UserHelpers.SetCurrentUser(Session, user);
+                            }
+
+                        }
+                    }
+                }
+                if (user == null)
+                {
+                    TempData["errorTitle"] = "Require Signin";
+                    TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                user = UserDatabaseHelper.Instance.GetUserByID(userID);
+                if (user == null)
+                {
+                    TempData["errorTitle"] = "Not Avaiable";
+                    TempData["errorMessage"] = "Ops.. This user does not exists in the system!";
+                    return RedirectToAction("Index", "Home");
+                }
+                else if (user.AccountStatus == EventZoneConstants.Lock)
+                {
+                    TempData["errorTitle"] = "Locked User";
+                    TempData["errorMessage"] = "Ops.. This user has been locked!";
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            return View(user);
         }
 
     }

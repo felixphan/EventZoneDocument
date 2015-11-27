@@ -11,9 +11,11 @@
         public static int User = 0;
         public static int Mod = 1;
         public static int Admin = 2;
-        public static int Pendding = 0;
+        public static int RootAdmin = 3;
+        public static int Pending = 0;
         public static int Approved = 1;
         public static int Rejected = 2;
+        public static int Closed = 3;
 
         public static int publicEvent = 0;
         public static int unlistedEvent = 1;
@@ -40,7 +42,11 @@
         public static int LockUser = 3;
         public static int UnLockUser = 4;
         public static int ChangeUserEmail = 5;
+        public static int SetMod = 1005;
+        public static int UnSetMod = 1006;
+        public static int SetAdmin = 1007;
+        public static int UnSetAdmin = 1008;
 
-
+        
     }
 }

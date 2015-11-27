@@ -32,7 +32,7 @@ namespace EventZone.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public JsonResult SignInPost(SignInViewModel model)
+        public JsonResult SigninPost(SignInViewModel model)
         {
             if (!ModelState.IsValid)
                 return Json(new
@@ -45,11 +45,12 @@ namespace EventZone.Controllers
             {
                 if (UserDatabaseHelper.Instance.isLookedUser(model.UserName))
                 {
-                    ModelState.AddModelError("", "Your account is locked! Please contact with our support");
+                    UserHelpers.SetCurrentUser(Session, null);
+                    ModelState.AddModelError("", "Your account has been locked! Please contact with our support");
                     return Json(new
                     {
                         state = 0,
-                        message = "Your account is locked! Please contact with our support"
+                        message = "Your account has been locked! Please contact with our support"
                     });
                 }
                 if (model.Remember)
@@ -259,7 +260,7 @@ namespace EventZone.Controllers
                         // user is Locked
                         GoogleConnect.Clear();
                         TempData["errorTitle"] = "Locked user";
-                        TempData["errorMessage"] = "Ops...Your account is locked! Please contact with our support!";
+                        TempData["errorMessage"] = "Ops...Your account has been locked! Please contact with our support!";
                         return RedirectToAction("Index", "Home");
                     }
                     TempData["errorTitle"] = null;
@@ -462,7 +463,7 @@ namespace EventZone.Controllers
                         return Json(new
                         {
                             success = 0,
-                            message = "Your account have been locked! Please contact with admin to active it!"
+                            message = "Your account has been locked! Please contact with admin to active it!"
                         });
                     }
                     UserHelpers.SetCurrentUser(Session, user);
@@ -477,7 +478,7 @@ namespace EventZone.Controllers
                     return Json(new
                     {
                         success = 0,
-                        message = "Your account have been changed password! Please try to sign in with a new password!"
+                        message = "Your account has been changed password! Please try to sign in with a new password!"
                     });
                 }
             }

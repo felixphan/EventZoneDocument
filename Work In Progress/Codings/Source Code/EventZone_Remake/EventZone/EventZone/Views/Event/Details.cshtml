@@ -236,6 +236,8 @@
                                                     <a class="thumbnail" href="#">
                                                         <img class="img-responsive" src="@thumbVideo" onclick="viewVideo('@video.VideoLink')">
                                                     </a>
+                                                    Stream Name: @video.StreamName
+                                                    <p>Link watch : @video.VideoLink
                                                 </div>
                                             }
                                         </div>
@@ -303,25 +305,36 @@
                         @Html.Partial("_CommentPartial", new CommentViewModel { eventID = @Model.eventId, listComment = @Model.eventComment })
                         <!-- Thẻ Tab Report -->
                         <div class="tab-pane" id="i_report_tab">
-                            <div class="d_reasons_container b">
-                                <div class="checkbox" id="i_reason1">
-                                    <label><input type="checkbox" value="">Reason 1</label>
+                            @if (user!=null&&UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId) != null)
+                            {
+                                Report report = UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId);
+                                <div class="d_reasons_container b">
+                                    You have reported this event as @report.ReportType <p> at @report.ReportDate<br> Your report is being review.</p>
                                 </div>
-                                <div class="checkbox">
-                                    <label><input type="checkbox" value="">Reason 2</label>
+                            }
+                            else
+                            {
+                                <div class="d_reasons_container b">
+                                    @if (user != EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId))
+                                    {
+                                        foreach (var item in CommonDataHelpers.Instance.GetAllReportType())
+                                        {
+                                            <div class="radio">
+                                                <label><input type="radio" name="reportRadio" value=@item.ReportTypeID>@item.ReportTypeName</label>
+                                            </div>
+                                        }
+                                    }
                                 </div>
-                                <div class="checkbox">
-                                    <label><input type="checkbox" value="">Reason 3</label>
+                                <div class="form-group d_write_report col-xs-10 col-sm-10 col-md-10 col-lg-10">
+                                    <textarea id="i_report_box"
+                                              class="form-control" rows="1"
+                                              placeholder="Write your reason..."></textarea>
+                                    <button type="button" class="btn btn-success col-xs-2 col-sm-2 col-md-2 col-lg-2" id="btn-report-send">
+                                        <span class="glyphicon glyphicon-send"></span>
+                                    </button>
                                 </div>
-                            </div>
-                            <div class="form-group d_write_report col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                <textarea id="i_report_box"
-                                          class="form-control" rows="1" 
-                                          placeholder="Write your reason..."></textarea>
-                                <button type="button" class="btn btn-success col-xs-2 col-sm-2 col-md-2 col-lg-2" id="i_btn_send">
-                                    <span class="glyphicon glyphicon-send"></span>
-                                </button>
-                            </div>
+                            }
+                            
                         </div>
                     </div>
                 </div>
@@ -360,6 +373,42 @@
 <script src="~/Scripts/Event/myJS_u_w_e.js"></script>
 <!--like+share+follow-->
 <script>
+    $("#btn-report-send").click(function () {
+        @if (user == null) {
+             <text>
+        errorShow("Require Signin", "Ops.. It's look like you are current is not signed in system! Please sign in first!");
+        </text>
+        }else{
+         <text>
+        if ($("input[name='reportRadio']:checked").val() == null) {
+            errorShow("Error", "Please select a type of report!");
+        } else {
+            $.ajax({
+                url: "/User/ReportEvent",
+                type: "POST",
+                dataType: "json",
+                data: { eventId: '@Model.eventId', typeReport: $("input[name='reportRadio']:checked").val(), reportContent: $("#i_report_box").val() },
+                success: function (data) {
+                    if (data.state == 0) {
+                        errorShow(data.error, data.message)
+                    } else {
+                        $("#i_report_tab").empty();
+                        $("#i_report_tab").append('<div class="d_reasons_container b">' +
+                            'You have reported this event as ' + data.newReportType + ' <p> at ' + data.newReportDate + '<br> Your report is being review.</p>' +
+                        '</div>');
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            })
+            }
+        </text>
+         }
+    })
+
     function viewVideo(link){
         $("#li-video").removeClass("active");
         $("#li-video-title").addClass("active");
@@ -411,7 +460,7 @@
         $("#btn-like-event").click(function () {
             @if (user == null) {
             <text>
-           
+
             errorShow("Require Signin", "Ops.. It's look like you are current is not signed in system! Please sign in first!");
             </text>
         }

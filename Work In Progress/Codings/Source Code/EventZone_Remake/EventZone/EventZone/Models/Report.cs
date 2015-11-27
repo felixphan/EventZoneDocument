@@ -14,16 +14,18 @@ namespace EventZone.Models
     
     public partial class Report
     {
-        public long ReportID { get; set; }
+        public int ReportID { get; set; }
         public long EventID { get; set; }
         public long SenderID { get; set; }
-        public string ReportType { get; set; }
+        public int ReportType { get; set; }
         public string ReportContent { get; set; }
         public int ReportStatus { get; set; }
         public System.DateTime ReportDate { get; set; }
-        public Nullable<System.DateTime> ResultDate { get; set; }
+        public Nullable<System.DateTime> HandleDate { get; set; }
+        public Nullable<long> HandleBy { get; set; }
     
         public virtual Event Event { get; set; }
+        public virtual ReportDefine ReportDefine { get; set; }
         public virtual User User { get; set; }
     }
 }

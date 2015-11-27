@@ -39,12 +39,18 @@ namespace EventZone.Helpers
             {
                 return;
             }
-            PutObjectRequest putObjectRequest = new PutObjectRequest();
-            putObjectRequest.BucketName = bucketName;
-            putObjectRequest.CannedACL = S3CannedACL.PublicRead;
-            putObjectRequest.Key = fileName;
-            putObjectRequest.InputStream = fileContent;
-            PutObjectResponse response = s3Client.PutObject(putObjectRequest);
+            try
+            {
+                PutObjectRequest putObjectRequest = new PutObjectRequest();
+                putObjectRequest.BucketName = bucketName;
+                putObjectRequest.CannedACL = S3CannedACL.PublicRead;
+                putObjectRequest.Key = fileName;
+                putObjectRequest.InputStream = fileContent;
+                PutObjectResponse response = s3Client.PutObject(putObjectRequest);
+            }
+            catch { 
+            }
+            
         }
 
     }

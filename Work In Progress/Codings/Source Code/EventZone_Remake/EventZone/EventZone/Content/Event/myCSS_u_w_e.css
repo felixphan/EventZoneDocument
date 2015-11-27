@@ -317,7 +317,7 @@ iframe #i_frame_gallery{
     width: 82%;
     max-width: 82%;
 }
-#i_btn_send{
+#btn-report-send{
 	float: right;
 }
 .d_txt_write_cmt{

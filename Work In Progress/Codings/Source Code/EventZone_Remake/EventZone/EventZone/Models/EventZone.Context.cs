@@ -41,6 +41,7 @@ namespace EventZone.Models
         public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<PeopleFollow> PeopleFollows { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
+        public virtual DbSet<ReportDefine> ReportDefines { get; set; }
         public virtual DbSet<Share> Shares { get; set; }
         public virtual DbSet<TrackingAction> TrackingActions { get; set; }
         public virtual DbSet<User> Users { get; set; }
