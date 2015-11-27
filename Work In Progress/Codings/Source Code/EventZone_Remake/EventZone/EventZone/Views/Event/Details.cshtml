@@ -7,6 +7,7 @@
     int numberImage = 0;
     if (Model != null && Model.eventImage.Count != 0)
     {
+
         numberImage = Model.eventImage.Count;
     }
     int numberVideo = 0;
@@ -354,7 +355,7 @@
                 <div style="float:right; font-size: 80%; position: relative; top: -20px"><a href="#" data-dismiss="modal" id="i_close_modal">Close</a></div>
             </div>
             <div style="padding-top:10px" class="panel-body">
-                <div class="d_des_content">
+                <div class="d_des_content" id="popupContent">
                     @Model.eventDescription
                 </div>
             </div>
@@ -421,7 +422,7 @@
     var followState = 0;
     //dislike script
     $(document).ready(function () {
-
+        $('.d_des_content').html($('#popupContent').text().replace(/&lt;/g, '<').replace(/&gt;/g, ">"));
         $("#btn-dislike-event").click(function () {
             @if (user == null) {
             <text>

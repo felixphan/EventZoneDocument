@@ -17,6 +17,7 @@
     <!--Style-->
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
     <link href="~/Content/_Layout/_Layout.css" rel="stylesheet"/>
+    <link href="~/Content/Home/myCSS_index_2.css" rel="stylesheet" />
     <!--Script-->
     <script src="~/Scripts/_Layout/modernizr-2.8.3.js"></script>
     <script src="~/Scripts/jquery-2.1.4.js"></script>
@@ -113,7 +114,7 @@
             </button>
             <!-- Brand -->
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle navbar-brand" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Event Zone</a>
+                <a href="/Home/Index" id="i_brand">Event Zone</a>
                 <ul class="dropdown-menu d_brand_menu">
                     <li>
                         <a href="/Home/Policy">Policy</a>
@@ -126,11 +127,12 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <li class="dropdown">
+                <li class="dropdown" id="i_drdn_cate">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
                     <ul class="dropdown-menu" style="width: 200px;">
-                        @if (category != null) { 
-                        foreach (var item in category)
+                        @if (category != null)
+                        {
+                            foreach (var item in category)
                             {
                                 <li>
                                     <a href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
@@ -155,10 +157,10 @@
                             <!-- Modal content-->
                             <div class="panel panel-info d_margin_top">
                                 <div class="panel-heading">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
                                     <div class="panel-title">Welcome to Event Zone</div>
-                                    <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                                        <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
-                                    </div>
                                 </div>
                                 <div class="panel-body">
                                     <div class="cover_all_functions">
@@ -270,7 +272,7 @@
         </div>
     </div>
 </nav>
-<div class="container body-content">
+<div class="body-content">
     <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=places&callback=initAutocomplete"
             async defer></script>
     @RenderBody()

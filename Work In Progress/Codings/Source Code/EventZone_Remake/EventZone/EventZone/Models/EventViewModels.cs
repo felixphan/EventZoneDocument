@@ -33,7 +33,7 @@ namespace EventZone.Models
         [Required]
         [Display(Name = "Category")]
         public long CategoryID { get; set; }
-        [MaxLength(500, ErrorMessage = "The Description must less than 500 characters.")]
+        [MaxLength(2000, ErrorMessage = "The Description must less than 500 characters.")]
         public string Description { get; set; }
     }
     public class LiveStreamingModel {

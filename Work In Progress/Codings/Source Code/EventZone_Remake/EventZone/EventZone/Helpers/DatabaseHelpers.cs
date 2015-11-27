@@ -1645,14 +1645,9 @@ namespace EventZone.Helpers
             newEvent.View = 0;
             newEvent.CategoryID = model.CategoryID;
             newEvent.Privacy = model.Privacy;
-            if (file == null)
-            {
                 newEvent.Avatar = CommonDataHelpers.Instance.GetCategoryById(model.CategoryID).CategoryAvatar;
-            }
-            else {
                 Image newImage = UserAddImage(file,userid);
                 if (newImage != null) newEvent.Avatar = newImage.ImageID;
-            }
             newEvent.EditBy = userid;
             newEvent.EditTime = DateTime.Now;
             newEvent.EditContent = null;
