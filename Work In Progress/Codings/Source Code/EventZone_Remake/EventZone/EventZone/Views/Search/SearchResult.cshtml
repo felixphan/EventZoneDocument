@@ -31,21 +31,19 @@
         listEventCount = listEvent.Count;
     }
 }
-<link href="~/Content/Search/SearchResult.css" rel="stylesheet" />
-<div class="d_all_result container b" style="margin-top:100px">
+<link href="~/Content/User/myCSS_s_r.css" rel="stylesheet" />
+<div class="d_all_result container">
     <div class="col-xs-8 col-sm-9 col-md-9 col-lg-10 d_result_container">
         <!-- Tab panes -->
         <div class="tab-content">
             <!-- EVENT Result: e_ đánh dấu CSS Event -->
             <div class="tab-pane active b" id="event-r">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_e_result_container">
+                <div class="d_e_result_container">
                     @if (listEvent != null)
                     {
                         foreach (var item in listEvent)
                         {
-                            <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                                 @Html.Partial("_ThumbEvent", item)
-                            </div>
                         }
                     }
                 </div>
@@ -66,18 +64,15 @@
             </div>
             <!-- USER Result: u_ đánh dấu CSS User -->
             <div class="tab-pane b" id="user-r">
-                <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_u_result_container">
                     @if (listUser != null)
                     {
                         foreach (var item in listUser)
                         {
-                            <div>
+                            <div class="d_each_user">
                                 @Html.Partial("_UserThumbnail", item)
                             </div>
                         }
                     }
-
-                </div>
             </div>
         </div>
     </div>
@@ -93,11 +88,11 @@
             </li>
             @if (task == "Search")
             {
-            <li>
-                <a href="search-result.html#user-r" data-toggle="tab">User(@listUserCount)</a>
-            </li>
+                <li>
+                    <a href="search-result.html#user-r" data-toggle="tab">User(@listUserCount)</a>
+                </li>
             }
-            
+
         </ul>
     </div>
 </div>
