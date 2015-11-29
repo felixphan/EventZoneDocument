@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Amazon.CloudWatchLogs;
 using EventZone.Helpers;
 using EventZone.Models;
 using Google.Apis.Auth.OAuth2;
@@ -17,6 +18,7 @@ using Channel = EventZone.Models.Channel;
 using Comment = EventZone.Models.Comment;
 using Video = EventZone.Models.Video;
 using Amazon.S3;
+using Quartz.Util;
 
 namespace EventZone.Helpers
 {
@@ -2339,5 +2341,260 @@ namespace EventZone.Helpers
             catch { }
             return null;
         }
+    }
+    /// <summary>
+    /// All function related to statistic
+    /// </summary>
+    public class StatisticDataHelpers : SingletonBase<StatisticDataHelpers>
+    {
+        private readonly EventZoneEntities db;
+
+        private StatisticDataHelpers()
+        {
+            db = new EventZoneEntities();
+        }
+        public Dictionary<string,int> GetEventCount()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>();
+            //result.Add("Total",db.Events.Count());
+            var eachCategoryCount = (from b in db.Events
+                group b by b.CategoryID
+                into g
+                select new {CategoryID = g.Key, Count = g.Count()}).ToList();
+            
+            foreach (var item in eachCategoryCount)
+            {
+                result.Add(CommonDataHelpers.Instance.GetCategoryById(item.CategoryID).CategoryName,item.Count);
+            }
+            return result;
+        }
+
+        public Dictionary<string, int> GetEventByStatus()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>() { };
+            var eachEventCount = (from b in db.Events
+                                   group b by b.Status
+                                       into g
+                                       select new { EventStatus = g.Key, Count = g.Count() }).ToList();
+            foreach (var item in eachEventCount)
+            {
+                if (item.EventStatus)
+                {
+                    result.Add("Active", item.Count);
+                }
+                if (!item.EventStatus)
+                {
+                    result.Add("Locked", item.Count);
+                }
+            }
+            return result;
+        } 
+
+        public Dictionary<string, List<int>> GetEventCreatedEachMonth()
+        {
+            Dictionary<string, List<int>> result = new Dictionary<string, List<int>>();
+            List<Category> categories = CommonDataHelpers.Instance.GetAllCategory();
+            foreach (var item in categories)
+            {
+                List<int> data = new List<int> {};
+                var EventCreatedEachMonth = (from b in db.Events
+                    where b.CategoryID == item.CategoryID
+                    group b by b.EventStartDate.Month
+                    into g
+                    orderby g.Key ascending
+                    select new {Month = g.Key, Count = g.Count()}).ToList();
+                for (int i = 1; i < 13; i++)
+                {
+                    bool checkValidMonth = false;
+                    int getData=0;
+                    for (int j = 0; j < EventCreatedEachMonth.Count; j++)
+                    {
+                        if (i == EventCreatedEachMonth[j].Month)
+                        {
+                            checkValidMonth = true;
+                            getData = EventCreatedEachMonth[j].Count;
+                        }
+                    }
+                    if (checkValidMonth)
+                    {
+                        data.Add(getData);
+                    }
+                    else
+                    {
+                        data.Add(0);
+                    }
+                        
+                }
+                result.Add(item.CategoryName,data);
+            }
+            return result;
+        }
+
+        public Dictionary<Event, long> GetTopTenEvent()
+        {
+            Dictionary<Event, long> result = new Dictionary<Event, long>() { };
+            db.EventRanks.Load();
+            var listEvent = (from a in db.EventRanks orderby a.Score descending select new{id=a.EventId,score=a.Score}).Take(10).ToList();
+            foreach (var item in listEvent)
+            {
+                Event evt = db.Events.Find(item.id);
+                if (evt != null)
+                {
+                    db.Entry(evt).Reload();
+                    result.Add(evt,item.score);
+                }
+            }
+            return result;
+
+        }
+
+        public Dictionary<Location, int> GetTopLocation()
+        {
+            Dictionary<Location, int> result = new Dictionary<Location, int>() { };
+            var listLocation = (from a in db.EventPlaces
+                group a by a.LocationID
+                into g
+                orderby g.Count() descending
+                select new {LocationID = g.Key, Count = g.Count()}).ToList().Take(10);
+            foreach (var item in listLocation)
+            {
+                result.Add(db.Locations.ToList().FindAll(i => i.LocationID == item.LocationID)[0], item.Count);
+            }
+            return result;
+        }
+
+        public Dictionary<User, int> GetTopTenCreatedUser()
+        {
+            Dictionary<User, int> result = new Dictionary<User, int>() {};
+            var listUser = db.Users.ToList();
+            foreach (var item in listUser)
+            {
+                result.Add(item,UserDatabaseHelper.Instance.CountOwnedEvent(item.UserID,false));
+            }
+            var tmp = (from p in result orderby p.Value descending select p).ToList().Take(10);
+            result.Clear();
+            foreach (var item in tmp)
+            {
+                result.Add(item.Key, item.Value);
+            }
+            return result;
+        }
+
+        public Dictionary<string,int> GenderRate()
+        {
+            var listUser = (from a in db.Users
+                group a by a.Gender
+                into g
+                orderby g.Count() descending
+                select new {Gender = g.Key, Count = g.Count()}).ToList();
+            Dictionary<string,int> result = new Dictionary<string,int>(){};
+            foreach (var item in listUser)
+            {
+                if (item.Gender == 0)
+                {
+                    result.Add("Male", item.Count);
+                }
+                else
+                {
+                    result.Add("Female", item.Count);
+                }
+            }
+            return result;
+        }
+
+        public Dictionary<string, int> GetGroupAgeReport()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>() {};
+            var rangeYear = new List<int>{0,15,30,45,60};
+            var groupAge = db.Users.Where(p => p.UserDOB != null).ToList()
+                .Select(p => new { UserId = p.UserID, Age = DateTime.Now.Year - p.UserDOB.Year })
+                .GroupBy(p => (int)((p.Age - 16) / 10))
+                .Select(g => new { AgeGroup = string.Format("{0} - {1}", g.Key * 10 + 16, g.Key * 10 + 25), Count = g.Count() }).ToList();
+            foreach (var item in groupAge)
+            {
+                result.Add(item.AgeGroup,item.Count);
+            }
+            return result;
+
+        }
+
+        public string getReportTypeNameById(int reportID)
+        {
+            try
+            {
+                ReportDefine report = db.ReportDefines.Find(reportID);
+                return report.ReportTypeName;
+            }
+            catch { }
+            return null;
+        }
+        public Dictionary<string, int> GetReportByType()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>() {};
+            var eachReportCount = (from b in db.Reports
+                                     group b by b.ReportType
+                                         into g
+                                       select new { ReportTypeID = g.Key, Count = g.Count() }).ToList();
+            foreach (var item in eachReportCount)
+            {
+                result.Add(getReportTypeNameById(item.ReportTypeID), item.Count);
+            }
+            return result;
+        }
+
+        public Dictionary<string, int> GetReportByStatus()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>() { };
+            var eachReportCount = (from b in db.Reports
+                                   group b by b.ReportStatus
+                                       into g
+                                       select new { ReportStatus = g.Key, Count = g.Count() }).ToList();
+            foreach (var item in eachReportCount)
+            {
+                if (item.ReportStatus == 0)
+                {
+                    result.Add("Pending", item.Count);
+                }
+                if (item.ReportStatus == 1)
+                {
+                    result.Add("Approved", item.Count);
+                }
+                if (item.ReportStatus == 2)
+                {
+                    result.Add("Rejected", item.Count);
+                }
+                if (item.ReportStatus == 3)
+                {
+                    result.Add("Closed", item.Count);
+                }
+            }
+            return result;
+        }
+
+        public Dictionary<string, int> GetAppealByStatus()
+        {
+            Dictionary<string, int> result = new Dictionary<string, int>() { };
+            var eachReportCount = (from b in db.Appeals
+                                   group b by b.AppealStatus
+                                       into g
+                                       select new { AppealStatus = g.Key, Count = g.Count() }).ToList();
+            foreach (var item in eachReportCount)
+            {
+                if (item.AppealStatus == 0)
+                {
+                    result.Add("Pending", item.Count);
+                }
+                if (item.AppealStatus == 1)
+                {
+                    result.Add("Approved", item.Count);
+                }
+                if (item.AppealStatus == 2)
+                {
+                    result.Add("Rejected", item.Count);
+                }
+            }
+            return result;
+        }
+ 
     }
 }

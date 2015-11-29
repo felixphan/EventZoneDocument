@@ -629,7 +629,6 @@ namespace EventZone.Controllers
                 message = "Something wrong! Please try again!"
             });
         }
-
         public ActionResult RejectReport(long reportID)
         {
             User admin = UserHelpers.GetCurrentAdmin(Session);
@@ -682,6 +681,36 @@ namespace EventZone.Controllers
                 error = "Erorr",
                 message = "Something wrong! Please try again!"
             });
+        }
+
+        public ActionResult Statistic()
+        {
+            if (Request.Cookies["Admin_userName"] != null && Request.Cookies["Admin_password"] != null)
+            {
+                string userName = Request.Cookies["Admin_userName"].Value;
+                string password = Request.Cookies["Admin_password"].Value;
+                var admin = AdminDataHelpers.Instance.FindAdmin(userName, password);
+                if (admin != null)
+                {
+                    if (admin.AccountStatus != EventZoneConstants.LockedUser)
+                    {
+                        UserHelpers.SetCurrentAdmin(Session, admin);
+                    }
+                }
+            }
+            StatisticViewModel model = new StatisticViewModel();
+            model.EventCountStatistic = StatisticDataHelpers.Instance.GetEventCount();
+            model.EventCreatedEachMonth = StatisticDataHelpers.Instance.GetEventCreatedEachMonth();
+            model.TopTenEvents = StatisticDataHelpers.Instance.GetTopTenEvent();
+            model.TopTenLocations = StatisticDataHelpers.Instance.GetTopLocation();
+            model.TopTenUser = StatisticDataHelpers.Instance.GetTopTenCreatedUser();
+            model.GenderRate = StatisticDataHelpers.Instance.GenderRate();
+            model.GroupbyAge = StatisticDataHelpers.Instance.GetGroupAgeReport();
+            model.ReportByStatus = StatisticDataHelpers.Instance.GetReportByStatus();
+            model.ReportByType = StatisticDataHelpers.Instance.GetReportByType();
+            model.AppealByStatus = StatisticDataHelpers.Instance.GetAppealByStatus();
+            model.EventByStatus = StatisticDataHelpers.Instance.GetEventByStatus();
+            return View(model);
         }
     }
 }

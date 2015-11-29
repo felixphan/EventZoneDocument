@@ -1,5 +1,20 @@
 /*********************************************** Thêm ***/
 
+/*********************************************** Sửa Flip ***/
+.flipper-container #flipper-inside>._flipper-back{
+    padding: 5px;
+}
+/*********************************************** Sửa BxSlider ***/
+.d_e_container .bx-prev{
+    margin-right: 15px;
+}
+.bx-wrapper .bx-controls-direction a{
+    top: 0;
+    margin-top: -33px;
+    margin-right: 5px;
+    z-index: 1;
+}
+
 /*********************************************** Sửa Bootstrap ***/
 .form-horizontal .form-group {
     margin-right: 0px;
@@ -61,7 +76,7 @@ video{
 
 /*********************************************** MIDDLE Category ***/
 .d_md_body{
-	margin-top: 100px;
+	margin-top: 150px;
 	font-family: segoe ui;
 	color: #fff;
 	background-color: transparent;
@@ -85,7 +100,7 @@ video{
 }
 .d_mc_category{
 	margin-top: 50px;
-	margin-bottom: 130px;
+	margin-bottom: 180px;
 }
 .d_mc_category button{
 	color: #fff;
@@ -251,15 +266,17 @@ d_e_container {
     margin-left: 2%;
     height: 200px;
     padding:5px;
-    background-color: white;
+    background-color: rgba(255, 255, 255, .7);
     margin-bottom: 20px;
 }
 .d_big_row .d_title{
     font-size: 20px;
-    color: red;
+    color: #F44336;
+    padding: 0px 5px;
+    margin-bottom: 5px;
 }
 .d_big_row .d_e_container{
-    border: 1px dashed red;
+
     height: 163px;
 }
 /*********************************************** d_big_row > d_row_1 ***/

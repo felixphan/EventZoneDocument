@@ -44,14 +44,13 @@
                     <div class="tab-pane active" id="i_info_tab">
                         <!-- THUMBNAIL -->
                         <input id="eventID-detail" hidden value="@Model.eventId" />
-                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 d_event_thumbnail">
+                        <div class="d_event_thumbnail">
                             <img src="@Model.eventAvatar" id="i_event_thumbnail">
                         </div>
                         <!-- DETAIL INFO -->
-                        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8 d_event_info">
+                        <div class="d_event_info">
                             <!-- TITLE -->
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9"
-                                 id="i_event_title">
+                            <div id="i_event_title">
                                 <p>@Model.eventName</p>
                                 <!-- DATE TIME -->
                                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d_each_info">
@@ -59,6 +58,11 @@
                                     </div>
                                     <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
                                         in <i>@Model.Category</i>
+                                    </div>
+                                    <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-user">
+                                    </div>
+                                    <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
+                                        by <i>User X</i>
                                     </div>
                                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-time">
                                     </div>
@@ -85,24 +89,24 @@
                                     }
                                 </div>
                             </div>
-                            <!-- BUTTONS -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
-                                <a class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-number-view">
-                                    <i class="glyphicon glyphicon-eye-open"></i> <span id="view-count">@Model.numberView</span>
-                                </a>
-                                <a class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-like-event">
-                                    <i class="fa fa-thumbs-o-up"></i> <span id="like-count">@numberLike</span>
-                                </a>
-                                <a class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-dislike-event">
-                                    <i class="fa fa-thumbs-o-down"></i> <span id="dislike-count">@numberDislike</span>
-                                </a>
-                                <a class="btn btn-block btn-social btn-reddit btn-xs" id="btn-follow-event">
-                                    <i class="fa fa-star-o"></i> <span id="follow-count">@numberFollow</span>
-                                </a>
-                                <button class="btn btn-block btn-social btn-facebook btn-xs" onclick="share(@Model.eventId)">
-                                    <i class="fa fa-facebook" id="facebook-share"></i> Share
-                                </button>
-                            </div>
+                        </div>
+                        <!-- BUTTONS -->
+                        <div class="d_btn_group">
+                            <a class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-number-view">
+                                <i class="glyphicon glyphicon-eye-open"></i> <span id="view-count">@Model.numberView</span>
+                            </a>
+                            <a class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-like-event">
+                                <i class="fa fa-thumbs-o-up"></i> <span id="like-count">@numberLike</span>
+                            </a>
+                            <a class="btn btn-block btn-social btn-dropbox btn-xs" id="btn-dislike-event">
+                                <i class="fa fa-thumbs-o-down"></i> <span id="dislike-count">@numberDislike</span>
+                            </a>
+                            <a class="btn btn-block btn-social btn-reddit btn-xs" id="btn-follow-event">
+                                <i class="fa fa-star-o"></i> <span id="follow-count">@numberFollow</span>
+                            </a>
+                            <button class="btn btn-block btn-social btn-facebook btn-xs" onclick="share(@Model.eventId)">
+                                <i class="fa fa-facebook" id="facebook-share"></i> Share
+                            </button>
                         </div>
                         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des">
                             <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
@@ -122,22 +126,26 @@
                     </div>
                     <!-- Khung chứa Gallery -->
                     <div class="tab-pane" id="i_image_tab">
+                        <button data-toggle="modal" data-target="#user-upload-image-event-modal" class="btn btn-primary btn-xs">Upload</button>
                         <div class="container-fluid d_image_cover">
                             <div class="container-fluid d_thumbs_cover">
-                                <div>
                                     @if (Model.eventImage != null)
                                     {
                                         foreach (var item in Model.eventImage)
                                         {
-                                            <div class=" col-md-4 thumb">
+                                            <div class="d_each_photo">
                                                 <a class="thumbnail" href=@item.ImageLink>
                                                     <img class="img-responsive" src="@item.ImageLink" alt="">
                                                 </a>
+                                                <p class="d_photo_author">
+                                                    by <i>User a</i>
+                                                </p>
                                             </div>
+                                            
+                                                
                                         }
                                     }
-                                </div>
-                                <button data-toggle="modal" data-target="#user-upload-image-event-modal" class="btn btn-primary btn-sm">Upload</button>
+                                
                                 <!--upload modal-->
                                 <div class="modal fade" id="user-upload-image-event-modal" role="dialog">
                                     <div class="modal-dialog">
@@ -299,23 +307,38 @@
                     <a class="d_reopen_map">Map</a>
                     <ul class="nav nav-tabs" id="myTab">
                         <li class="active"><a href="#i_comment" data-toggle="tab">Comment</a></li>
-                        <li><a href="#i_report_tab" data-toggle="tab">Report</a></li>
+                        <li class="d_tab_report"><a href="#i_report_tab" data-toggle="tab">Report</a></li>
                     </ul>
                     <div class="tab-content" >
                         <!--comment partial-->
                         @Html.Partial("_CommentPartial", new CommentViewModel { eventID = @Model.eventId, listComment = @Model.eventComment })
                         <!-- Thẻ Tab Report -->
                         <div class="tab-pane" id="i_report_tab">
+                            <!-- rp_ viết tắt của Report -->
+                            <div class="d_rp_before d_rp_sample">
+                                <div class="radio">
+                                    <label><input type="radio" name="optradio">Sexual content</label>
+                                </div>
+                                <div class="radio">
+                                    <label><input type="radio" name="optradio">Violent or repulsive content</label>
+                                </div>
+                                <div class="radio">
+                                    <label><input type="radio" name="optradio">Hateful or abusive content</label>
+                                </div>
+                            </div>
+                            <div class="d_rp_before d_rp_fade">
+
+                            </div>
                             @if (user!=null&&UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId) != null)
                             {
                                 Report report = UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId);
-                                <div class="d_reasons_container b">
+                                <div class="d_reasons_container">
                                     You have reported this event as @report.ReportType <p> at @report.ReportDate<br> Your report is being review.</p>
                                 </div>
                             }
                             else
                             {
-                                <div class="d_reasons_container b">
+                                <div class="d_reasons_container">
                                     @if (user != EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId))
                                     {
                                         foreach (var item in CommonDataHelpers.Instance.GetAllReportType())
@@ -325,17 +348,17 @@
                                             </div>
                                         }
                                     }
+                                    <div class="form-group d_write_report">
+                                        <textarea id="i_report_box"
+                                                    class="form-control" rows="1"
+                                                    placeholder="Write your reason..."></textarea>
+                                        <button type="button" class="btn btn-success" id="btn-report-send">
+                                            <span class="glyphicon glyphicon-send"></span>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="form-group d_write_report col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                                    <textarea id="i_report_box"
-                                              class="form-control" rows="1"
-                                              placeholder="Write your reason..."></textarea>
-                                    <button type="button" class="btn btn-success col-xs-2 col-sm-2 col-md-2 col-lg-2" id="btn-report-send">
-                                        <span class="glyphicon glyphicon-send"></span>
-                                    </button>
-                                </div>
+                                
                             }
-                            
                         </div>
                     </div>
                 </div>

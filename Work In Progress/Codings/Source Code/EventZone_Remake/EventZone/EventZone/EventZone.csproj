@@ -343,6 +343,7 @@
     <Content Include="Content\Event\m.flip.css" />
     <Content Include="Content\Event\Details.css" />
     <Content Include="Content\Event\summernote.css" />
+    <Content Include="Scripts\Admin\highcharts.js" />
     <Content Include="Scripts\Event\summernote.min.js" />
     <Content Include="Content\Home\flipper.min.css" />
     <Content Include="Content\Home\images\bx_loader.gif" />
@@ -553,6 +554,7 @@
     <Content Include="Views\Admin\ViewDetailReport.cshtml" />
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\User\Event.cshtml" />
+    <Content Include="Views\Admin\Statistic.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
