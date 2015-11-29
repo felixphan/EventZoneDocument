@@ -88,11 +88,12 @@ namespace EventZone.Controllers
                 //    }
                 //}
                 LiveStreamingModel liveModel = new LiveStreamingModel { eventID = newEvent.EventID, Title = newEvent.EventName };
+                ViewData["LiveModel"] = liveModel;
                 HttpCookie newEventID = new HttpCookie("CreateEventID");
                 newEventID.Value = newEvent.EventID.ToString();
                 newEventID.Expires=DateTime.Now.AddDays(1);
                 Response.Cookies.Add(newEventID);
-                return RedirectToAction("AddLiveStream", "Event",liveModel);
+                return RedirectToAction("Details", "Event",new{id=newEvent.EventID});
             }
             // If we got this far, something failed, redisplay form
             ViewBag.CategoryID = new SelectList(db.Categories, "CategoryId", "CategoryName");
@@ -113,7 +114,7 @@ namespace EventZone.Controllers
             }
             listPlace = EventDatabaseHelper.Instance.GetEventPlaceByEvent(model.eventID);
             TempData["EventPlace"] = listPlace;           
-            return View(model);
+            return PartialView(model);
         }
 
         public async Task<ActionResult> IndexAsync(LiveStreamingModel liveModel, CancellationToken cancellationToken)
@@ -213,7 +214,7 @@ namespace EventZone.Controllers
                     HttpCookie newEventID = new HttpCookie("CreateEventID");
                     newEventID.Expires = DateTime.Now.AddDays(-1);
                     Request.Cookies.Add(newEventID);
-                    return View("ResultAddLive", video);
+                    return RedirectToAction("Details", "Event", new { id = EventDatabaseHelper.Instance.GetEventPlaceByID(liveModel.EventPlaceID).EventID });
             }
             else
             {
@@ -282,6 +283,8 @@ namespace EventZone.Controllers
             viewDetail.FindLike = new LikeDislike();
             viewDetail.FindLike.Type = EventZoneConstants.NotRate;
             viewDetail.FindLike.EventID = evt.EventID;
+            LiveStreamingModel liveModel = new LiveStreamingModel { eventID = evt.EventID, Title = evt.EventName };
+            ViewData["LiveModel"] = liveModel;
             if (user != null)
             {
                 viewDetail.isOwningEvent = EventDatabaseHelper.Instance.IsEventOwnedByUser(evt.EventID, user.UserID);
@@ -311,6 +314,49 @@ namespace EventZone.Controllers
             }
         }
 
+        public ActionResult VideoAdd(String VideoURL, long LocationID, long EventID)
+        {
+            User user = UserHelpers.GetCurrentUser(Session);
+            if (user == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
+                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
+                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
+                        {
+                            TempData["errorTitle"] = "Locked User";
+                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
+
+                            return RedirectToAction("Index", "Home");
+                        }
+                        UserHelpers.SetCurrentUser(Session, user);
+                    }
+                    TempData["errorTitle"] = "Require Signin";
+                    TempData["errorMessage"] = "Ops.. It's look like you are current is not signed in system! Please sign in first!";
+                    return RedirectToAction("Details", "Event", new { id = EventID });
+                }
+            }
+            Video newVideo = new Video();
+            newVideo.EventPlaceID = LocationHelpers.Instance.GetEventPlacesID(EventID, LocationID);
+            newVideo.StartTime = DateTime.Now;
+            newVideo.Privacy = 1;
+            newVideo.VideoLink = VideoURL;
+            if (EventDatabaseHelper.Instance.AddVideo(newVideo))
+            {
+                TempData["VideoAddError"] = null; // success
+                
+            }
+            else
+            {
+                TempData["VideoAddError"] = "There is something wrong";
+            }
+            return RedirectToAction("Details", "Event",new {id=EventID});
+
+        }
         public ActionResult ImageUpload(HttpPostedFileBase file, long eventID)
         {
             User user = UserHelpers.GetCurrentUser(Session);
@@ -338,10 +384,6 @@ namespace EventZone.Controllers
                 }
             }
 
-            if (user == null) {
-                TempData["ImageUploadError"] = "You have to log in to use this feature..";
-                
-            }
             Image photo = new Image();
             if (file != null)
             {

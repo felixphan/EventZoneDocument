@@ -1843,7 +1843,13 @@ namespace EventZone.Helpers
             return listeventPlace;
         }
 
-
+        public long GetEventPlacesID(long EventID, long LocationID)
+        {
+            EventPlace eventPlaces = (from a in db.EventPlaces
+                                      where a.LocationID == LocationID && a.EventID == EventID
+                                      select a).ToList()[0];
+            return eventPlaces.EventPlaceID;
+        }
     }
 
     public class CommonDataHelpers : SingletonBase<CommonDataHelpers>
