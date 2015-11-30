@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using System.Web.DynamicData;
 using Amazon.CloudWatchLogs;
 using EventZone.Helpers;
 using EventZone.Models;
@@ -860,7 +861,66 @@ namespace EventZone.Helpers
                 return null;
             }
         }
-
+        
+        public bool UpdateEvent(EditViewModel model)
+        {
+            try
+            {
+                Event editedEvent = EventDatabaseHelper.Instance.GetEventByID(model.eventID);
+                editedEvent.EventEndDate = model.EndTime;
+                editedEvent.EventName = model.Title;
+                editedEvent.Privacy = model.Privacy;
+                editedEvent.EventStartDate = model.StartTime;
+                editedEvent.EventDescription = model.Description;
+                editedEvent.EditTime = DateTime.Now;
+                List<Location> currentLocations = LocationHelpers.Instance.GetLocationByEventID(editedEvent.EventID);
+                List<Location> newLocations = new List<Location>(){};
+                for (int i = 0; i < currentLocations.Count; i++)
+                {
+                    bool checkExisted = false;
+                    for (int j = 0; j < model.Location.Count; j++)
+                    {
+                        if (currentLocations[i].LocationName == model.Location[j].LocationName
+                            && Equals(currentLocations[i].Latitude, model.Location[j].Latitude)
+                            && Equals(currentLocations[i].Longitude, model.Location[j].Longitude))
+                        {
+                            checkExisted = true;
+                        }
+                    }
+                    if (!checkExisted)
+                    {
+                        LocationHelpers.Instance.RemoveLocationByEventLocationID(editedEvent.EventID,currentLocations[i].LocationID)
+                        ;
+                    }
+                }
+                for (int j = 0; j < model.Location.Count; j++)
+                {
+                    bool checkExisted = false;
+                    for (int i = 0; i < currentLocations.Count; i++)
+                     {
+                         if (currentLocations[i].LocationName == model.Location[j].LocationName
+                            && Equals(currentLocations[i].Latitude, model.Location[j].Latitude)
+                            && Equals(currentLocations[i].Longitude, model.Location[j].Longitude))
+                         {
+                             checkExisted = true;
+                         }
+                     }
+                    if (!checkExisted)
+                    {
+                        newLocations.Add(model.Location[j]);
+                    }
+                }
+                EventDatabaseHelper.Instance.AddEventPlace(LocationHelpers.Instance.AddNewLocation(newLocations), editedEvent);
+                db.Entry(editedEvent).State = EntityState.Modified;
+                db.SaveChanges();
+                db.Entry(editedEvent).Reload();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
         /// <summary>
         ///     Inscrease number view of event
         /// </summary>
@@ -972,16 +1032,13 @@ namespace EventZone.Helpers
         /// <returns></returns>
         public User GetAuthorEvent(long? eventId)
         {
-            var evt = db.Events.Find(eventId);
-            var listChannel = db.Channels.ToList(); // retrieve all Channel fromm table Channel
-            var authorChannel = listChannel.FindAll(i => i.ChannelID == evt.ChannelID)[0];
-            if (evt != null)
+            Event evt = db.Events.Find(eventId);
+            try
             {
-                var listUser = db.Users.ToList(); //retrieve all user from table user
-                var user = listUser.FindAll(i => i.UserID == authorChannel.UserID)[0];
-                if (user != null) return user;
-                return null;
+                User user = (from a in db.Users join b in db.Channels on a.UserID equals b.UserID where b.ChannelID == evt.ChannelID select a).ToList()[0];
+                return user;
             }
+            catch { }
             return null;
         }
         /// <summary>
@@ -1267,6 +1324,16 @@ namespace EventZone.Helpers
         public Image GetImageByID(long? imageID)
         {   
             return db.Images.Find(imageID);
+        }
+
+        public Image GetAvatarEvent(string url, long? eventID)
+        {
+            Image result = (from a in db.Images
+                where a.ImageLink == url
+                join b in db.EventImages on a.ImageID equals b.ImageID
+                where b.EventID == eventID
+                select a).ToList()[0];
+            return result;
         }
         /// <summary>
         /// Search all event by CategoryID
@@ -1727,12 +1794,25 @@ namespace EventZone.Helpers
         {
             return db.Locations.ToList();
         }
-        /// <summary>
-        /// add new Location from location list. If there is location in database dont add it
-        /// </summary>
-        /// <param name="locationList"></param>
-        /// <returns></returns>
-        /// 
+
+        public List<Location> GetLocationByEventID(long? EventID)
+        {
+            try
+            {
+                List<Location> result = new List<Location>();
+                List<EventPlace> tmpResult = (from a in db.EventPlaces where a.EventID == EventID select a).ToList();
+                foreach (var item in tmpResult)
+                {
+                    Location tmp = (from a in db.Locations where a.LocationID == item.LocationID select a).ToList()[0];
+                    result.Add(tmp);
+                }
+                return result;
+            }
+            catch
+            {
+                return null;
+            }
+        }
         public Location GetLocationByEventPlaceID(long eventPlaceID) {
             try
             {
@@ -1749,6 +1829,59 @@ namespace EventZone.Helpers
                 return null;
             }
         }
+
+        public bool RemoveVideoByEventPlaceID(long? eventPlacesID)
+        {
+            try
+            {
+                var removedVideo = (from a in db.Videos
+                    where a.EventPlaceID== eventPlacesID
+                    select a).ToList();
+                foreach (var item in removedVideo)
+                {
+                    db.Videos.Remove(item);
+                }
+                db.SaveChanges();
+                return true;
+            }
+            catch 
+            {
+                return false;
+            }
+            }
+        public bool RemoveLocationByEventLocationID(long? eventID, long? locationID)
+        {
+            try
+            {
+
+                EventPlace removedEventPlace =
+                    (from a in db.EventPlaces where a.EventID == eventID && a.LocationID == locationID select a).ToList()
+                        [0];
+                Instance.RemoveVideoByEventPlaceID(removedEventPlace.EventPlaceID);
+                db.EventPlaces.Remove(removedEventPlace);
+
+                var checkLocationExisted = (from a in db.EventPlaces where a.LocationID == locationID select a).ToList();
+
+                if (checkLocationExisted.Count == 0)
+                {
+                    Location removedLocation =
+                        (from a in db.Locations where a.LocationID == locationID select a).ToList()[0];
+                    db.Locations.Remove(removedLocation);
+                }
+                db.SaveChanges();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        /// <summary>
+        /// add new Location from location list. If there is location in database dont add it
+        /// </summary>
+        /// <param name="locationList"></param>
+        /// <returns></returns>
+        /// 
         public List<Location> AddNewLocation(List<Location> locationList )
         {
             var Location = new List<Location>();

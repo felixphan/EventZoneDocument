@@ -340,6 +340,7 @@
     <Content Include="Content\Event\Create.css" />
     <Content Include="Content\Event\font-awesome.min.css" />
     <Content Include="Content\Event\lightview.css" />
+    <Content Include="Scripts\Event\Edit.js" />
     <Content Include="Scripts\Event\lightview.js" />
     <Content Include="Content\Event\skins\blank.gif" />
     <Content Include="Content\Event\skins\dark\sprite.png" />
@@ -588,6 +589,7 @@
     <Content Include="Views\Event\Index.cshtml" />
     <Content Include="Views\User\Event.cshtml" />
     <Content Include="Views\Admin\Statistic.cshtml" />
+    <Content Include="Views\Event\EditEvent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

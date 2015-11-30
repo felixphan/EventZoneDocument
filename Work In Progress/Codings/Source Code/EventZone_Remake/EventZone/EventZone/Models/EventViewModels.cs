@@ -7,7 +7,6 @@ namespace EventZone.Models
 {
     public class CreateEventModel
     {
-       
         [Required]
         [MaxLength(60, ErrorMessage = "The Title must less than 60 characters.")]
         [StringLength(100, ErrorMessage = "The {0} must be greater than {2} characters.", MinimumLength = 6)]
@@ -33,7 +32,31 @@ namespace EventZone.Models
         [Required]
         [Display(Name = "Category")]
         public long CategoryID { get; set; }
-        [MaxLength(2000, ErrorMessage = "The Description must less than 500 characters.")]
+        [MaxLength(2000, ErrorMessage = "The Description must less than 2000 characters.")]
+        public string Description { get; set; }
+    }
+
+    public class EditViewModel
+    {
+        public long eventID { get; set; }
+        [Required]
+        [MaxLength(60, ErrorMessage = "The Title must less than 60 characters.")]
+        [StringLength(100, ErrorMessage = "The {0} must be greater than {2} characters.", MinimumLength = 6)]
+        [Display(Name = "Title")]
+        public string Title { get; set; }
+        [Required]
+        [Display(Name = "Start Time")]
+        public DateTime StartTime { get; set; }
+        [Required]
+        [Display(Name = "End Time")]
+        public DateTime EndTime { get; set; }
+        [Required]
+        [Display(Name = "Location")]
+        public List<Location> Location { get; set; }
+        [Required]
+        [Display(Name = "Privacy")]
+        public int Privacy { get; set; }
+        [MaxLength(2000, ErrorMessage = "The Description must less than 2000 characters.")]
         public string Description { get; set; }
     }
     public class LiveStreamingModel {
@@ -63,6 +86,7 @@ namespace EventZone.Models
 
     public class ViewDetailEventModel
     {
+        public User createdBy { get; set; }
         public long eventId { get; set; }
         public string eventAvatar { get; set; }
         public string eventName { get; set; }

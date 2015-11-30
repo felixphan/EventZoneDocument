@@ -23,7 +23,7 @@
     int numberDislike = Model.NumberDisLike;
     int numberFollow = Model.NumberFowllower;
     ViewBag.Title = Model.eventName;
-    LiveStreamingModel LiveModel = (LiveStreamingModel) ViewData["LiveModel"];
+    LiveStreamingModel LiveModel = (LiveStreamingModel) TempData["LiveModel"];
 }
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- BOOTSTRAP social -->
@@ -66,6 +66,13 @@
         <!-- TITLE -->
         <div id="i_event_title">
             <p>@Model.eventName</p>
+@if (user != null)
+{
+    if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
+    {
+        <button data-toggle="modal" data-target="#modelEditEvent" class="btn btn-primary btn-xs">Edit</button>
+    }
+}
             <!-- DATE TIME -->
             <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d_each_info">
                 <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-list-ul">
@@ -76,7 +83,7 @@
                 <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-user">
                 </div>
                 <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
-                    by <i>User X</i>
+                    by <i>@Model.createdBy.UserName</i>
                 </div>
                 <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 glyphicon glyphicon-time">
                 </div>
@@ -141,52 +148,68 @@
 </div>
 <!-- Khung chứa Gallery -->
 <div class="tab-pane" id="i_image_tab">
-    <button data-toggle="modal" data-target="#user-upload-image-event-modal" class="btn btn-primary btn-xs">Upload</button>
-    <div class="container-fluid d_image_cover">
-        <div class="container-fluid d_thumbs_cover">
-            @if (Model.eventImage != null)
-            {
-                foreach (var item in Model.eventImage)
-                {
-                    <div class="d_each_photo">
-                       
-                        <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent' data-lightview-title='@item.User.UserName' data-lightview-caption='@item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year'>
-                            <img class="img-responsive" src="@item.ImageLink" alt="">
-                        </a>
-                        <p class="d_photo_author">
-                            by <i>@item.User.UserName</i> - @item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year
-                        </p>
-                    </div>
-                }
-
-
-            }
-            <!--upload modal-->
-            <div class="modal fade" id="user-upload-image-event-modal" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="panel panel-info d_margin_top">
-                        <div class="panel-heading">
-                            <div class="panel-title">Upload avatar</div>
-                            <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                                <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
+    <div class="panel panel-default">
+        <div class="panel-heading d_panel_1">
+            <h4 class="panel-title">
+                <a href="#i_image_public" data-toggle="collapse" data-parent="#result-list" class="" aria-expanded="true">
+                    <span class="xxx">Image</span>
+                </a>
+            </h4>
+        </div>
+        <div id="i_image_public" class="panel-collapse collapse in" aria-expanded="true">
+            <button data-toggle="modal" data-target="#user-upload-image-event-modal" class="btn btn-primary btn-xs">Upload</button>
+            <div class="container-fluid d_image_cover">
+                <div class="container-fluid d_thumbs_cover">
+                    @if (Model.eventImage != null)
+                    {
+                        foreach (var item in Model.eventImage)
+                        {
+                            <div class="d_each_photo">
+                                @using (Html.BeginForm("ImageDelete", "Event", FormMethod.Post))
+                                {
+                                    <input type="hidden" name="imageID" value="@item.ImageID"/>
+                                    <input type="hidden" name="eventID" value="@Model.eventId"/>
+                                    <button type="submit" class="btn btn-default">Delete</button>
+                                }
+                                <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent' data-lightview-title='@item.User.UserName' data-lightview-caption='@item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year'>
+                                    <img class="img-responsive" src="@item.ImageLink" alt="">
+                                </a>
+                                <p class="d_photo_author">
+                                    by <i>@item.User.UserName</i> - @item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year
+                                </p>
                             </div>
-                        </div>
-                        <div class="panel-body">
-                            <div class="cover_all_functions">
-                                <div class="tab-content">
-                                    <!--thumb uploaded image-->
-                                    <div class="col-md-4 col-sm-3 col-xs-4 thumb" style="width: inherit">
-                                        <div id="image-contain" style="height: 200px; width: 200px"></div>
+                        }
+
+
+                    }
+                    <!--upload modal-->
+                    <div class="modal fade" id="user-upload-image-event-modal" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="panel panel-info d_margin_top">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Upload avatar</div>
+                                    <div style="float: right; font-size: 80%; position: relative; top: -17px">
+                                        <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
                                     </div>
-                                    @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new {enctype = "multipart/form-data", id = "UploadImageForm"}))
-                                    {
-                                        <input id="uploadBtn" type="file" class="upload" name="file" accept="image/x-png, image/gif, image/jpeg"/>
-                                        <input hidden name="eventID" value="@Model.eventId"/>
-                                        <p>
-                                            <input type="submit" class="btn btn-primary btn-sm" value="Upload"/>
-                                        </p>
-                                    }
+                                </div>
+                                <div class="panel-body">
+                                    <div class="cover_all_functions">
+                                        <div class="tab-content">
+                                            <!--thumb uploaded image-->
+                                            <div class="col-md-4 col-sm-3 col-xs-4 thumb" style="width: inherit">
+                                                <div id="image-contain" style="height: 200px; width: 200px"></div>
+                                            </div>
+                                            @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new {enctype = "multipart/form-data", id = "UploadImageForm"}))
+                                            {
+                                                <input id="uploadBtn" type="file" class="upload" name="file" accept="image/x-png, image/gif, image/jpeg"/>
+                                                <input hidden name="eventID" value="@Model.eventId"/>
+                                                <p>
+                                                    <input type="submit" class="btn btn-primary btn-sm" value="Upload"/>
+                                                </p>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -195,13 +218,32 @@
             </div>
         </div>
     </div>
+    <div class="panel panel-default">
+        <div class="panel-heading d_panel_1">
+            <h4 class="panel-title">
+                <a href="#i_image_pending" data-toggle="collapse" data-parent="#result-list" class="" aria-expanded="true">
+                    <span class="xxx">Pending Image</span>
+                </a>
+            </h4>
+        </div>
+        <div id="i_image_pending" class="panel-collapse collapse in" aria-expanded="true">
+            <div class="container-fluid d_image_cover">
+
+            </div>
+        </div>
+    </div>
 </div>
 <!-- Khung chứa Video -->
 <div class="tab-pane" id="i_video_tab">
     <button data-toggle="modal" data-target="#user-upload-video-event-modal" class="btn btn-primary btn-xs">Add Video</button>
-
-    <button data-toggle="modal" data-target="#modelCreateLiveStream" class="btn btn-primary btn-xs">Add Streaming Video</button>
-    <div id="result-list" class="panel-group d_video_item_cover">
+        @if (user != null)
+        {
+        if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
+        {
+                    <button data-toggle="modal" data-target="#modelCreateLiveStream" class="btn btn-primary btn-xs">Add Streaming Video</button>
+                }
+            }
+                    <div id="result-list" class="panel-group d_video_item_cover">
         <div class="panel panel-default">
             <div class="panel-heading d_panel_1">
                 <h4 class="panel-title">
@@ -225,6 +267,12 @@
                                         <div class="d_each_group d_thumb_location_1">
                                             @foreach (var video in videoInLocation)
                                             {
+                                                using (Html.BeginForm("VideoDelete", "Event", FormMethod.Post))
+                                                {
+                                                    <input type="hidden" name="videoID" value="@video.VideoID" />
+                                                    <input type="hidden" name="eventID" value="@Model.eventId" />
+                                                    <button type="submit" class="btn btn-default">Delete</button>
+                                                }
                                                 if (!EventDatabaseHelper.Instance.IsLiveVideo(video))
                                                 {
                                                     string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
@@ -257,12 +305,17 @@
                     <div class="panel-body">
                         @foreach (var video in EventDatabaseHelper.Instance.GetListLiveVideo(Model.eventVideo))
                         {
+                            using (Html.BeginForm("VideoDelete", "Event", FormMethod.Post))
+                            {
+                                <input type="hidden" name="videoID" value="@video.VideoID" />
+                                <input type="hidden" name="eventID" value="@Model.eventId" />
+                                <button type="submit" class="btn btn-default">Delete</button>
+                            }
                             string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
                             <div class="col-md-4 col-sm-3 col-xs-4 thumb">
                                 <a href="@video.VideoLink.Replace("watch?v=", "embed/")" class="lightview" data-lightview-type="iframe" data-lightview-group="thumbnail-icon-example" data-lightview-options="width:638,height:360,viewport:'scale'">
                                     <img class=" img-responsive" src="@thumbVideo">
                                 </a>
-                           
                                 Stream Name: @video.StreamName
                                 <p>Link watch : @video.VideoLink
                             </div>
@@ -360,19 +413,23 @@
                 <div class="d_rp_before d_rp_fade">
 
                 </div>
-                @if (user != null && UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId) != null)
+                @if (user != null)
                 {
-                    Report report = UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId);
-                    <div class="d_reasons_container">
-                        You have reported this event as @report.ReportType
-                        <p> at @report.ReportDate<br> Your report is being review.
-                        </p>
-                    </div>
+                    if (UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId) != null)
+                    {
+                        Report report = UserDatabaseHelper.Instance.IsReportedEvent(user.UserID, Model.eventId);
+                        <div class="d_reasons_container">
+                            You have reported this event as @report.ReportType
+                            <p> at @report.ReportDate<br> Your report is being review.
+                            </p>
+                        </div>
+                    }
                 }
                 else
                 {
                     <div class="d_reasons_container">
-                        @if (user != EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId))
+                        @if(user!=null){
+                        if (user.UserID != EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
                         {
                             foreach (var item in CommonDataHelpers.Instance.GetAllReportType())
                             {
@@ -380,7 +437,7 @@
                                     <label><input type="radio" name="reportRadio" value=@item.ReportTypeID>@item.ReportTypeName</label>
                                 </div>
                             }
-                        }
+                        }}
                         <div class="form-group d_write_report">
                             <textarea id="i_report_box"
                                       class="form-control" rows="1"
@@ -434,7 +491,27 @@
             <div class="panel-body">
                 <div class="cover_all_functions">
                     <div class="tab-content">
-                        @Html.Action("AddLiveStream","Event",new{model = LiveModel})
+                        @Html.Action("AddLiveStream", "Event", new {model = LiveModel})
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modelEditEvent" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="panel panel-info d_margin_top">
+            <div class="panel-heading">
+                <div class="panel-title">Edit Event</div>
+                <div style="float: right; font-size: 80%; position: relative; top: -17px">
+                    <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
+                </div>
+            </div>
+            <div class="panel-body">
+                <div class="cover_all_functions">
+                    <div class="tab-content">
+                        @Html.Action("EditEvent", "Event", new { model = Model })
                     </div>
                 </div>
             </div>

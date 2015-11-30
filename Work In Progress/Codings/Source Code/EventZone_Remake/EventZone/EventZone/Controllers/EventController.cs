@@ -88,7 +88,7 @@ namespace EventZone.Controllers
                 //    }
                 //}
                 LiveStreamingModel liveModel = new LiveStreamingModel { eventID = newEvent.EventID, Title = newEvent.EventName };
-                ViewData["LiveModel"] = liveModel;
+                TempData["LiveModel"] = liveModel;
                 HttpCookie newEventID = new HttpCookie("CreateEventID");
                 newEventID.Value = newEvent.EventID.ToString();
                 newEventID.Expires=DateTime.Now.AddDays(1);
@@ -101,6 +101,42 @@ namespace EventZone.Controllers
             TempData["errorMessage"] = "Please select location from suggestion!"; 
             return View("Create", model);
         }
+        [HttpGet]
+        public ActionResult EditEvent(ViewDetailEventModel model)
+        {
+            EditViewModel editModel = new EditViewModel();
+            if (model.eventDescription.IsNullOrWhiteSpace())
+            {
+                editModel.Description = "";
+            }
+            else
+            {
+                editModel.Description = model.eventDescription;
+            }
+            editModel.EndTime = model.EndTime;
+            editModel.Privacy = model.Privacy;
+            editModel.StartTime = model.StartTime;
+            editModel.Title = model.eventName;
+            editModel.eventID = model.eventId;
+            editModel.Location = model.eventLocation;
+            return PartialView(editModel);
+        }
+
+        [HttpPost]
+        public ActionResult EditEventPost(EditViewModel model)
+        {
+            if (EventDatabaseHelper.Instance.UpdateEvent(model))
+            {
+                return RedirectToAction("Details", "Event", new {id = model.eventID});
+            }
+            else
+            {
+                TempData["EditError"] = "Something Wrong Happened... Try Again Later";
+                return RedirectToAction("Details", "Event", new { id = model.eventID });
+            }
+            
+        }
+
         public ActionResult AddLiveStream(LiveStreamingModel model)
         {
             List<EventPlace> listPlace= new List<EventPlace>();
@@ -262,6 +298,7 @@ namespace EventZone.Controllers
             Event evt = EventDatabaseHelper.Instance.GetEventByID(id);
             ViewDetailEventModel viewDetail = new ViewDetailEventModel();
 
+            viewDetail.createdBy = EventDatabaseHelper.Instance.GetAuthorEvent(evt.EventID);
             viewDetail.eventId = evt.EventID;
             viewDetail.eventName = evt.EventName;
 
@@ -284,7 +321,7 @@ namespace EventZone.Controllers
             viewDetail.FindLike.Type = EventZoneConstants.NotRate;
             viewDetail.FindLike.EventID = evt.EventID;
             LiveStreamingModel liveModel = new LiveStreamingModel { eventID = evt.EventID, Title = evt.EventName };
-            ViewData["LiveModel"] = liveModel;
+            TempData["LiveModel"] = liveModel;
             if (user != null)
             {
                 viewDetail.isOwningEvent = EventDatabaseHelper.Instance.IsEventOwnedByUser(evt.EventID, user.UserID);
@@ -485,6 +522,25 @@ namespace EventZone.Controllers
              List<Image> listImage = EventDatabaseHelper.Instance.GetEventImage(id);
              return PartialView("_EventImage", listImage);
          }
+        [HttpPost]
+         public ActionResult ImageDelete(long? imageID, long? eventID)
+        {
+            Image deletedImage = db.Images.Find(imageID);
+            EventImage eventImage = (from a in db.EventImages where a.ImageID == imageID select a).ToList()[0];
+            db.EventImages.Remove(eventImage);
+            db.Images.Remove(deletedImage);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Event", new { id = eventID });
+        }
+
+        [HttpPost]
+        public ActionResult VideoDelete(long? videoID, long? eventID)
+        {
+            Video deletedVideo = db.Videos.Find(videoID);
+            db.Videos.Remove(deletedVideo);
+            db.SaveChanges();
+            return RedirectToAction("Details", "Event", new { id = eventID });
+        }
          public ActionResult UploadImageEvent(HttpPostedFileBase eventImage, string eventId) {
              long eventID = long.Parse(eventId);
              User user = UserHelpers.GetCurrentUser(Session);
