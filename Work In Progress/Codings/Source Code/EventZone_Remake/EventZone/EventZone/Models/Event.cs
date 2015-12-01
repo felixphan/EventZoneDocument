@@ -22,6 +22,7 @@ namespace EventZone.Models
             this.EventImages = new HashSet<EventImage>();
             this.EventPlaces = new HashSet<EventPlace>();
             this.LikeDislikes = new HashSet<LikeDislike>();
+            this.NotificationChanges = new HashSet<NotificationChange>();
             this.Reports = new HashSet<Report>();
             this.Shares = new HashSet<Share>();
         }
@@ -41,15 +42,17 @@ namespace EventZone.Models
         public Nullable<System.DateTime> EditTime { get; set; }
         public string EditContent { get; set; }
         public bool Status { get; set; }
+        public string LockedReason { get; set; }
     
         public virtual ICollection<Appeal> Appeals { get; set; }
         public virtual Category Category { get; set; }
-        public virtual Channel Channel { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual Channel Channel { get; set; }
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<EventImage> EventImages { get; set; }
         public virtual ICollection<EventPlace> EventPlaces { get; set; }
         public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
+        public virtual ICollection<NotificationChange> NotificationChanges { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
         public virtual ICollection<Share> Shares { get; set; }
     }

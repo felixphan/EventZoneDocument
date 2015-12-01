@@ -300,6 +300,9 @@
     <Compile Include="Models\Location.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\NotificationChange.cs">
+      <DependentUpon>EventZone.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\PeopleFollow.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
@@ -311,6 +314,9 @@
     </Compile>
     <Compile Include="Models\SearchViewModels.cs" />
     <Compile Include="Models\Share.cs">
+      <DependentUpon>EventZone.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\sysdiagram.cs">
       <DependentUpon>EventZone.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\TrackingAction.cs">
@@ -428,6 +434,9 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
+    <None Include="job_scheduling_data_2_0.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <EntityDeploy Include="Models\EventZone.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
       <LastGenOutput>EventZone.Designer.cs</LastGenOutput>
@@ -445,9 +454,6 @@
       <DependentUpon>EventZone.edmx</DependentUpon>
       <LastGenOutput>EventZone.cs</LastGenOutput>
     </Content>
-    <None Include="job_scheduling_data_2_0.xsd">
-      <SubType>Designer</SubType>
-    </None>
     <None Include="Properties\PublishProfiles\EventZone - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\EventZone - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -559,13 +565,9 @@
     <Content Include="Views\Event\FailedLoadEvent.cshtml" />
     <Content Include="Views\Event\Details.cshtml" />
     <Content Include="Views\Event\_CommentPartial.cshtml" />
-    <Content Include="Views\Event\_EditEventPartial.cshtml" />
     <Content Include="Views\Event\_LocationPartial.cshtml" />
     <Content Include="Views\Account\RequireSignin.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\ManageEvent.cshtml" />
-    <Content Include="Views\User\ManageProfile.cshtml" />
-    <Content Include="Views\User\_MyEventPartial.cshtml" />
     <Content Include="Views\Home\_ThumbEventHomepage.cshtml" />
     <Content Include="Views\Home\Policy.cshtml" />
     <Content Include="Views\Home\Help.cshtml" />
@@ -590,6 +592,9 @@
     <Content Include="Views\User\Event.cshtml" />
     <Content Include="Views\Admin\Statistic.cshtml" />
     <Content Include="Views\Event\EditEvent.cshtml" />
+    <Content Include="Views\User\ViewReport.cshtml" />
+    <Content Include="Views\User\_ViewAppeal.cshtml" />
+    <Content Include="Views\Admin\ViewDetailAppeal.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

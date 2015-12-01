@@ -29,8 +29,8 @@ namespace EventZone.Models
         public virtual DbSet<Appeal> Appeals { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<CategoryFollow> CategoryFollows { get; set; }
-        public virtual DbSet<Channel> Channels { get; set; }
         public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<Channel> Channels { get; set; }
         public virtual DbSet<Event> Events { get; set; }
         public virtual DbSet<EventFollow> EventFollows { get; set; }
         public virtual DbSet<EventImage> EventImages { get; set; }
@@ -39,6 +39,7 @@ namespace EventZone.Models
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<LikeDislike> LikeDislikes { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
+        public virtual DbSet<NotificationChange> NotificationChanges { get; set; }
         public virtual DbSet<PeopleFollow> PeopleFollows { get; set; }
         public virtual DbSet<Report> Reports { get; set; }
         public virtual DbSet<ReportDefine> ReportDefines { get; set; }
@@ -46,5 +47,6 @@ namespace EventZone.Models
         public virtual DbSet<TrackingAction> TrackingActions { get; set; }
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Video> Videos { get; set; }
+        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
     }
 }

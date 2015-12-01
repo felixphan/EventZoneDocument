@@ -1,24 +1,23 @@
 ﻿@using EventZone.Models
 @using EventZone.Helpers
-@model IEnumerable<EventZone.Models.Report>
+@model IEnumerable<EventZone.Models.Appeal>
 @{
-     Event evt= null;
+    Event evt = null;
     if (Model != null && Model.ToList().Count != 0)
     {
-    evt= EventDatabaseHelper.Instance.GetEventByID(Model.ToList()[0].EventID);
-       
+        evt = EventDatabaseHelper.Instance.GetEventByID(Model.ToList()[0].EventID);
     }
 }
 @if (evt != null)
 {
-    <div id="all-report-@evt.EventID" class="modal fade" role="dialog">
+    <div id="i_appeal_modal-@evt.EventID" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">
-                        Reports of <b id="view-report-title">@evt.EventName</b>
+                        Appeals of <b id="view-appeal-title">@evt.EventName</b>
                     </h4>
                 </div>
                 <div class="modal-body">
@@ -26,24 +25,20 @@
                     {
                         var item = Model.ToList()[i];
                         <div class="d_a_each_reason">
-                            User @UserDatabaseHelper.Instance.GetUserByID(item.SenderID).UserName <p> reporteds this event as @item.ReportType<p> at @item.ReportDate
+                            @item.AppealContent
                         </div>
 
-                        <div id="handle-report-@item.ReportID">
-                            @if (item.ReportStatus == EventZoneConstants.Approved || item.ReportStatus == EventZoneConstants.Rejected)
+                        <div id="handle-appeal-@item.AppealID">
+                            @if (item.AppealStatus == EventZoneConstants.Approved || item.AppealStatus == EventZoneConstants.Rejected)
                             {
-                                string status = item.ReportStatus == EventZoneConstants.Approved ? "Approved" : "Rejected";
-                                <div> @status by @UserDatabaseHelper.Instance.GetUserByID(item.HandleBy).UserName at @item.HandleDate</div>
+                                string status = item.AppealStatus == EventZoneConstants.Approved ? "Approved" : "Rejected";
+                                <div> @status by @UserDatabaseHelper.Instance.GetUserByID(item.HandleBy).UserName at @item.ResultDate</div>
                             }
-                            else if (item.ReportStatus == EventZoneConstants.Closed)
-                            {
-                                <label>Closed</label>
-                            }
-                            else if (item.ReportStatus == EventZoneConstants.Pending)
+                            else if (item.AppealStatus == EventZoneConstants.Pending)
                             {
                                 <div class="unhandle-report">
-                                    <button id="approve-@item.ReportID" onclick="ApproveReport(@item.ReportID)">approve</button>
-                                    <button id="reject-@item.ReportID" onclick="RejectReport(@item.ReportID)">reject</button>
+                                    <button id="approve-appeal-@item.AppealID" onclick="ApproveAppeal(@item.AppealID)">approve</button>
+                                    <button id="reject-appeal-@item.AppealID" onclick="RejectAppeal(@item.AppealID)">reject</button>
                                 </div>
                             }
 
@@ -52,7 +47,6 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button id="lock-event-@evt.EventID" class="btn btn-default" onclick="LockReportedEvent(@evt.EventID)">Lock</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
@@ -60,18 +54,18 @@
     </div>
 }
 <script>
-    function ApproveReport(reportID){
+    function ApproveAppeal(appealID){
         $.ajax({
-            url: "/Admin/ApproveReport",
+            url: "/Admin/ApproveAppeal",
             type: "POST",
             dataType: "json",
-            data: { reportID: reportID },
+            data: { appealID: appealID },
             success: function (data) {
                 if (data.state == 0) {
                     $(".modal").modal("hide");
                     errorShow(data.error, data.message)
                 } else {
-                    $("#handle-report-" + reportID).html("<p>Approved by " + data.handleBy + " at " + data.handleDate + "</p>");
+                    $("#handle-appeal-" + appealID).html("<p>Approved by " + data.handleBy + " at " + data.handleDate + "</p>");
                     $(".unhandle-report").html("<label>Closed</label>")
                 }
             },
@@ -82,18 +76,18 @@
             }
         })
     }
-    function RejectReport(reportID) {
+    function RejectAppeal(appealID) {
         $.ajax({
-            url: "/Admin/RejectReport",
+            url: "/Admin/RejectAppeal",
             type: "POST",
             dataType: "json",
-            data: { reportID: reportID },
+            data: { appealID: appealID },
             success: function (data) {
                 if (data.state == 0) {
                     $(".modal").modal("hide");
                     errorShow(data.error, data.message)
                 } else {
-                    $("#handle-report-" + reportID).html("<p>Rejected by " + data.handleBy + " at " + data.handleDate + "</p>");
+                    $("#handle-appeal-" + appealID).html("<p>Rejected by " + data.handleBy + " at " + data.handleDate + "</p>");
                 }
             },
             error: function (jqXHR, textStatus, errorThrown) {
@@ -103,6 +97,6 @@
             }
         })
     }
-    
+
 
 </script>

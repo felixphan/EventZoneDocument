@@ -12,17 +12,19 @@ namespace EventZone.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Appeal
+    public partial class NotificationChange
     {
-        public long AppealID { get; set; }
-        public long EventID { get; set; }
-        public string AppealContent { get; set; }
-        public int AppealStatus { get; set; }
-        public System.DateTime SendDate { get; set; }
-        public Nullable<System.DateTime> ResultDate { get; set; }
-        public Nullable<long> HandleBy { get; set; }
+        public long ID { get; set; }
+        public Nullable<long> NotificationID { get; set; }
+        public Nullable<long> EventID { get; set; }
+        public Nullable<long> ActorID { get; set; }
+        public Nullable<System.DateTime> AddDate { get; set; }
+        public bool IsRead { get; set; }
+        public Nullable<int> Type { get; set; }
+        public Nullable<long> ReveiverID { get; set; }
     
         public virtual Event Event { get; set; }
         public virtual User User { get; set; }
+        public virtual User User1 { get; set; }
     }
 }

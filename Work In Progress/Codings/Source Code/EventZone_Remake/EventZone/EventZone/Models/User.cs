@@ -16,12 +16,15 @@ namespace EventZone.Models
     {
         public User()
         {
+            this.Appeals = new HashSet<Appeal>();
             this.CategoryFollows = new HashSet<CategoryFollow>();
-            this.Channels = new HashSet<Channel>();
             this.Comments = new HashSet<Comment>();
+            this.Channels = new HashSet<Channel>();
             this.EventFollows = new HashSet<EventFollow>();
             this.Images = new HashSet<Image>();
             this.LikeDislikes = new HashSet<LikeDislike>();
+            this.NotificationChanges = new HashSet<NotificationChange>();
+            this.NotificationChanges1 = new HashSet<NotificationChange>();
             this.PeopleFollows = new HashSet<PeopleFollow>();
             this.PeopleFollows1 = new HashSet<PeopleFollow>();
             this.Reports = new HashSet<Report>();
@@ -46,13 +49,16 @@ namespace EventZone.Models
         public Nullable<long> Avartar { get; set; }
         public System.DateTime DataJoin { get; set; }
     
+        public virtual ICollection<Appeal> Appeals { get; set; }
         public virtual ICollection<CategoryFollow> CategoryFollows { get; set; }
-        public virtual ICollection<Channel> Channels { get; set; }
         public virtual ICollection<Comment> Comments { get; set; }
+        public virtual ICollection<Channel> Channels { get; set; }
         public virtual ICollection<EventFollow> EventFollows { get; set; }
         public virtual ICollection<Image> Images { get; set; }
         public virtual Image Image { get; set; }
         public virtual ICollection<LikeDislike> LikeDislikes { get; set; }
+        public virtual ICollection<NotificationChange> NotificationChanges { get; set; }
+        public virtual ICollection<NotificationChange> NotificationChanges1 { get; set; }
         public virtual ICollection<PeopleFollow> PeopleFollows { get; set; }
         public virtual ICollection<PeopleFollow> PeopleFollows1 { get; set; }
         public virtual ICollection<Report> Reports { get; set; }
