@@ -12,17 +12,17 @@ namespace EventZone.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class NotificationChange
+    public partial class Notification
     {
-        public long ID { get; set; }
-        public long NotificationObjectID { get; set; }
-        public Nullable<long> ActorID { get; set; }
-        public Nullable<long> EventID { get; set; }
-        public bool IsRead { get; set; }
-        public System.DateTime CreatedDate { get; set; }
+        public Notification()
+        {
+            this.NotificationObjects = new HashSet<NotificationObject>();
+        }
     
-        public virtual Event Event { get; set; }
-        public virtual NotificationObject NotificationObject { get; set; }
+        public long ID { get; set; }
+        public long UserID { get; set; }
+    
         public virtual User User { get; set; }
+        public virtual ICollection<NotificationObject> NotificationObjects { get; set; }
     }
 }

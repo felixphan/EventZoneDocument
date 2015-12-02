@@ -60,6 +60,7 @@ namespace EventZone.Controllers
                 newEventID.Value = newEvent.EventID.ToString();
                 newEventID.Expires=DateTime.Now.AddDays(1);
                 Response.Cookies.Add(newEventID);
+                NotificationDataHelpers.Instance.SendNotifyNewEventToFollower(UserHelpers.GetCurrentUser(Session).UserID, newEvent.EventID);
                 return RedirectToAction("Details", "Event",new{id=newEvent.EventID});
             }
             // If we got this far, something failed, redisplay form
@@ -440,7 +441,7 @@ namespace EventZone.Controllers
             }
             return RedirectToAction("Details", "Event",new {id=eventID});
         }
-         public ActionResult Comment(int eventID, string commentContent)
+        public ActionResult Comment(int eventID, string commentContent)
         {
             List<EventZone.Models.Comment> listComment = EventDatabaseHelper.Instance.GetListComment(eventID);
             CommentViewModel comment = new CommentViewModel { eventID = eventID, listComment = listComment };
@@ -472,6 +473,7 @@ namespace EventZone.Controllers
                EventZone.Models.Comment newcmt= EventDatabaseHelper.Instance.AddCommentToEvent(eventID, user.UserID, commentContent);
                 if (newcmt != null)
                 {
+                    NotificationDataHelpers.Instance.SendNotyNewComment(user.UserID,eventID);
                     string dataAppend = " <div class='d_each_event'>"
                         + "<div class='d_ee_ava_user'>"
                          + "   <div class='d_ee_ava'>"

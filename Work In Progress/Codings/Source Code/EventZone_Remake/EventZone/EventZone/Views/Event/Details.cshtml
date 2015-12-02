@@ -164,23 +164,24 @@
                     {
                         foreach (var item in Model.eventImage)
                         {
-                            <div class="d_each_photo">
-                                @using (Html.BeginForm("ImageDelete", "Event", FormMethod.Post))
-                                {
-                                    <input type="hidden" name="imageID" value="@item.ImageID"/>
-                                    <input type="hidden" name="eventID" value="@Model.eventId"/>
-                                    <button type="submit" class="btn btn-default">Delete</button>
-                                }
-                                <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent' data-lightview-title='@item.User.UserName' data-lightview-caption='@item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year'>
-                                    <img class="img-responsive" src="@item.ImageLink" alt="">
-                                </a>
-                                <p class="d_photo_author">
-                                    by <i>@item.User.UserName</i> - @item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year
-                                </p>
-                            </div>
+                            if (item != null)
+                            {
+                                <div class="d_each_photo">
+                                    @using (Html.BeginForm("ImageDelete", "Event", FormMethod.Post))
+                                    {
+                                        <input type="hidden" name="imageID" value="@item.ImageID" />
+                                        <input type="hidden" name="eventID" value="@Model.eventId" />
+                                        <button type="submit" class="btn btn-default">Delete</button>
+                                    }
+                                    <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent' data-lightview-title='@item.User.UserName' data-lightview-caption='@item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year'>
+                                        <img class="img-responsive" src="@item.ImageLink" alt="">
+                                    </a>
+                                    <p class="d_photo_author">
+                                        by <i>@item.User.UserName</i> - @item.UploadDate.Day/@item.UploadDate.Month/@item.UploadDate.Year
+                                    </p>
+                                </div>
+                            }
                         }
-
-
                     }
                     <!--upload modal-->
                     <div class="modal fade" id="user-upload-image-event-modal" role="dialog">
@@ -425,8 +426,30 @@
                             @Html.Action("ViewReport", "User", new { eventID = Model.eventId, type = -1, userID = user.UserID })
                         </div>
                     }
+                    else
+                    {
+                        <div class="d_reasons_container">
+
+
+                            @foreach (var item in CommonDataHelpers.Instance.GetAllReportType())
+                            {
+                                <div class="radio">
+                                    <label><input type="radio" name="reportRadio" value=@item.ReportTypeID>@item.ReportTypeName</label>
+                                </div>
+                            }
+
+                            <div class="form-group d_write_report">
+                                <textarea id="i_report_box"
+                                          class="form-control" rows="1"
+                                          placeholder="Write your reason..."></textarea>
+                                <button type="button" class="btn btn-success" id="btn-report-send">
+                                    <span class="glyphicon glyphicon-send"></span>
+                                </button>
+                            </div>
+                        </div>
+                    }
                 }
-                else if(user==null||user.UserID != EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
+                else if (user == null || user.UserID != EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
                 {
                     <div class="d_reasons_container">
             
