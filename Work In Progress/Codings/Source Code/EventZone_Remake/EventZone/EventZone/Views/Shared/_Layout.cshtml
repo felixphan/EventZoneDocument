@@ -2,10 +2,7 @@
 @using EventZone.Models
 @{
     var user = UserHelpers.GetCurrentUser(Session);
-    if (user != null)
-    {
-        user = UserDatabaseHelper.Instance.ReloadUser(user);
-    }
+
     
     List<EventZone.Models.Category> category = CommonDataHelpers.Instance.GetAllCategory();
 }
@@ -18,13 +15,11 @@
     <!--Style-->
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
     <link href="~/Content/_Layout/_Layout.css" rel="stylesheet"/>
-    <link href="~/Content/Home/myCSS_index_2.css" rel="stylesheet" />
+    <!--<link href="~/Content/Home/myCSS_index_2.css" rel="stylesheet"/>-->
     <!--Script-->
     <script src="~/Scripts/_Layout/modernizr-2.8.3.js"></script>
-    <script src="~/Scripts/jquery-2.1.4.js"></script>
     <script src="~/Scripts/_Layout/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/ErrorAlert.js"></script>
-    <script src="~/Scripts/_Layout/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.ajaxform.js"></script>
     <script src="~/Scripts/_Layout/respond.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
@@ -32,6 +27,7 @@
     <script src="~/Scripts/_Layout/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.bootstrap.js"></script>
+    <script src="~/Scripts/_Layout/bootstrap.min.js"></script>
 
     <script>
     $(document).ready(function () {
@@ -128,6 +124,10 @@
         </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
+                <!-- brand EventZone -->
+                <li>
+                    <a href="/Home/Index">EventZone</a>
+                </li>
                 <li class="dropdown" id="i_drdn_cate">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
                     <ul class="dropdown-menu" style="width: 200px;">
@@ -140,6 +140,9 @@
                                 </li>
                             }
                         }
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Policy</a></li>
+                        <li><a href="#">Help</a></li>
                     </ul>
                 </li>
             </ul>
@@ -148,7 +151,7 @@
                 @if (user==null)
                 {
                     <li>
-                        <button data-toggle="modal" data-target="#myModal2" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
+                        <button data-toggle="modal" data-target="#myModal2" class="btn btn-default btn-sm d_btn_create"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
                     </li>
                     <li>
                         <a href="#" data-toggle="modal" data-target="#myModal2" id="i_signin_btn" onclick="clearError()">Sign In</a>
@@ -189,10 +192,10 @@
                 {
                     <li>
                         <form action="@Url.Action("Create", "Event")">
-                            <button type="submit" class="btn btn-default btn-sm"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
+                            <button type="submit" class="btn btn-default btn-sm d_btn_create"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
                         </form>
                     </li>
-                    <li class="dropdown">
+                    <li>
                         <img id="i_avatar" src="@EventDatabaseHelper.Instance.GetImageByID(@user.Avartar).ImageLink">
                        
                         @if (NotificationDataHelpers.Instance.CountTotalNewNotification(user.UserID) > 0)
@@ -273,7 +276,7 @@
                         <a href="#" class="has-submenu" aria-haspopup="true" aria-expanded="false">
                             @user.UserName <span class="caret"></span></a>
                         <ul class="dropdown-menu sm-nowrap d_user_dropdown" role="group" aria-hidden="true" aria-expanded="false">
-
+                            <li class="dropdown-header">Manage</li>
                             <li>
                                 <a href="@Url.Action("Index", "User")">My Profile</a>
                             </li>
@@ -302,5 +305,6 @@
     }
 </script>
 @RenderSection("scripts", false)
+
 </body>
 </html>

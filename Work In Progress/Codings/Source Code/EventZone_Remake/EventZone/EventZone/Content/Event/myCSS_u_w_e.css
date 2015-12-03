@@ -30,6 +30,9 @@ body{
 	background-color: white;
 	border-radius: 4px;
 }
+#myModal2 .tab-content{		
+    padding:0;		
+}
 .d_tab-content_cover{
 	overflow: auto;
     height: 441px;
@@ -55,15 +58,13 @@ body{
 .form-group{
 	margin-bottom: 0px;
 }
-.form-control{
-	width: auto;
-}
+
 .carousel{
 	height: 26%;
 }
 .carousel-indicators{
 	top: 66px;
-    left: 262px;
+    left: 300px;
 }
 .carousel-control{
 	border-radius: 50px;
@@ -101,10 +102,10 @@ body{
 .d_uwe_body{
 	font-family: segoe ui;
     margin-top: 70px;
-}
-.d_all_function_cover{
+    width:80%
     padding: 0;
     min-width: 430px;
+    margin-left: 10%;
 }
 .d_left_cover,
 .d_right_top,
@@ -319,6 +320,9 @@ body{
 }
 
 /**************************************************** Map tab **/
+.d_right_top .tab-content{		
+    padding: 5px;		
+}
 #map-container{
 	height: 230px;
     border-radius: 3px;
@@ -355,8 +359,8 @@ body{
 #i_report_box{
     margin-right: 4px;
 	float: left;
-    width: 84%;
-    max-width: 84%;
+    width: 86%;
+    max-width: 86%;
 }
 .d_txt_write_cmt{
     padding-left: 5px;
@@ -433,12 +437,19 @@ body{
 }
 .d_write_cmt{
     margin-top: 6px;
+    	    padding-right: 5px;		
+}		
+.d_write_cmt #i_btn_send{		
+    float: right;		
+}		
+.d_write_cmt #i_btn_send .glyphicon{		
+    color: #fff;
 }
 
 /**************************************************** Report Tab ***/
 #i_report_tab {
     margin-left: 10px;
-    height: 0;
+    height: 0;  
 }
 .d_rp_fade{
     position: relative;
@@ -455,3 +466,56 @@ body{
     margin-left: -11px;
 }
 /**************************************************** Decorate CSS ***/
+/**************************************************** Modal Watch Video ***/		
+.d_md_watch_live{		
+    width: 80%;		
+}		
+/**************************************************** Modal Watch Video >> Left side ***/		
+.d_md_watch_live .d_left_side{		
+    width: 70%;		
+    float: left;		
+    border: 1px solid lightgrey;		
+    border-radius: 4px;		
+    height: 500px;		
+    padding: 5px;		
+    text-align: center;		
+}		
+/**************************************************** Modal Watch Video >> Right side ***/		
+.d_md_watch_live .d_right_side{		
+    width: 29%;		
+    float: right;		
+}		
+/**************************************************** Modal Add Video ***/		
+#user-upload-video-event-modal .modal-dialog{		
+    width: 40%;		
+}		
+#user-upload-video-event-modal .col-lg-3,		
+#user-upload-video-event-modal .col-md-3{		
+    text-align: right;		
+    margin-top: 5px;		
+}		
+#VideoURL{		
+    width: 100%;		
+    margin-bottom: 5px;		
+}		
+#i_location{		
+    width: 100%;		
+}		
+#i_location{		
+    width: 100%;		
+}		
+#modelCreateLiveStream .modal-dialog{		
+    width: 40%;		
+}		
+#modelCreateLiveStream .panel-body .row{		
+    margin-bottom: 5px;		
+    padding: 0;		
+}		
+#modelCreateLiveStream .panel-body .col-md-3,		
+#modelCreateLiveStream .panel-body .col-lg-3{		
+    text-align: right;		
+}		
+#modelCreateLiveStream .panel-body .col-md-9,		
+#modelCreateLiveStream .panel-body .col-lg-9{		
+    text-align: left;		
+}
