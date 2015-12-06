@@ -93,8 +93,10 @@ hr {
 }
 /****************************************************** CSS chung cho các Result Card **/
 /****************************************************** Kết quả Event **/
-.d_event_card_cover{
-	margin-bottom: 10px;
+.d_event_card_cover {
+    	margin-bottom: 10px;
+    width: 90%;
+    left: 5%;
 }
 .d_e_title{
 	max-height: 42px;
@@ -201,8 +203,11 @@ hr {
 }
 
 /****************************************************** Kết quả User **/
+
 .d_user_card_cover{
 	margin-bottom: 10px;
+    width: 90%;
+    left: 5%;
 }
 .d_u_title{
 	max-height: 45px;
@@ -268,3 +273,18 @@ hr {
 }
 
 /****************************************************** CSS Decorate ***/
+/*******************************************************Kết quả Report*/
+.number-appeal {
+    display: -webkit-inline-box;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 35%;
+    float: left;
+}
+.number-report {
+    display: -webkit-inline-box;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 35%;
+    float: left;
+}

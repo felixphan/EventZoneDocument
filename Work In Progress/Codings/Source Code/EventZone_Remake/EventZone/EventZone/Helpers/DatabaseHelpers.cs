@@ -380,10 +380,15 @@ namespace EventZone.Helpers
             try {
                 myEvent = (from a in db.Channels join b in db.Events on a.ChannelID equals b.ChannelID where a.UserID == userID select b).ToList();
                 if (!isOwner) {
+                    
                     myEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.Active));
                 }
                  if (numberEvent != -1) {
                     myEvent = myEvent.Take(numberEvent).ToList();
+                }
+                foreach (var item in myEvent)
+                {
+                    db.Entry(item).Reload();
                 }
             }
             catch { }
@@ -2260,13 +2265,14 @@ namespace EventZone.Helpers
         {
             try
             {
+                User user = EventDatabaseHelper.Instance.GetAuthorEvent(eventID);
                 TrackingAction newAction = new TrackingAction
                 {
                     SenderID = adminID,
                     SenderType = UserDatabaseHelper.Instance.GetUserByID(adminID).UserRoles,
-                    ReceiverID = EventDatabaseHelper.Instance.GetAuthorEvent(eventID).UserID,
-                    ReceiverType = UserDatabaseHelper.Instance.GetUserByID(eventID).UserRoles,
-                    ActionID = EventZoneConstants.UnlockEvent,
+                    ReceiverID = user.UserID,
+                    ReceiverType = EventDatabaseHelper.Instance.GetAuthorEvent(user.UserID).UserRoles,
+                    ActionID = EventZoneConstants.LockEvent,
                     ActionTime = DateTime.Now
                 };
                 Event evt = db.Events.Find(eventID);
@@ -2277,7 +2283,7 @@ namespace EventZone.Helpers
                 db.Entry(evt).State = EntityState.Modified;
                 db.SaveChanges();
                 db.Entry(evt).Reload();
-                
+
                 db.TrackingActions.Add(newAction);
                 db.SaveChanges();
                 return true;

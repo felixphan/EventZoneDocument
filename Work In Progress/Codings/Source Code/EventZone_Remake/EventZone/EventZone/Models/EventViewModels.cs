@@ -106,6 +106,7 @@ namespace EventZone.Models
         public List<Comment> eventComment { get; set; }
         public int Privacy { get; set; }
         public String Category { get; set; }
+        public bool Status { get; set; }
     }
     public class ThumbEventHomePage {
         public long EventID { get; set; }

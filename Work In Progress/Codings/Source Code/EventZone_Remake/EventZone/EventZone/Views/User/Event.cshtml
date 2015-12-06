@@ -1,7 +1,10 @@
 ﻿@model EventZone.Models.User
+@using System.Collections.Generic
+@using System.Linq
 @using EventZone.Models
 @using EventZone.Helpers
 @{
+
     ViewBag.Title = "Event";
     User curUser = UserHelpers.GetCurrentUser(Session);
     User viewingUser = Model as User;
@@ -9,8 +12,19 @@
         Response.Redirect("~/Home");
     }
     bool isOwner= false;
-    if(curUser==viewingUser){
-        isOwner=true;
+    if (curUser == viewingUser)
+    {
+        isOwner = true;
+    }
+    else
+    {
+        if (curUser != null)
+        {
+            if( curUser.UserRoles == EventZoneConstants.RootAdmin || curUser.UserRoles == EventZoneConstants.Admin || curUser.UserRoles == EventZoneConstants.Mod)
+            {
+                isOwner = true;
+            }
+        }
     }
 }
 <link href="~/Content/User/myCSS_u_m_e.css" rel="stylesheet" />
@@ -48,7 +62,56 @@
                                     Start in @currentEvent.EventStartDate.ToString()
                                 </div>
                             </div>
-                            <button class="btn btn-success btn-xs">Edit</button>
+                            @if (curUser != null)
+                            {
+                                if (curUser.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(currentEvent.EventID).UserID || curUser.UserRoles == EventZoneConstants.Mod || curUser.UserRoles == EventZoneConstants.Admin || curUser.UserRoles == EventZoneConstants.RootAdmin)
+                                {
+                                    <button data-toggle="modal" data-target="#modelEditEvent-@currentEvent.EventID" class="btn btn-primary btn-xs">Edit</button>
+                                    if (curUser.UserRoles == EventZoneConstants.Mod || curUser.UserRoles == EventZoneConstants.Admin || curUser.UserRoles == EventZoneConstants.RootAdmin)
+                                    {
+                                        <div id="lockUnlock-@currentEvent.EventID">
+                                            @if (currentEvent.Status == EventZoneConstants.Lock)
+                                            {
+                                                <button class="btn btn-primary btn-xs" id="unlock-event-@currentEvent.EventID" onclick="UnlockEvent(@currentEvent.EventID)">Unlock</button>
+                                            }
+                                            else
+                                            {
+                                                <button class="btn btn-primary btn-xs" id="lock-event-@currentEvent.EventID" onclick="LockEvent(@currentEvent.EventID)">Lock</button>
+
+                                            }
+                                        </div>
+                                        <h4>
+                                            <div id="lock-icon-@currentEvent.EventID">
+                                                @if (currentEvent.Status == EventZoneConstants.Lock)
+                                                {
+                                                    <span class="col-md-1 col-lg-1 label label-danger">
+                                                        <span class=" glyphicon glyphicon-lock"></span>
+                                                    </span>
+                                                }
+                                            </div>
+                                        </h4>
+                                    }
+                                }
+                                <div class="modal fade" id="modelEditEvent-@currentEvent.EventID" role="dialog">
+                                    <div class="modal-dialog">
+                                        <!-- Modal content-->
+                                        <div class="panel panel-info">
+                                            <div class="panel-heading">
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                <div class="panel-title">Edit Event</div>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="cover_all_functions">
+                                                    <div class="tab-content">
+                                                        @Html.Action("EditEvent", "Event", new { eventID = currentEvent.EventID })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            
                         </div>
                     }
                 }
@@ -340,38 +403,85 @@
 
 <script>
     function SendAppeal(eventID) {
-        var contentAppeal = $("#appeal-content_"+eventID).val();
+        var contentAppeal = $("#appeal-content_" + eventID).val();
         if (eventID == null || eventID == "") {
             $(".modal").modal("hide");
-            errorShow("error","Could not found event!")
+            errorShow("error", "Could not found event!")
         } else if (contentAppeal == null || contentAppeal == "") {
             $(".modal").modal("hide");
-            errorShow("Content is empty","Please enter your appeal!")
+            errorShow("Content is empty", "Please enter your appeal!")
         } else {
             $.ajax({
                 url: "/User/Appeal",
                 type: "post",
                 dataType: "json",
                 data: { eventID: eventID, content: contentAppeal },
-                success: function (data) {
+                success: function(data) {
                     if (data.state == 0) {
                         $(".modal").modal("hide");
-                        errorShow(data.error,data.message)
-                    }else {
+                        errorShow(data.error, data.message)
+                    } else {
                         $(".modal").modal("hide");
-                        errorShow("Sending appeal success","Your appeal has been sent and current being reviewed! Thank for contacting with us")
-                       
-                            $("#pannel-button-appeal-"+data.eventID).html("<p>Your appeal has been sent and being reviewd. It take about 2-4 days. Thank you for contact with us</p>")
+                        errorShow("Sending appeal success", "Your appeal has been sent and current being reviewed! Thank for contacting with us")
+
+                        $("#pannel-button-appeal-" + data.eventID).html("<p>Your appeal has been sent and being reviewd. It take about 2-4 days. Thank you for contact with us</p>")
                     }
                 },
-                error: function(){
+                error: function() {
                     $(".modal").modal("hide");
-                    errorShow("Error Connect to server","Can not connect to server! Please try again later")
+                    errorShow("Error Connect to server", "Can not connect to server! Please try again later")
                 }
             })
 
 
         }
 
+    }
+</script>
+<script>
+    function LockEvent(eventID) {
+        $.ajax({
+            url: "/Admin/LockEvent",
+            type: "POST",
+            dataType: "json",
+            data: { eventID: eventID, reason: "I dont want your event in my website xD" },
+            success: function (data) {
+                if (data.state == 0) {
+                    errorShow(data.error, data.message)
+                } else {
+                    $("#lock-icon-" + eventID).empty();
+                    $("#lock-icon-" + eventID).prepend('<span class="col-md-1 col-lg-1 label label-danger"><span class=" glyphicon glyphicon-lock"></span></span>')
+                    $("#lockUnlock-" + eventID).empty();
+                    $("#lockUnlock-" + eventID).prepend('<button class="btn btn-primary btn-xs" id="unlock-event-'+eventID+'" onclick="UnlockEvent('+eventID+')">Unlock</button>')
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    }
+    function UnlockEvent(eventID) {
+        $.ajax({
+            url: "/Admin/UnlockEvent",
+            type: "POST",
+            dataType: "json",
+            data: { eventID: eventID },
+            success: function (data) {
+                if (data.state == 0) {
+                    errorShow(data.error, data.message)
+                } else {
+                    $("#lock-icon-" + eventID).empty();
+                    $("#lockUnlock-" + eventID).empty();
+                    $("#lockUnlock-" + eventID).prepend('<button class="btn btn-primary btn-xs" id="lock-event-'+eventID+'" onclick="LockEvent('+eventID+')">Lock</button>')
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
     }
 </script>

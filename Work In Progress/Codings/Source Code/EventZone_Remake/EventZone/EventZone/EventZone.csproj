@@ -355,6 +355,7 @@
     <Content Include="Content\myCSS_l_a.css" />
     <Content Include="Scripts\Admin\AddNewUser.js" />
     <Content Include="Scripts\Event\Edit.js" />
+    <Content Include="Scripts\Event\fill.box.js" />
     <Content Include="Scripts\Event\lightview.js" />
     <Content Include="Content\Event\skins\blank.gif" />
     <Content Include="Content\Event\skins\dark\sprite.png" />
@@ -364,6 +365,8 @@
     <Content Include="Content\Event\skins\mac\sprite.png" />
     <Content Include="Content\Event\skins\mac\sprite_ie_lt_7.png" />
     <Content Include="Scripts\Event\spinners.min.js" />
+    <Content Include="Scripts\_Layout\enscroll-0.6.1.min.js" />
+    <Content Include="Scripts\_Layout\jquery.slimscroll.min.js" />
     <Content Include="Views\Event\images\Arrowhead-Left-01-48.png" />
     <Content Include="Views\Event\images\Arrowhead-Left.png" />
     <Content Include="Views\Event\images\Arrowhead-Right-01-48.png" />

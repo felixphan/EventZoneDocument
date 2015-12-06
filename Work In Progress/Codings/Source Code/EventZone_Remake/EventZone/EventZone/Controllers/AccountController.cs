@@ -78,6 +78,11 @@ namespace EventZone.Controllers
                 }
                 var user = UserDatabaseHelper.Instance.GetUserByUserName(model.UserName);
                 UserHelpers.SetCurrentUser(Session, user);
+                if (user.UserRoles == EventZoneConstants.RootAdmin || user.UserRoles == EventZoneConstants.Mod ||
+                user.UserRoles == EventZoneConstants.Admin)
+                {
+                    UserHelpers.SetCurrentAdmin(Session, user);
+                }
             }
             else
             {

@@ -9,7 +9,63 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     List<Event> allEvent = Model.ToList() as List<Event>;
 }
+<link href="~/Content/Event/perfect-scrollbar.css" rel="stylesheet"/>
+<script src="~/Scripts/_Layout/jquery.slimscroll.min.js"></script>
+<script src="~/Scripts/_Layout/enscroll-0.6.1.min.js"></script>
+<!--<style>
+    #event-r {
+        position: relative;
+        height: 500px; /* Or whatever you want (eg. 400px) */
+        width: 100%;
+    }
+</style>-->
+<style>
+    
+#event-r {
+overflow: auto; /* This is changed by enscroll, but must be defined */
+width: 100%;   /* The arbitrary width and height of the view pane */
+height: 500px;
+}
 
+.vertical-track {
+width: 7px;            /* How wide is the scrollbar going to be? */
+background-color: #aaa; /* What color should the vertical track be? */
+}
+
+.vertical-handle {
+width: 7px;            /* How wide is the scrollbar handle? */
+background-color: #aaf; /* What color should the handle be? */
+}
+
+</style>
+<script src="~/Scripts/Event/perfect-scrollbar.jquery.js"></script>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" class="interactButton" style="margin-left: 5%; margin-bottom: 10px">
+    <input type="text" name="Keyword" id="Keyword" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Search for events or categories" style="width: 250px; display: inline-block">
+
+    <button class="btn btn-default" type="submit">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#i_md_ad_search" id="i_advanced_search">
+        <a href="#">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </a>
+    </button>
+</div>
+<div class="modal fade" id="i_md_ad_search" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal 1 content: Advanced Search -->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="panel-title">Advanced Search</div>
+            </div>
+            <div style="padding-top: 10px" class="panel-body">
+                <!-- md_ đánh dấu CSS của MODAL -->
+                @Html.Action("SearchAdvance", "Search", new { @id = "i_frame_md_ad_search" })
+            </div>
+        </div>
+    </div>
+</div>
 <div class="tab-pane" id="event-r">
     @if (allEvent != null && allEvent.Count != 0)
     {
@@ -28,30 +84,34 @@
                     }
                 </div>
                 <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
-                    <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_e_title">
+                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 d_e_title">
                         @Html.ActionLink(@evt.EventName, "Details", "Event", new { id = evt.EventID }, new { target = "_blank" })
                     </div>
-                    <div class="btn-group d_e_btn_more">
-                        <span id="lock-icon-@evt.EventID">
-                        @if (evt.Status == EventZoneConstants.Lock)
-                        {
-                            <button type="button" class="btn btn-default dropdown-toggle">
-                                <span class="glyphicon glyphicon-lock"></span>
-                            </button>
-                        }
-                        </span>
+
+                    <h4>
+                        <div id="lock-icon-@evt.EventID">
+                            @if (evt.Status == EventZoneConstants.Lock)
+                            {
+                                <span class="col-md-1 col-lg-1 label label-danger">
+                                        <span class=" glyphicon glyphicon-lock"></span>
+                                    </span>
+                            }
+                        </div>
+                    </h4>
+                    <div class="btn-group d_e_btn_more col-md-1 col-lg-1">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="glyphicon glyphicon-option-vertical"></span>
                         </button>
                         <ul class="dropdown-menu d_e_drop_menu" id="ul-lock-unlock-@evt.EventID">
-                          @if (evt.Status == EventZoneConstants.Active)  
-                          {
-                              <li><a href="#" id="lock-event-@evt.EventID" onclick="LockEvent(@evt.EventID)">Lock</a></li>
-                          }else
-                          {
-                              <li><a href="#" id="unlock-event-@evt.EventID" onclick="UnlockEvent(@evt.EventID)">Unlock</a></li>
-                          }
-                          <li><a href="#" id="Suggest-event">Suggest To top</a></li>
+                            @if (evt.Status == EventZoneConstants.Active)
+                            {
+                                <li><a href="#" id="lock-event-@evt.EventID" onclick="LockEvent(@evt.EventID)">Lock</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="#" id="unlock-event-@evt.EventID" onclick="UnlockEvent(@evt.EventID)">Unlock</a></li>
+                            }
+                            <li><a href="#" id="Suggest-event">Suggest To top</a></li>
                         </ul>
                     </div>
                     <div class="d_e_cate">
@@ -94,11 +154,11 @@
                         </div>
                     </div>
                     <div class="d_e_date">
-                        <i class="fa fa-calendar-check-o"></i>
+                        <i class="fa fa-calendar-o"></i>
                         <div class="d_fill_in">From: @evt.EventStartDate.ToShortTimeString()<span> - </span>@evt.EventStartDate.ToShortDateString() </div>
                     </div>
                     <div class="d_e_time">
-                        <i class="fa fa-calendar-check-o"></i>
+                        <i class="fa fa-calendar-o"></i>
                         <div class="d_fill_in">From: @evt.EventEndDate.ToShortTimeString()<span> - </span>@evt.EventEndDate.ToShortDateString() </div>
                     </div>
                     <div class="d_e_user">
@@ -106,7 +166,7 @@
                         <div class="d_fill_in">Created by: @UserDatabaseHelper.Instance.GetUserDisplayName(EventDatabaseHelper.Instance.GetAuthorEvent(evt.EventID).UserID)</div>
                     </div>
                     <div class="d_e_location">
-                        <i class="fa fa-map-o"></i>
+                        <i class="fa fa-map-marker"></i>
                         <div class="d_fill_in">Location: @EventDatabaseHelper.Instance.GetEventLocation(evt.EventID)[0].LocationName</div>
                         @if(EventDatabaseHelper.Instance.GetEventLocation(evt.EventID).Count>1){
                             int remainLocation = EventDatabaseHelper.Instance.GetEventLocation(evt.EventID).Count - 1;
@@ -122,7 +182,39 @@
         }
     }
 </div>
+<!--<script>
+    $(document).ready(function () {
+        $('#event-r').perfectScrollbar({
+            wheelPropagation: true
+        });
+        //setTimeout(function () { $('#event-r').perfectScrollbar('update') }, 500);
+        $("#event-r").on("mouseover", function () { $("#event-r").perfectScrollbar("update"); });
+    });
+</script>-->
+<!--<script>
+    $(window).load(function () {
+        $('#event-r').slimScroll({
+            height: '700px'
+        });
+    });
+</script>-->
+<script>
+    $(document).ready(function() {
 
+        $('#event-r').enscroll({
+
+            // a configuration property
+            showOnHover: true,
+
+            // another configuration property
+            verticalScrolling: true,
+            verticalTrackClass: 'vertical-track',
+             verticalHandleCalss:'vertical-hanldle'
+
+        // ... more configuration properties ...
+    });
+    })
+</script>
     <script>
         //$(window).scroll(function () {
         //    if ($(window).scrollTop() + $(window).height() == $(document).height()) {
@@ -140,11 +232,10 @@
                 data:{eventID:eventID, reason :"I dont want your event in my website xD"},
                 success:function(data){
                     if(data.state==0){
-                    errorShow(data.error,data.message)
+                        errorShow(data.error,data.message)
                     }else{
                         $("#lock-icon-" + eventID).empty();
-                        $("#lock-icon-" + eventID).prepend('<button type="button" class="btn btn-default dropdown-toggle">'+
-                                '<span class="glyphicon glyphicon-lock"></span>' + '</button>')
+                        $("#lock-icon-" + eventID).prepend('<span class="col-md-1 col-lg-1 label label-danger"><span class=" glyphicon glyphicon-lock"></span></span>')
                         $("#lock-event-"+ eventID).remove();
                         $("#ul-lock-unlock-" + eventID).prepend('<li><a href="#" id="unlock-event-'+eventID+'" onclick="UnlockEvent('+ eventID +')">Unlock</a></li>')
                     }

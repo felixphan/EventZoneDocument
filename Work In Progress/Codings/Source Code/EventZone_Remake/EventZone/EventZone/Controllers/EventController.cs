@@ -75,23 +75,25 @@ namespace EventZone.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult EditEvent(ViewDetailEventModel model)
+        public ActionResult EditEvent(long? eventID)
         {
             EditViewModel editModel = new EditViewModel();
-            if (model.eventDescription.IsNullOrWhiteSpace())
+            Event editEvent = EventDatabaseHelper.Instance.GetEventByID(eventID);
+
+            if (editEvent.EventDescription==null||editEvent.EventDescription=="")
             {
                 editModel.Description = "";
             }
             else
             {
-                editModel.Description = model.eventDescription;
+                editModel.Description = editEvent.EventDescription;
             }
-            editModel.EndTime = model.EndTime;
-            editModel.Privacy = model.Privacy;
-            editModel.StartTime = model.StartTime;
-            editModel.Title = model.eventName;
-            editModel.eventID = model.eventId;
-            editModel.Location = model.eventLocation;
+            editModel.EndTime = editEvent.EventEndDate;
+            editModel.Privacy = editEvent.Privacy;
+            editModel.StartTime = editEvent.EventStartDate;
+            editModel.Title = editEvent.EventName;
+            editModel.eventID = editEvent.EventID;
+            editModel.Location = EventDatabaseHelper.Instance.GetEventLocation(eventID);
             return PartialView(editModel);
         }
         /// <summary>
@@ -251,16 +253,18 @@ namespace EventZone.Controllers
         /// <returns></returns>
         public ActionResult Details(long? id)
         {
+            User user = UserHelpers.GetCurrentUser(Session);
             if (id == null||
                 EventDatabaseHelper.Instance.GetEventByID(id)==null||
+                ((!(user.UserRoles == EventZoneConstants.RootAdmin || user.UserRoles == EventZoneConstants.Admin || user.UserRoles == EventZoneConstants.Mod)) && (
                 EventDatabaseHelper.Instance.GetEventByID(id).Status==EventZoneConstants.Lock||
-                EventDatabaseHelper.Instance.GetEventByID(id).Privacy==EventZoneConstants.privateEvent)
+                EventDatabaseHelper.Instance.GetEventByID(id).Privacy==EventZoneConstants.privateEvent)))
             {
                 TempData["errorTitle"] = "Failed to load event";
                 TempData["errorMessage"] = "This event is not available! It may be locked or set private!";
                 return RedirectToAction("Index", "Home");
             }
-            User user = UserHelpers.GetCurrentUser(Session);
+            
             if (user == null)
             {
                 if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
@@ -307,6 +311,7 @@ namespace EventZone.Controllers
             viewDetail.FindLike = new LikeDislike();
             viewDetail.FindLike.Type = EventZoneConstants.NotRate;
             viewDetail.FindLike.EventID = evt.EventID;
+            viewDetail.Status = evt.Status;
             LiveStreamingModel liveModel = new LiveStreamingModel { eventID = evt.EventID, Title = evt.EventName };
             TempData["LiveModel"] = liveModel;
             if (user != null)

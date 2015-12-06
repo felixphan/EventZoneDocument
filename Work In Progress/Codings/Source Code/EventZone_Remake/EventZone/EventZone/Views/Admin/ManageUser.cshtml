@@ -11,7 +11,7 @@
     Layout = "~/Views/Shared/_AdminLayout.cshtml";
     List<User> allUser = Model.ToList() as List<User>;
 }
-<button id="btn-add-user">Add new user</button>
+
 <div class="modal fade d_modal" id="add-new-user-modal" role="dialog">
     <div class="modal-dialog" style="margin-top: 120px; width: 30%;">
         <!-- Modal content-->
@@ -27,13 +27,7 @@
     </div>
 </div>
 
-<script>
-    $("#btn-add-user").click(function () {
 
-        $("#add-new-user-modal").modal("show");
-    })
-
-</script>
 
 <div class="modal fade d_modal" id="change-email-modal" role="dialog">
     <div class="modal-dialog" style="margin-top: 120px; width: 30%;">
@@ -57,14 +51,22 @@
                 <input hidden id="target-user-ID">
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="button" class="btn btn-success" id="change-email-submit" onclick="changeEmailPost()" value="Save" />
+                        <input type="button" class="btn btn-success" id="change-email-submit" onclick="changeEmailPost()" value="Save"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" class="interactButton" style="margin-left: 5%;margin-bottom:10px">
+    <button class="btn btn-success" type="submit" id="btn-add-user">
+        Add New User
+    </button>
+    <input type="text" name="Keyword" id="Keyword" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Search for user or role" style="width: 250px;display:inline-block">
+    <button class="btn btn-default" type="submit">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
+    </div>
 @if (allUser != null && allUser.Count != 0)
 {
     for (int i = 0; i < allUser.Count; i++)
@@ -76,38 +78,41 @@
                 <img src="@EventDatabaseHelper.Instance.GetImageByID(user.Avartar).ImageLink">
             </div>
             <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_u_info_cover">
-                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_u_title">
-                    @Html.ActionLink(UserDatabaseHelper.Instance.GetUserDisplayName(user.UserID), "Index", "User", new { userID = user.UserID }, new { target = "_blank" })
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d_u_title">
+                    @Html.ActionLink(UserDatabaseHelper.Instance.GetUserDisplayName(user.UserID), "Index", "User", new {userID = user.UserID}, new {target = "_blank"})
                 </div>
-                <div class="btn-group d_u_btn_more">
-                    <span id="lock-icon-@user.UserID">
+                @if (user.UserRoles != EventZoneConstants.RootAdmin)
+                {
+                    <h4>
+                        <div id="lock-icon-@user.UserID">
                         @if (user.AccountStatus == EventZoneConstants.Lock)
                         {
-                            <button type="button" class="btn btn-default dropdown-toggle">
-                                <span class="glyphicon glyphicon-lock"></span>
-                            </button>
+                            <span class="col-md-1 col-lg-1 label label-danger">
+                                <span class=" glyphicon glyphicon-lock"></span>
+                            </span>
                         }
-                    </span>
-                    <div id="role-define-@user.UserID">
+                    </div>
+                    </h4>
+                }
+                <h4>
                     @if (user.UserRoles == EventZoneConstants.Mod)
                     {
-                        <div style="margin-bottom: 10px" class="input-group">
-                            <span class="input-group-addon" id="user-role-define-@user.UserID">Mod</span>
-                        </div>
+                        <span id="role-define-@user.UserID" class="col-md-1 col-lg-1 label label-primary" style="font-size:86%">Mod</span>
                     }
                     else if (user.UserRoles == EventZoneConstants.Admin)
                     {
-                        <div style="margin-bottom: 10px" class="input-group">
-                            <span class="input-group-addon" id="user-role-define-@user.UserID">Admin</span>
-                        </div>
+                        <span id="role-define-@user.UserID" class="col-md-1 col-lg-1 label label-info" style="font-size:86%">Admin</span>
                     }
                     else if (user.UserRoles == EventZoneConstants.RootAdmin)
                     {
-                        <div style="margin-bottom: 10px" class="input-group">
-                            <span class="input-group-addon" id="user-role-define-@user.UserID">Root Admin</span>
-                        </div>
+                        <span id="role-define-@user.UserID" class="col-md-2 col-lg-2 label label-danger" style="font-size:86%">Root Admin</span>
                     }
-                    </div>
+                    else
+                    {
+                        <span id="role-define-@user.UserID" class="col-md-1 col-lg-1 label label-success" style="font-size:86%">User</span>
+                    }
+                </h4>
+                <div class="btn-group d_u_btn_more col-md-1 col-lg-1">
                     <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="glyphicon glyphicon-option-vertical"></span>
                     </button>
@@ -142,25 +147,33 @@
                 </div>
                 <div class="d_u_cate">
                     <i class="fa fa-font"></i>
-                    <div class="d_fill_in">Number Event: <a href="@Url.Action("Event", "User", new { userID=user.UserID})"><i>@UserDatabaseHelper.Instance.CountOwnedEvent(user.UserID,true)</i></a></div>
+                    <div class="d_fill_in">Number Event: <a href="@Url.Action("Event", "User", new { userID=user.UserID})"><i>@UserDatabaseHelper.Instance.CountOwnedEvent(user.UserID, true)</i></a></div>
                 </div>
                 <div class="d_u_follower">
                     <i class="fa fa-star"></i>
                     <div class="d_fill_in">Follower: <a href=""><i>@UserDatabaseHelper.Instance.NumberFollower(user.UserID)</i></a></div>
                 </div>
                 <div class="d_u_date">
-                    <i class="fa fa-calendar-check-o"></i>
+                    <i class="fa fa-calendar-o"></i>
                     <div class="d_fill_in">Date Join: @user.DataJoin.ToShortDateString()</div>
                 </div>
                 <div class="d_u_time">
                     <i class="fa fa-clock-o"></i>
                     <div class="d_fill_in" id="email-display-@user.UserID">Email: @user.UserEmail</div>
                 </div>
-            </div>
-        </div>
 
+            </div>
+
+        </div>
     }
 }
+<script>
+    $("#btn-add-user").click(function () {
+
+        $("#add-new-user-modal").modal("show");
+    })
+
+</script>
 <script>
     function LockUser(userID) {
         $.ajax({
@@ -173,8 +186,7 @@
                     errorShow(data.error, data.message)
                 } else {
                     $("#lock-icon-" + userID).empty();
-                    $("#lock-icon-" + userID).prepend('<button type="button" class="btn btn-default dropdown-toggle">' +
-                            '<span class="glyphicon glyphicon-lock"></span>' + '</button>')
+                    $("#lock-icon-" + userID).prepend('<span class="col-md-1 col-lg-1 label label-danger"><span class=" glyphicon glyphicon-lock"></span></span>')
                     $("#lock-user-" + userID).remove();
                     $("#ul-lock-unlock-" + userID).prepend('<li><a href="#" id="unlock-user-' + userID + '" onclick="UnlockUser(' + userID + ')">Unlock</a></li>')
                 }
@@ -275,9 +287,7 @@
                         errorShow(data.error, data.message)
                     } else {
                         $("#role-define-"+ userID).empty();
-                        $("#role-define-"+userID).append('<div style="margin-bottom: 10px" class="input-group">'+
-                            '<span class="input-group-addon" id="user-role-define-'+userID+'">Mod</span>'+
-                        '</div>')
+                        $("#role-define-"+userID).append('<span id="role-define-'+userID+'" class="col-md-1 col-lg-1 label label-primary" style="font-size:86%">Mod</span>')
                         $("#set-mod-" + userID).remove();
                         $("#ul-lock-unlock-" + userID).prepend('<li><a href="#" id="unset-mod-' + userID + '" onclick="UnSetMod(' + userID + ')">UnSet Mod</a></li>')
 
@@ -307,7 +317,7 @@
                         errorShow(data.error, data.message)
                     } else {
                         $("#role-define-" + userID).empty();
-                        $("#role-define-" + userID).append('');
+                        $("#role-define-" + userID).append('<span id="role-define-'+userID+'" class="col-md-1 col-lg-1 label label-success" style="font-size:86%">User</span>');
                         $("#unset-mod-" + userID).remove();
                         $("#ul-lock-unlock-" + userID).prepend('<li><a href="#" id="set-mod-' + userID + '" onclick="SetMod(' + userID + ')">Set Mod</a></li>')
                     }
@@ -353,7 +363,7 @@
 
         }
     }
-    
+
     function UnSetAdmin(userID) {
         var r = confirm("Do you want to set this Admin to User?");
         if (r == true) {
@@ -389,6 +399,6 @@
             alert("near bottom!");
         }
     });
-    
+
 </script>
 <script src="~/Scripts/Admin/ChangeUserEmail.js"></script>

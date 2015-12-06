@@ -28,27 +28,30 @@
     <script src="~/Scripts/_Layout/jquery.smartmenus.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.bootstrap.js"></script>
     <script src="~/Scripts/_Layout/bootstrap.min.js"></script>
-
+    <script src="~/Scripts/_Layout/jquery.slimscroll.min.js"></script>
     <script>
-    $(document).ready(function () {
-        @if (TempData["errorTitle"] != null)
-        {
-            <text>
+        $(document).ready(function() {
+            @if (TempData["errorTitle"] != null)
+            {
+                <text>
         errorShow('@TempData["errorTitle"]', '@TempData["errorMessage"]')
         </text>
-        }
-    })
+            }
+        })
     </script>
     <script>
-    //check cookie
-    $(document).ready(function () {
-        @if (UserHelpers.GetCurrentUser(Session) == null) {
-                if(Request.Cookies["userName"]!=null&&Request.Cookies["password"]!=null){
-                    string userName= Request.Cookies["userName"].Value;
-                    string password= Request.Cookies["password"].Value;
-                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password)) {
+        //check cookie
+        $(document).ready(function() {
+            @if (UserHelpers.GetCurrentUser(Session) == null)
+            {
+                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
+                {
+                    string userName = Request.Cookies["userName"].Value;
+                    string password = Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
+                    {
                         user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
-                          <text>
+                        <text>
                             $.ajax({
                                 url: "/Account/CheckCookie",
                                 type: "POST",
@@ -69,11 +72,12 @@
         </text>
                     }
                 }
-        }
-        else if (user != null)
-        {
-            if (user.AccountStatus == EventZoneConstants.Lock) { 
-                <text>
+            }
+            else if (user != null)
+            {
+                if (user.AccountStatus == EventZoneConstants.Lock)
+                {
+                    <text>
                 $.ajax({
                     url: "/Account/Signout",
                     type: "POST",
@@ -89,39 +93,20 @@
                     }
                 })
                 </text>
+                }
             }
-        }
-    })
-</script>
+        })
+    </script>
 
 </head>
 <body>
-    @Html.Partial("_Error")
+@Html.Partial("_Error")
 <!-- i_2_ đánh dấu CSS Index_2.html -->
 <!-- TOP MENU -->
 <nav class="navbar navbar-inverse navbar-fixed-top d_topmenu_bg">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <!-- Brand -->
-            <li class="dropdown">
-                <a href="/Home/Index" id="i_brand">Event Zone</a>
-                <ul class="dropdown-menu d_brand_menu">
-                    <li>
-                        <a href="/Home/Policy">Policy</a>
-                    </li>
-                    <li>
-                        <a href="/Home/Help">Help</a>
-                    </li>
-                </ul>
-            </li>
-        </div>
+
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
                 <!-- brand EventZone -->
@@ -140,15 +125,13 @@
                                 </li>
                             }
                         }
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Policy</a></li>
-                        <li><a href="#">Help</a></li>
+
                     </ul>
                 </li>
             </ul>
             @Html.Action("Search", "Search")
             <ul class="nav navbar-nav navbar-right" id="SignUl">
-                @if (user==null)
+                @if (user == null)
                 {
                     <li>
                         <button data-toggle="modal" data-target="#myModal2" class="btn btn-default btn-sm d_btn_create"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
@@ -197,7 +180,7 @@
                     </li>
                     <li>
                         <img id="i_avatar" src="@EventDatabaseHelper.Instance.GetImageByID(@user.Avartar).ImageLink">
-                       
+
                         @if (NotificationDataHelpers.Instance.CountTotalNewNotification(user.UserID) > 0)
                         {
                             <div id="i_noti">
@@ -205,66 +188,73 @@
                             </div>
                         }
                         <ul class="dropdown-menu sm-nowrap d_user_dropdown" role="group" aria-hidden="true" aria-expanded="false">
-                            @if (NotificationDataHelpers.Instance.GetUserNotification(user.UserID, false).Count > 0) {
+                            @if (NotificationDataHelpers.Instance.GetUserNotification(user.UserID, false).Count > 0)
+                            {
 
-                                List<NotificationChange> listNewNotification = NotificationDataHelpers.Instance.RemoveDupilicateNotify(NotificationDataHelpers.Instance.GetUserNotification(user.UserID, false),user.UserID);
-                                
-                                for (int i = listNewNotification.Count - 1; i >=0; i--) {
+                                List<NotificationChange> listNewNotification = NotificationDataHelpers.Instance.RemoveDupilicateNotify(NotificationDataHelpers.Instance.GetUserNotification(user.UserID, false), user.UserID);
+
+                                for (int i = listNewNotification.Count - 1; i >= 0; i--)
+                                {
                                     NotificationChange item = listNewNotification[i];
-                                    int notiType = NotificationDataHelpers.Instance.GetNotificationObjectByID(item.NotificationObjectID).Type;  
+                                    int notiType = NotificationDataHelpers.Instance.GetNotificationObjectByID(item.NotificationObjectID).Type;
                                     if (notiType == EventZoneConstants.FollowingUserAddNewEvent)
                                     {
                                         <li>
-                                        <a href="@Url.Action("Details", "Event", new { id=item.EventID})"><b>@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID)</b> add a new event</a>
+                                            <a href="@Url.Action("Details", "Event", new {id = item.EventID})"><b>@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID)</b> add a new event</a>
                                         </li>
                                     }
-                                    else if (notiType == EventZoneConstants.CommentNotification) { 
+                                    else if (notiType == EventZoneConstants.CommentNotification)
+                                    {
                                         <li>
-                                            <a href="@Url.Action("Details", "Event", new { id=item.EventID})">
+                                            <a href="@Url.Action("Details", "Event", new {id = item.EventID})">
                                                 <b>@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID)</b>
                                                 @if (EventDatabaseHelper.Instance.GetUniqueUserComment(item.EventID).Count > 1)
                                                 {
                                                     <text>
-                                                        and  @EventDatabaseHelper.Instance.GetUniqueUserComment(item.EventID).GetRange(1, EventDatabaseHelper.Instance.GetUniqueUserComment(item.EventID).Count - 1).Count other peopel comment on a post you are following
+                                                        and @EventDatabaseHelper.Instance.GetUniqueUserComment(item.EventID).GetRange(1, EventDatabaseHelper.Instance.GetUniqueUserComment(item.EventID).Count - 1).Count other peopel comment on a post you are following
                                                     </text>
 
 
                                                 }
                                             </a>
                                         </li>
-                                            
+
                                     }
-                                    else if (notiType == EventZoneConstants.NewFollower) { 
+                                    else if (notiType == EventZoneConstants.NewFollower)
+                                    {
                                         <li>
-                                          <a href="@Url.Action("Index","User")">You Have new @NotificationDataHelpers.Instance.GetNewUserFollowNotify(item.ActorID, user.UserID,false).Count follower(s)</a>
+                                            <a href="@Url.Action("Index", "User")">You Have new @NotificationDataHelpers.Instance.GetNewUserFollowNotify(item.ActorID, user.UserID, false).Count follower(s)</a>
                                         </li>
                                     }
-                                    else if (notiType == EventZoneConstants.RequestUploadImage) { 
+                                    else if (notiType == EventZoneConstants.RequestUploadImage)
+                                    {
                                         <li>
-                                            <a href="@Url.Action("Details", "Event", new { id=item.EventID})">@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID) request add images to your event</a>
-                                            @listNewNotification.RemoveAll(o => o.EventID==item.EventID&&o.ActorID==item.ActorID&&o.NotificationObjectID==notiType)
+                                            <a href="@Url.Action("Details", "Event", new {id = item.EventID})">@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID) request add images to your event</a>
+                                            @listNewNotification.RemoveAll(o => o.EventID == item.EventID && o.ActorID == item.ActorID && o.NotificationObjectID == notiType)
                                         </li>
                                     }
                                     else if (notiType == EventZoneConstants.EventHasBeenLocked)
                                     {
                                         <li>
-                                            <a href="@Url.Action("Details", "Event", new { id= item.EventID})">Your event @EventDatabaseHelper.Instance.GetEventByID(item.EventID).EventName has been locked</a>
+                                            <a href="@Url.Action("Details", "Event", new {id = item.EventID})">Your event @EventDatabaseHelper.Instance.GetEventByID(item.EventID).EventName has been locked</a>
                                         </li>
                                     }
-                                    else if (notiType == EventZoneConstants.EventHasBeenUnLocked) { 
+                                    else if (notiType == EventZoneConstants.EventHasBeenUnLocked)
+                                    {
                                         <li>
-                                            <a href="@Url.Action("Details", "Event", new { id= item.EventID})">Good new! Your event @EventDatabaseHelper.Instance.GetEventByID(item.EventID).EventName has been unlocked</a>
+                                            <a href="@Url.Action("Details", "Event", new {id = item.EventID})">Good new! Your event @EventDatabaseHelper.Instance.GetEventByID(item.EventID).EventName has been unlocked</a>
                                         </li>
                                     }
                                     else if (notiType == EventZoneConstants.ReportNotification)
                                     {
-                                        
+
                                         <li>
-                                            <a href="@Url.Action("Details", "Event", new { id= item.EventID})">
+                                            <a href="@Url.Action("Details", "Event", new {id = item.EventID})">
                                                 Your event has been reported by <b>@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID)</b>
                                                 @if (EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).Count > 1)
-                                                { <text>
-                                                    and @EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).GetRange(1, EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).Count - 1).Count other users </text>}
+                                                {
+                                                    <text>
+                                                        and @EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).GetRange(1, EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).Count - 1).Count other users </text>}
                                             </a>
                                         </li>
                                     }
@@ -281,9 +271,9 @@
                                 <a href="@Url.Action("Index", "User")">My Profile</a>
                             </li>
                             <li>
-                                <a href="@Url.Action("Event","User")">My Events</a>
+                                <a href="@Url.Action("Event", "User")">My Events</a>
                             </li>
-                           
+
                             <li>@Html.ActionLink("Sign out", "Signout", "Account", null, new {id = "SignOutLink"})</li>
                         </ul>
                     </li>
