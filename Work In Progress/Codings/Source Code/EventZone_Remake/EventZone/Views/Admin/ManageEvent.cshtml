@@ -1,0 +1,246 @@
+﻿@using EventZone.Helpers
+@using EventZone.Models
+@model IEnumerable<EventZone.Models.Event>
+@{
+    if (EventZone.Helpers.UserHelpers.GetCurrentAdmin(Session) == null) {
+        Response.Redirect("~/Admin");
+    }
+    ViewBag.Title = "ManageEvent";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+    List<Event> allEvent = Model.ToList() as List<Event>;
+}
+<link href="~/Content/Event/perfect-scrollbar.css" rel="stylesheet"/>
+<script src="~/Scripts/_Layout/jquery.slimscroll.min.js"></script>
+
+<!--<style>
+    #event-r {
+        position: relative;
+        height: 500px; /* Or whatever you want (eg. 400px) */
+        width: 100%;
+    }
+</style>-->
+<style>
+    
+.scroll-content {
+    height:500px
+}
+
+</style>
+<script src="~/Scripts/Event/perfect-scrollbar.jquery.js"></script>
+<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" class="interactButton" style="margin-left: 5%; margin-bottom: 10px">
+    <input type="text" name="Keyword" id="Keyword" class="form-control" aria-label="Text input with segmented button dropdown" placeholder="Search for events or categories" style="width: 250px; display: inline-block">
+
+    <button class="btn btn-default" type="submit">
+        <span class="glyphicon glyphicon-search"></span>
+    </button>
+    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#i_md_ad_search" id="i_advanced_search">
+        <a href="#">
+            <span class="glyphicon glyphicon-chevron-down"></span>
+        </a>
+    </button>
+</div>
+<div class="modal fade" id="i_md_ad_search" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal 1 content: Advanced Search -->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="panel-title">Advanced Search</div>
+            </div>
+            <div style="padding-top: 10px" class="panel-body">
+                <!-- md_ đánh dấu CSS của MODAL -->
+                @Html.Action("SearchAdvance", "Search", new { @id = "i_frame_md_ad_search" })
+            </div>
+        </div>
+    </div>
+</div>
+<div class="tab-pane scroll-content" id="event-r">
+    @if (allEvent != null && allEvent.Count != 0)
+    {
+        for (int i = 0; i < allEvent.Count; i++)
+        {
+            Event evt= allEvent[i];
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_event_card_cover">
+                <!-- e_ để đánh dấu CSS EVENT -->
+                <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_e_thumb">
+                    <img src="@EventDatabaseHelper.Instance.GetImageByID(evt.Avatar).ImageLink">
+                    @if (EventDatabaseHelper.Instance.isLive(evt.EventID))
+                    {
+                        <div class="d_txt_live">
+                            Live
+                        </div>
+                    }
+                </div>
+                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_e_info_cover">
+                    <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10 d_e_title">
+                        @Html.ActionLink(@evt.EventName, "Details", "Event", new { id = evt.EventID }, new { target = "_blank" })
+                    </div>
+
+                    <h4>
+                        <div id="lock-icon-@evt.EventID">
+                            @if (evt.Status == EventZoneConstants.Lock)
+                            {
+                                <span class="col-md-1 col-lg-1 label label-danger">
+                                        <span class=" glyphicon glyphicon-lock"></span>
+                                    </span>
+                            }
+                        </div>
+                    </h4>
+                    <div class="btn-group d_e_btn_more col-md-1 col-lg-1">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-option-vertical"></span>
+                        </button>
+                        <ul class="dropdown-menu d_e_drop_menu" id="ul-lock-unlock-@evt.EventID">
+                            @if (evt.Status == EventZoneConstants.Active)
+                            {
+                                <li><a href="#" id="lock-event-@evt.EventID" onclick="LockEvent(@evt.EventID)">Lock</a></li>
+                            }
+                            else
+                            {
+                                <li><a href="#" id="unlock-event-@evt.EventID" onclick="UnlockEvent(@evt.EventID)">Unlock</a></li>
+                            }
+                            <li><a href="#" id="Suggest-event">Suggest To top</a></li>
+                        </ul>
+                    </div>
+                    <div class="d_e_cate">
+                        <i class="fa fa-list-ul"></i>
+                        <div class="d_fill_in">in <a href=""><i>@CommonDataHelpers.Instance.GetCategoryById(evt.CategoryID).CategoryName</i></a></div>
+                    </div>
+                    <div class="d_e_follower">
+                        <i class="fa fa-star"></i>
+                        <div class="d_fill_in">Score: <a onclick="showScoreDetail(@evt.EventID)">@EventDatabaseHelper.Instance.CalculateEventScore(evt.EventID)</a> </div>
+                    </div>
+                    <div class="modal fade" id="score-detail-modal-@evt.EventID" role="dialog">
+                        <div class="modal-dialog">
+                            <!-- Modal content-->
+                            <div class="panel panel-info d_margin_top">
+                                <div class="panel-heading">
+                                    <div class="panel-title">Score detail of @evt.EventName</div>
+                                    <div style="float: right; font-size: 80%; position: relative; top: -17px">
+                                        <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div style="margin-bottom: 10px" class="input-group">
+                                        <span class="input-group-addon">View</span>
+                                        @evt.View
+                                    </div>
+                                    <div style="margin-bottom: 10px" class="input-group">
+                                        <span class="input-group-addon">Like</span>
+                                        @EventDatabaseHelper.Instance.CountLike(evt.EventID)
+                                    </div>
+                                    <div style="margin-bottom: 10px" class="input-group">
+                                        <span class="input-group-addon">DisLike</span>
+                                        @EventDatabaseHelper.Instance.CountDisLike(evt.EventID)
+                                    </div>
+                                    <div style="margin-bottom: 10px" class="input-group">
+                                        <span class="input-group-addon">Follower</span>
+                                        @EventDatabaseHelper.Instance.CountFollowerOfEvent(evt.EventID)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d_e_date">
+                        <i class="fa fa-calendar-o"></i>
+                        <div class="d_fill_in">From: @evt.EventStartDate.ToShortTimeString()<span> - </span>@evt.EventStartDate.ToShortDateString() </div>
+                    </div>
+                    <div class="d_e_time">
+                        <i class="fa fa-calendar-o"></i>
+                        <div class="d_fill_in">From: @evt.EventEndDate.ToShortTimeString()<span> - </span>@evt.EventEndDate.ToShortDateString() </div>
+                    </div>
+                    <div class="d_e_user">
+                        <i class="fa fa-user"></i>
+                        <div class="d_fill_in">Created by: @UserDatabaseHelper.Instance.GetUserDisplayName(EventDatabaseHelper.Instance.GetAuthorEvent(evt.EventID).UserID)</div>
+                    </div>
+                    <div class="d_e_location">
+                        <i class="fa fa-map-marker"></i>
+                        <div class="d_fill_in">Location: @EventDatabaseHelper.Instance.GetEventLocation(evt.EventID)[0].LocationName</div>
+                        @if(EventDatabaseHelper.Instance.GetEventLocation(evt.EventID).Count>1){
+                            int remainLocation = EventDatabaseHelper.Instance.GetEventLocation(evt.EventID).Count - 1;
+                            <span> ( and more @remainLocation <span>locations)</span></span>
+                        }
+                    </div>
+                    <div class="d_e_btn_desciption">
+                        <i class="fa fa-file-text"></i>
+                        <div class="d_fill_in"><a href=""><i>View Description</i></a></div>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+</div>
+<!--<script>
+    $(document).ready(function () {
+        $('#event-r').perfectScrollbar({
+            wheelPropagation: true
+        });
+        //setTimeout(function () { $('#event-r').perfectScrollbar('update') }, 500);
+        $("#event-r").on("mouseover", function () { $("#event-r").perfectScrollbar("update"); });
+    });
+</script>-->
+<!--<script>
+    $(window).load(function () {
+        $('#event-r').slimScroll({
+            height: '700px'
+        });
+    });
+</script>-->
+
+    <script>
+        //$(window).scroll(function () {
+        //    if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+        //        alert("bottom!");
+        //    }
+        //});
+        function showScoreDetail(eventID) {
+            $("#score-detail-modal-" + eventID).modal("show")
+        }
+        function LockEvent(eventID){
+            $.ajax({
+                url: "/Admin/LockEvent",
+                type:"POST",
+                dataType: "json",
+                data:{eventID:eventID, reason :"I dont want your event in my website xD"},
+                success:function(data){
+                    if(data.state==0){
+                        errorShow(data.error,data.message)
+                    }else{
+                        $("#lock-icon-" + eventID).empty();
+                        $("#lock-icon-" + eventID).prepend('<span class="col-md-1 col-lg-1 label label-danger"><span class=" glyphicon glyphicon-lock"></span></span>')
+                        $("#lock-event-"+ eventID).remove();
+                        $("#ul-lock-unlock-" + eventID).prepend('<li><a href="#" id="unlock-event-'+eventID+'" onclick="UnlockEvent('+ eventID +')">Unlock</a></li>')
+                    }
+                },
+                error:function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            })
+        }
+        function UnlockEvent(eventID) {
+            $.ajax({
+                url: "/Admin/UnlockEvent",
+                type: "POST",
+                dataType: "json",
+                data: { eventID: eventID },
+                success: function (data) {
+                    if (data.state == 0) {
+                        errorShow(data.error, data.message)
+                    } else {
+                        $("#lock-icon-" + eventID).empty();
+                        $("#unlock-event-" + eventID).remove();
+                        $("#ul-lock-unlock-" + eventID).prepend('<li><a href="#" id="lock-event-' + eventID + '" onclick="LockEvent(' + eventID + ')">Lock</a></li>')
+                    }
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
+                    console.log(textStatus);
+                    console.log(errorThrown);
+                }
+            })
+        }
+        $(document).ready(function () {
+        })
+    </script>
