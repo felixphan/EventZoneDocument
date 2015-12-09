@@ -27,8 +27,11 @@
         width: 200px;
     }
 
+    .setCenter {
+        padding-top: 50px;
+    }
 </style>
-
+<div class="setCenter">
     <div class="d_body">
         <div class="d_left_side">
             <ul class="nav nav-tabs" id="myTab">
@@ -291,37 +294,35 @@
                 </div>
             </div>
         </div>
-        <div class="d_right_side_top" id="i_other_events">
+        <div class="d_right_side_top">
             <ul class="nav nav-tabs" id="myTab">
                 <li class="active"><a href="#i_events" data-toggle="tab">Latest Events</a></li>
             </ul>
             <div class="tab-content d_info_tab">
-                <!-- Khung chứa evetn khac info -->
+                <!-- Khung chứa User info -->
                 <div class="tab-pane active" id="i_events">
                     <div class="d_events_cover">
-                        @if (latestEvent != null && latestEvent.Count != 0)
+                        @if (latestEvent != null&&latestEvent.Count!=0)
                         {
-                            latestEvent = latestEvent.OrderByDescending(m => m.EventRegisterDate).ToList();
-                            for (int i = 0; i < latestEvent.Count; i++)
-                            {
-                                Event currentEvent = latestEvent[i];
-                                if (i == 3)
-                                {
-                                    break;
-                                }
-                                <div class="d_each_event">
-                                    <div class="d_thumb">
-                                        <img src="@EventDatabaseHelper.Instance.GetImageByID(currentEvent.Avatar).ImageLink">
+                            latestEvent=latestEvent.OrderByDescending(m=>m.EventRegisterDate).ToList();
+                            for(int i=0;i<latestEvent.Count;i++){
+                            Event currentEvent =  latestEvent[i];
+                            if (i == 3) {
+                                break;
+                            }
+                            <div class="d_each_event">
+                                <div class="d_thumb">
+                                    <img src="@EventDatabaseHelper.Instance.GetImageByID(currentEvent.Avatar).ImageLink">
+                                </div>
+                                <div class="d_info">
+                                    <div class="d_title">
+                                        @Html.ActionLink(currentEvent.EventName, "Details", "Event", new { id = currentEvent.EventID }, new { target="_blank"})
                                     </div>
-                                    <div class="d_info">
-                                        <div class="d_title">
-                                            @Html.ActionLink(currentEvent.EventName, "Details", "Event", new { id = currentEvent.EventID }, new { target = "_blank" })
-                                        </div>
-                                        <div class="d_time_left">
-                                            Start in @currentEvent.EventStartDate.ToString()
-                                        </div>
+                                    <div class="d_time_left">
+                                        Start in @currentEvent.EventStartDate.ToString()
                                     </div>
                                 </div>
+                            </div>
                             }
                             <div class="d_txt_show_all" style="text-align: center;">
                                 <a href="@Url.Action("Event", "User", new {userID = user.UserID })">View All</a>
@@ -333,14 +334,14 @@
                             {
                                 if (currentUser != null && user == currentUser)
                                 {
-                                    <div>You have no event.</div> <a href="@Url.Action("Create","Event")">Create now</a>
+                                <div>You have no event.</div> <a href="@Url.Action("Create","Event")">Create now</a>
                                 }
                                 else
                                 {
                                     <div>This user current has no event!</div>
                                 }
                             }
-                        }
+                        }                
                     </div>
                 </div>
             </div>
@@ -359,7 +360,7 @@
             </div>
         </div>
     </div>
-
+</div>
 <script>
     function Follow(userID) {
         if ('@currentUser' == null || '@currentUser' == "") {
@@ -383,8 +384,6 @@
             })
         }
     }
-
-
     function Unfollow(userID) {
         $.ajax({
             url: "/User/UnFollowUser",

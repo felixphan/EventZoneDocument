@@ -25,11 +25,31 @@
     background-color: whitesmoke;
 }
 /*************************************************** Bao hết phần chính ***/
-.d_result_cover{
+.d_all_result{
 	height: 515px;
     padding: 5px;
+    
+	/*margin: 70px auto;
+        	width: 1060px;
+	min-width: 460px;*/
 	border: 1px rgba(0,0,0,0.2) solid;
 	border-radius: 4px;
+
+}
+.d_sum_result{
+	padding-left: 10px;
+}
+hr {
+	margin-top: 40px;
+	margin-bottom: 10px;
+	border: 1px;
+	border-top: 1px solid #eee;
+}
+.d_change_filter{
+	padding-left: 0;
+}
+.d_change_filter button{
+	width: 100%;
 }
 
 /*************************************************** Khung kết quả TRÁI: CSS chung ***/

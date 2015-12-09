@@ -24,10 +24,8 @@ namespace EventZone.Controllers
                     if (admin.AccountStatus != EventZoneConstants.LockedUser)
                     {
                         UserHelpers.SetCurrentAdmin(Session, admin);
-                        return RedirectToAction("Statistic", "Admin");
                     }
                 }
-
             }
             return View();
         }
@@ -75,7 +73,7 @@ namespace EventZone.Controllers
                     Response.Cookies.Add(password);
                 }
                 UserHelpers.SetCurrentAdmin(Session, admin);
-                return RedirectToAction("Statistic", "Admin");
+                return RedirectToAction("Index", "Admin");
             }
             else
             {
@@ -195,7 +193,7 @@ namespace EventZone.Controllers
             {
                 state = 0,
                 error = "Error",
-                message = "Ops... Something went wrong! Please try again!",
+                message = "Ops... Somthing went wrong! Please try again!",
             });
         }
         public JsonResult UnlockEvent(long eventID)
@@ -231,7 +229,7 @@ namespace EventZone.Controllers
             {
                 state = 0,
                 error = "Error",
-                message = "Ops... Something went wrong! Please try again!",
+                message = "Ops... Somthing went wrong! Please try again!",
             });
         }
         public ActionResult ManageUser()

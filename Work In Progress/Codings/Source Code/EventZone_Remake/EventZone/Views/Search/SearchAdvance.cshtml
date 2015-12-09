@@ -44,7 +44,7 @@
             <tr>
                 <td>Streaming</td>
                 <td>
-                    <input type="checkbox">
+                    @Html.CheckBoxFor(m=>m.IsLive)
                 </td>
             </tr>
             <tr>
@@ -81,6 +81,7 @@
                 <span>Look around</span>
             </a>
             <button type="submit" class="btn btn-success" id="i_btn_search"><span class="glyphicon glyphicon-search"></span>Search</button>
+            
         </div>
     }
 </div>

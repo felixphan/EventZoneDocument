@@ -15,8 +15,8 @@
 
 /**************************************** Decorate ***/
 .zd_body{
-    width: 80%;
-    margin-left: 10%;
+        width: 80%;		
+    margin-left: 10%;		
     margin-top: 70px;
 }
 .d_left_side{
@@ -83,7 +83,7 @@
     float: left;
 }
 .d_info_tren .d_info .row{
-    margin: 5px 0px 5px 10px;
+margin: 5px 0px 5px 10px;
 }
 .d_info_tren .d_user_name{
 	font-weight: bold;
@@ -113,6 +113,9 @@
 #view-basic-info #i_title{
     margin-bottom: 10px;
     font-weight: bold;
+}
+.d_info_duoi .row {
+	margin: 5px 0;
 }
 .d_info_duoi .row .d_criteria{
 	width: 33%;
@@ -174,8 +177,8 @@
 	width: 70%;
 	margin-left: 2%;
 }
-#i_fl_event .d_events_cover .d_each_event .d_time_left {
-    margin-left: 4%;
+#i_fl_event .d_events_cover .d_each_event .d_time_left {		
+    margin-left: 4%;		
 }
 #i_fl_event .d_events_cover .d_each_event .d_title{
 	font-weight: bold;
@@ -186,29 +189,29 @@
 #i_fl_event .d_events_cover .d_each_event .d_time_left{
 	color: #999;
 }
-#i_fl_event .d_events_cover .d_each_event {
+#i_fl_event.d_each_event {
     height:80px;
     border-bottom: 1px solid #DDDDDD;
     padding: 5px;
 }
-#i_fl_event .d_events_cover .d_each_event .d_thumb{
+#i_fl_event.d_each_event .d_thumb{
     height: 70px;
     width: 100px;
     float: left;
 }
-#i_fl_event .d_events_cover .d_each_event .d_thumb img{
+#i_fl_event.d_each_event .d_thumb img{
     height:100%;
     width: 100%;
 }
-#i_fl_event .d_events_cover .d_each_event .d_info{
+#i_fl_event.d_each_event .d_info{
     margin-left:15px;
     float:left;
 }
-#i_fl_event .d_events_cover .d_each_event .d_info .d_title{
+#i_fl_event.d_each_event .d_info .d_title{
         font-size: 16px;
     font-weight: bold;
 }
-#i_fl_event .d_events_cover .d_each_event .d_info .d_time_left{
+#i_fl_event.d_each_event .d_info .d_time_left{
     color: lightgrey;
 }
 /**************************************** Follow > Each User **/
@@ -257,8 +260,8 @@
 ul.dropdown-menu {
     left: -139px;
 }
-/*************************************************************** Right_side **/
-/**************************************** Setup chung **/
+/********************************************* Right_side **/
+/**************************************** Some Events **/
 .d_right_side_top,
 .d_right_side_bottom{
 	float: right;
@@ -270,7 +273,6 @@ ul.dropdown-menu {
 	border-radius: 5px;
 	padding: 5px;
 }
-/**************************************** Right_side >> Other Events Area **/
 .d_right_side_top .d_events_cover {
 	height: 250px;
 	padding: 10px;
@@ -296,11 +298,11 @@ ul.dropdown-menu {
 	width: 70%;
 	margin-left: 2%;
 }
-.d_events_cover .d_each_event .d_time_left{
-	margin-left: 4%;
-    font-size: small;
-    font-style: italic;
-    color: #ddd;
+.d_events_cover .d_each_event .d_time_left{		
+	margin-left: 4%;		
+    font-size: small;		
+    font-style: italic;		
+    color: #ddd;		
 }
 .d_events_cover .d_each_event .d_title{
 	font-weight: bold;
@@ -308,7 +310,10 @@ ul.dropdown-menu {
     max-height: 45px;
     overflow-y: hidden;
 }
-/**************************************** Right_side >> Notification Area **/
+.d_events_cover .d_each_event .d_time_left{
+	color: #999;
+}
+/**************************************** Notification Area **/
 .d_right_side_bottom{
 	height: 245px;
 }
@@ -320,20 +325,18 @@ ul.dropdown-menu {
 	border-bottom: 1px solid #eee;
 	margin-bottom: 5px;
 }
-/**************************************** ALL MODAL HERE ***/
-
-/**************************************** ALL MODAL HERE >> Change password***/
-#change-password-modal .modal-dialog{
-    width: 30%;
+/**************************************** ALL MODAL HERE ***/		
+/**************************************** ALL MODAL HERE >> Change password***/		
+#change-password-modal .modal-dialog{		
+    width: 30%;		
+}		
+#i_changepassword_section .input-group{		
+    margin-bottom: 5px;		
+}		
+#i_changepassword_section #i_btn_save_pwd{		
+    margin: 10px 0 0 0;		
+    text-align: center;		
 }
-#i_changepassword_section .input-group{
-    margin-bottom: 5px;
-}
-#i_changepassword_section #i_btn_save_pwd{
-    margin: 10px 0 0 0;
-    text-align: center;
-}
-
 /**************************************** thêm ***/
 
 /**************************************** thêm ***/

@@ -19,15 +19,19 @@ namespace EventZone.Controllers
         // GET: Account
         public ActionResult SignIn()
         {
-            User user = UserHelpers.GetCurrentUser(Session);
-            if (user != null) {
-                TempData["errorTittle"] = "Bad request";
-                TempData["errorMessage"] = "You are already signed in the system";
-                return RedirectToAction("Index", "Home");
-            }
-            TempData["errorTitle"] = null;
-            TempData["errorMessage"] = null;
-            return PartialView();
+          
+                User user = UserHelpers.GetCurrentUser(Session);
+                if (user != null)
+                {
+                    TempData["errorTittle"] = "Bad request";
+                    TempData["errorMessage"] = "You are already signed in the system";
+                    return RedirectToAction("Index", "Home");
+                }
+                TempData["errorTitle"] = null;
+                TempData["errorMessage"] = null;
+                return PartialView();
+           
+           
         }
         [HttpPost]
         [AllowAnonymous]
@@ -78,11 +82,6 @@ namespace EventZone.Controllers
                 }
                 var user = UserDatabaseHelper.Instance.GetUserByUserName(model.UserName);
                 UserHelpers.SetCurrentUser(Session, user);
-                if (user.UserRoles == EventZoneConstants.RootAdmin || user.UserRoles == EventZoneConstants.Mod ||
-                user.UserRoles == EventZoneConstants.Admin)
-                {
-                    UserHelpers.SetCurrentAdmin(Session, user);
-                }
             }
             else
             {
@@ -105,16 +104,19 @@ namespace EventZone.Controllers
         // GET: Account/Details/5
         public ActionResult SignUp()
         {
-            User user = UserHelpers.GetCurrentUser(Session);
-            if (user != null)
-            {
-                TempData["errorTittle"] = "Bad request";
-                TempData["errorMessage"] = "You are already signed in the system";
-                return RedirectToAction("Index", "Home");
-            }
-            TempData["errorTitle"] = null;
-            TempData["errorMessage"] = null;
-            return PartialView();
+           
+                User user = UserHelpers.GetCurrentUser(Session);
+                if (user != null)
+                {
+                    TempData["errorTittle"] = "Bad request";
+                    TempData["errorMessage"] = "You are already signed in the system";
+                    return RedirectToAction("Index", "Home");
+                }
+                TempData["errorTitle"] = null;
+                TempData["errorMessage"] = null;
+                return PartialView();
+  
+            
         }
 
         [HttpPost]
@@ -292,6 +294,7 @@ namespace EventZone.Controllers
 
         public ActionResult ConfirmRegisterGoogle(GoogleAccountModel model)
         {
+            
             User user = UserHelpers.GetCurrentUser(Session);
             if (user != null)
             {
@@ -402,9 +405,11 @@ namespace EventZone.Controllers
 
         public ActionResult ForgotPassword()
         {
-            TempData["errorTitle"] = null;
-            TempData["errorMessage"] = null;
-            return PartialView();
+            
+                TempData["errorTitle"] = null;
+                TempData["errorMessage"] = null;
+                return PartialView();
+           
         }
 
         public ActionResult HandleForgotPass(ForgotViewModel model)

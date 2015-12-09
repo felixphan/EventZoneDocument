@@ -3,7 +3,6 @@
     ViewBag.Title = "LookAround";
 }
 @{
-    var nearlyEventPlace = ViewData["nearlyEventPlace"] as List<EventPlace>;
     var nearlyEvent = ViewData["nearlyEvent"] as List<ViewThumbEventModel>;
     var nearlyLocation = ViewData["nearlyLocation"] as List<Location>;
     var curr = ViewData["currentLocation"] as Location;
@@ -13,33 +12,31 @@
     ViewBag.Title = "LookAround";
 }
 
+
+<style>
+
+    #map {
+        height: 500px;
+        width: 500px;
+        padding-top:50px;
+    }
+    #id-name-place{
+        height:50px;
+
+    }
+</style>
 <link href="~/Content/myCSS_l_a.css" rel="stylesheet" />
 
 
-<div class="d_left_content" id="map"></div>
-<button type="button" class="btn btn-primary d_btn_show_all">Show all</button>
+    <div class="d_left_content" id="map"></div>
 <div class="d_right_content">
-    <div class="d_top_title">
-        <b>50</b> Events in
-        <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                5 <span class="caret"></span>
-            </button>&nbsp;Km from you!
-            <ul class="dropdown-menu">
-                <li><a href="#">10</a></li>
-                <li><a href="#">20</a></li>
-                <li><a href="#">50</a></li>
-                <li role="separator" class="divider"></li>
-                <li><input type="text" class="form-control d_input_km" placeholder="kilometers"></li>
-            </ul>
-        </div>
-    </div>
     <div class="d_event_cover tse-scrollable trackpad">
-        <div id="id-list-event-in-place tse-content">
+        <div id="id-list-event-in-place tse-content scroll-content">
             @Html.Partial("_ViewEventInPlace", nearlyEvent)
         </div>
     </div>
 </div>
+
 <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&callback=initMap"
         async defer>
 </script>
@@ -61,7 +58,6 @@
                     success: function (data) {
                         //console.log(data);
                         if (typeof (data) === 'undefined' || data == null || data == "null") {
-                            console.log(data);
                         }
                         else {
                             $("#id-list-event-in-place").html("");
@@ -132,7 +128,7 @@
         @foreach (var item in nearlyLocation)
         {
             <text>
-        index = index + 1;
+        
         (function (index) {
             var otherMaker = new google.maps.Marker({
                 position: new google.maps.LatLng('@item.Latitude', '@item.Longitude'),
@@ -150,9 +146,8 @@
             google.maps.event.addListener(otherMaker, 'click', function () {
                 searchDetailModule.loadEventInPlace(index, '@item.LocationID', '@item.LocationName');
             });
-
         })(index);
-
+        index = index + 1;
         </text>
         }
 

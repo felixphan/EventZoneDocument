@@ -15,11 +15,22 @@
     <!--Style-->
     <link href="~/Content/bootstrap.css" rel="stylesheet"/>
     <link href="~/Content/_Layout/_Layout.css" rel="stylesheet"/>
+
     <!--<link href="~/Content/Home/myCSS_index_2.css" rel="stylesheet"/>-->
+    <style>
+            .d_user_dropdown>li>a {
+                padding: 0px;
+            }
+            @@font-face {
+             src: url('~/fonts/fontawesome-webfont.eot') format('opentype');
+            }
+    </style>
     <!--Script-->
     <script src="~/Scripts/_Layout/modernizr-2.8.3.js"></script>
+    <script src="~/Scripts/jquery-2.1.4.js"></script>
     <script src="~/Scripts/_Layout/jquery-2.1.4.min.js"></script>
     <script src="~/Scripts/ErrorAlert.js"></script>
+    <script src="~/Scripts/_Layout/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.ajaxform.js"></script>
     <script src="~/Scripts/_Layout/respond.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
@@ -27,32 +38,32 @@
     <script src="~/Scripts/_Layout/jquery.unobtrusive-ajax.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.js"></script>
     <script src="~/Scripts/_Layout/jquery.smartmenus.bootstrap.js"></script>
-    <script src="~/Scripts/_Layout/bootstrap.min.js"></script>
-    <script src="~/Scripts/_Layout/jquery.slimscroll.min.js"></script>
     <script src="~/Scripts/_Layout/enscroll-0.6.1.min.js"></script>
+    <link href="~/Content/_Layout/nprogress.css" rel="stylesheet" />
+    <script src="~/Scripts/_Layout/nprogress.js"></script>
+    <link href="~/Content/Home/webColor.css" rel="stylesheet"/>
+    <script src="~/Scripts/_Layout/_Layout.js"></script>
+
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             @if (TempData["errorTitle"] != null)
-            {
-                <text>
+        {
+            <text>
         errorShow('@TempData["errorTitle"]', '@TempData["errorMessage"]')
         </text>
-            }
+        }
         })
     </script>
     <script>
         //check cookie
-        $(document).ready(function() {
-            @if (UserHelpers.GetCurrentUser(Session) == null)
-            {
-                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
-                {
-                    string userName = Request.Cookies["userName"].Value;
-                    string password = Request.Cookies["password"].Value;
-                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
-                    {
+        $(document).ready(function () {
+            @if (UserHelpers.GetCurrentUser(Session) == null) {
+                if(Request.Cookies["userName"]!=null&&Request.Cookies["password"]!=null){
+                    string userName= Request.Cookies["userName"].Value;
+                    string password= Request.Cookies["password"].Value;
+                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password)) {
                         user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
-                        <text>
+                          <text>
                             $.ajax({
                                 url: "/Account/CheckCookie",
                                 type: "POST",
@@ -73,12 +84,11 @@
         </text>
                     }
                 }
-            }
-            else if (user != null)
-            {
-                if (user.AccountStatus == EventZoneConstants.Lock)
-                {
-                    <text>
+        }
+        else if (user != null)
+        {
+            if (user.AccountStatus == EventZoneConstants.Lock) { 
+                <text>
                 $.ajax({
                     url: "/Account/Signout",
                     type: "POST",
@@ -94,29 +104,44 @@
                     }
                 })
                 </text>
-                }
             }
+        }
         })
     </script>
 
 </head>
 <body>
-@Html.Partial("_Error")
+    @Html.Partial("_Error")
 <!-- i_2_ đánh dấu CSS Index_2.html -->
 <!-- TOP MENU -->
-<nav class="navbar navbar-inverse navbar-fixed-top d_topmenu_bg">
+<nav class="navbar navbar-fixed-top d_topmenu_bg">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
-
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- Brand -->
+            <li class="d_fix_width dropdown">
+                <a href="/Home/Index" id="i_brand">Event Zone</a>
+                <ul class="dropdown-menu d_brand_menu">
+                    <li>
+                        <a href="/Home/Policy">Policy</a>
+                    </li>
+                    <li>
+                        <a href="/Home/Help">Help</a>
+                    </li>
+                </ul>
+            </li>
+        </div>
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
-                <!-- brand EventZone -->
-                <li>
-                    <a href="/Home/Index">EventZone</a>
-                </li>
-                <li class="dropdown d_fix_width" id="i_drdn_cate">
+                <li class="dropdown" id="i_drdn_cate">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Categories <span class="caret"></span></a>
-                    <ul class="dropdown-menu" style="width: 200px;">
+                    <ul class="d_drop_cate" style="width: 200px;">
                         @if (category != null)
                         {
                             foreach (var item in category)
@@ -126,7 +151,6 @@
                                 </li>
                             }
                         }
-
                     </ul>
                 </li>
             </ul>
@@ -143,7 +167,7 @@
                     <div class="modal fade" id="myModal2" role="dialog">
                         <div class="modal-dialog">
                             <!-- Modal content-->
-                            <div class="panel panel-info d_margin_top">
+                            <div class="panel panel-info">
                                 <div class="panel-heading">
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
@@ -151,7 +175,7 @@
                                     <div class="panel-title">Welcome to Event Zone</div>
                                 </div>
                                 <div class="panel-body">
-                                    <div class="cover_all_functions">
+                                    <div class="d_style_of_tabs">
                                         <ul class="nav nav-tabs">
                                             <!-- áp dụng Tab lên thanh Nút chức năng -->
                                             <li class="d_signin_tab active">
@@ -179,7 +203,7 @@
                             <button type="submit" class="btn btn-default btn-sm d_btn_create"><span class=" glyphicon glyphicon-plus" aria-hidden="true"></span>  &nbsp Create Event</button>
                         </form>
                     </li>
-                    <li>
+                    <li id="notificationList" onclick="displayNoti()">
                         <img id="i_avatar" src="@EventDatabaseHelper.Instance.GetImageByID(@user.Avartar).ImageLink">
 
                         @if (NotificationDataHelpers.Instance.CountTotalNewNotification(user.UserID) > 0)
@@ -188,7 +212,7 @@
                                 @NotificationDataHelpers.Instance.CountTotalNewNotification(user.UserID)
                             </div>
                         }
-                        <ul class="dropdown-menu sm-nowrap d_user_dropdown" role="group" aria-hidden="true" aria-expanded="false">
+                        <ul class="dropdown-menu sm-nowrap d_user_dropdown" id="notificationUl" role="group" aria-hidden="true" aria-expanded="false">
                             @if (NotificationDataHelpers.Instance.GetUserNotification(user.UserID, false).Count > 0)
                             {
 
@@ -203,6 +227,7 @@
                                         <li>
                                             <a href="@Url.Action("Details", "Event", new {id = item.EventID})"><b>@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID)</b> add a new event</a>
                                         </li>
+                                        <li role="separator" class="divider"></li>
                                     }
                                     else if (notiType == EventZoneConstants.CommentNotification)
                                     {
@@ -219,13 +244,14 @@
                                                 }
                                             </a>
                                         </li>
-
+                                        <li role="separator" class="divider"></li>
                                     }
                                     else if (notiType == EventZoneConstants.NewFollower)
                                     {
                                         <li>
                                             <a href="@Url.Action("Index", "User")">You Have new @NotificationDataHelpers.Instance.GetNewUserFollowNotify(item.ActorID, user.UserID, false).Count follower(s)</a>
                                         </li>
+                                        <li role="separator" class="divider"></li>
                                     }
                                     else if (notiType == EventZoneConstants.RequestUploadImage)
                                     {
@@ -233,18 +259,21 @@
                                             <a href="@Url.Action("Details", "Event", new {id = item.EventID})">@UserDatabaseHelper.Instance.GetUserDisplayName(item.ActorID) request add images to your event</a>
                                             @listNewNotification.RemoveAll(o => o.EventID == item.EventID && o.ActorID == item.ActorID && o.NotificationObjectID == notiType)
                                         </li>
+                                        <li role="separator" class="divider"></li>
                                     }
                                     else if (notiType == EventZoneConstants.EventHasBeenLocked)
                                     {
                                         <li>
                                             <a href="@Url.Action("Details", "Event", new {id = item.EventID})">Your event @EventDatabaseHelper.Instance.GetEventByID(item.EventID).EventName has been locked</a>
                                         </li>
+                                        <li role="separator" class="divider"></li>
                                     }
                                     else if (notiType == EventZoneConstants.EventHasBeenUnLocked)
                                     {
                                         <li>
                                             <a href="@Url.Action("Details", "Event", new {id = item.EventID})">Good new! Your event @EventDatabaseHelper.Instance.GetEventByID(item.EventID).EventName has been unlocked</a>
                                         </li>
+                                        <li role="separator" class="divider"></li>
                                     }
                                     else if (notiType == EventZoneConstants.ReportNotification)
                                     {
@@ -258,32 +287,34 @@
                                                         and @EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).GetRange(1, EventDatabaseHelper.Instance.GetEventReport(item.EventID, EventZoneConstants.Pending).Count - 1).Count other users </text>}
                                             </a>
                                         </li>
+                                        <li role="separator" class="divider"></li>
                                     }
                                 }
                             }
                         </ul>
                     </li>
-    <li class="dropdown d_fix_width_2">
-        <a href="#" class="has-submenu" aria-haspopup="true" aria-expanded="false">
-            @user.UserName <span class="caret"></span>
-        </a>
-        <ul class="dropdown-menu sm-nowrap d_user_dropdown" role="group" aria-hidden="true" aria-expanded="false">
-            <li class="dropdown-header">Manage</li>
-            <li>
-                <a href="@Url.Action("Index", "User")">My Profile</a>
-            </li>
-            <li>
-                <a href="@Url.Action("Event", "User")">My Events</a>
-            </li>
+                    <li class="">
+                        <a href="#" class="has-submenu" aria-haspopup="true" aria-expanded="false">
+                            @user.UserName <span class="caret"></span></a>
+                        <ul class="d_drop_user" role="group" aria-hidden="true" aria-expanded="false">
 
-            <li>@Html.ActionLink("Sign out", "Signout", "Account", null, new { id = "SignOutLink" })</li>
-        </ul>
-    </li>
+                            <li>
+                                <a href="@Url.Action("Index", "User")">My Profile</a>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Event", "User")">My Events</a>
+                            </li>
+
+                            <li>@Html.ActionLink("Sign out", "Signout", "Account", null, new {id = "SignOutLink"})</li>
+                        </ul>
+                    </li>
                 }
             </ul>
         </div>
     </div>
 </nav>
+
+    <div class="d_white_bg"></div>
 <div class="body-content">
     <script src="https://maps.googleapis.com/maps/api/js?signed_in=true&libraries=places&callback=initAutocomplete"
             async defer></script>
@@ -296,27 +327,53 @@
         $(".field-validation-error").empty();
     }
 </script>
+<script>
+
+    $('#notificationList').on('click', function (e) {
+        e.stopPropagation();
+        document.getElementById("notificationUl").style.display = "block";
+    });
+
+    $(document).on('click', function (e) {
+        document.getElementById("notificationUl").style.display = "none";
+        // Do whatever you want; the event that'd fire if the "special" element has been clicked on has been cancelled.
+    });
+</script>
     <script>
-    $(document).ready(function () {
+        $(document).ready(function () {
+            NProgress.start();
 
-        $('.scroll-content').enscroll({
+            // Increase randomly
+            var interval = setInterval(function () { NProgress.inc(); }, 1000);
 
-            // a configuration property
-            showOnHover: true,
+            // Trigger finish when page fully loaded
+            jQuery(window).load(function () {
+                clearInterval(interval);
+                NProgress.done();
+            });
 
-            // another configuration property
-            verticalScrolling: true,
-            horizontalScrolling:true,
-            horizontalTrackClass: 'vertical-track',
-            horizontalHandleCalss: 'vertical-hanldle',
-            verticalTrackClass: 'vertical-track',
-            verticalHandleCalss: 'vertical-hanldle'
+            // Trigger bar when exiting the page
+            jQuery(window).unload(function () {
+                NProgress.start();
+            });
+            $('.scroll-content').enscroll({
 
-            // ... more configuration properties ...
-        });
-    })
+                // a configuration property
+                showOnHover: true,
+                easingDuration:200,
+                // another configuration property
+                verticalScrolling: true,
+                horizontalScrolling: true,
+                horizontalTrackClass: 'vertical-track',
+                horizontalHandleCalss: 'vertical-hanldle',
+                verticalTrackClass: 'vertical-track',
+                verticalHandleCalss: 'vertical-hanldle'
+
+                // ... more configuration properties ...
+            });
+            $(".scroll-content").width('auto');
+        })
     </script>
 @RenderSection("scripts", false)
-
 </body>
 </html>

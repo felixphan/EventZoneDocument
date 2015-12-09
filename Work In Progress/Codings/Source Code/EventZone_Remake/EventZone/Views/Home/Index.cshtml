@@ -14,26 +14,27 @@
         }
     })
 </script>
-
+<script>
+    $('#myFlipper').flipper();
+</script>
  
 
+<link href="~/Content/Home/Index.css" rel="stylesheet" />
 <link href="~/Content/Home/bootstrap-social.css" rel="stylesheet" />
 <link href="~/Content/Home/font-awesome.min.css" rel="stylesheet"/>
 <link href="~/Content/Home/jquery.bxslider.css" rel="stylesheet" />
 <script src="~/Scripts/Home/bootstrap-hover-dropdown.min.js"></script>
-<link href="~/Content/Home/flipper.min.css" rel="stylesheet"/>
-<link href="~/Content/Home/webColor.css" rel="stylesheet"/>
+<link href="~/Content/Home/flipper.min.css" rel="stylesheet" />
 <link href="~/Content/Home/myCSS_index_2.css" rel="stylesheet" />
 <div class="full-screen-bg">
     <video class="fullscreen-bg__video" autoplay loop muted>
-        <source src="https://s3-us-west-2.amazonaws.com/eventzone/bgvideo1080-cut.mp4" type="video/mp4">
-        <source src="https://s3-us-west-2.amazonaws.com/eventzone/bgvideo1080-cut.webm" type="video/webm" />
+        <source src="~/img/hanoi.webm" type="video/webm" />
     </video>
 </div>
 <div class="d_middle_category">
     <div class="d_md_body">
         <div class="d_mc_text_1">
-            <span>Event</span>Zone!
+            Event Zone!
         </div>
         <div class="d_mc_text_2">
             Only one zone for all Activities. Promote, manage, and host successful events.
@@ -108,7 +109,7 @@
         New Event
     </div>
     <div class="d_e_container">
-        @Html.Action("NewEvent", "Home")
+       @Html.Action("NewEvent", "Home")
     </div>
 </div>
 
@@ -248,9 +249,8 @@
 <script>
     //handle follow category
     function followCategory(categoryID) {
-        @if (user != null)
-        {
-            <text>
+        @if(user!=null){
+                   <text>
         $.ajax({
             url: "/User/FollowCategory",
             type: "POST",
@@ -278,18 +278,16 @@
             }
         })
         </text>
-        }
-        else
-        {
-            <text>
+               }
+               else {
+                   <text>
         var x = 'Require Signin';
         var y = 'Please signin to follow this Category';
         errorShow(x, y);
         </text>
-        }
+               }
 
     }
 
 </script>
-
 

@@ -350,12 +350,11 @@
     <Content Include="Content\Event\Create.css" />
     <Content Include="Content\Event\font-awesome.min.css" />
     <Content Include="Content\Event\lightview.css" />
-    <Content Include="Content\Home\webColor.css" />
-    <Content Include="Content\Home\z_Index.css" />
     <Content Include="Content\myCSS_l_a.css" />
+    <Content Include="img\verifiedEvent.png" />
+    <Content Include="img\verify.jpg" />
     <Content Include="Scripts\Admin\AddNewUser.js" />
     <Content Include="Scripts\Event\Edit.js" />
-    <Content Include="Scripts\Event\fill.box.js" />
     <Content Include="Scripts\Event\lightview.js" />
     <Content Include="Content\Event\skins\blank.gif" />
     <Content Include="Content\Event\skins\dark\sprite.png" />
@@ -365,8 +364,11 @@
     <Content Include="Content\Event\skins\mac\sprite.png" />
     <Content Include="Content\Event\skins\mac\sprite_ie_lt_7.png" />
     <Content Include="Scripts\Event\spinners.min.js" />
+    <Content Include="Scripts\Hub\jquery.signalR-2.0.0.js" />
+    <Content Include="Scripts\Hub\jquery.signalR-2.0.0.min.js" />
     <Content Include="Scripts\_Layout\enscroll-0.6.1.min.js" />
-    <Content Include="Scripts\_Layout\jquery.slimscroll.min.js" />
+    <Content Include="Content\_Layout\nprogress.css" />
+    <Content Include="Scripts\_Layout\nprogress.js" />
     <Content Include="Views\Event\images\Arrowhead-Left-01-48.png" />
     <Content Include="Views\Event\images\Arrowhead-Left.png" />
     <Content Include="Views\Event\images\Arrowhead-Right-01-48.png" />
@@ -402,13 +404,14 @@
     <Content Include="Content\User\myCSS_u_m_e.css" />
     <Content Include="Content\Event\perfect-scrollbar.css" />
     <Content Include="Content\Home\font-awesome.min.css" />
+    <Content Include="Content\Home\Index.css" />
     <Content Include="Content\Home\jquery.m.flip.css" />
     <Content Include="Content\Event\myCSS_u_w_e.css" />
     <Content Include="Content\myCSS_u_m_p.css" />
     <Content Include="Content\Search\SearchAdvance.css" />
     <Content Include="Content\Search\SearchResult.css" />
     <Content Include="Content\User\myCSS_s_r.css" />
-    <Content Include="Content\User\z_myCSS_u_m_p.css" />
+    <Content Include="Content\User\myCSS_u_m_p.css" />
     <Content Include="Content\Home\myCSS_index_2.css" />
     <Content Include="Content\_Layout\Site.css" />
     <Content Include="Content\_Layout\_Layout.css" />
@@ -445,10 +448,6 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="img\hanoi.webm" />
-    <Content Include="Content\_Layout\Fonts\UTM Helve.ttf" />
-    <Content Include="Content\_Layout\Fonts\UTM HelveBold.ttf" />
-    <Content Include="Content\_Layout\Fonts\UTM HelveBold_Italic.ttf" />
-    <Content Include="Content\_Layout\Fonts\UTM Helve_Italic.ttf" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -614,11 +613,9 @@
     <Content Include="Views\Admin\ViewDetailAppeal.cshtml" />
     <Content Include="Views\Admin\AddNewUser.cshtml" />
     <Content Include="Views\Shared\_Loading.cshtml" />
-    <Content Include="Views\Event\_EditEventPartial.cshtml" />
-    <Content Include="Views\Event\WatchLiveVideo.cshtml" />
-    <Content Include="Views\User\_EditProfilePartial.cshtml" />
-    <Content Include="Views\User\_MyEventPartial.cshtml" />
-    <Content Include="Views\User\_UserInfoPartial.cshtml" />
+    <Content Include="Views\Shared\_EventThumbPage.cshtml" />
+    <Content Include="Views\User\_EventPage.cshtml" />
+    <Content Include="Views\User\_ViewReport.cshtml" />
     <Content Include="Views\Shared\_LocationEvent.cshtml" />
   </ItemGroup>
   <ItemGroup>

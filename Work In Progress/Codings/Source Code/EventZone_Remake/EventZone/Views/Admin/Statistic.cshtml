@@ -10,23 +10,17 @@
         Layout = "~/Views/Shared/_AdminLayout.cshtml";
 
 }
-<style>
-    .scroll-content {
-        height: 500px;
-        width: 900px;
-    }
-</style>
 <script src="~/Scripts/Admin/highcharts.js"></script>
 <link href="~/Content/User/myCSS_s_r.css" rel="stylesheet" />
 <div class="d_all_result container">
     <div class="col-xs-8 col-sm-9 col-md-9 col-lg-10 d_result_container">
-        <div class="tab-content scroll-content" style="height:500px">
+        <div class="tab-content">
             <div class="tab-pane active b" id="activity-r">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="ReportByStatus"></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="ReportByType"></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="AppealByStatus"></div>
             </div>
-            <div class="tab-pane scroll-content" style="height:500px" id="event-r">
+            <div class="tab-pane b" id="event-r">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="EventCategoryChart"></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="EventByStatus"></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="EventCreatedEachMonth"></div>
@@ -35,7 +29,7 @@
 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="TopTenLocations"></div>
             </div>
-            <div class="tab-pane scroll-content" style="height:500px" id="user-r">
+            <div class="tab-pane b" id="user-r">
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="TopTenUser"></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="GenderRate"></div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" id="GroupAge"></div>

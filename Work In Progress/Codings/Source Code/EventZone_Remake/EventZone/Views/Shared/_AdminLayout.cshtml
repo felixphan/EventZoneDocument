@@ -11,8 +11,9 @@
     <!--Style-->
     <link href="~/Content/bootstrap.css" rel="stylesheet" />
     <link href="~/Content/Admin/bootstrap-social.css" rel="stylesheet" />
-    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/Admin/font-awesome.min.css" rel="stylesheet" />
     <link href="~/Content/Admin/myCSS_admin.css" rel="stylesheet" />
+    <link href="~/Content/Admin/myCSS_s_r.css" rel="stylesheet" />
     <script src="~/Scripts/Admin/jquery-1.11.3.min.js"></script>
     <script src="~/Scripts/jquery.ajaxform.js"></script>
     <script src="~/Scripts/jquery.validate.js"></script>
@@ -21,7 +22,6 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/ErrorAlert.js"></script>
     <script src="~/Scripts/Admin/myJS_s_r.js"></script>
-    <script src="~/Scripts/_Layout/enscroll-0.6.1.min.js"></script>
     <!--Script-->
     <script>
     $(document).ready(function () {
@@ -158,31 +158,11 @@
     <div class="container body-content">
         @RenderBody()
     </div>
-<script>
+    <script>
     function clearError() {
         $("#error-modal").modal('hide');
         $(".field-validation-error").empty();
     }
-</script>
-    <script>
-    $(document).ready(function () {
-
-        $('.scroll-content').enscroll({
-
-            // a configuration property
-            showOnHover: true,
-
-            // another configuration property
-            verticalScrolling: true,
-            horizontalScrolling:true,
-            verticalTrackClass: 'vertical-track',
-            verticalHandleCalss: 'vertical-hanldle',
-            horizontalTrackClass: 'vertical-track',
-            horizontalHandleCalss: 'vertical-hanldle',
-
-            // ... more configuration properties ...
-        });
-    })
     </script>
     @RenderSection("scripts", false)
 </body>

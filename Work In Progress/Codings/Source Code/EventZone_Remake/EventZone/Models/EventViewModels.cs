@@ -63,7 +63,6 @@ namespace EventZone.Models
         public long eventID { get; set; }
 
         [Required(ErrorMessage = "Please enter your Title")]
-        [RegularExpression("(^[a-zA-Z0-9 ,.'-]+$)", ErrorMessage = "Only Allowed Alphabet, numberic and white Character In Title")]
         [MaxLength(50, ErrorMessage = "Title must less than 50 characters.")]
         public string Title { get; set; }
         public long EventPlaceID { get; set; }
@@ -93,6 +92,7 @@ namespace EventZone.Models
         public long numberView { get; set; }
         public int NumberLike { get; set; }
         public int NumberDisLike { get; set; }
+        public bool isVerified { get; set; }
         public LikeDislike FindLike { get; set; }
         public int NumberFowllower { get; set; }
         public string eventDescription { get; set; }
@@ -106,7 +106,6 @@ namespace EventZone.Models
         public List<Comment> eventComment { get; set; }
         public int Privacy { get; set; }
         public String Category { get; set; }
-        public bool Status { get; set; }
     }
     public class ThumbEventHomePage {
         public long EventID { get; set; }
@@ -114,6 +113,7 @@ namespace EventZone.Models
         public string EventName { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public bool IsVeried { get; set; }
         public List<Location> listLocation { get; set; }
     }
     public class CommentViewModel
