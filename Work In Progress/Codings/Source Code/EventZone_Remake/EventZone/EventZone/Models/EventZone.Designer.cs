@@ -1,4 +1,8 @@
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Models/EventZone.Designer.cs
 ﻿// T4 code generation is enabled for model 'B:\Users\cuongnvse02837\Downloads\Compressed\EventZone_2_2\EventZone_2\EventZone\EventZone_Remake\EventZone\EventZone\Models\EventZone.edmx'. 
+=======
+﻿// T4 code generation is enabled for model 'D:\New folder (3)\EventZone\EventZone_Remake\EventZone\EventZone\Models\EventZone.edmx'. 
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Models/EventZone.Designer.cs
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

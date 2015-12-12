@@ -146,6 +146,10 @@ namespace EventZone.Controllers
                 liveModel = objJavascript.Deserialize<LiveStreamingModel>(Request.Cookies["liveModel"].Value);
             }
             else {
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/EventController.cs
+=======
+
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/EventController.cs
                 if (liveModel.Quality != null)
                 {
                     HttpCookie newModel = new HttpCookie("liveModel");

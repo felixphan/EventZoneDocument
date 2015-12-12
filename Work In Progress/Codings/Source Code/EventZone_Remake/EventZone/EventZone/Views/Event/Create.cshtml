@@ -36,7 +36,11 @@
 </style>
 <script src="~/Scripts/Event/summernote.min.js"></script>
 
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Event/Create.cshtml
 <div>
+=======
+<div class="body-content">
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Event/Create.cshtml
 <!-- Khung chứa Thông tin cơ bản & Description -->
 <div class="tab-pane active" id="i_info_tab">
 @using (Html.BeginForm("CreateEvent", "Event", FormMethod.Post, new { enctype = "multipart/form-data",id="CreateForm" }))
@@ -62,7 +66,11 @@
         <!-- row Title -->
 
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Event/Create.cshtml
             Title <span id="i_required_mark"> *</span>
+=======
+            Title *
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Event/Create.cshtml
         </div>
         <div class="col-xs-10 col-sm-10 col-md-10 col-lg-10">
             @Html.TextBoxFor(model => model.Title, new { @class = "form-control", @style = "width:100%", @maxlength = "50" })
@@ -72,7 +80,11 @@
     <div class="row">
         <!-- row Date Time -->
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Event/Create.cshtml
             Date & Time <span id="i_required_mark"> *</span>
+=======
+            Date & Time *
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Event/Create.cshtml
         </div>
         <div class="col-xs-5 col-sm-5 col-md-5 col-lg-5">
             <div class="form-group">
@@ -111,7 +123,11 @@
         <div id="LocationInput">
             <div id="wrapper">
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Event/Create.cshtml
                     Location <span id="i_required_mark"> *</span>
+=======
+                    Location *
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Event/Create.cshtml
                 </div>
                 <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
                     @Html.TextBoxFor(model => model.Location[0].LocationName, new { @class = "LocationInput form-control", @onfocus = "searchLocation(this)", @id = "Location-0" })
@@ -129,7 +145,11 @@
     <div class="row">
         <!-- row Privacy -->
         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Event/Create.cshtml
             Privacy <span id="i_required_mark"> *</span>
+=======
+            Privacy *
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Event/Create.cshtml
         </div>
         <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
             @Html.DropDownList("Privacy", new SelectList(ListPrivacy, "Value", "Text"), new { @class = "form-control" })

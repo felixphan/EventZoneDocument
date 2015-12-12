@@ -1,0 +1,322 @@
+﻿@model EventZone.Models.User
+@using EventZone.Models
+@using EventZone.Helpers
+@{
+    ViewBag.Title = "Event";
+    User curUser = UserHelpers.GetCurrentUser(Session);
+    User viewingUser = Model as User;
+    if (curUser == null && viewingUser == null) {
+        Response.Redirect("~/Home");
+    }
+    bool isOwner= false;
+    if(curUser==viewingUser){
+        isOwner=true;
+    }
+}
+<link href="~/Content/User/myCSS_u_m_e.css" rel="stylesheet" />
+<div> 
+<div class=" d_left_side">
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#i_tab_event" data-toggle="tab">Events (@UserDatabaseHelper.Instance.CountOwnedEvent(viewingUser.UserID, isOwner))</a></li>
+        @if(isOwner)
+        {
+            <li><a href="#i_tab_report" data-toggle="tab">Pending reported event (@UserDatabaseHelper.Instance.GetAllEventHasReports(curUser.UserID).Count)</a></li>
+        }
+    </ul>
+    <div class="tab-content i_tab_event">
+        <!-- Khung chứa Events -->
+        <div class="tab-pane active" id="i_tab_event">
+            <button class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#i_md_filter" id="i_btn_e_filter">
+                Filter
+            </button>
+            <div class="d_events_cover scroll-content" id="event-cover">
+                @if (UserDatabaseHelper.Instance.CountOwnedEvent(viewingUser.UserID, isOwner) > 0)
+                {
+                    
+                    @Html.Action("PagingEventManage", "User", new { userID = viewingUser.UserID, page = 1,isOwner = isOwner})
+                }
+            </div>
+        </div>
+        @if (isOwner)
+        {
+            <div class="tab-pane" id="i_tab_report">
+                <button class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#i_md_filter" id="i_btn_e_filter">
+                    Filter
+                </button>
+                <div class="d_events_cover scroll-content" id="report-cover" style="">
+                    @if (UserDatabaseHelper.Instance.GetAllEventHasReports(curUser.UserID).Count > 0)
+                    {
+
+                        @Html.Action("PagingReportManage", "User", new { page = 1 })
+                    }
+                </div>
+            </div>
+        }
+        <!-- Khung chứa Reported Event -->  
+    </div>
+</div>
+<div class="d_right_side">
+    <ul class="nav nav-tabs" id="myTab">
+        <li class="active"><a href="#i_tab_stat" data-toggle="tab">Statistics</a></li>
+    </ul>
+    <div class="tab-content d_tab_stat">
+        <!-- Khung chứa User info -->
+        <div class="tab-pane active" id="i_tab_stat">
+            <div class="d_stat_cover">
+                <div class="d_each_stat">
+                    <div class="d_number">
+                        20
+                    </div>
+                    <div class="d_number_info">
+                        Tổng số Sự kiện
+                    </div>
+                </div>
+                <div class="d_each_stat">
+                    <div class="d_number">
+                        5
+                    </div>
+                    <div class="d_number_info">
+                        Sự kiện trực tiếp
+                    </div>
+                </div>
+                <div class="d_each_stat">
+                    <div class="d_number">
+                        4
+                    </div>
+                    <div class="d_number_info">
+                        hello
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Filter -->
+<div class="modal fade d_modal" id="i_md_filter" role="dialog">
+    <div class="modal-dialog" style="margin-top: 60px;">
+
+        <!-- Modal content-->
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <div class="panel-title">Filter</div>
+            </div>
+            <div style="padding-top:10px" class="panel-body">
+                <div class="cover_all_functions" style="text-align: -webkit-center;">
+                    <div class="table-responsive">
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th style="width: 100px">Criteria</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        Search
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" id="" placeholder="">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Category</td>
+                                    <td>
+                                        <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d_checkbox" style="width: 200px;">
+                                                            <label><input type="checkbox" value="" id="i_chbox_All" class="item_checked">  All</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_Music" class="item_checked">  Music</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_FaD" class="item_checked">  Food and Drink</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_Classes" class="item_checked">  Classes</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_Arts" class="item_checked"> Arts</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_Parties" class="item_checked">  Parties</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_SaW" class="item_checked">  Sports and wellness</label>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="d_checkbox">
+                                                            <label><input type="checkbox" value="" id="i_chbox_Networking" class="item_checked">  Networking</label>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Location</td>
+                                    <td>
+                                        <input type="text" class="form-control" id="" placeholder="Eg: Hà Nội">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Streaming</td>
+                                    <td>
+                                        <input type="checkbox">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Date</td>
+                                    <td>
+                                        <div>
+                                            <div class="radio-inline">
+                                                <label><input type="radio" name="optradio" checked="true">Today</label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label><input type="radio" name="optradio">3 next days</label>
+                                            </div>
+                                            <div class="radio-inline">
+                                                <label><input type="radio" name="optradio">7 next days</label>
+                                            </div>
+                                        </div>
+                                        <div class="input-daterange input-group" id="date">
+                                            <input type="date" class="input-sm form-control" name="start" />
+                                            <span class="input-group-addon">to</span>
+                                            <input type="date" class="input-sm form-control" name="end" />
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <form id="loginform" class="form-horizontal" role="form">
+                        <div class="form-group d_md_ad_search">
+                            <a href="#" class="btn btn-success">Look around!</a>
+                            <a href="#" class="btn btn-success">Search</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    function SendAppeal(eventID) {
+        var contentAppeal = $("#appeal-content_"+eventID).val();
+        if (eventID == null || eventID == "") {
+            $(".modal").modal("hide");
+            errorShow("error","Could not found event!")
+        } else if (contentAppeal == null || contentAppeal == ""||contentAppeal.length<20) {
+            $(".modal").modal("hide");
+            errorShow("Error","Reason appeal must content more than 20 characters.!")
+        }else {
+            $.ajax({
+                url: "/User/Appeal",
+                type: "post",
+                dataType: "json",
+                data: { eventID: eventID, content: contentAppeal },
+                success: function (data) {
+                    if (data.state == 0) {
+                        $(".modal").modal("hide");
+                        errorShow(data.error,data.message)
+                    }else {
+                        $(".modal").modal("hide");
+                        errorShow("Sending appeal success","Your appeal has been sent and current being reviewed! Thank for contacting with us")
+                       
+                            $("#pannel-button-appeal-"+data.eventID).html("<p>Your appeal has been sent and being reviewd. It take about 2-4 days. Thank you for contact with us</p>")
+                    }
+                },
+                error: function(){
+                    $(".modal").modal("hide");
+                    errorShow("Error Connect to server","Can not connect to server! Please try again later")
+                }
+            })
+        }
+    }
+</script>
+<script>
+    //scroll event-cover
+    $(document).ready(function () {
+        $('#event-cover').bind('scroll', EventScroll);
+    });
+    var pageEvent = 2;
+    function EventScroll(e) {
+
+        var elem = $(e.currentTarget);     
+        if ((elem.innerHeight() + elem.scrollTop()) >= elem[0].scrollHeight) {
+            console.log(pageEvent)
+            $.ajax({
+                url: "/User/PagingEventManage",
+                type: "post",
+                dataType: "html",
+                data: { userID: '@viewingUser.UserID', page: pageEvent, isOwner: '@isOwner' },
+                success: function (data) {
+                    $("#loading").remove();
+                    $("#event-cover").append(data);
+                    pageEvent = pageEvent + 1;
+                },
+                error: function () {
+                    $("#loading").remove();
+                   
+                }
+            })
+        }
+    }
+
+    //scroll report-cover
+    $(document).ready(function () {
+        $('#report-cover').bind('scroll', ReportScroll);
+    });
+    var pageReport = 2;
+    function ReportScroll(e) {
+
+        var elem = $(e.currentTarget);
+    
+        if ((elem.innerHeight() + elem.scrollTop()) >= elem[0].scrollHeight) {
+            console.log(pageReport)
+            $.ajax({
+                url: "/User/PagingReportManage",
+                type: "post",
+                dataType: "html",
+                data: { page: pageReport },
+                success: function (data) {
+                    $("#loading").remove();
+                    $("#report-cover").append(data);
+                    pageReport = pageReport + 1;
+                },
+                error: function () {
+                    
+                }
+            })
+        }
+    }
+</script>

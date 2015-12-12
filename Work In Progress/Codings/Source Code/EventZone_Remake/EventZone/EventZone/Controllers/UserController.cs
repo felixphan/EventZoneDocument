@@ -608,8 +608,12 @@ namespace EventZone.Controllers
             List<Event> listEvent = UserDatabaseHelper.Instance.GetUserEvent(userID, -1, isOwner);
             int startIndex = (page - 1) * 10;
             int endIndex = (listEvent.Count) < (page * 10) ? (listEvent.Count - 1) : (page * 10) - 1;
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/UserController.cs
             if (startIndex > endIndex)
             {
+=======
+            if (startIndex > endIndex) {
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/UserController.cs
                 return null;
             }
             if (listEvent == null)
@@ -626,20 +630,32 @@ namespace EventZone.Controllers
                 TempData["LoadMore"] = false;
             }
             List<Event> listView = new List<Event>();
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/UserController.cs
             for (int i = startIndex; i < endIndex + 1; i++)
+=======
+            for (int i = startIndex; i < endIndex; i++)
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/UserController.cs
             {
                 listView.Add(listEvent[i]);
             }
             return PartialView("_EventPage", listView);
         }
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/UserController.cs
         public ActionResult PagingReportManage(int page)
         {
+=======
+        public ActionResult PagingReportManage(int page) {
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/UserController.cs
             User user = UserHelpers.GetCurrentUser(Session);
             List<Event> listEventHasReports = UserDatabaseHelper.Instance.GetAllEventHasReports(user.UserID);
             int startIndex = (page - 1) * 10;
             int endIndex = (listEventHasReports.Count) < (page * 10) ? (listEventHasReports.Count - 1) : (page * 10) - 1;
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/UserController.cs
             if (startIndex > endIndex)
             {
+=======
+              if (startIndex > endIndex) {
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/UserController.cs
                 return null;
             }
             if (listEventHasReports == null)
@@ -655,6 +671,7 @@ namespace EventZone.Controllers
             {
                 TempData["LoadMore"] = false;
             }
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/UserController.cs
             List<Event> listView = new List<Event>();
             for (int i = startIndex; i < endIndex + 1; i++)
             {
@@ -713,6 +730,15 @@ namespace EventZone.Controllers
             });
         }
 
+=======
+            List<Event> listView= new List<Event>();
+            for (int i = startIndex; i < endIndex; i++) { 
+                listView.Add(listEventHasReports[i]);
+            }
+       
+            return PartialView("_ViewReport", listView);
+        }
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/UserController.cs
     }
 
 }

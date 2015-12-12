@@ -314,10 +314,21 @@ namespace EventZone.Controllers
                 TempData["LoadMore"] = false;
             }
             List<ViewThumbUserModel> listView = new List<ViewThumbUserModel>();
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/SearchController.cs
                 for (int i = startIndex; i < endIndex+1; i++) {
+=======
+                for (int i = startIndex; i < endIndex; i++) {
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/SearchController.cs
                     listView.Add(listUser[i]);
                 }
             return PartialView("_UserThumbnail", listView);
         }
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/SearchController.cs
+=======
+
+            
+
+        
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/SearchController.cs
     }
 }

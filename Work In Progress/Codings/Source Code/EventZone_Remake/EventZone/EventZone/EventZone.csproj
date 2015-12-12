@@ -351,7 +351,10 @@
     <Content Include="Content\Event\font-awesome.min.css" />
     <Content Include="Content\Event\lightview.css" />
     <Content Include="Content\myCSS_l_a.css" />
+<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/EventZone.csproj
     <Content Include="img\CurrentMarker.png" />
+=======
+>>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone.csproj
     <Content Include="img\verifiedEvent.png" />
     <Content Include="img\verify.jpg" />
     <Content Include="Scripts\Admin\AddNewUser.js" />
