@@ -19,28 +19,15 @@
 }
 
 <link href="~/Content/myCSS_u_m_p.css" rel="stylesheet" />
-<style>
-   
-    .thumb_anh {
-        vertical-align: middle;
-        height: 200px;
-        width: 200px;
-    }
 
-    .setCenter {
-        padding-top: 50px;
-    }
-</style>
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/User/Index.cshtml
 <div>
-=======
-<div class="setCenter">
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/User/Index.cshtml
-    <div class="d_body">
-        <div class="d_left_side">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#i_tab_info" data-toggle="tab">User Info</a></li>
-                <li><a href="#i_tab_follow" data-toggle="tab">Follow</a></li>
+        <!-- Khung chứa Thông tin chung -->
+        <div class="d_left_side d_style_of_tabs">
+            <ul class="nav nav-tabs" id="i_info_tab">
+                <li class="li-tab active"><a href="#i_tab_info" data-toggle="tab">User Info</a></li>
+                <li class="li-tab"><a href=" #i_tab_follow" data-toggle="tab">Follow</a></li>
+                <li class="d_trick"></li>
+                <li class="slider"></li>
             </ul>
             <div class="tab-content i_tab_info">
                 <!-- Khung chứa User info -->
@@ -56,10 +43,8 @@
                                     <!-- Modal content-->
                                     <div class="panel panel-info d_margin_top">
                                         <div class="panel-heading">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                             <div class="panel-title">Upload avatar</div>
-                                            <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                                                <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
-                                            </div>
                                         </div>
                                         <div class="panel-body">
                                             <div class="cover_all_functions">
@@ -137,19 +122,19 @@
                         <div id="view-basic-info">
                         <div class="row">
                             <!-- row FirstName -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 First Name:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @user.UserFirstName
                             </div>
                         </div>
                         <div class="row">
                             <!-- row LastName -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 Last Name:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @if (String.IsNullOrEmpty(user.UserLastName))
                                 {
                                     <span>Not given yet</span>
@@ -162,10 +147,10 @@
                         </div>
                         <div class="row">
                             <!-- row DOB -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 Birthday:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @if (user.UserDOB != null)
                                 {
                                     <span>@user.UserDOB.ToShortDateString()</span>
@@ -178,10 +163,10 @@
                         </div>
                         <div class="row">
                             <!-- row Address -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 Address:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @if (user.Place != null)
                                 {
                                     <span>@user.Place</span>
@@ -194,10 +179,10 @@
                         </div>
                         <div class="row">
 
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 Gender:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @if (user.Gender == EventZoneConstants.isFemale)
                                 {
                                     <span>Female</span>
@@ -210,10 +195,10 @@
                         </div>
                         <div class="row">
                             <!-- row Phone Number -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 Phone:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @if (user.Phone != null)
                                 {
                                     <span>@user.Phone</span>
@@ -226,10 +211,10 @@
                         </div>
                         <div class="row">
                             <!-- row ID card -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                                 ID card:
                             </div>
-                            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
+                            <div class="col-lg-8">
                                 @if (user.IDCard != null)
                                 {
                                     <span>@user.IDCard</span>
@@ -242,47 +227,21 @@
                         </div>
                         <div class="row">
                             <!-- row Update Button -->
-                            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 b d_label">
+                            <div class="col-lg-4 d_label">
                             </div>
                             @if (isOwner)
                             {
-                                <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 b">
-                                    <div class="col-xs-6 col-sm-6 col-md-6 col-lg-6 b">
-                                        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#change-password-modal" id="i-change-password-btn" onclick="clearError()">ChangePassword</button>
-                                    </div>
-                                    <div class="modal fade" id="change-password-modal" role="dialog">
-                                        <div class="modal-dialog">
-                                            <!-- Modal content-->
-                                            <div class="panel panel-info d_margin_top">
-                                                <div class="panel-heading">
-                                                    <div class="panel-title">Change Password</div>
-                                                    <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                                                        <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
-                                                    </div>
-                                                </div>
-                                                <div class="panel-body">
-                                                    <div class="cover_all_functions">
-                                                        <div class="tab-content">
-                                                            @Html.Action("ChangePassword", "User")
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div class="col-lg-8">
+                                    <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#change-password-modal" id="i-change-password-btn" onclick="clearError()">ChangePassword</button>
+                                    
                                     <button type="button" class="btn btn-primary btn-sm" id="btn-update">Update</button>
                                 </div>
                             }
-                            
-
                         </div>
                     </div>
                     </div>
                 </div>
-                <!-- Khung chứa Schedule -->
-                <div class="tab-pane" id="i_schedule_tab" style="text-align: center; margin-top: 200px">
-                    Function is being building...
-                </div>
+
                 <!-- Khung chứa Follow -->
                 <div class="tab-pane" id="i_tab_follow">
 
@@ -293,40 +252,44 @@
                     else
                     {
                         @Html.Action("ManageFollow", "User")
-
                     }
                 </div>
             </div>
         </div>
-        <div class="d_right_side_top">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#i_events" data-toggle="tab">Latest Events</a></li>
+
+        <!-- Khung chứa Các Event khác -->
+        <div class="d_right_side_top d_style_of_tabs">
+            <ul class="nav nav-tabs" id="i_event_tab">
+                <li class="li-tab active" ><a href="#i_events" data-toggle="tab">Latest Events</a></li>
+                <li class="d_trick"></li>
+                <li class="slider_2"></li>
             </ul>
             <div class="tab-content d_info_tab">
-                <!-- Khung chứa User info -->
                 <div class="tab-pane active" id="i_events">
                     <div class="d_events_cover">
-                        @if (latestEvent != null&&latestEvent.Count!=0)
+                        @if (latestEvent != null && latestEvent.Count != 0)
                         {
-                            latestEvent=latestEvent.OrderByDescending(m=>m.EventRegisterDate).ToList();
-                            for(int i=0;i<latestEvent.Count;i++){
-                            Event currentEvent =  latestEvent[i];
-                            if (i == 3) {
-                                break;
-                            }
-                            <div class="d_each_event">
-                                <div class="d_thumb">
-                                    <img src="@EventDatabaseHelper.Instance.GetImageByID(currentEvent.Avatar).ImageLink">
-                                </div>
-                                <div class="d_info">
-                                    <div class="d_title">
-                                        @Html.ActionLink(currentEvent.EventName, "Details", "Event", new { id = currentEvent.EventID }, new { target="_blank"})
+                            latestEvent = latestEvent.OrderByDescending(m => m.EventRegisterDate).ToList();
+                            for (int i = 0; i < latestEvent.Count; i++)
+                            {
+                                Event currentEvent = latestEvent[i];
+                                if (i == 3)
+                                {
+                                    break;
+                                }
+                                <div class="d_each_event">
+                                    <div class="d_thumb">
+                                        <img src="@EventDatabaseHelper.Instance.GetImageByID(currentEvent.Avatar).ImageLink">
                                     </div>
-                                    <div class="d_time_left">
-                                        Start in @currentEvent.EventStartDate.ToString()
+                                    <div class="d_info">
+                                        <div class="d_title">
+                                            @Html.ActionLink(currentEvent.EventName, "Details", "Event", new { id = currentEvent.EventID }, new { target = "_blank" })
+                                        </div>
+                                        <div class="d_time_left">
+                                            Start in @currentEvent.EventStartDate.ToString()
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
                             }
                             <div class="d_txt_show_all" style="text-align: center;">
                                 <a href="@Url.Action("Event", "User", new {userID = user.UserID })">View All</a>
@@ -338,33 +301,57 @@
                             {
                                 if (currentUser != null && user == currentUser)
                                 {
-                                <div>You have no event.</div> <a href="@Url.Action("Create","Event")">Create now</a>
+                                    <div>You have no event.</div> <a href="@Url.Action("Create","Event")">Create now</a>
                                 }
                                 else
                                 {
                                     <div>This user current has no event!</div>
                                 }
                             }
-                        }                
+                        }
                     </div>
                 </div>
             </div>
         </div>
-        <div class="d_right_side_bottom">
-            <ul class="nav nav-tabs" id="myTab">
-                <li class="active"><a href="#i_noti" data-toggle="tab">Notification</a></li>
+
+        <!-- Khung chứa Notification -->
+        <div class="d_right_side_bottom d_style_of_tabs">
+            <ul class="nav nav-tabs" id="i_noti_tab">
+                <li class="li-tab active"><a href="#i_noti" data-toggle="tab">About me</a></li>
+                <li class="d_trick"></li>
+                <li class="slider_3"></li>
             </ul>
             <div class="tab-content d_tab_noti">
-                <!-- Khung chứa User info -->
                 <div class="d_noti_cover">
                     <div class="d_each_noti">
-                        <b>abc</b> blah blah
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+
+<!-- ALL MODAL here -->
+<!-- MODAL Chang Password -->
+<div class="modal fade" id="change-password-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="panel panel-info d_margin_top">
+            <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="panel-title">Change Password</div>
+            </div>
+            <div class="panel-body">
+                <div class="cover_all_functions">
+                    <div class="tab-content">
+                        @Html.Action("ChangePassword", "User")
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
 <script>
     function Follow(userID) {
         if ('@currentUser' == null || '@currentUser' == "") {
@@ -476,4 +463,36 @@
         $("#update-basic-info").show();
         $("#view-basic-info").hide();
     })
+</script>
+
+<script>
+    $("#i_info_tab li").click(function (e) {
+        if ($(this).hasClass('slider')) {
+            return;
+        }
+        var whatTab = $(this).index();
+        var howFar = 130 * whatTab;
+        $(".slider").css({
+            left: howFar + "px"
+        });
+        $(".ripple").remove();
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top,
+            buttonWidth = $(this).width(),
+            buttonHeight = $(this).height();
+        $(this).prepend("<span class='ripple'></span>");
+        if (buttonWidth >= buttonHeight) {
+            buttonHeight = buttonWidth;
+        } else {
+            buttonWidth = buttonHeight;
+        }
+        var x = e.pageX - posX - buttonWidth / 2;
+        var y = e.pageY - posY - buttonHeight / 2;
+        $(".ripple").css({
+            width: buttonWidth,
+            height: buttonHeight,
+            top: y + 'px',
+            left: x + 'px'
+        }).addClass("rippleEffect");
+    });
 </script>

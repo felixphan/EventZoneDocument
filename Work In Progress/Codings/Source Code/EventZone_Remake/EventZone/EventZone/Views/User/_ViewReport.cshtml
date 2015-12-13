@@ -13,7 +13,7 @@
                 <img src="@EventDatabaseHelper.Instance.GetImageByID(item.Avatar).ImageLink">
             </div>
             <div class="d_info">
-                <div class="d_title">
+                <div class="d_title"  style="height:25px">
                     @Html.ActionLink(item.EventName, "Details", "Event", new { id = item.EventID }, new { target = "_blank" })
                 </div>
                 <div class="d_time_left">
@@ -80,11 +80,11 @@
                                         <div class="modal-body">
                                             <input hidden id="eventID" />
                                             Content:
-                                            <textarea id="appeal-content_@item.EventID" maxlength="100"></textarea>
+                                            <textarea id="appeal-content_@item.EventID" maxlength="100" style="margin: 0px;width: 568px;height: 62px;"></textarea>
                                             <div><i>Reason appeal limited by 100 characters</i></div>
                                         </div>
                                         <div class="modal-footer">
-                                            <button onclick="SendAppeal(@item.EventID)">Send</button>
+                                            <button class="btn btn-success"onclick="SendAppeal(@item.EventID)">Send</button>
                                         </div>
                                     </div>
                                 </div>

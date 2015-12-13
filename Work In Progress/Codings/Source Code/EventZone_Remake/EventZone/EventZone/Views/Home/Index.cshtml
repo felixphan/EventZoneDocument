@@ -14,12 +14,10 @@
         }
     })
 </script>
-<script>
-    $('#myFlipper').flipper();
-</script>
+
  
 
-<link href="~/Content/Home/Index.css" rel="stylesheet" />
+<!--<link href="~/Content/Home/Index.css" rel="stylesheet" />-->
 <link href="~/Content/Home/bootstrap-social.css" rel="stylesheet" />
 <link href="~/Content/Home/font-awesome.min.css" rel="stylesheet"/>
 <link href="~/Content/Home/jquery.bxslider.css" rel="stylesheet" />
@@ -32,13 +30,14 @@
 </script>
 <div class="full-screen-bg">
     <video class="fullscreen-bg__video" autoplay loop muted>
-        <source src="~/img/hanoi.webm" type="video/webm" />
+        <source src="~/img/saigon.webm" type="video/webm" />
     </video>
 </div>
 <div class="d_middle_category">
     <div class="d_md_body">
         <div class="d_mc_text_1">
-            Event Zone!
+            <span class="d_txt_1">Event</span>	
+            <span class="d_txt_2">Zone!</span>
         </div>
         <div class="d_mc_text_2">
             Only one zone for all Activities. Promote, manage, and host successful events.
@@ -63,11 +62,7 @@
     <div class="d_title">
         New Event
     </div>
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Home/Index.cshtml
     <div class="d_e_container" id="newEvent">
-=======
-    <div class="d_e_container">
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Home/Index.cshtml
        @Html.Action("NewEvent", "Home")
     </div>
 </div>
@@ -137,9 +132,11 @@
         </div>
     </div>
 </div>
-<script src="~/Scripts/Home/Index.js"></script>
+<script src="~/Scripts/Home/myJS_index.js"></script>
 <script src="~/Scripts/shareFacebook.js"></script>
 <script src="~/Scripts/Home/jquery.bxslider.js"></script>
+<script src="~/Scripts/jquery.transit.min.js"></script>
+
 <script>
     //$(document).ready(function(){
     //    $.ajax({

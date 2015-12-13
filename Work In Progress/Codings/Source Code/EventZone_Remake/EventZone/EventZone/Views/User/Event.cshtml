@@ -14,7 +14,7 @@
     }
 }
 <link href="~/Content/User/myCSS_u_m_e.css" rel="stylesheet" />
-<div> 
+
 <div class=" d_left_side">
     <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#i_tab_event" data-toggle="tab">Events (@UserDatabaseHelper.Instance.CountOwnedEvent(viewingUser.UserID, isOwner))</a></li>
@@ -22,6 +22,7 @@
         {
             <li><a href="#i_tab_report" data-toggle="tab">Pending reported event (@UserDatabaseHelper.Instance.GetAllEventHasReports(curUser.UserID).Count)</a></li>
         }
+        <li class="slider"></li>
     </ul>
     <div class="tab-content i_tab_event">
         <!-- Khung chứa Events -->
@@ -54,6 +55,7 @@
         <!-- Khung chứa Reported Event -->  
     </div>
 </div>
+
 <div class="d_right_side">
     <ul class="nav nav-tabs" id="myTab">
         <li class="active"><a href="#i_tab_stat" data-toggle="tab">Statistics</a></li>
@@ -64,26 +66,26 @@
             <div class="d_stat_cover">
                 <div class="d_each_stat">
                     <div class="d_number">
-                        20
+                        @UserDatabaseHelper.Instance.CountOwnedEvent(viewingUser.UserID, isOwner)
                     </div>
                     <div class="d_number_info">
-                        Tổng số Sự kiện
+                        Events
                     </div>
                 </div>
                 <div class="d_each_stat">
                     <div class="d_number">
-                        5
+                        @UserDatabaseHelper.Instance.CountTotalView(viewingUser.UserID, isOwner)
                     </div>
                     <div class="d_number_info">
-                        Sự kiện trực tiếp
+                        Total views
                     </div>
                 </div>
                 <div class="d_each_stat">
                     <div class="d_number">
-                        4
+                        @UserDatabaseHelper.Instance.CountTotalLike(viewingUser.UserID, isOwner)
                     </div>
                     <div class="d_number_info">
-                        hello
+                        Total likes
                     </div>
                 </div>
             </div>
@@ -196,7 +198,7 @@
                                     <td>
                                         <div>
                                             <div class="radio-inline">
-                                                <label><input type="radio" name="optradio" checked="true">Today</label>
+                                                <label><input type="radio" name="optradio" checked">Today</label>
                                             </div>
                                             <div class="radio-inline">
                                                 <label><input type="radio" name="optradio">3 next days</label>
@@ -227,7 +229,51 @@
         </div>
     </div>
 </div>
-</div>
+<script>
+    function LockEvent(eventID) {
+        $.ajax({
+            url: "/Admin/LockEvent",
+            type: "POST",
+            dataType: "json",
+            data: { eventID: eventID, reason: "I dont want your event in my website xD" },
+            success: function (data) {
+                if (data.state == 0) {
+                    errorShow(data.error, data.message)
+                } else {
+                    $("#lockUnlockDiv-" + eventID).empty();
+                    $("#lockUnlockDiv-" + eventID).prepend('<button class="btn btn-danger btn-xs" onclick="UnlockEvent('+eventID+')" id="lockUnlock-'+eventID+'">Unlock</button>')
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    }
+    //unlockEvent
+    function UnlockEvent(eventID) {
+        $.ajax({
+            url: "/Admin/UnlockEvent",
+            type: "POST",
+            dataType: "json",
+            data: { eventID: eventID },
+            success: function (data) {
+                if (data.state == 0) {
+                    errorShow(data.error, data.message)
+                } else {
+                    $("#lockUnlockDiv-" + eventID).empty();
+                    $("#lockUnlockDiv-" + eventID).prepend('<button class="btn btn-success btn-xs" onclick="LockEvent(' + eventID + ')" id="lockUnlock-' + eventID + '">Lock</button>')
+                }
+            },
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
+                console.log(textStatus);
+                console.log(errorThrown);
+            }
+        })
+    }
+</script>
 <script>
     function SendAppeal(eventID) {
         var contentAppeal = $("#appeal-content_"+eventID).val();
@@ -251,7 +297,7 @@
                         $(".modal").modal("hide");
                         errorShow("Sending appeal success","Your appeal has been sent and current being reviewed! Thank for contacting with us")
                        
-                            $("#pannel-button-appeal-"+data.eventID).html("<p>Your appeal has been sent and being reviewd. It take about 2-4 days. Thank you for contact with us</p>")
+                        $("#pannel-button-appeal-"+data.eventID).html("<p>Your appeal has been sent and being reviewd. It take about 2-4 days. Thank you for contact with us</p>")
                     }
                 },
                 error: function(){
@@ -262,8 +308,9 @@
         }
     }
 </script>
+
+<!-- scroll event-cover -->
 <script>
-    //scroll event-cover
     $(document).ready(function () {
         $('#event-cover').bind('scroll', EventScroll);
     });
@@ -279,12 +326,12 @@
                 dataType: "html",
                 data: { userID: '@viewingUser.UserID', page: pageEvent, isOwner: '@isOwner' },
                 success: function (data) {
-                    $("#loading").remove();
+                    $(".loading").remove();
                     $("#event-cover").append(data);
                     pageEvent = pageEvent + 1;
                 },
                 error: function () {
-                    $("#loading").remove();
+                    $(".loading").remove();
                    
                 }
             })
@@ -308,7 +355,7 @@
                 dataType: "html",
                 data: { page: pageReport },
                 success: function (data) {
-                    $("#loading").remove();
+                    $(".loading").remove();
                     $("#report-cover").append(data);
                     pageReport = pageReport + 1;
                 },
@@ -318,4 +365,37 @@
             })
         }
     }
+</script>
+
+<!-- Hiệu ứng chạy border dưới Tabs -->
+<script>
+    $("#myTab li").click(function (e) {
+        if ($(this).hasClass('slider')) {
+            return;
+        }
+        var whatTab = $(this).index();
+        var howFar = 160 * whatTab;
+        $(".slider").css({
+            left: howFar + "px"
+        });
+        $(".ripple").remove();
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top,
+            buttonWidth = $(this).width(),
+            buttonHeight = $(this).height();
+        $(this).prepend("<span class='ripple'></span>");
+        if (buttonWidth >= buttonHeight) {
+            buttonHeight = buttonWidth;
+        } else {
+            buttonWidth = buttonHeight;
+        }
+        var x = e.pageX - posX - buttonWidth / 2;
+        var y = e.pageY - posY - buttonHeight / 2;
+        $(".ripple").css({
+            width: buttonWidth,
+            height: buttonHeight,
+            top: y + 'px',
+            left: x + 'px'
+        }).addClass("rippleEffect");
+    });
 </script>

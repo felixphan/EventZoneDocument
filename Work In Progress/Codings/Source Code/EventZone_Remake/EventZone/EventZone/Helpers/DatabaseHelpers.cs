@@ -396,19 +396,12 @@ namespace EventZone.Helpers
             try
             {
                 myEvent = (from a in db.Channels join b in db.Events on a.ChannelID equals b.ChannelID where a.UserID == userID select b).ToList();
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
                 if (!isOwner)
                 {
                     myEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.Active));
                 }
                 if (numberEvent != -1)
                 {
-=======
-                if (!isOwner) {
-                    myEvent.RemoveAll(o => (o.Privacy != EventZoneConstants.publicEvent) || (o.Status != EventZoneConstants.Active));
-                }
-                 if (numberEvent != -1) {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                     myEvent = myEvent.Take(numberEvent).ToList();
                 }
             }
@@ -886,6 +879,52 @@ namespace EventZone.Helpers
             catch { }
             return false;
         }
+        /// <summary>
+        /// count total view of channel
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="isOwner"></param>
+        /// <returns></returns>
+        public long CountTotalView(long userID, bool isOwner)
+        {
+            try
+            {
+                long view = 0;
+                var listEvent = GetUserEvent(userID, -1, isOwner);
+                foreach (var item in listEvent)
+                {
+                    view = view + item.View;
+                }
+                return view;
+            }
+            catch { }
+            return 0;
+        }
+
+        /// <summary>
+        /// Count total Like of a channel
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <param name="isOwner"></param>
+        /// <returns></returns>
+        public long CountTotalLike(long userID, bool isOwner)
+        {
+            try
+            {
+                long total = 0;
+                var listEvent = GetUserEvent(userID, -1, isOwner);
+                foreach (var item in listEvent)
+                {
+                    int like = (from a in db.LikeDislikes where a.EventID == item.EventID && a.Type == EventZoneConstants.Like select a).Count();
+                    total = total + like;
+                }
+                return total;
+            }
+            catch
+            {
+            }
+            return 0;
+        }
     }
 
     /// <summary>
@@ -957,14 +996,16 @@ namespace EventZone.Helpers
                 editedEvent.EditTime = DateTime.Now;
                 List<Location> currentLocations = EventDatabaseHelper.Instance.GetEventLocation(editedEvent.EventID);
                 List<Location> newLocations = new List<Location>();
+                List<Location> locationList = model.Location;
+                locationList.RemoveAll(o => o.LocationName.Equals("Remove Location"));
                 for (int i = 0; i < currentLocations.Count; i++)
                 {
                     bool checkExisted = false;
-                    for (int j = 0; j < model.Location.Count; j++)
+                    for (int j = 0; j < locationList.Count; j++)
                     {
-                        if (currentLocations[i].LocationName == model.Location[j].LocationName
-                            && Equals(currentLocations[i].Latitude, model.Location[j].Latitude)
-                            && Equals(currentLocations[i].Longitude, model.Location[j].Longitude))
+                        if (currentLocations[i].LocationName == locationList[j].LocationName
+                            && Equals(currentLocations[i].Latitude, locationList[j].Latitude)
+                            && Equals(currentLocations[i].Longitude, locationList[j].Longitude))
                         {
                             checkExisted = true;
                         }
@@ -974,14 +1015,14 @@ namespace EventZone.Helpers
                         LocationHelpers.Instance.RemoveLocationByEventLocationID(editedEvent.EventID, currentLocations[i].LocationID);
                     }
                 }
-                for (int j = 0; j < model.Location.Count; j++)
+                for (int j = 0; j < locationList.Count; j++)
                 {
                     bool checkExisted = false;
                     for (int i = 0; i < currentLocations.Count; i++)
                     {
-                        if (currentLocations[i].LocationName == model.Location[j].LocationName
-                           && Equals(currentLocations[i].Latitude, model.Location[j].Latitude)
-                           && Equals(currentLocations[i].Longitude, model.Location[j].Longitude))
+                        if (currentLocations[i].LocationName == locationList[j].LocationName
+                           && Equals(currentLocations[i].Latitude, locationList[j].Latitude)
+                           && Equals(currentLocations[i].Longitude, locationList[j].Longitude))
                         {
                             checkExisted = true;
                         }
@@ -1030,15 +1071,9 @@ namespace EventZone.Helpers
         {
             try
             {
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
                 List<Image> listImage = (from a in db.EventImages join b in db.Images on a.ImageID equals b.ImageID where a.EventID == id select b).ToList();
                 return listImage;
 
-=======
-                List<Image> listImage = (from a in db.EventImages join b in db.Images on a.ImageID equals b.ImageID where a.EventID==id select b).ToList();   
-                return listImage;
-                
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
             }
             catch
             {
@@ -1059,36 +1094,16 @@ namespace EventZone.Helpers
             {
                 return null;
             }
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
         }
 
         public List<Image> GetPendingImageInEvent(long? id)
         {
             try
             {
-=======
-
-        }
-
-        public List<Image> GetEventApprovedImage(long? id)
-        {
-            try
-            {
-                List<Image> listImage = (from a in db.EventImages join b in db.Images on a.ImageID equals b.ImageID where a.EventID == id  && a.Approve==true select b).ToList();
-                return listImage;
-
-            }
-            catch
-            {
-                return null;
-            }
-        }
-
-        public List<Image> GetPendingImageInEvent(long? id) {
-            try
-            {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                 List<Image> listImage = (from a in db.EventImages join b in db.Images on a.ImageID equals b.ImageID where a.EventID == id && a.Approve == false select b).ToList();
+                foreach (var item in listImage) {
+                    db.Entry(item).Reload();
+                }
                 return listImage;
 
             }
@@ -1236,26 +1251,17 @@ namespace EventZone.Helpers
         public long CalculateEventScore(long eventId)
         {
             long score = 0;
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
             try
             {
+                ///          0.001746201/ 0.29578499
+
                 Event evt = GetEventByID(eventId);
-                double point = (evt.View * 0.001746201
-            + (CountDisLike(eventId) + CountLike(eventId)) * 0.29578499
-            + CountUniqueUserComment(eventId)) * 0.7 + CountFollowerOfEvent(eventId) * 0.3;
-                score = long.Parse((point * 1000).ToString());
+                score = (evt.View * 175
+                + (CountDisLike(eventId) + CountLike(eventId)) * 29578
+                + CountUniqueUserComment(eventId)) * 7 + CountFollowerOfEvent(eventId) * 3;
                 if (evt.IsVerified)
                 {
-=======
-            try {
-                Event evt= GetEventByID(eventId);
-                double point= (evt.View * 0.001746201
-            + (CountDisLike(eventId) + CountLike(eventId)) * 0.29578499
-            + CountUniqueUserComment(eventId) ) *0.7+  CountFollowerOfEvent(eventId) * 0.3;
-                score = long.Parse((point * 1000).ToString());
-                if (evt.IsVerified) {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
-                    score = score + 100000;
+                    score = score + 1000000;
                 }
             }
             catch
@@ -1549,21 +1555,13 @@ namespace EventZone.Helpers
             {
                 db.Images.Add(image);
                 db.SaveChanges();
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
                 EventImage evtImage = new EventImage { EventID = evtID, ImageID = image.ImageID };
-=======
-                EventImage evtImage = new EventImage { EventID=evtID,ImageID=image.ImageID};
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                 if (!IsEventOwnedByUser(evtID, image.UserID))
                 {
                     evtImage.Approve = false;
                 }
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
                 else
                 {
-=======
-                else {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                     evtImage.Approve = true;
                 }
                 db.EventImages.Add(evtImage);
@@ -1641,6 +1639,7 @@ namespace EventZone.Helpers
             {
             }
             result = result.OrderByDescending(o => o.EventRegisterDate).ToList();
+            result = result.Distinct().ToList();
             if (result.Count < 5)
             {
                 result.AddRange(newEvent.Take(5).ToList());
@@ -1653,11 +1652,7 @@ namespace EventZone.Helpers
         /// </summary>
         /// <param name="listImage"></param>
         /// <returns></returns>
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
 
-=======
-       
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
         public List<ThumbEventHomePage> GetThumbEventHomepage(List<Event> ListEvent)
         {
             List<ThumbEventHomePage> listThumb = new List<ThumbEventHomePage>();
@@ -1673,12 +1668,8 @@ namespace EventZone.Helpers
                 thumbevt.avatar = GetImageByID(item.Avatar).ImageLink;
                 thumbevt.StartDate = item.EventStartDate;
                 thumbevt.IsVeried = item.IsVerified;
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
                 if (item.EventEndDate != null)
                 {
-=======
-                if (item.EventEndDate != null) {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                     thumbevt.EndDate = item.EventEndDate;
                 }
                 thumbevt.listLocation = EventDatabaseHelper.Instance.GetEventLocation(item.EventID);
@@ -1714,7 +1705,6 @@ namespace EventZone.Helpers
         public List<Event> GetHotEvent()
         {
             List<Event> result = new List<Event>();
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
             try
             {
 
@@ -1722,13 +1712,6 @@ namespace EventZone.Helpers
             }
             catch
             {
-=======
-            try {
-      
-                result=(from a in db.Events join b in db.EventRanks on a.EventID equals b.EventId orderby b.Score descending select a).Take(50).ToList();
-            }
-            catch {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                 result = (from a in db.Events select a).Take(50).ToList();
             }
             return result;
@@ -1960,14 +1943,9 @@ namespace EventZone.Helpers
         {
             var newEvent = new Event();
             newEvent.EventName = model.Title;
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
             User user = UserDatabaseHelper.Instance.GetUserByID(userid);
             if (user != null && user.UserRoles == EventZoneConstants.Mod || user.UserRoles == EventZoneConstants.Admin)
             {
-=======
-            User user= UserDatabaseHelper.Instance.GetUserByID(userid);
-            if (user != null && user.UserRoles == EventZoneConstants.Mod || user.UserRoles==EventZoneConstants.Admin) {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                 newEvent.IsVerified = true;
             }
             newEvent.ChannelID = UserDatabaseHelper.Instance.GetUserChannel(userid).ChannelID;
@@ -1985,11 +1963,7 @@ namespace EventZone.Helpers
             newEvent.EditTime = DateTime.Now;
             newEvent.EditContent = null;
 
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
             newEvent.Status = EventZoneConstants.Active;
-=======
-            newEvent.Status = EventZoneConstants.Active; 
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
             // insert Event to Database
             try
             {
@@ -2077,60 +2051,6 @@ namespace EventZone.Helpers
             }
             catch { }
             return false;
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
-=======
-            
-        }
-        /// <summary>
-        /// get Live streaming from list
-        /// </summary>
-        /// <param name="listEvent"></param>
-        /// <returns></returns>
-        internal List<Event> GetLiveStreamingFromList(List<Event> listEvent)
-        {
-            if (listEvent == null||listEvent.Count==0)
-            {
-                return null;
-            }
-            List<Event> result = new List<Event>();
-            try
-            {
-                for (int i = 0; i < listEvent.Count - 1; i++) { 
-                    if(isLive(listEvent[i].EventID)){
-                        result.Add(listEvent[i]);
-                    }
-                }
-            }
-            catch { }
-            return result;
-        }
-        /// <summary>
-        /// change event avatar
-        /// </summary>
-        /// <param name="eventID"></param>
-        /// <param name="p"></param>
-        /// <returns></returns>
-        public bool ChangeEventAvatar( long eventID, Image image)
-        {
-            try {
-                Event evt = db.Events.Find(eventID);
-                evt.Avatar = image.ImageID;
-                db.Entry(evt).State = EntityState.Modified;
-                db.SaveChanges();
-                return true;
-            }
-            catch { }
-            return false;
-        }
-    }
-
-    /// <summary>
-    ///     All function related to Location
-    /// </summary>
-    public class LocationHelpers : SingletonBase<LocationHelpers>
-    {
-        private readonly EventZoneEntities db;
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
 
         }
         /// <summary>
@@ -2229,6 +2149,22 @@ namespace EventZone.Helpers
                 }
             }
             return false;
+        }
+        /// <summary>
+        /// User approves request upload image
+        /// </summary>
+        /// <param name="item"></param>
+        /// <param name="eventID"></param>
+        public void ApproveImage(int item, long eventID)
+        {
+            try
+            {
+                var result = (from a in db.EventImages where a.ImageID == item && a.EventID == eventID select a).ToList()[0];
+                result.Approve = true;
+                db.Entry(result).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            catch { }
         }
 
     }
@@ -2430,7 +2366,6 @@ namespace EventZone.Helpers
         internal List<Location> RemovePlaceByDistance(List<Location> listPlace, double distance)
         {
 
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
             for (int i = listPlace.Count - 1; i > 1; i--)
             {
 
@@ -2442,16 +2377,6 @@ namespace EventZone.Helpers
                     }
                     if (CalculateDistance(listPlace[i], listPlace[j]) < distance)
                     {
-=======
-            for (int i = listPlace.Count-1; i > 1; i--) {
-             
-                for (int j = i-1; j >=0 ; j--)
-                {
-                    if (j == -1) {
-                        continue;
-                    }
-                    if (CalculateDistance(listPlace[i], listPlace[j]) < distance) {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                         listPlace.Remove(listPlace[j]);
                         i--;
                     }
@@ -2660,15 +2585,10 @@ namespace EventZone.Helpers
         /// <param name="adminID"></param>
         /// <param name="EventID"></param>
         /// <returns></returns>
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Helpers/DatabaseHelpers.cs
         public bool LockEvent(long adminID, long eventID, string reason)
         {
             try
             {
-=======
-        public bool LockEvent(long adminID, long eventID, string reason) {
-            try {
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Helpers/DatabaseHelpers.cs
                 User user = EventDatabaseHelper.Instance.GetAuthorEvent(eventID);
                 TrackingAction newAction = new TrackingAction
                 {
@@ -2725,7 +2645,7 @@ namespace EventZone.Helpers
                 db.Entry(evt).State = EntityState.Modified;
                 db.SaveChanges();
                 db.Entry(evt).Reload();
-                
+
                 db.TrackingActions.Add(newAction);
                 db.SaveChanges();
                 return true;

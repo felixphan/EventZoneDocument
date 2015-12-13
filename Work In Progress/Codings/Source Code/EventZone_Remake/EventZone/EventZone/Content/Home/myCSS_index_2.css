@@ -12,7 +12,7 @@
     margin-right: 5px;
     z-index: 1;
 }
-		.bx-controls-direction .bx-prev{				
+.bx-controls-direction .bx-prev{				
     margin-right: 10px;				
 }
 
@@ -75,46 +75,6 @@ li{
 	border-radius: 3px;						
 	border: 1px white solid;						
 	margin: 7px 0px 7px 20px;						
-}						
-#i_noti{						
-    width: 20px;						
-    height: 20px;						
-    border: 1px red solid;						
-    background-color: red;						
-    position: relative;						
-    top: -47px;						
-    left: 40px;						
-    border-radius: 3px;						
-    text-align: center;						
-}						
-#i_noti p{						
-    color: white;						
-	font-size: 14px;						
-	margin-top: -1px;						
-	font-weight: bold;						
-}						
-.d_user_dropdown{						
-	width: auto; 				
-    top: auto; 				
-    left: 0px; 				
-    margin-left: -70px; 				
-    margin-top: 0px; 				
-    min-width: 10em; 				
-    max-width: 20em;						
-	padding-right: 10px;						
-	padding-left: 10px;						
-}						
-.d_recent_dropdown{						
-	width: auto; 				
-    display: none; 				
-    top: auto; 				
-    left: 0px; 				
-    margin-left: -171px; 				
-    margin-top: -32px; 				
-    min-width: 10em; 				
-    max-width: 20em;						
-	padding-right: 10px;						
-	padding-left: 10px;						
 }
 
 /*********************************************** Sửa Bootstrap */
@@ -148,7 +108,7 @@ li{
 
 /*********************************************** MIDDLE Category ***/
 .d_md_body{
-	margin-top: 80px;
+	margin-top: 680px;
 	font-family: segoe ui;
 	color: #fff;
 	background-color: transparent;
@@ -162,7 +122,7 @@ li{
 	font-size: 60px;
     font-weight: 800;
 }
-	.d_mc_text_1 span{				
+	.d_mc_text_1 .d_txt_1{				
     font-size: 90px;				
     font-weight: 800;				
     color: rgba(202,77,32,1);				
@@ -280,19 +240,15 @@ li{
 }
 
 /*********************************************** d_big_row > d_row_1 ***/
-	        .bxslider .d_each_event{				
-    margin: 0;				
-}				
-.d_each_event{				
-	height: 100px;				
-	margin-bottom: 10px;				
-}				
-.d_each_event img{				
+.bxslider .d_each_event{				
+    margin: 0;
+    height: 100px;
+}			
+.d_each_event img{
     width: 120px;				
     height: 100px;				
     float: left;				
-}				
-
+}
 .d_ee_info{				
     width: 55%;				
     float: left;				
@@ -338,9 +294,7 @@ li{
 }		
 .d_each_event #flipper-inside{		
     background-color: #fff;		
-}		
-.d_each_event .front{		
-}		
+}
 .d_each_event .front .glyphicon{		
     margin: 0 10px 0 5px;		
     float: left;		
@@ -367,7 +321,14 @@ li{
     top: -1px;		
     left: -2px;		
     height: 0;		
-}		
+    color: #E65926;
+}
+.d_each_event .front #i_verify_icon{
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    margin: 5px;
+}
 .d_each_event .back{		
     background-color: rgb(230, 89, 38);		
     color: #fff;		
@@ -395,7 +356,9 @@ li{
     width: 75%;		
     float: left;		
 }		
-
+.d_each_event .back .btn{		
+    border: 0;
+}
 /*********************************************** Footer ***/
 .d_footer{
      width: 125%;
@@ -454,21 +417,11 @@ li{
 
 /*********************************************** Decorate ***/
 /*********************************************** Thêm ***/
-.d_live_text,		
-.d_live_mark{		
-    position: absolute;		
-    font-size: 40px;		
-}		
+
 .d_live_mark .glyphicon{		
 	color: #CE4919;		
 }		
-.d_live_text{		
-    top: 10px;		
-    left: 12px;		
-	color: white;		
-	font-size: 10px;		
-	font-style: italic;		
-}		
+
 .front .d_ee_front_info{		
     width: 59%;		
     float: left;		

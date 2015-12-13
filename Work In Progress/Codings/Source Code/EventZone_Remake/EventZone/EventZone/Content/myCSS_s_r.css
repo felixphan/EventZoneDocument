@@ -1,0 +1,49 @@
+/*************************************************** Thêm ***/
+
+/*************************************************** sửa CSS BOOTSTRAP ***/
+
+/*************************************************** Bao hết phần chính ***/
+
+/*************************************************** Div chứa 3 tabs ***/
+.d_3_tabs{
+    position: fixed;
+    width: 230px;
+    height: 200px;
+    right: -180px;
+}
+.d_3_tabs tr td:first-child{
+    width: 25px;
+    background-color: #E65926;
+    color: #fff;
+    font-size: x-large;
+    text-align: center;
+}
+.d_3_tabs #i_open .glyphicon{
+    color: #fff;
+}
+.d_3_tabs .d_item{
+    background-color: #fff;
+    font-size: medium;
+    padding-left: 15px;
+    width: 90px;
+}
+.d_3_tabs .d_item:hover{
+    background-color: #ddd;
+}
+
+/*************************************************** Khung kết quả  ***/
+
+/*************************************************** Kết quả Event **/
+.d_each_event {
+    width: 31%;
+    height: 200px;
+    
+    float: left;
+    margin: 0 1.15% 20px;
+}
+
+/*************************************************** Kết quả Channel **/
+
+/*************************************************** Kết quả User **/
+
+/*************************************************** CSS Decorate ***/

@@ -341,7 +341,9 @@
     <Content Include="Content\Admin\font-awesome.min.css" />
     <Content Include="Content\Admin\myCSS_admin.css" />
     <Content Include="Content\Admin\z_myCSS_s_r.css" />
-    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\Event\set1.css" />
+    <Content Include="Content\_Layout\animate.css" />
+    <Content Include="Content\_Layout\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
@@ -351,10 +353,8 @@
     <Content Include="Content\Event\font-awesome.min.css" />
     <Content Include="Content\Event\lightview.css" />
     <Content Include="Content\myCSS_l_a.css" />
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/EventZone.csproj
+    <Content Include="Content\User\myCSS_s_r - old.css" />
     <Content Include="img\CurrentMarker.png" />
-=======
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone.csproj
     <Content Include="img\verifiedEvent.png" />
     <Content Include="img\verify.jpg" />
     <Content Include="Scripts\Admin\AddNewUser.js" />
@@ -368,8 +368,10 @@
     <Content Include="Content\Event\skins\mac\sprite.png" />
     <Content Include="Content\Event\skins\mac\sprite_ie_lt_7.png" />
     <Content Include="Scripts\Event\spinners.min.js" />
+    <Content Include="Scripts\Home\myJS_index.js" />
     <Content Include="Scripts\Hub\jquery.signalR-2.0.0.js" />
     <Content Include="Scripts\Hub\jquery.signalR-2.0.0.min.js" />
+    <Content Include="Scripts\jquery.transit.min.js" />
     <Content Include="Scripts\_Layout\enscroll-0.6.1.min.js" />
     <Content Include="Content\_Layout\nprogress.css" />
     <Content Include="Scripts\_Layout\nprogress.js" />
@@ -414,7 +416,7 @@
     <Content Include="Content\myCSS_u_m_p.css" />
     <Content Include="Content\Search\SearchAdvance.css" />
     <Content Include="Content\Search\SearchResult.css" />
-    <Content Include="Content\User\myCSS_s_r.css" />
+    <Content Include="Content\myCSS_s_r.css" />
     <Content Include="Content\User\myCSS_u_m_p.css" />
     <Content Include="Content\Home\myCSS_index_2.css" />
     <Content Include="Content\_Layout\Site.css" />
@@ -433,7 +435,6 @@
     <Content Include="img\bg3.jpg" />
     <Content Include="img\bg4.jpg" />
     <Content Include="img\bg5.jpg" />
-    <Content Include="img\bgvideo1080-cut.mp4" />
     <Content Include="img\d.jpg" />
     <Content Include="img\gg.jpg" />
     <Content Include="img\loading.gif" />
@@ -442,7 +443,6 @@
     <Content Include="img\sukien2.jpg" />
     <Content Include="img\test.gif" />
     <Content Include="img\upload.png" />
-    <Content Include="img\bgvideo1080-cut.webm" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
@@ -452,6 +452,7 @@
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="img\hanoi.webm" />
+    <Content Include="img\saigon.webm" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -532,7 +533,7 @@
     <Content Include="Scripts\Account\SignUp.js" />
     <Content Include="Scripts\shareFacebook.js" />
     <Content Include="Scripts\User\ChangePass.js" />
-    <Content Include="Scripts\User\myJS_s_r.js" />
+    <Content Include="Scripts\myJS_s_r.js" />
     <Content Include="Scripts\_Layout\jquery.smartmenus.bootstrap.js" />
     <Content Include="Scripts\_Layout\jquery.smartmenus.js" />
     <Content Include="Scripts\_Layout\jquery.unobtrusive-ajax.js" />
@@ -626,6 +627,9 @@
     <Content Include="Views\Admin\_PagingUser.cshtml" />
     <Content Include="Views\Home\_LoadCategoryInformation.cshtml" />
     <Content Include="Views\Shared\_NotificationDisplay.cshtml" />
+    <Content Include="Views\Search\SearchResult - old.cshtml" />
+    <Content Include="Views\Shared\_EventThumbPage - old.cshtml" />
+    <Content Include="Views\Event\_PendingImage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

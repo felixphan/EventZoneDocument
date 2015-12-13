@@ -12,10 +12,6 @@
     ViewBag.Title = "LookAround";
 }
 
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/LookAround/LookAround.cshtml
-<style>
-=======
-
 <style>
 
     #map {
@@ -26,20 +22,6 @@
     #id-name-place{
         height:50px;
 
-    }
-</style>
-<link href="~/Content/myCSS_l_a.css" rel="stylesheet" />
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/LookAround/LookAround.cshtml
-
-    #map {
-        height: 500px;
-        width: 500px;
-        padding-top:50px;
-    }
-    #id-name-place{
-        height:50px;
-
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/LookAround/LookAround.cshtml
     }
 </style>
 <link href="~/Content/myCSS_l_a.css" rel="stylesheet" />
@@ -52,13 +34,6 @@
             <div id="id-list-event-in-place" class="tse-content scroll-content">
                 @Html.Partial("_ViewEventInPlace", nearlyEvent)
             </div>
-=======
-    <div class="d_left_content" id="map"></div>
-<div class="d_right_content">
-    <div class="d_event_cover tse-scrollable trackpad">
-        <div id="id-list-event-in-place tse-content scroll-content">
-            @Html.Partial("_ViewEventInPlace", nearlyEvent)
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/LookAround/LookAround.cshtml
         </div>
     </div>
 </div>
@@ -143,7 +118,7 @@
         @foreach (var item in nearlyLocation)
         {
             <text>
-        
+        index = index + 1;
         (function (index) {
             var otherMaker = new google.maps.Marker({
                 position: new google.maps.LatLng('@item.Latitude', '@item.Longitude'),
@@ -163,7 +138,7 @@
                 searchDetailModule.loadEventInPlace(index, '@item.LocationID', '@item.LocationName');
             });
         })(index);
-        index = index + 1;
+
         </text>
         }
         (function (index) {

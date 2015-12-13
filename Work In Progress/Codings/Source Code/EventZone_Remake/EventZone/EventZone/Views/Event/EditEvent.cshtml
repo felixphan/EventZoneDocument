@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="row b" id="LocationDiv">
-                <div id="LocationInput">
+                <div id="LocationInput-@Model.eventID">
                     @{
         var index = 0;
         foreach (var item in Model.Location)
@@ -83,20 +83,20 @@
                 </div>
                 <div class="d_value">
                     <div class="d_textbox">
-                        @Html.TextBoxFor(model => model.Location[index].LocationName, new { @class = "LocationInput form-control", @onfocus = "searchLocation(this)", @id = String.Format("Location-{0}", index) })
-                        @Html.HiddenFor(model => model.Location[index].Longitude, new { @id = String.Format("Longitude-{0}", index) })
-                        @Html.HiddenFor(model => model.Location[index].Latitude, new { @id = String.Format("Lattitude-{0}", index) })
+                        @Html.TextBoxFor(model => model.Location[index].LocationName, new { @class = "LocationInput form-control", @onfocus = "searchLocation(this)", @id = String.Format("Location-{0}-{1}", Model.eventID, index) })
+                        @Html.HiddenFor(model => model.Location[index].Longitude, new { @id = String.Format("Longitude-{0}-{1}", Model.eventID,index) })
+                        @Html.HiddenFor(model => model.Location[index].Latitude, new { @id = String.Format("Lattitude-{0}-{1}", Model.eventID,index) })
                     </div>
                     <div class="d_btn_plus">
                         @if (index == 0)
                         {
-                            <button type="button" class="btn btn-primary d_btn_add_loc" id="btnAddLocation">
+                            <button type="button" class="btn btn-primary d_btn_add_loc" id="btnAddLocation" onclick="AddLocation(@Model.eventID)">
                                 <span class="glyphicon glyphicon-plus"></span>
                             </button>
                         }
                         else
                         {
-                            <button type="button" id="btnRemove-@index" class="btn btn-primary btnRemoveLocation">
+                            <button type="button" id="btnRemove-@Model.eventID-@index" class="btn btn-primary btnRemoveLocation" onclick="RemoveLocation(@Model.eventID,@index)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
                         }
@@ -157,7 +157,7 @@
 <script src="~/Scripts/Event/Edit.js"></script>
 <script src="~/Scripts/Event/bootstrap-datetimepicker.min.js"></script>
 <script>
-    $(window).load(function () {
+    $(window).load(function() {
         $('#editor').html($('.d_des_content').html());
         $('#editor').summernote({
             height: 300,
@@ -175,14 +175,35 @@
     });
 </script>
 <script>
+    function AddLocation(eventID) {
+        var length = $("input[id^=Location-" + eventID + "-]").length;
+        $("#LocationInput-"+eventID).append("<div id=\"wrapper\">" +
+            "<div class=\"col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xs-offset-2 col-sm-offset-2 col-md-offset-2 col-lg-offset-2 b\">" +
+            "<input type=\"text\" name=\"Location[" + length + "].LocationName\" id=\"Location-" + eventID + "-" + length + "\" class=\"LocationInput form-control\" onfocus=\"searchLocation(this)\" />" +
+            "<input type=\"hidden\" data-val=\"true\" data-val-number=\"The field Longitude must be a number.\" data-val-required=\"The Longitude field is required.\" name=\"Location[" + length + "].Longitude\" id=\"Longitude-" + eventID + "-" + length + "\"  class=\"LongitudeInput\" />" +
+            "<input type=\"hidden\" data-val=\"true\" data-val-number=\"The field Lattitude must be a number.\" data-val-required=\"The Lattitude field is required.\" name=\"Location[" + length + "].Latitude\" id=\"Lattitude-" + eventID + "-" + length + "\" class=\"LangitudeInput\" />" +
+            "</div>" +
+            "<div class=\"col-xs-2 col-sm-2 col-md-2 col-lg-2 b\">" +
+            "<button type=\"button\" onclick=\"RemoveLocation("+eventID+","+length+")\" id=\"btnRemove-" + eventID + "-" + length + "\"class=\"btn btn-primary btnRemoveLocation\">Remove</button>" +
+            "</div>" +
+            "</div>");
+    }
+    function RemoveLocation(eventID,index) {
+            $('#btnRemove-'+eventID+"-"+index).parent("div").parent("div").hide();
+            document.getElementById("Location-"+eventID+"-"+index).value = "Remove Location";
+       
+    }
+</script>
+<script>
     //Location Map
     var autocomplete = "";
     var number = "";
+    var eventID = "";
     function initAutocomplete() {
         // Create the autocomplete object, restricting the search to geographical
         // location types.Req
         autocomplete = new google.maps.places.Autocomplete(
-        (document.getElementById('Location-' + number)),
+        (document.getElementById('Location-'+eventID+"-" + number)),
         { types: [] });
 
         // When the user selects an address from the dropdown, populate the address
@@ -201,8 +222,8 @@
     function getCoordinates() {
         // Get the place details from the autocomplete object.
         var place = autocomplete.getPlace();
-        document.getElementById('Longitude-' + number).value = place.geometry.location.lng();
-        document.getElementById('Lattitude-' + number).value = place.geometry.location.lat();
+        document.getElementById('Longitude-'+eventID+"-" + number).value = place.geometry.location.lng();
+        document.getElementById('Lattitude-'+eventID+"-" + number).value = place.geometry.location.lat();
         //$("#i_location_1").empty();
         //$('[id^=Location-]').each(function (i, item) {
         //    var x = $(item).val();
@@ -219,7 +240,9 @@
     }
     function searchLocation(x) {
         var LocationID = $(x).attr('id');
-        number = LocationID.substring(9, 10);
+        var locationArray = LocationID.split("-");
+        eventID = locationArray[1];
+        number = locationArray[2];
         initAutocomplete();
     }
 </script>

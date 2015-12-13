@@ -13,9 +13,7 @@
 }
 
     <!-- ump_ đánh dấu CSS thuộc về USER MANAGE PROFILE -->
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 col-md-offset-0 col-lg-offset-0 d_ump_follow">
-        <div id="result-list" class="panel-group d_follow_item_cover">
-            <!--  -->
+    <div id="result-list" class="panel-group d_follow_item_cover">
             <div class="panel panel-default">
                 <div class="panel-heading d_panel_1">
                     <h4 class="panel-title">
@@ -25,27 +23,33 @@
                         </a>
                     </h4>
                 </div>
-                <div id="i_fl_event" class="panel-collapse collapse in scroll-content" aria-expanded="true" style="width:100%">
+                <div id="i_fl_event" class="panel-collapse collapse in scroll-content" aria-expanded="true">
                     @if (countEvent != 0)
                     {
                         foreach (var item in listEventThum)
                         {
-                                    <div class="d_each_event">
-                                        <div class="d_thumb">
-                                            <img src="@EventDatabaseHelper.Instance.GetImageByID(item.evt.Avatar).ImageLink">
-                                        </div>
-                                        <div class="d_info">
-                                            <div class="d_title">
-                                               @Html.ActionLink(@item.evt.EventName,"Details","Event",new{id=@item.evt.EventID},new{target="_blank"}) 
-                                            </div>
-                                            <div class="d_time_left">
-                                            </div>
-                                        </div>
+                            <div class="d_each_event">
+                                <div class="d_thumb">
+                                    <img src="@EventDatabaseHelper.Instance.GetImageByID(item.evt.Avatar).ImageLink">
+                                </div>
+                                <div class="d_info">
+                                    <div class="d_title">
+                                        @Html.ActionLink(@item.evt.EventName,"Details","Event",new{id=@item.evt.EventID},new{target="_blank"}) 
                                     </div>
+                                    <div class="d_time">
+                                        <span class="glyphicon glyphicon-time"></span>From 5h to 10h
+                                    </div>
+                                    <div class="d_location">
+                                        <span class="glyphicon glyphicon-map-marker"></span>Hà Nội
+                                    </div>
+                                </div>
+                                <button class="btn btn-default btn-xs d_btn_follow">Unfollow</button>
+                            </div>
                         }
                     }
                 </div>
             </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
@@ -60,34 +64,26 @@
                         for (int i = 0; i < listFollowingUser.Count; i++)
                         {
                             User eachUser = listFollowingUser[i];
-                                
-                                    <div class="d_each_event" id="i_tab_event">
-                                        <div class="d_thumb">
-                                            <img src="@EventDatabaseHelper.Instance.GetImageByID(eachUser.Avartar).ImageLink">
-                                        </div>
-                                        <div class="d_info">
-                                            <div class="d_title">
-                                                @Html.ActionLink(@eachUser.UserName, "Index", "User", new { userID = @eachUser.UserID }, new { target = "_blank" })
-                                            </div>
-                                            <div class="d_u_cate">
-                                                
-                                                <div class="d_fill_in">Number Event: <a href=""><i>@UserDatabaseHelper.Instance.CountOwnedEvent(eachUser.UserID)</i></a></div>
-                                            </div>
-                                            <div class="d_u_follower">
-                                               
-                                                <div class="d_fill_in">Follower: <a href=""><i>@UserDatabaseHelper.Instance.NumberFollower(eachUser.UserID)</i></a></div>
-                                            </div>
-                                            <div class="d_u_time">
-                                                
-                                                <div class="d_fill_in" id="email-display-@eachUser.UserID">Email: @eachUser.UserEmail</div>
-                                            </div>
-                                        </div>
+                            <div class="d_each_user">
+                                <div class="d_thumb">
+                                    <img src="@EventDatabaseHelper.Instance.GetImageByID(eachUser.Avartar).ImageLink">
+                                </div>
+                                <div class="d_info">
+                                    <div class="d_name">
+                                        @Html.ActionLink(@eachUser.UserName, "Index", "User", new { userID = @eachUser.UserID }, new { target = "_blank" })
                                     </div>
-
+                                    <!-- u_ đánh dấu CSS của User -->
+                                    <div class="d_fill_in">Number Event: <a href=""><i>@UserDatabaseHelper.Instance.CountOwnedEvent(eachUser.UserID)</i></a></div>
+                                    <div class="d_fill_in">Follower: <a href=""><i>@UserDatabaseHelper.Instance.NumberFollower(eachUser.UserID)</i></a></div>
+                                    <div class="d_fill_in" id="email-display-@eachUser.UserID">Email: @eachUser.UserEmail</div>
+                                </div>
+                                <button class="btn btn-default btn-xs d_btn_follow">Unfollow</button>
+                            </div>
                         }
                     }
                 </div>
             </div>
+
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
@@ -102,39 +98,27 @@
                         for (int i = 0; i < listFollower.Count; i++)
                         {
                             User eachUser = listFollower[i];
-
-                      
-                              
-                                    <div class="d_each_event">
-                                        <div class="d_thumb">
-                                            <img src="@EventDatabaseHelper.Instance.GetImageByID(eachUser.Avartar).ImageLink">
-                                        </div>
-                                        <div class="d_info">
-                                            <div class="d_title">
-                                                @Html.ActionLink(@eachUser.UserName, "Index", "User", new { userID = @eachUser.UserID }, new { target = "_blank" })
-                                            </div>
-                                            <div class="d_u_cate">
-
-                                                <div class="d_fill_in">Number Event: <a href=""><i>@UserDatabaseHelper.Instance.CountOwnedEvent(eachUser.UserID)</i></a></div>
-                                            </div>
-                                            <div class="d_u_follower">
-
-                                                <div class="d_fill_in">Follower: <a href=""><i>@UserDatabaseHelper.Instance.NumberFollower(eachUser.UserID)</i></a></div>
-                                            </div>
-                                            <div class="d_u_time">
-
-                                                <div class="d_fill_in" id="email-display-@eachUser.UserID">Email: @eachUser.UserEmail</div>
-                                            </div>
-                                        </div>
+                            <div class="d_each_user">
+                                <div class="d_thumb">
+                                    <img src="@EventDatabaseHelper.Instance.GetImageByID(eachUser.Avartar).ImageLink">
+                                </div>
+                                <div class="d_info">
+                                    <div class="d_name">
+                                        @Html.ActionLink(@eachUser.UserName, "Index", "User", new { userID = @eachUser.UserID }, new { target = "_blank" })
                                     </div>
-                                
-                           
+                                    <div class="d_fill_in">Number Event: <a href=""><i>@UserDatabaseHelper.Instance.CountOwnedEvent(eachUser.UserID)</i></a></div>
+                                    <div class="d_fill_in">Follower: <a href=""><i>@UserDatabaseHelper.Instance.NumberFollower(eachUser.UserID)</i></a></div>
+                                    <div class="d_fill_in" id="email-display-@eachUser.UserID">Email: @eachUser.UserEmail</div>
+                                </div>
+                                <button class="btn btn-default btn-xs d_btn_follow">Unfollow</button>
+                            </div>
                         }
                     }
                 </div>
             </div>
+
         </div>
-    </div>
+
     <!-- All script here -->
     <!-- Default JQuery -->
     @*<script type="text/javascript" src="../Scripts/jquery-2.1.4.js"></script>*@

@@ -13,17 +13,26 @@
     {
         numberImage = Model.eventImage.Count;
     }
-    int numberVideo = 0;
+    int numberVideoNormal = 0;
+    int numberVideoLive = 0;
     if (Model != null && Model.eventVideo.Count != 0)
     {
-        numberVideo = Model.eventVideo.Count;
+        foreach (var video in Model.eventVideo)
+        {
+            if (EventDatabaseHelper.Instance.IsLiveVideo(video))
+            {
+                numberVideoLive++;
+            }
+        }
+        numberVideoNormal = Model.eventVideo.Count - numberVideoLive;
     }
+    
     int userLikeEvent = Model.FindLike.Type;
     int numberLike = Model.NumberLike;
     int numberDislike = Model.NumberDisLike;
     int numberFollow = Model.NumberFowllower;
     ViewBag.Title = Model.eventName;
-    LiveStreamingModel LiveModel = (LiveStreamingModel)TempData["LiveModel"];
+    LiveStreamingModel LiveModel = new LiveStreamingModel{eventID=Model.eventId,Title=Model.eventName};
 }
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- BOOTSTRAP social -->
@@ -33,9 +42,23 @@
 <link href="~/Content/Event/myCSS_u_w_e.css" rel="stylesheet" />
 <script src="~/Scripts/Event/spinners.min.js"></script>
 <script src="~/Scripts/Event/lightview.js"></script>
-<link href="~/Content/Event/lightview.css" rel="stylesheet" />
+<link href="~/Content/Event/lightview.css" rel="stylesheet"/>
 
 
+<style>
+    .btn-transparent {
+        color: black;
+        background-color: rgba(1, 1, 1, 0);
+        border-color: rgba(1, 1, 1, 0);
+    }
+        .btn-transparent:hover {
+        color: black;
+        background-color: rgba(1, 1, 1, 0);
+        border-color: rgba(1, 1, 1, 0);
+    }
+        
+
+</style>
 <div class="">
 
     @if (Model.numberView == 0)
@@ -50,12 +73,13 @@
             <ul class="nav nav-tabs" id="event-tab">
                 <li class="active li-tab" id="li-event-info"><a href="#i_info_tab" data-toggle="tab">Event Info</a></li>
                 <li class="li-tab" id="li-gallery"><a href="#i_image_tab" data-toggle="tab">Gallery (@numberImage)</a></li>
-                <li class="li-tab" id="li-video"><a href="#i_video_tab" data-toggle="tab">Video (@numberVideo)</a></li>
-                <li class="li-tab" id="li-live-video"><a href="#i_live_vid_tab" data-toggle="tab">Live Video (@numberVideo)</a></li>
+                <li class="li-tab" id="li-video"><a href="#i_video_tab" data-toggle="tab">Video (@numberVideoNormal)</a></li>
+                <li class="li-tab" id="li-live-video"><a href="#i_live_vid_tab" data-toggle="tab">Live Video (@numberVideoLive)</a></li>
                 <li class="slider"></li>
             </ul>
             <div class="tab-content d_info_tab">
-                <!-- Khung chứa Basic info & Description -->
+
+            <!-- Khung chứa Basic info & Description -->
                 <div class="tab-pane active" id="i_info_tab">
                     <!-- THUMBNAIL -->
                     <input id="eventID-detail" hidden value="@Model.eventId" />
@@ -108,26 +132,20 @@
                                 @Model.eventName
                             @if (Model.isVerified)
                             {
-                                <img style="height:24px;width:24px;" src="~/img/verifiedEvent.png">
+                            <img src="~/img/icon_verified.png" id="i_verify_icon" style="width: 30px;">
                             }
                         </p>
 
 
-                        @if (user != null)
-                        {
-                            if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
-                            {
-                                <button data-toggle="modal" data-target="#modelEditEvent" class="btn btn-primary btn-xs">Edit</button>
-                            }
-                        }
+                        
                         <!-- DATE TIME -->
                         <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9 d_each_info">
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-list-ul">
+                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 glyphicon glyphicon-list">
                             </div>
                             <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
                                 in <i>@Model.Category</i>
                             </div>
-                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 fa fa-user">
+                            <div class="col-xs-1 col-sm-1 col-md-2 col-lg-1 glyphicon glyphicon-user">
                             </div>
                             <div class="col-xs-11 col-sm-11 col-md-10 col-lg-11 d_event_time">
                                 by <i>@Html.ActionLink(@Model.createdBy.UserName, "Index", "User", new { userID = Model.createdBy.UserID }, null)</i>
@@ -165,17 +183,38 @@
                         <i class="glyphicon glyphicon-eye-open"></i> <span id="view-count">@Model.numberView</span>
                     </a>
                     <a class="btn btn-default btn-xs" id="btn-like-event">
-                        <i class="fa fa-thumbs-o-up"></i> <span id="like-count">@numberLike</span>
+                        <i class="glyphicon glyphicon-thumbs-up"></i> <span id="like-count">@numberLike</span>
                     </a>
                     <a class="btn btn-default btn-xs" id="btn-dislike-event">
-                        <i class="fa fa-thumbs-o-down"></i> <span id="dislike-count">@numberDislike</span>
+                        <i class="glyphicon glyphicon-thumbs-down"></i> <span id="dislike-count">@numberDislike</span>
                     </a>
                     <a class="btn btn-default btn-xs" id="btn-follow-event">
-                        <i class="fa fa-star-o"></i> <span id="follow-count">@numberFollow</span>
+                        <i class="glyphicon glyphicon-star-empty"></i> <span id="follow-count">@numberFollow</span>
                     </a>
                     <button class="btn btn-block btn-social btn-facebook btn-xs" onclick="share(@Model.eventId)">
                         <i class="fa fa-facebook" id="facebook-share"></i> Share
                     </button>
+                    @if (user != null)
+                    {
+                        if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID && !(user.UserRoles == EventZoneConstants.Admin || user.UserRoles == EventZoneConstants.RootAdmin ||
+                user.UserRoles == EventZoneConstants.Mod))
+                        {
+                            <button data-toggle="modal" data-target="#modelEditEvent" class="btn btn-primary btn-xs">Edit</button>
+                        }
+                        if (user.UserRoles == EventZoneConstants.Admin || user.UserRoles == EventZoneConstants.RootAdmin ||
+                            user.UserRoles == EventZoneConstants.Mod)
+                        {
+                            <button data-toggle="modal" data-target="#modelEditEvent" class="btn btn-success btn-xs">
+                                <i class="glyphicon glyphicon-pencil"></i> Edit
+                            </button>
+                            <div id="lockUnlockDiv-@Model.eventId">
+                                <button class="btn btn-success btn-xs" onclick="LockEvent(@Model.eventId)" id="lockUnlock-@Model.eventId">
+                                    <i class="glyphicon glyphicon-lock"></i>Lock
+                                </button>
+                            </div>
+
+                        }
+                    }
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_des">
                     <div class="col-xs-4 col-sm-5 col-md-5 col-lg-5 d_deco_line">
@@ -193,18 +232,19 @@
                     </div>
                 </div>
             </div>
-            <!-- Khung chứa Live Events -->
+
             <!-- Khung chứa Gallery -->
-            <div class="tab-pane" id="i_image_tab">
+            <div class="tab-pane " id="i_image_tab">
                 <div class="d_btn_upload_pending">
                     <button data-toggle="modal" data-target="#user-upload-image-event-modal" class="btn btn-success btn-xs">
                         Upload
                     </button>
                     @if (Model.isOwningEvent)
                     {
-                        <button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#i_md_pending_img">
+                        <button type="button" class="btn btn-success btn-xs" id="btn-view-pending">
                             Pending Images
                         </button>
+                        <div id="pending-panel"></div>
                     }
                 </div>
                 <div id="i_image_public" class="panel-collapse collapse in d_image_cover" aria-expanded="true">
@@ -213,49 +253,53 @@
                             @if (Model.eventImage != null)
                             {
                                 var listApprovedEvent = EventDatabaseHelper.Instance.GetEventApprovedImage(Model.eventId);
-                                <ul class="grid cs-style-3">
+                                <ul class="grid cs-style-3 ">
                                     @foreach (var item in listApprovedEvent)
                                     {
                                         if (item != null)
                                         {
                                             <li class="d_each_photo">
-                                                @if (Model.isOwningEvent)
-                                                {
-                                                    using (Html.BeginForm("ImageDelete", "Event", FormMethod.Post, new { id = "DeleteImageForm" }))
-                                                    {
-                                                        <input type="hidden" name="imageID" value="@item.ImageID" />
-                                                        <input type="hidden" name="eventID" value="@Model.eventId" />
-                                                        <button type="button" class="btn btn-default" id="delete-image">Delete</button>
-                                                        <div class="modal fade" id="confirm-delete-image-modal" role="dialog">
-                                                            <div class="modal-dialog">
-                                                                <!-- Modal content-->
-                                                                <div class="panel panel-info d_margin_top">
-                                                                    <div class="panel-heading">
-                                                                        <div class="panel-title">Edit Event</div>
-                                                                        <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                                                                            <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="panel-body">
-                                                                        <div class="cover_all_functions">
-                                                                            <div class="tab-content">
-                                                                                Do you really want to delete this image ?
-                                                                                <button type="submit" class="btn btn-primary btn-xs" id="btn-yes-delete">Yes</button>
-                                                                                <button class="btn btn-primary btn-xs" id="btn-no-delete" data-dismiss="modal">No</button>
+
+                                                <figure>
+                                                    <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent'>
+                                                        <img class="" src="@item.ImageLink" style="object-fit: cover;">
+                                                    </a>
+
+                                                    <figcaption>
+                                                        <h6>@item.User.UserName</h6>
+                                                        @if (Model.isOwningEvent)
+                                                        {
+                                                            using (Html.BeginForm("ImageDelete", "Event", FormMethod.Post, new { id = "DeleteImageForm" }))
+                                                            {
+                                                                <input type="hidden" name="imageID" value="@item.ImageID" />
+                                                                <input type="hidden" name="eventID" value="@Model.eventId" />
+                                                                <button type="button" class="btn btn-xs btn-default" id="delete-image">Delete</button>
+                                                                <div class="modal fade" id="confirm-delete-image-modal" role="dialog">
+                                                                    <div class="modal-dialog">
+                                                                        <!-- Modal content-->
+                                                                        <div class="panel panel-info d_margin_top">
+                                                                            <div class="panel-heading">
+                                                                                <div class="panel-title">Edit Evet</div>
+                                                                                <div style="float: right; font-size: 80%; position: relative; top: -17px">
+                                                                                    <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="panel-body">
+                                                                                <div class="cover_all_functions">
+                                                                                    <div class="tab-content">
+                                                                                        Do you really want to delete this image ?
+                                                                                        <button type="submit" class="btn btn-primary btn-xs" id="btn-yes-delete">Yes</button>
+                                                                                        <button class="btn btn-primary btn-xs" id="btn-no-delete" data-dismiss="modal">No</button>
+                                                                                    </div>
+                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                            </div>
-                                                        </div>
-                                                    }
-                                                }
-                                                <figure>
-                                                    <img class="" src="@item.ImageLink" style="object-fit: cover;">
-                                                    <figcaption>
-                                                        <h3>Demo</h3>
-                                                        <span>Alo</span>
-                                                        <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent'>Take a look</a>
+                                                            }
+                                                        }
+
+                                                        <!-- <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent'>Take a look</a>-->
                                                     </figcaption>
                                                 </figure>
 
@@ -264,98 +308,16 @@
                                     }
                                 </ul>
                             }
-                            <!--upload modal-->
-                            <div class="modal fade" id="user-upload-image-event-modal" role="dialog">
-                                <div class="modal-dialog">
-                                    <!-- Modal content-->
-                                    <div class="panel panel-info d_margin_top">
-                                        <div class="panel-heading">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <div class="panel-title">Upload avatar</div>
-
-                                        </div>
-                                        <div class="panel-body">
-                                            <div class="cover_all_functions">
-                                                <div class="tab-content">
-                                                    <!--thumb uploaded image-->
-                                                    <div class="col-md-4 col-sm-3 col-xs-4 thumb" style="width: inherit">
-                                                        <div id="image-contain" style="height: 200px; width: 200px"></div>
-                                                    </div>
-                                                    @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new { enctype = "multipart/form-data", id = "UploadImageForm" }))
-                                                    {
-                                                        <input id="uploadBtn" type="file" class="upload" name="file" data-max-size="10485760" accept="image/x-png, image/gif, image/jpeg, image/bmp" />
-                                                        <input hidden name="eventID" value="@Model.eventId" />
-                                                        <p>
-                                                            <input type="submit" class="btn btn-primary btn-sm" value="Upload" />
-                                                        </p>
-                                                    }
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
+                            
+                        </div>
                         </div>
                     </div>
                 </div>
 
-                @if (Model.isOwningEvent)
-                {
-                    <div class="modal fade" id="i_md_pending_img" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="panel panel-info">
-                                <h4 class="panel-heading">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <div class="panel-title">Pending images</div>
-                                </h4>
-                            </div>
-                            <div class="panel-body">
-                                <div class="tab-content">
-                                    @if (Model.eventImage != null)
-                                        {
-                                            var listPending = EventDatabaseHelper.Instance.GetPendingImageInEvent(Model.eventId);
-                                            foreach (var item in listPending)
-                                            {
-                                                if (item != null)
-                                                {
-                                        <div class="d_each_photo">
-                                            @using (Html.BeginForm("ImageDelete", "Event", FormMethod.Post))
-                                                        {
-                                                        <input type="hidden" name="imageID" value="@item.ImageID" />
-                                                        <input type="hidden" name="eventID" value="@Model.eventId" />
-                                                        <button type="submit" class="btn btn-default">Delete</button>
-                                                        <div class="checkbox">
-                                                            <input type="checkbox" value="">
-                                                        </div>
-                                                        }
-                                            <a class="lightview thumbnail" href="@item.ImageLink" data-lightview-group='imageEvent'>
-                                                <img class="img-responsive" src="@item.ImageLink" alt="">
-                                            </a>
-                                            <p class="d_photo_author">
-                                                by
-                                            </p>
-                                        </div>
-                                                }
-                                            }
-                                        }
-
-
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default btn-sm">Select all</button>
-                                <button type="button" class="btn btn-default btn-sm">Deselect all</button>
-                                <button type="button" class="btn btn-primary btn-sm">Add to Gallery</button>
-                            </div>
-                        </div>
-                    </div>
-                }
-
-            </div>
-            <!-- Khung chứa Video -->
             <!-- Khung chứa Video -->
             <div class="tab-pane" id="i_video_tab">
-                <iframe src="https://www.youtube.com/embed/7lHr2ZNlULA" frameborder="0" allowfullscreen=""></iframe>
+                <iframe src="https://www.youtube.com/embed/7lHr2ZNlULA" frameborder="0" allowfullscreen="" name="mainViewer"></iframe>
                 <div class="d_vid_info">
                     <span id="i_date"></span>
                     <span id="i_user"></span>
@@ -363,37 +325,45 @@
                     <span class="d_btn_close">Close</span>
                 </div>
                 <div class="d_other_cover">
-                    <div class="d_each_vid d_btn_add_vid">
                         @if (Model.isOwningEvent)
-                        {
-                            <button data-toggle="modal" data-target="#user-upload-video-event-modal" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Add a video</button>
+                        { <div class="d_each_vid d_btn_add_vid">
+                            <button data-toggle="modal" data-target="#user-upload-video-event-modal" class="btn btn-primary btn-xs btn-transparent"><span class="glyphicon glyphicon-plus"></span> Add a video</button>
+                        </div>
                         }
-                    </div>
                     @if (Model.eventVideo != null)
                     {
-                        foreach (var video in Model.eventVideo)
-                        {
-                            if (!EventDatabaseHelper.Instance.IsLiveVideo(video))
+                        <ul class="grid cs-style-3 " style="padding: 0px;">
+
+                            @foreach (var video in Model.eventVideo)
                             {
-                                if (Model.isOwningEvent)
+                                if (!EventDatabaseHelper.Instance.IsLiveVideo(video))
                                 {
-                                    using (Html.BeginForm("VideoDelete", "Event", FormMethod.Post))
-                                    {
-                                        <input type="hidden" name="videoID" value="@video.VideoID" />
-                                        <input type="hidden" name="eventID" value="@Model.eventId" />
-                                        <button type="submit" class="btn btn-default">Delete</button>
-                                    }
+                                    string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
+                                    string url = video.VideoLink.Replace("watch?v=", "v/");
+                                    <li class="d_each_vid " style="overflow: hidden; width: auto;">
+                                        <figure>
+                                            <a href="@url" target="mainViewer">
+                                                <img class="" src="@thumbVideo" />
+                                            </a>
+                                            <figcaption>
+                                                @if (Model.isOwningEvent)
+                                                {
+                                                    using (Html.BeginForm("VideoDelete", "Event", FormMethod.Post))
+                                                    {
+                                                        <input type="hidden" name="videoID" value="@video.VideoID" />
+                                                        <input type="hidden" name="eventID" value="@Model.eventId" />
+                                                        <button type="submit" class="btn btn-default btn-transparent">Delete</button>
+                                                    }
+                                                }
+
+                                            </figcaption>
+                                        </figure>
+                                    </li>
                                 }
-                                string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
-                                <div class="d_each_vid">
-                                    <a href="@video.VideoLink.Replace("watch?v=", "embed/")" class="lightview" data-lightview-type="iframe" data-lightview-group="thumbnail-icon-example" data-lightview-options="width:638,height:360,viewport:'scale'">
-                                        <img class=" img-responsive" src="@thumbVideo">
-                                    </a>
-                                </div>
                             }
-                        }
+                        </ul>
                     }
-                </div>
+</div>
 
 
                 <div class="modal fade" id="user-upload-video-event-modal" role="dialog">
@@ -442,61 +412,75 @@
                 </div>
 
             </div>
+
+            <!-- Khung chứa Live Video -->
             <div class="tab-pane" id="i_live_vid_tab">
-                <iframe src="https://www.youtube.com/embed/7lHr2ZNlULA" frameborder="0" allowfullscreen=""></iframe>
+                <iframe src="https://www.youtube.com/embed/7lHr2ZNlULA" frameborder="0" allowfullscreen="" name="liveViewer"></iframe>
                 <div class="d_vid_info">
-                    <span id="i_date"></span>
-                    <span id="i_user"></span>
+                    <span id="i_live_date"></span>
                     <span class="d_btn_more">More</span>
                     <span class="d_btn_close">Close</span>
                 </div>
                 <div class="d_other_cover">
-                    <div class="d_each_vid d_btn_add_vid">
-                        @if (user != null)
-                        {
-                            if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
-                            {
-                                <button data-toggle="modal" data-target="#modelCreateLiveStream" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus"></span> Add a Streaming Video</button>
-                            }
-                        }
-                    </div>
+                   
+    @if (user != null)
+    {
+        if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
+        {
+            <div class="d_each_vid d_btn_add_vid">
+                <button data-toggle="modal" data-target="#modelCreateLiveStream" class="btn btn-primary btn-xs btn-transparent"><span class="glyphicon glyphicon-plus"></span> Add a Streaming Video</button>
+            </div>
+        }
+    }
+
                     @if (Model.eventVideo != null)
                     {
-                        foreach (var video in Model.eventVideo)
-                        {
-                            if (EventDatabaseHelper.Instance.IsLiveVideo(video))
+                        <ul class="grid cs-style-3" style="padding:0">
+                            @foreach (var video in Model.eventVideo)
                             {
-                                if (Model.isOwningEvent)
+                                if (EventDatabaseHelper.Instance.IsLiveVideo(video))
                                 {
-                                    using (Html.BeginForm("VideoDelete", "Event", FormMethod.Post))
-                                    {
-                                        <input type="hidden" name="videoID" value="@video.VideoID" />
-                                        <input type="hidden" name="eventID" value="@Model.eventId" />
-                                        <button type="submit" class="btn btn-default">Delete</button>
-                                    }
+
+                                    string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
+                                    string url = video.VideoLink.Replace("watch?v=", "v/");
+                                    string time = video.StartTime + "-" + video.EndTime;
+                                    <li class="d_each_vid" style="overflow: hidden; width: auto;">
+
+                                        <figure>
+                                            <a href="@url" target="liveViewer" onclick="$('#i_live_date').text('@time')">
+                                                <img class="" src="@thumbVideo" />
+                                            </a>
+                                            <figcaption>
+                                                @if (Model.isOwningEvent)
+                                                {
+                                                    using (Html.BeginForm("VideoDelete", "Event", FormMethod.Post))
+                                                    {
+                                                        <input type="hidden" name="videoID" value="@video.VideoID" />
+                                                        <input type="hidden" name="eventID" value="@Model.eventId" />
+                                                        <button type="submit" class="btn btn-default">Delete</button>
+                                                    }
+                                                }
+                                            </figcaption>
+                                        </figure>
+                                    </li>
+
                                 }
-                                string thumbVideo = video.VideoLink.Replace("www.youtube", "img.youtube").Replace("watch?v=", "vi/") + "/default.jpg";
-                                <div class="d_each_vid">
-                                    <a href="@video.VideoLink.Replace("watch?v=", "embed/")" class="lightview" data-lightview-type="iframe" data-lightview-group="thumbnail-icon-example" data-lightview-options="width:638,height:360,viewport:'scale'">
-                                        <img class=" img-responsive" src="@thumbVideo">
-                                    </a>
-                                </div>
                             }
-                        }
+                        </ul>
                     }
                 </div>
             </div>
-            <!-- -->
+
         </div>
     </div>
 
         <div class="col-sx-12 col-sm-12 col-md-4 col-lg-4 d_right_cover">
             <!-- Thẻ Tab Map -->
             <div class="d_right_top d_style_of_tabs">
-                <ul class="nav nav-tabs" id="myTab">
-                    <li role="presentation" class="active">
-                        <a href="#i_map" aria-controls="i_map" role="tab" data-toggle="tab">Map</a>
-                    </li>
+                <ul class="nav nav-tabs" id="map-tab">
+                    <li class="active li-tab" role="presentation"><a href="#i_map" aria-controls="i_map" role="tab" data-toggle="tab">Map</a></li>
+                    <li class="li-tab d_trick" role="presentation"></li>
+                    <li class="slider_2"></li>
                 </ul>
                 <!-- Khung chứa MAP -->
                 <div class="tab-content">
@@ -505,12 +489,15 @@
                     </div>
                 </div>
             </div>
+
             <!-- Thẻ Tab Comment & Report -->
             <div class="d_right_bottom d_style_of_tabs">
                 <a class="d_reopen_map">Map</a>
-                <ul class="nav nav-tabs" id="myTab">
-                    <li class="active"><a href="#i_comment" data-toggle="tab">Comment</a></li>
-                    <li class="d_tab_report"><a href="#i_report_tab" data-toggle="tab">Report</a></li>
+                <ul class="nav nav-tabs" id="comment-tab">
+                    <li class="li-tab active"><a href="#i_comment" data-toggle="tab">Comment (30)</a></li>
+                    <li class="li-tab d_tab_report"><a href="#i_report_tab" data-toggle="tab">Report</a></li>
+                    <li class="li-tab d_trick"></li>
+                    <li class="slider_3"></li>
                 </ul>
                 <div class="tab-content">
                     <!--comment partial-->
@@ -610,7 +597,7 @@
                 <div class="panel-title">@Model.eventName</div>
             </div>
             <div style="padding-top:10px" class="panel-body">
-                <div class="d_des_content" id="popupContent">
+                <div id="popupContent">
                     @Model.eventDescription
                 </div>
             </div>
@@ -620,6 +607,8 @@
         <iframe src="t_m_modal_ad_search.html"></iframe> -->
     </div>
 </div>
+
+<!-- Modal Create Live Stream -->
 <div class="modal fade" id="modelCreateLiveStream" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -639,6 +628,8 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Edit Event -->
 <div class="modal fade" id="modelEditEvent" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -651,7 +642,39 @@
             <div class="panel-body">
                 <div class="cover_all_functions">
                     <div class="tab-content">
-                        @Html.Action("EditEvent", "Event", new { model = Model })
+                        @Html.Action("EditEvent", "Event", new { eventID = @Model.eventId })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--upload modal-->
+<div class="modal fade" id="user-upload-image-event-modal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="panel panel-info d_margin_top">
+            <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <div class="panel-title">Upload Image</div>
+
+            </div>
+            <div class="panel-body">
+                <div class="cover_all_functions">
+                    <div class="tab-content">
+                        <!--thumb uploaded image-->
+                        <div class="col-md-4 thumb">
+                            <div id="image-contain"></div>
+                        </div>
+                        @using (Html.BeginForm("ImageUpload", "Event", FormMethod.Post, new { enctype = "multipart/form-data", id = "UploadImageForm" }))
+                        {
+                            <input id="uploadBtn" type="file" class="upload" name="file" data-max-size="10485760" accept="image/x-png, image/gif, image/jpeg, image/bmp" />
+                            <input hidden name="eventID" value="@Model.eventId" />
+                            <p>
+                                <input type="submit" class="btn btn-primary btn-sm" value="Upload" />
+                            </p>
+                        }
                     </div>
                 </div>
             </div>
@@ -670,7 +693,7 @@
 <script>
     $(window).load(function () {
         $('#ConfirmCreateLive').modal('show');
-        $(".enscroll-track").parents('div').css("margin-left", "-60px");
+       // $(".enscroll-track").parents('div').css("margin-left", "-60px");
     });
 </script>
 <!--like+share+follow-->
@@ -837,6 +860,7 @@
         });
     })
 </script>
+
 <!--upload image event-->
 <script>
     var fileInput = $('#uploadBtn');
@@ -923,7 +947,7 @@
                     // Render thumbnail.
                     $("#image-contain").empty();
                     var span = document.createElement('span');
-                    span.innerHTML = ['<img style="height:200px;width:200px" class="thumb_anh" src="', e.target.result,
+                    span.innerHTML = ['<img style="height:auto;width:100%" src="', e.target.result,
                         '" title="', escape(theFile.name), '"/>'].join('');
                     document.getElementById('image-contain').insertBefore(span, null);
                 };
@@ -936,6 +960,7 @@
     document.getElementById('uploadBtn').addEventListener('change', handleFileSelect, false);
     document.getElementById('new-avatar').addEventListener('change', handleFileSelect, false);
 </script>
+
 <!--Show map-->
 <script>
     var index = 0;
@@ -994,13 +1019,15 @@
 
     });
 </script>
+
+<!-- Slider cho Event-tab -->
 <script>
-    $("#event-tab li").click(function (e) {
+    $("#event-tab li").click(function(e) {
         if ($(this).hasClass('slider')) {
             return;
         }
         var whatTab = $(this).index();
-        var howFar = 160 * whatTab;
+        var howFar = 150 * whatTab;
         $(".slider").css({
             left: howFar + "px"
         });
@@ -1026,3 +1053,86 @@
     });
 </script>
 
+<!-- Slider cho Map-tab -->
+<script>
+    $("#map-tab li").click(function (e) {
+        if ($(this).hasClass('slider')) {
+            return;
+        }
+        var whatTab = $(this).index();
+        var howFar = 160 * whatTab;
+        $(".slider_2").css({
+            left: howFar + "px"
+        });
+        $(".ripple").remove();
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top,
+            buttonWidth = $(this).width(),
+            buttonHeight = $(this).height();
+        $(this).prepend("<span class='ripple'></span>");
+        if (buttonWidth >= buttonHeight) {
+            buttonHeight = buttonWidth;
+        } else {
+            buttonWidth = buttonHeight;
+        }
+        var x = e.pageX - posX - buttonWidth / 2;
+        var y = e.pageY - posY - buttonHeight / 2;
+        $(".ripple").css({
+            width: buttonWidth,
+            height: buttonHeight,
+            top: y + 'px',
+            left: x + 'px'
+        }).addClass("rippleEffect");
+    });
+</script>
+
+<!-- Slider cho Comment-tab -->
+<script>
+    $("#comment-tab li").click(function (e) {
+        if ($(this).hasClass('slider')) {
+            return;
+        }
+        var whatTab = $(this).index();
+        var howFar = 130 * whatTab;
+        $(".slider_3").css({
+            left: howFar + "px"
+        });
+        $(".ripple").remove();
+        var posX = $(this).offset().left,
+            posY = $(this).offset().top,
+            buttonWidth = $(this).width(),
+            buttonHeight = $(this).height();
+        $(this).prepend("<span class='ripple'></span>");
+        if (buttonWidth >= buttonHeight) {
+            buttonHeight = buttonWidth;
+        } else {
+            buttonWidth = buttonHeight;
+        }
+        var x = e.pageX - posX - buttonWidth / 2;
+        var y = e.pageY - posY - buttonHeight / 2;
+        $(".ripple").css({
+            width: buttonWidth,
+            height: buttonHeight,
+            top: y + 'px',
+            left: x + 'px'
+        }).addClass("rippleEffect");
+    });
+</script>
+<script>
+    //show modal pending image
+    $("#btn-view-pending").click(function () {
+        $.ajax({
+            url: "/Event/ShowPendingImage",
+            type: "post",
+            dataType: "html",
+            data: { eventID: '@Model.eventId' },
+            success: function (data) {
+                $("#pending-panel").html(data);
+            },
+            error: function () {
+            }
+        })    
+    });
+
+</script>
+<!--Scroll content-->

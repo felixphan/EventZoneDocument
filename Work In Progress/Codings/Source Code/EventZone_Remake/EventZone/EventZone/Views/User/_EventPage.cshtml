@@ -3,7 +3,8 @@
 @model IEnumerable<EventZone.Models.Event>
 @{
     bool hasMore = bool.Parse(TempData["LoadMore"].ToString());
-    
+    User user = UserHelpers.GetCurrentUser(Session);
+    User authorEvent = EventDatabaseHelper.Instance.GetAuthorEvent(Model.First().EventID);
 }
 @if (Model != null)
 {
@@ -21,13 +22,61 @@
                     Start in @item.EventStartDate.ToString()
                 </div>
             </div>
-            <h5><span class="col-md-1 col-lg-1 label label-danger"><span class=" glyphicon glyphicon-lock"></span> Locked</span></h5>
-            <button class="btn btn-success btn-xs">Edit</button>
-            <button class="btn btn-success btn-xs">Lock</button>
+
+            @if (user!=null&&(user.UserRoles == EventZoneConstants.Admin || user.UserRoles == EventZoneConstants.RootAdmin ||
+                    user.UserRoles == EventZoneConstants.Mod))
+            {
+                <button data-toggle="modal" data-target="#modelEditEvent-@item.EventID" class="btn btn-success btn-xs" onclick="EditCall(@item.EventID)">Edit</button>
+                <div id="lockUnlockDiv-@item.EventID">
+                    @if (item.Status == EventZoneConstants.Active)
+                    {
+                        <button class="btn btn-success btn-xs" onclick="LockEvent(@item.EventID)" id="lockUnlock-@item.EventID">Lock</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-danger btn-xs" onclick="UnlockEvent(@item.EventID)" id="lockUnlock-@item.EventID">Unlock</button>
+                    }
+                </div>
+            }
+            @if (user.UserID == authorEvent.UserID && !(user.UserRoles == EventZoneConstants.Admin || user.UserRoles == EventZoneConstants.RootAdmin ||
+                    user.UserRoles == EventZoneConstants.Mod))
+            {
+                <button data-toggle="modal" data-target="#modelEditEvent-@item.EventID" class="btn btn-success btn-xs" onclick="EditCall(@item.EventID)">Edit</button>
+            }
+            <div class="modal fade" id="modelEditEvent-@item.EventID" role="dialog">
+                <div class="modal-dialog">
+                    <!-- Modal content-->
+                    <div class="panel panel-info d_margin_top">
+                        <div class="panel-heading">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <div class="panel-title">Edit Event</div>
+                        </div>
+                        <div class="panel-body">
+                            <div class="cover_all_functions">
+                                <div class="tab-content-@item.EventID">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     }
     if (hasMore) { 
     @Html.Partial("_Loading");
     }
-
+    <script>
+        function EditCall(eventID) {
+            $.ajax({
+                url: "/Event/EditEvent",
+                type: "GET",
+                datatype: "json",
+                data: { eventID: eventID },
+                success: function (data) {
+                    $(".tab-content-" + eventID).empty();
+                    $(".tab-content-" + eventID).append(data);
+                }
+            });
+        }
+    </script>
 }

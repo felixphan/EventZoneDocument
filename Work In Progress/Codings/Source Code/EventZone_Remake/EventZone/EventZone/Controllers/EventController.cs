@@ -55,12 +55,6 @@ namespace EventZone.Controllers
                 //Add event place to database
                 var listEventPlaces = EventDatabaseHelper.Instance.AddEventPlace(listLocation, newEvent);
 
-                LiveStreamingModel liveModel = new LiveStreamingModel { eventID = newEvent.EventID, Title = newEvent.EventName };
-                TempData["LiveModel"] = liveModel;
-                HttpCookie newEventID = new HttpCookie("CreateEventID");
-                newEventID.Value = newEvent.EventID.ToString();
-                newEventID.Expires=DateTime.Now.AddDays(1);
-                Response.Cookies.Add(newEventID);
                 NotificationDataHelpers.Instance.SendNotifyNewEventToFollower(UserHelpers.GetCurrentUser(Session).UserID, newEvent.EventID);
                 return RedirectToAction("Details", "Event",new{id=newEvent.EventID});
             }
@@ -76,25 +70,27 @@ namespace EventZone.Controllers
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult EditEvent(ViewDetailEventModel model)
+        public ActionResult EditEvent(long? eventID)
         {
+            Event model = EventDatabaseHelper.Instance.GetEventByID(eventID);
             EditViewModel editModel = new EditViewModel();
-            if (model.eventDescription.IsNullOrWhiteSpace())
+            if (model.EventDescription == null || model.EventDescription == "")
             {
                 editModel.Description = "";
             }
             else
             {
-                editModel.Description = model.eventDescription;
+                editModel.Description = model.EventDescription;
             }
-            editModel.EndTime = model.EndTime;
+            editModel.EndTime = model.EventEndDate;
             editModel.Privacy = model.Privacy;
-            editModel.StartTime = model.StartTime;
-            editModel.Title = model.eventName;
-            editModel.eventID = model.eventId;
-            editModel.Location = model.eventLocation;
+            editModel.StartTime = model.EventStartDate;
+            editModel.Title = model.EventName;
+            editModel.eventID = model.EventID;
+            editModel.Location = EventDatabaseHelper.Instance.GetEventLocation(eventID);
             return PartialView(editModel);
         }
+
         /// <summary>
         /// Edit event post
         /// </summary>
@@ -123,8 +119,7 @@ namespace EventZone.Controllers
         public ActionResult AddLiveStream(LiveStreamingModel model)
         {
             List<EventPlace> listPlace= new List<EventPlace>();
-            TempData["errorTitle"] = TempData["errorTitle"];
-            TempData["errorMessage"] = TempData["errorMessage"];
+
             if (Request.Cookies["CreateEventID"] != null)
             {
                 model.eventID = long.Parse(Request.Cookies["CreateEventID"].Value);
@@ -140,24 +135,27 @@ namespace EventZone.Controllers
 
         public async Task<ActionResult> IndexAsync(LiveStreamingModel liveModel, CancellationToken cancellationToken)
         {
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                JavaScriptSerializer objJavascript = new JavaScriptSerializer();
-                liveModel = objJavascript.Deserialize<LiveStreamingModel>(Request.Cookies["liveModel"].Value);
+                HttpCookie newModel = new HttpCookie("liveModel");
+                newModel.Value = new JavaScriptSerializer().Serialize(liveModel);
+                newModel.Expires = DateTime.Now.AddHours(10);
+                Response.Cookies.Add(newModel);
             }
-            else {
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Controllers/EventController.cs
-=======
-
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Controllers/EventController.cs
-                if (liveModel.Quality != null)
+            else 
+            {
+                if (Request.Cookies["liveModel"] != null)
                 {
-                    HttpCookie newModel = new HttpCookie("liveModel");
-                    newModel.Value = new JavaScriptSerializer().Serialize(liveModel);
-                    newModel.Expires = DateTime.Now.AddHours(10);
-                    Response.Cookies.Add(newModel);
+                    JavaScriptSerializer objJavascript = new JavaScriptSerializer();
+                    liveModel = objJavascript.Deserialize<LiveStreamingModel>(Request.Cookies["liveModel"].Value);
+                }
+                else {
+                    TempData["Error"]="Error";
+                    TempData["Message"] = "Something wrong! Please try again later!";
+                    return RedirectToAction("Index", "Home", liveModel.eventID);
                 }
             }
+            
                 var result = await new AuthorizationCodeMvcApp(this, new AppFlowMetadata()).
                 AuthorizeAsync(cancellationToken);
                 
@@ -461,7 +459,7 @@ namespace EventZone.Controllers
             Image photo = new Image();
             if (file != null)
             {
-                string[] whiteListedExt = { ".jpg", ".gif", ".png", ".tiff" };
+                string[] whiteListedExt = { ".jpg",".jpeg", ".gif", ".png", ".tiff" };
                 Stream stream = file.InputStream;
                 string extension = Path.GetExtension(file.FileName);
                 if (whiteListedExt.Contains(extension))
@@ -477,7 +475,11 @@ namespace EventZone.Controllers
 
                             if (EventDatabaseHelper.Instance.AddImageToEvent(image, eventID))
                             {
+                                if (!EventDatabaseHelper.Instance.IsEventOwnedByUser(eventID, image.UserID)) {
+                                    NotificationDataHelpers.Instance.SendNotiRequestUploadImage(user.UserID, eventID);
+                                }
                                 TempData["ImageUploadError"] = null; // success
+
                             }
                         }
                     
@@ -638,6 +640,22 @@ namespace EventZone.Controllers
              else
              {
                  TempData["ImageUploadError"] = "Your must select a file to upload";
+             }
+             return RedirectToAction("Details", "Event", new { id = eventID });
+         }
+         public ActionResult ShowPendingImage(long eventID)
+         {
+             Event evt = EventDatabaseHelper.Instance.GetEventByID(eventID);
+             return PartialView("_PendingImage", evt);
+         }
+         public ActionResult ApproveImage(List<int> listImageID, long eventID)
+         {
+             if (listImageID != null)
+             {
+                 foreach (var item in listImageID)
+                 {
+                     EventDatabaseHelper.Instance.ApproveImage(item, eventID);
+                 }
              }
              return RedirectToAction("Details", "Event", new { id = eventID });
          }

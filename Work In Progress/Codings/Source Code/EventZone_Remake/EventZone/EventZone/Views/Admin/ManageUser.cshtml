@@ -34,7 +34,6 @@
 .myButton:hover {
 	background-color:#de45d4;
 }
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Admin/ManageUser.cshtml
 .myButton:active {
 	position:relative;
 	top:1px;
@@ -48,31 +47,20 @@
     }
 </style>
 
-=======
-<button id="btn-add-user">Add new user</button>
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Admin/ManageUser.cshtml
 <div class="modal fade d_modal" id="add-new-user-modal" role="dialog">
     <div class="modal-dialog" style="margin-top: 120px; width: 30%;">
         <!-- Modal content-->
         <div class="panel panel-info d_margin_top">
             <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="panel-title">Add new user</div>
-                <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                    <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
-                </div>
             </div>
             @Html.Action("AddNewUser", "Admin")
         </div>
     </div>
 </div>
 
-<script>
-    $("#btn-add-user").click(function () {
 
-        $("#add-new-user-modal").modal("show");
-    })
-
-</script>
 
 
 <div class="modal fade d_modal" id="change-email-modal" role="dialog">
@@ -80,10 +68,8 @@
         <!-- Modal content-->
         <div class="panel panel-info d_margin_top">
             <div class="panel-heading">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="panel-title">Change Email</div>
-                <div style="float: right; font-size: 80%; position: relative; top: -17px">
-                    <a href="#" data-dismiss="modal" id="i_close_modal">Close</a>
-                </div>
             </div>
             <div style="padding-top: 10px" class="panel-body">
                 <div id="ChangeEmailError"></div>
@@ -104,7 +90,6 @@
         </div>
     </div>
 </div>
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Admin/ManageUser.cshtml
 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 interactButton" style="margin-left: 5%; margin-bottom: 10px">
     <button class="btn btn-success" type="submit" id="btn-add-user">
         Add New User
@@ -141,105 +126,8 @@
 
         $("#add-new-user-modal").modal("show");
     })
-=======
 
-@if (allUser != null && allUser.Count != 0)
-{
-    for (int i = 0; i < allUser.Count; i++)
-    {
-        User user = allUser[i];
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 d_user_card_cover">
-            <!-- e_ để đánh dấu CSS EVENT -->
-            <div class="col-xs-3 col-sm-3 col-md-3 col-lg-2 d_u_thumb">
-                <img src="@EventDatabaseHelper.Instance.GetImageByID(user.Avartar).ImageLink">
-            </div>
-            <div class="col-xs-9 col-sm-9 col-md-9 col-lg-10 d_u_info_cover">
-                <div class="col-xs-11 col-sm-11 col-md-11 col-lg-11 d_u_title">
-                    @Html.ActionLink(UserDatabaseHelper.Instance.GetUserDisplayName(user.UserID), "Index", "User", new { userID = user.UserID }, new { target = "_blank" })
-                </div>
-                <div class="btn-group d_u_btn_more">
-                    <span id="lock-icon-@user.UserID">
-                        @if (user.AccountStatus == EventZoneConstants.Lock)
-                        {
-                            <button type="button" class="btn btn-default dropdown-toggle">
-                                <span class="glyphicon glyphicon-lock"></span>
-                            </button>
-                        }
-                    </span>
-                    <div id="role-define-@user.UserID">
-                    @if (user.UserRoles == EventZoneConstants.Mod)
-                    {
-                        <div style="margin-bottom: 10px" class="input-group">
-                            <span class="input-group-addon" id="user-role-define-@user.UserID">Mod</span>
-                        </div>
-                    }
-                    else if (user.UserRoles == EventZoneConstants.Admin)
-                    {
-                        <div style="margin-bottom: 10px" class="input-group">
-                            <span class="input-group-addon" id="user-role-define-@user.UserID">Admin</span>
-                        </div>
-                    }
-                    else if (user.UserRoles == EventZoneConstants.RootAdmin)
-                    {
-                        <div style="margin-bottom: 10px" class="input-group">
-                            <span class="input-group-addon" id="user-role-define-@user.UserID">Root Admin</span>
-                        </div>
-                    }
-                    </div>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="glyphicon glyphicon-option-vertical"></span>
-                    </button>
-                    <ul class="dropdown-menu d_u_drop_menu" id="ul-lock-unlock-@user.UserID">
-                        @if (user.AccountStatus == EventZoneConstants.Active)
-                        {
-                            <li><a href="#" id="lock-user-@user.UserID" onclick="LockUser(@user.UserID)">Lock</a></li>
-                        }
-                        else
-                        {
-                            <li><a href="#" id="unlock-user-@user.UserID" onclick="UnlockUser(@user.UserID)">Unlock</a></li>
-                        }
-                        <li><a href="#" onclick="ShowChangeEmailModal(@user.UserID)">Change Email</a></li>
-                        @if (user.UserRoles != EventZoneConstants.Mod)
-                        {
-                            <li><a href="#" id="set-mod-@user.UserID" onclick="SetMod(@user.UserID)">Set Mod</a></li>
-                        }
-                        else if (user.UserRoles == EventZoneConstants.Mod)
-                        {
-                            <li><a href="#" id="unset-mod-@user.UserID" onclick="UnSetMod(@user.UserID)">UnSet Mod</a></li>
-                        }
-                        @if (user.UserRoles != EventZoneConstants.Admin && admin.UserRoles == EventZoneConstants.RootAdmin)
-                        {
-                            <li><a href="#" id="set-admin-@user.UserID" onclick="SetAdmin(@user.UserID)">Set Admin</a></li>
-                        }
-                        else if (user.UserRoles == EventZoneConstants.Admin && admin.UserRoles == EventZoneConstants.RootAdmin)
-                        {
-                            <li><a href="#" id="unset-mod-@user.UserID" onclick="UnSetAdmin(@user.UserID)">UnSet Admin</a></li>
-
-                        }
-                    </ul>
-                </div>
-                <div class="d_u_cate">
-                    <i class="fa fa-font"></i>
-                    <div class="d_fill_in">Number Event: <a href="@Url.Action("Event", "User", new { userID=user.UserID})"><i>@UserDatabaseHelper.Instance.CountOwnedEvent(user.UserID,true)</i></a></div>
-                </div>
-                <div class="d_u_follower">
-                    <i class="fa fa-star"></i>
-                    <div class="d_fill_in">Follower: <a href=""><i>@UserDatabaseHelper.Instance.NumberFollower(user.UserID)</i></a></div>
-                </div>
-                <div class="d_u_date">
-                    <i class="fa fa-calendar-check-o"></i>
-                    <div class="d_fill_in">Date Join: @user.DataJoin.ToShortDateString()</div>
-                </div>
-                <div class="d_u_time">
-                    <i class="fa fa-clock-o"></i>
-                    <div class="d_fill_in" id="email-display-@user.UserID">Email: @user.UserEmail</div>
-                </div>
-            </div>
-        </div>
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Admin/ManageUser.cshtml
-
-    }
-}
+</script>
 <script>
     function LockUser(userID) {
         $.ajax({
@@ -252,8 +140,7 @@
                     errorShow(data.error, data.message)
                 } else {
                     $("#lock-icon-" + userID).empty();
-                    $("#lock-icon-" + userID).prepend('<button type="button" class="btn btn-default dropdown-toggle">' +
-                            '<span class="glyphicon glyphicon-lock"></span>' + '</button>')
+                    $("#lock-icon-" + userID).prepend('<span class="col-md-1 col-lg-1 label label-danger"><span class=" glyphicon glyphicon-lock"></span></span>')
                     $("#lock-user-" + userID).remove();
                     $("#ul-lock-unlock-" + userID).prepend('<li><a href="#" id="unlock-user-' + userID + '" onclick="UnlockUser(' + userID + ')">Unlock</a></li>')
                 }
@@ -353,15 +240,8 @@
                     if (data.state == 0) {
                         errorShow(data.error, data.message)
                     } else {
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Admin/ManageUser.cshtml
                         $("#role-define-" + userID).empty();
                         $("#role-define-" + userID).append('<span id="role-define-' + userID + '" class="col-md-1 col-lg-1 label label-primary" style="font-size:86%">Mod</span>')
-=======
-                        $("#role-define-"+ userID).empty();
-                        $("#role-define-"+userID).append('<div style="margin-bottom: 10px" class="input-group">'+
-                            '<span class="input-group-addon" id="user-role-define-'+userID+'">Mod</span>'+
-                        '</div>')
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Admin/ManageUser.cshtml
                         $("#set-mod-" + userID).remove();
                         $("#ul-lock-unlock-" + userID).prepend('<li><a href="#" id="unset-mod-' + userID + '" onclick="UnSetMod(' + userID + ')">UnSet Mod</a></li>')
 
@@ -391,11 +271,7 @@
                         errorShow(data.error, data.message)
                     } else {
                         $("#role-define-" + userID).empty();
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Admin/ManageUser.cshtml
                         $("#role-define-" + userID).append('<span id="role-define-' + userID + '" class="col-md-1 col-lg-1 label label-success" style="font-size:86%">User</span>');
-=======
-                        $("#role-define-" + userID).append('');
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Admin/ManageUser.cshtml
                         $("#unset-mod-" + userID).remove();
                         $("#ul-lock-unlock-" + userID).prepend('<li><a href="#" id="set-mod-' + userID + '" onclick="SetMod(' + userID + ')">Set Mod</a></li>')
                     }
@@ -441,7 +317,7 @@
 
         }
     }
-    
+
     function UnSetAdmin(userID) {
         var r = confirm("Do you want to set this Admin to User?");
         if (r == true) {
@@ -606,7 +482,6 @@
             Search();
         }, 2000);
     });
-<<<<<<< HEAD:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/EventZone/Views/Admin/ManageUser.cshtml
 
     function Search() {
         $.ajax({
@@ -640,8 +515,5 @@
 
 
 
-=======
-    
->>>>>>> cedb211b52f5ccf6bf0aa5741172f297813bdad9:Work In Progress/Codings/Source Code/EventZone_Remake/EventZone/Views/Admin/ManageUser.cshtml
 </script>
 <script src="~/Scripts/Admin/ChangeUserEmail.js"></script>
