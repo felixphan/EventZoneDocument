@@ -25,7 +25,7 @@
             }
         }
         numberVideoNormal = Model.eventVideo.Count - numberVideoLive;
-    }
+    }   
     
     int userLikeEvent = Model.FindLike.Type;
     int numberLike = Model.NumberLike;
@@ -37,12 +37,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- BOOTSTRAP social -->
 <link href="~/Content/Event/bootstrap-social.css" rel="stylesheet" />
-<link href="~/Content/Event/font-awesome.min.css" rel="stylesheet" />
+<link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
+<link href="~/Content/Event/bootstrap-datetimepicker.min.css" rel="stylesheet" />
 <!-- myCSS -->
 <link href="~/Content/Event/myCSS_u_w_e.css" rel="stylesheet" />
+<script src="~/Scripts/Event/moment.js"></script>
 <script src="~/Scripts/Event/spinners.min.js"></script>
 <script src="~/Scripts/Event/lightview.js"></script>
 <link href="~/Content/Event/lightview.css" rel="stylesheet"/>
+<script src="~/Scripts/Event/bootstrap-datetimepicker.min.js"></script>
+<script src="~/Scripts/Event/prettify-1.0.min.js"></script>
+<script src="~/Scripts/Event/jquery.hotkeys.js"></script>
 
 
 <style>
@@ -59,8 +64,30 @@
         
 
 </style>
-<div class="">
 
+<div class="">
+    <div class="modal active fade" id="success-create-live" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="panel panel-info d_margin_top">
+                <div class="panel-heading">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <div class="panel-title"><span>Congratulations</span></div>
+                </div>
+                <div class="panel-body">
+                    <span>
+                        Your live streaming has been created as you set it up!  
+                    </span>
+                    <div class="form-group">
+                        <!-- Button -->
+                        <div class="controls">
+                            <button id="btn-login" class="btn btn-success" data-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     @if (Model.numberView == 0)
     {
         <div id="NoViewSuggestion">
@@ -428,7 +455,7 @@
         if (user.UserID == EventDatabaseHelper.Instance.GetAuthorEvent(Model.eventId).UserID)
         {
             <div class="d_each_vid d_btn_add_vid">
-                <button data-toggle="modal" data-target="#modelCreateLiveStream" class="btn btn-primary btn-xs btn-transparent"><span class="glyphicon glyphicon-plus"></span> Add a Streaming Video</button>
+                <button class="btn btn-primary btn-xs btn-transparent" id="btn-add-live"><span class="glyphicon glyphicon-plus"></span> Add a Streaming Video</button>
             </div>
         }
     }
@@ -616,12 +643,11 @@
             <div class="panel-heading">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 <div class="panel-title">Create Live Streaming</div>
-
             </div>
             <div class="panel-body">
                 <div class="cover_all_functions">
-                    <div class="tab-content">
-                        @Html.Action("AddLiveStream", "Event", new { model = LiveModel })
+                    <div class="tab-content" id="add-live-stream">
+                     
                     </div>
                 </div>
             </div>
@@ -1133,6 +1159,38 @@
             }
         })    
     });
-
+    $("#btn-add-live").click(function () {
+        console.log("4121s")
+        $.ajax({
+            url: "/Event/AddLiveStream",
+            type: "post",
+            dataType: "html",
+            data: { eventID: '@Model.eventId', eventName: '@Model.eventName' },
+            success: function (data) {
+                $("#add-live-stream").html(data);
+                $("#modelCreateLiveStream").modal("show");
+            },
+            error: function () {
+                console.log("failed")
+            }
+        })
+    })
 </script>
+<script>
+    @if (TempData["ErrorCreateLiveMessage"]!=null&&!string.IsNullOrEmpty(TempData["ErrorCreateLiveMessage"].ToString()))
+      {
+          if (TempData["ErrorCreateLiveMessage"].ToString() != "Success")
+          {
+                <text>
+    errorShow("Error", "Your account can not create live stream. Click here to active it!")
+    </text>
+          }
+          else {
+                <text>
+    $("#success-create-live").modal('show');
+    </text>
+          }
+      }
+</script>
+
 <!--Scroll content-->

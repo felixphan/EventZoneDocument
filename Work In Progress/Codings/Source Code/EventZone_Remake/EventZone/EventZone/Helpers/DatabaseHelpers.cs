@@ -1528,7 +1528,7 @@ namespace EventZone.Helpers
         /// </summary>
         /// <param name="categoryID"></param>
         /// <returns></returns>
-        public List<Event> SearchEventByCategoryID(long categoryID)
+        public List<Event> SearchEventByCategoryID(long? categoryID)
         {
             List<Event> listEvent = new List<Event>();
             try
@@ -1708,14 +1708,36 @@ namespace EventZone.Helpers
             try
             {
 
-                result = (from a in db.Events join b in db.EventRanks on a.EventID equals b.EventId orderby b.Score descending select a).Take(50).ToList();
+                result = (from a in db.Events join b in db.EventRanks on a.EventID equals b.EventId orderby b.Score descending select a).ToList();
             }
             catch
             {
-                result = (from a in db.Events select a).Take(50).ToList();
+                result = (from a in db.Events select a).ToList();
             }
             return result;
 
+        }
+        //sort list ViewThumbEventModel by hot 
+        public List<ViewThumbEventModel> SortByHotEvent(List<ViewThumbEventModel> listEvent)
+        {
+            try
+            {
+                List<ViewThumbEventModel> result= new List<ViewThumbEventModel>();
+                List<Event> sortByHotEvent = GetHotEvent();
+                foreach (var evt in sortByHotEvent)
+                {
+                    foreach (var item in listEvent) {
+                        if (evt.EventID == item.evt.EventID) {
+                            result.Add(item);
+                            continue;
+                        }
+                    }
+                }
+                return result;
+            }
+            catch {
+                return listEvent;
+            }
         }
         /// <summary>
         ///     dem so like cua event
@@ -2427,7 +2449,7 @@ namespace EventZone.Helpers
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
-        public Category GetCategoryById(long id)
+        public Category GetCategoryById(long? id)
         {
             try
             {

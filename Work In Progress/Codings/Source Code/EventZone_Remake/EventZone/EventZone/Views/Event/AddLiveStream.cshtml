@@ -30,15 +30,11 @@
         ListLocation.Add(new ListItem { Text = LocationHelpers.Instance.GetLocationById(item.LocationID).LocationName, Value = item.EventPlaceID.ToString() });
     }
 }
-<link href="https://netdna.bootstrapcdn.com/font-awesome/3.0.2/css/font-awesome.css" rel="stylesheet">
-<link href="~/Content/Event/bootstrap-datetimepicker.min.css" rel="stylesheet" />
-<link href="~/Content/Event/jquery.m.flip.css" rel="stylesheet" />
-<link href="~/Content/Event/m.flip.css" rel="stylesheet" />
-<!-- myCSS
-<link href="~/Content/Event/Create.css" rel="stylesheet" /> -->
+
+
 @using (Html.BeginForm("IndexAsync", "Event", FormMethod.Post))
 {
-            <!-- row Streaming Link -->
+    <!-- row Streaming Link -->
     <div class="row">
         <div class="col-md-3 col-lg-3">
             Title
@@ -74,7 +70,7 @@
             @Html.ValidationMessageFor(model => model.PrivacyYoutube)
         </div>
     </div>
-    <div class="row">   
+    <div class="row">
         <div class="col-md-3 col-lg-3">
             Start Time
         </div>
@@ -106,6 +102,7 @@
             </div>
         </div>
     </div>
+    @Html.HiddenFor(model => model.eventID);
     <div class="form-group" style="text-align:center">
         <div class="col-md-offset-2 col-md-10">
             <input type="submit" id="btnSubmit" class="btn btn-success" value="Create" />
@@ -113,14 +110,9 @@
     </div>
 }
 
-
-<script src="~/Scripts/Event/jquery.hotkeys.js"></script>
 <script src="~/Scripts/Event/bootstrap-wysiwyg.js"></script>
 <!-- Plugin chọn giờ -->
-<script src="~/Scripts/Event/moment.js"></script>
-<script src="~/Scripts/Event/prettify-1.0.min.js"></script>
-<script src="~/Scripts/Event/jquery.m.flip.js"></script>
-<script src="~/Scripts/Event/bootstrap-datetimepicker.min.js"></script>
+@*<script src="~/Scripts/Event/prettify-1.0.min.js"></script>*@
 
 <script>
     $(document).ready(function () {

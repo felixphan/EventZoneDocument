@@ -35,7 +35,12 @@
 
 
         public static bool isVerified = true;
-
+        //search Constants
+        public static int SearchEvent = 1;
+        public static int SearchLive = 2;
+        public static int SearchUser = 3;
+        public static int SearchHot = 4;
+        public static int SearchNew = 5;
 
         //phan constants cua tracking action
         public static int Event = 4;

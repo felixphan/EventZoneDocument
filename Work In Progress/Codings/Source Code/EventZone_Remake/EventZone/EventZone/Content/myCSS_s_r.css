@@ -1,49 +1,71 @@
-/*************************************************** Thêm ***/
+/*************************************************** Th�m ***/
 
-/*************************************************** sửa CSS BOOTSTRAP ***/
+/*************************************************** s?a CSS BOOTSTRAP ***/
 
-/*************************************************** Bao hết phần chính ***/
+/*************************************************** Bao h?t ph?n ch�nh ***/
 
-/*************************************************** Div chứa 3 tabs ***/
-.d_3_tabs{
-    position: fixed;
-    width: 230px;
-    height: 200px;
-    right: -180px;
-}
-.d_3_tabs tr td:first-child{
-    width: 25px;
-    background-color: #E65926;
-    color: #fff;
-    font-size: x-large;
-    text-align: center;
-}
-.d_3_tabs #i_open .glyphicon{
-    color: #fff;
-}
-.d_3_tabs .d_item{
+/*************************************************** Div ch?a 3 tabs + SORT BY ***/
+.d_search_panel{
     background-color: #fff;
-    font-size: medium;
-    padding-left: 15px;
-    width: 90px;
+    height: 500px;
+    width: 200px;
+    position: fixed;
+    right: 0;
+    z-index: 10;
 }
-.d_3_tabs .d_item:hover{
-    background-color: #ddd;
+.d_search_panel div{
+    float: left;
+}
+.d_search_panel .d_arrow{
+    width: 40px;
+    font-size: x-large;
+    background: #E65926;
+    height: 500px;
+    padding: 40px 0 0 8px;
+}
+.d_search_panel .d_arrow .glyphicon{
+    color: #fff;
+    background-color: #E65926;
+}
+.d_search_panel .d_filter,
+.d_search_panel .d_3_tabs{
+    width: 160px;
+}
+.d_search_panel .d_3_tabs .d_item{
+    height: 40px;
+    padding: 10px;
+}
+.d_search_panel .d_title{
+    float: left;
+    height: 30px;
+    width: 100%;
+    padding: 5px;
+    text-align: center;
+    color: white;
+    background-color: rgba(230,89,38,.5);
 }
 
-/*************************************************** Khung kết quả  ***/
+/******************************************** Div ch?a 3 tabs >> SORT by ***/
+.d_search_panel .d_filter .d_criteria{
+    width: 100%;
+}
+.d_search_panel .d_filter .radio{
+    width: 100%;
+    padding: 5px 10px;
+}
 
-/*************************************************** Kết quả Event **/
+/*************************************************** Khung k?t qu?  ***/
+
+/********************************************** K?t qu? Event **/
 .d_each_event {
     width: 31%;
     height: 200px;
-    
     float: left;
     margin: 0 1.15% 20px;
 }
 
-/*************************************************** Kết quả Channel **/
+/********************************************** K?t qu? Channel **/
 
-/*************************************************** Kết quả User **/
+/********************************************** K?t qu? User **/
 
-/*************************************************** CSS Decorate ***/
+/********************************************** CSS Decorate ***/

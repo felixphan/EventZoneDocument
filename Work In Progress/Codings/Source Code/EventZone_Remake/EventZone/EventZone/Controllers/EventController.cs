@@ -74,7 +74,7 @@ namespace EventZone.Controllers
         {
             Event model = EventDatabaseHelper.Instance.GetEventByID(eventID);
             EditViewModel editModel = new EditViewModel();
-            if (model.EventDescription == null || model.EventDescription == "")
+            if (string.IsNullOrEmpty(model.EventDescription))
             {
                 editModel.Description = "";
             }
@@ -116,20 +116,13 @@ namespace EventZone.Controllers
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        public ActionResult AddLiveStream(LiveStreamingModel model)
-        {
-            List<EventPlace> listPlace= new List<EventPlace>();
-
-            if (Request.Cookies["CreateEventID"] != null)
+        public ActionResult AddLiveStream(long eventID, string eventName)
             {
-                model.eventID = long.Parse(Request.Cookies["CreateEventID"].Value);
-                model.Title = EventDatabaseHelper.Instance.GetEventByID(model.eventID).EventName;
-
-            }
-            listPlace = EventDatabaseHelper.Instance.GetEventPlaceByEvent(model.eventID);
+            List<EventPlace> listPlace= new List<EventPlace>();
+            listPlace = EventDatabaseHelper.Instance.GetEventPlaceByEvent(eventID);
             TempData["EventPlace"] = listPlace;
             //cookie eventModel
-            
+            LiveStreamingModel model = new LiveStreamingModel { eventID = eventID, Title = eventName };
             return PartialView(model);
         }
 
@@ -150,8 +143,8 @@ namespace EventZone.Controllers
                     liveModel = objJavascript.Deserialize<LiveStreamingModel>(Request.Cookies["liveModel"].Value);
                 }
                 else {
-                    TempData["Error"]="Error";
-                    TempData["Message"] = "Something wrong! Please try again later!";
+                    TempData["errorTitle"] = "Error";
+                    TempData["errorMessage"] = "Something wrong! Please try again later!";
                     return RedirectToAction("Index", "Home", liveModel.eventID);
                 }
             }
@@ -185,7 +178,6 @@ namespace EventZone.Controllers
                     else { 
                         status.PrivacyStatus= "private";
                     }
-                    
                     //Set LiveBroadcast
                     LiveBroadcast broadcast = new LiveBroadcast();
                     LiveBroadcast returnBroadcast = new LiveBroadcast();
@@ -198,10 +190,9 @@ namespace EventZone.Controllers
                         returnBroadcast = liveBroadcastInsert.Execute();
                     }
                     catch (Exception ex){
-                        TempData["errorTitle"] = "Error";
-                        TempData["errorMessage"] = ex.Message;
+                        TempData["ErrorCreateLiveMessage"] = "Your youtube account can not create live streaming";
                         result.Credential.RevokeTokenAsync(CancellationToken.None).Wait();
-                        return RedirectToAction("Details", "Event", liveModel.eventID);
+                        return RedirectToAction("Details", "Event", new { id = liveModel.eventID });
                     }
                     
                     //Set LiveStream Snippet
@@ -225,10 +216,9 @@ namespace EventZone.Controllers
                     }
                     catch (Exception ex)
                     {
-                        TempData["errorTitle"] = "Error";
-                        TempData["errorMessage"] = ex.Message;
+                        TempData["ErrorCreateLiveMessage"] = "Your youtube account can not create live streaming";
                         result.Credential.RevokeTokenAsync(CancellationToken.None).Wait();
-                        return RedirectToAction("Details", "Event", liveModel.eventID);
+                        return RedirectToAction("Details", "Event", new { id = liveModel.eventID });
                     }
                     
                     //Return Value
@@ -247,15 +237,12 @@ namespace EventZone.Controllers
                                                BackupServer = backupServerUrl,
                                                StreamName= streamName};
                     EventDatabaseHelper.Instance.AddVideo(video);
-                    
-                    HttpCookie newEventID = new HttpCookie("CreateEventID");
-                    newEventID.Expires = DateTime.Now.AddDays(-1);
-                    Request.Cookies.Add(newEventID);
                     HttpCookie newModel = new HttpCookie("liveModel");
                     newModel.Value = new JavaScriptSerializer().Serialize(liveModel);
                     newModel.Expires = DateTime.Now.AddHours(-1);
                     Response.Cookies.Add(newModel);
                     result.Credential.RevokeTokenAsync(CancellationToken.None).Wait();
+                    TempData["ErrorCreateLiveMessage"] = "Success";
                     return RedirectToAction("Details", "Event", new { id = EventDatabaseHelper.Instance.GetEventPlaceByID(liveModel.EventPlaceID).EventID });
             }
             else
@@ -292,7 +279,10 @@ namespace EventZone.Controllers
                     }
                 }
             }
-
+            if (TempData["ErrorCreateLiveMessage"]!=null&&!string.IsNullOrEmpty(TempData["ErrorCreateLiveMessage"].ToString()))
+            {
+                TempData["ErrorCreateLiveMessage"] = TempData["ErrorCreateLiveMessage"];
+            }
             if (id == null)
             {
                 TempData["errorTitle"] = "Failed to load event";
@@ -420,7 +410,6 @@ namespace EventZone.Controllers
             if (EventDatabaseHelper.Instance.AddVideo(newVideo))
             {
                 TempData["VideoAddError"] = null; // success
-                
             }
             else
             {

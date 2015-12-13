@@ -342,6 +342,7 @@
     <Content Include="Content\Admin\myCSS_admin.css" />
     <Content Include="Content\Admin\z_myCSS_s_r.css" />
     <Content Include="Content\Event\set1.css" />
+    <Content Include="Content\myCSS_s_r.css" />
     <Content Include="Content\_Layout\animate.css" />
     <Content Include="Content\_Layout\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
@@ -355,6 +356,9 @@
     <Content Include="Content\myCSS_l_a.css" />
     <Content Include="Content\User\myCSS_s_r - old.css" />
     <Content Include="img\CurrentMarker.png" />
+    <Content Include="img\google-loading-icon.gif" />
+    <Content Include="img\loading-icon.jpg" />
+    <Content Include="img\robot-juggling-loading-gif-1789417.gif" />
     <Content Include="img\verifiedEvent.png" />
     <Content Include="img\verify.jpg" />
     <Content Include="Scripts\Admin\AddNewUser.js" />
@@ -416,7 +420,6 @@
     <Content Include="Content\myCSS_u_m_p.css" />
     <Content Include="Content\Search\SearchAdvance.css" />
     <Content Include="Content\Search\SearchResult.css" />
-    <Content Include="Content\myCSS_s_r.css" />
     <Content Include="Content\User\myCSS_u_m_p.css" />
     <Content Include="Content\Home\myCSS_index_2.css" />
     <Content Include="Content\_Layout\Site.css" />
@@ -451,7 +454,6 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.min.css.map" />
     <Content Include="Content\bootstrap.css.map" />
-    <Content Include="img\hanoi.webm" />
     <Content Include="img\saigon.webm" />
     <None Include="job_scheduling_data_2_0.xsd">
       <SubType>Designer</SubType>
@@ -571,8 +573,6 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\_Layout\jquery-2.1.4.min.map" />
-    <Content Include="Views\Search\Search.cshtml" />
-    <Content Include="Views\Search\SearchAdvance.cshtml" />
     <Content Include="Views\Search\SearchResult.cshtml" />
     <Content Include="Views\Account\SignIn.cshtml" />
     <Content Include="Views\Account\SignUp.cshtml" />
@@ -596,7 +596,6 @@
     <Content Include="Views\User\UpdateInfo.cshtml" />
     <Content Include="Views\User\_ManageFollow.cshtml" />
     <Content Include="Views\Shared\_ThumbEvent.cshtml" />
-    <Content Include="Views\LookAround\LookAround.cshtml" />
     <Content Include="Views\Shared\_ViewEventInPlace.cshtml" />
     <Content Include="Views\Event\AddLiveStream.cshtml" />
     <Content Include="Views\Event\ResultAddLive.cshtml" />
@@ -630,6 +629,10 @@
     <Content Include="Views\Search\SearchResult - old.cshtml" />
     <Content Include="Views\Shared\_EventThumbPage - old.cshtml" />
     <Content Include="Views\Event\_PendingImage.cshtml" />
+    <Content Include="Views\Shared\_SearchPartial.cshtml" />
+    <Content Include="Views\Shared\_AdvanceSearchPartial.cshtml" />
+    <Content Include="Views\LookAround\Index.cshtml" />
+    <Content Include="Views\LookAround\_LookAround.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

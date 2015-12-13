@@ -148,14 +148,14 @@
                             foreach (var item in category)
                             {
                                 <li>
-                                    <a href="/Search/CategorySearch?categoryid=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
+                                    <a href="/Search/Category?categoryID=@item.CategoryID">@Html.DisplayFor(modelItem => item.CategoryName)</a>
                                 </li>
                             }
                         }
                     </ul>
                 </li>
             </ul>
-            @Html.Action("Search", "Search")
+            @Html.Partial("_SearchPartial")
             <ul class="nav navbar-nav navbar-right" id="SignUl">
                 @if (user == null)
                 {
@@ -255,7 +255,9 @@
     $('#notificationList').on('click', function (e) {
         if (notifiClicked) {
             notifiClicked = false;
-            document.getElementById("notificationUl").style.display = "none";
+            if (document.getElementById("notificationUl")) {
+                document.getElementById("notificationUl").style.display = "none";
+            }
         } else {
             notifiClicked = true;
             $.ajax({
@@ -276,7 +278,10 @@
     });
 
     $(document).on('click', function (e) {
-        document.getElementById("notificationUl").style.display = "none";
+        if (document.getElementById("notificationUl")) {
+            document.getElementById("notificationUl").style.display = "none";
+        }
+       
         // Do whatever you want; the event that'd fire if the "special" element has been clicked on has been cancelled.
     });
 </script>

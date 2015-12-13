@@ -5,66 +5,13 @@ using System.Web.WebPages;
 using EventZone.Helpers;
 using EventZone.Models;
 using Microsoft.Ajax.Utilities;
+using System.Linq;
 
 namespace EventZone.Controllers
 {
     public class SearchController : Controller
     {
-        public ActionResult Search()
-        {
-            User user = UserHelpers.GetCurrentUser(Session);
-            if (user == null)
-            {
-                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
-                {
-                    string userName = Request.Cookies["userName"].Value;
-                    string password = Request.Cookies["password"].Value;
-                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
-                    {
-                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
-                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
-                        {
-                            TempData["errorTitle"] = "Locked User";
-                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
-                        }
-                        else {
-                            UserHelpers.SetCurrentUser(Session, user);
-                        }
-                       
-                    }
-                }
-            }
-            return PartialView();
-        }
-
-        public ActionResult SearchAdvance()
-        {
-            User user = UserHelpers.GetCurrentUser(Session);
-            if (user == null)
-            {
-                if (Request.Cookies["userName"] != null && Request.Cookies["password"] != null)
-                {
-                    string userName = Request.Cookies["userName"].Value;
-                    string password = Request.Cookies["password"].Value;
-                    if (UserDatabaseHelper.Instance.ValidateUser(userName, password))
-                    {
-                        user = UserDatabaseHelper.Instance.GetUserByUserName(userName);
-                        if (UserDatabaseHelper.Instance.isLookedUser(user.UserName))
-                        {
-                            TempData["errorTitle"] = "Locked User";
-                            TempData["errorMessage"] = "Your account is locked! Please contact with our support";
-                        }
-                        else {
-                            UserHelpers.SetCurrentUser(Session, user);
-                        }
-                        
-                    }
-                }
-            }
-            return PartialView(new AdvanceSearch());
-        }
-
-        public ActionResult CategorySearch(long categoryid, long tab=-1)
+        public ActionResult Category(long? categoryID, long tab = -1)
         {
             User user = UserHelpers.GetCurrentUser(Session);
             if (user == null)
@@ -89,11 +36,11 @@ namespace EventZone.Controllers
             }
             List<Event> listEvent = new List<Event>();
             List<Event> liveEvent= new List<Event>();
-            listEvent = EventDatabaseHelper.Instance.SearchEventByCategoryID(categoryid);
+            listEvent = EventDatabaseHelper.Instance.SearchEventByCategoryID(categoryID);
             liveEvent = EventDatabaseHelper.Instance.GetLiveEventByListEvent(listEvent);
             try
             {
-                TempData["task"] = "Category " + CommonDataHelpers.Instance.GetCategoryById(categoryid).CategoryName;
+                TempData["task"] = "Category " + CommonDataHelpers.Instance.GetCategoryById(categoryID).CategoryName;
             }
             catch { }
             TempData["TabSearch"] = tab;
@@ -101,8 +48,7 @@ namespace EventZone.Controllers
             Session["listEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEvent);
             return View("SearchResult");
         }
-        [HttpPost]
-        public ActionResult BasicSearch(BasicSearch model, int tab = -1)
+        public ActionResult Index(string keyword="", int tab = -1)
         {
             User user = UserHelpers.GetCurrentUser(Session);
             if (user == null)
@@ -125,15 +71,7 @@ namespace EventZone.Controllers
                     }
                 }
             }
-            string keyword;
-            if (model.Keyword.IsNullOrWhiteSpace())
-            {
-                keyword = "";
-            }
-            else
-            {
-                keyword = model.Keyword;
-            }
+
             keyword = keyword.Trim();
             TempData["TabSearch"] = tab;
             Session["listEvent"] =
@@ -238,7 +176,7 @@ namespace EventZone.Controllers
             }
             return View("SearchResult");
         }
-        public ActionResult LoadEventInPage(int page, int type){
+        public ActionResult LoadEventInPage(int page, int type, int sort=-1){
 
             var listEvent = Session["listEvent"] as List<ViewThumbEventModel>;
             var listLiveStream = Session["listLiveStream"] as List<ViewThumbEventModel>;
@@ -263,14 +201,24 @@ namespace EventZone.Controllers
                 {
                     TempData["LoadMore"] = false;
                 }
+                //sort by new event
+                if (sort == 1)
+                {
+                    listEvent=listEvent.OrderByDescending(item => item.evt.EventRegisterDate).ToList();
+                }
+                //sort by hot
+                else if (sort == 2)
+                {
+                    listEvent = EventDatabaseHelper.Instance.SortByHotEvent(listEvent);
+                }
                 List<ViewThumbEventModel> listView = new List<ViewThumbEventModel>();
-                for(int i=listEventstartAt;i<ListEventendAt;i++){
+                for(int i=listEventstartAt;i<=ListEventendAt;i++){
                     listView.Add(listEvent[i]);
                 }
-               
+                
                 return PartialView("_EventThumbPage", listView);
             }   
-            else {
+            else{
                 if (listLiveStream == null)
                 {
                     TempData["LoadMore"] = false;
@@ -284,12 +232,22 @@ namespace EventZone.Controllers
                 {
                     TempData["LoadMore"] = false;
                 }
+                //sort by new event
+                if (sort == 1)
+                {
+                    listLiveStream.OrderByDescending(item => item.evt.EventRegisterDate);
+                }
+                //sort by hot
+                else if (sort == 2)
+                {
+                    listLiveStream = EventDatabaseHelper.Instance.SortByHotEvent(listLiveStream);
+                }
                 List<ViewThumbEventModel> listView = new List<ViewThumbEventModel>();
                 for (int i = listLiveEventstartAt; i < listLiveEventendtAt; i++)
                 {
                     listView.Add(listLiveStream[i]);
                 }
-
+                
                 return PartialView("_EventThumbPage", listView);
             }
             

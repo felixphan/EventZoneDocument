@@ -6,11 +6,6 @@ using EventZone.Helpers;
 
 namespace EventZone.Models
 {
-    public class BasicSearch
-    {
-        [Required]
-        public string Keyword { get; set; }
-    }
 
     public class AdvanceSearch
     {

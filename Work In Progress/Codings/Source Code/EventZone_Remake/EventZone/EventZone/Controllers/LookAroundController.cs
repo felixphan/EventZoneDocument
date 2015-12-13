@@ -14,7 +14,7 @@ namespace EventZone.Controllers
         public ActionResult Index() {
             return View();
         }
-        public ActionResult LookAround(double longitude = 0, double latitude = 0, double distance = 20.0) {
+        public ActionResult LookAround(double longitude = 0, double latitude = 0, double distance = 20.0, int categoryID=-1) {
          
                 List<Location> listPlace = new List<Location>();
                 Location cur = new Location();
@@ -46,20 +46,28 @@ namespace EventZone.Controllers
                 nearlyEventPlace = nearlyEventPlace.Distinct().ToList();
                 foreach (var item in nearlyEventPlace)
                 {
-                    var place = LocationHelpers.Instance.GetLocationById(item.LocationID);
                     var evt = EventDatabaseHelper.Instance.GetEventByID(item.EventID);
-                    nearlyLocation.Add(place);
-                    nearlyEvent.Add(evt);
+                    if (categoryID == -1)
+                    {
+                        var place = LocationHelpers.Instance.GetLocationById(item.LocationID);
+                        nearlyLocation.Add(place);
+                        nearlyEvent.Add(evt);
+                    }
+                    else if (evt.CategoryID == categoryID) {
+                        var place = LocationHelpers.Instance.GetLocationById(item.LocationID);
+                        nearlyLocation.Add(place);
+                        nearlyEvent.Add(evt);
+                    }
                 }
-                listPlace = LocationHelpers.Instance.RemovePlaceByDistance(listPlace, 1);
+      
                 nearlyEvent = nearlyEvent.Distinct().ToList();
-                nearlyLocation = nearlyLocation.Distinct().ToList();
+                nearlyLocation = LocationHelpers.Instance.RemovePlaceByDistance(nearlyLocation, 1); 
                 ViewData["currentLocation"] = cur;
                 ViewData["nearlyEvent"] = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(nearlyEvent);
-                ViewData["nearlyLocation"] = listPlace.Distinct().ToList();
-                return View();           
+                ViewData["nearlyLocation"] = nearlyLocation.Distinct().ToList();
+                return PartialView("_LookAround");           
         }
-        public ActionResult showEventInLocation(long id)
+        public ActionResult showEventInLocation(long id, int categoryID=-1)
         {
 
             if (Request.IsAjaxRequest())
@@ -84,7 +92,12 @@ namespace EventZone.Controllers
                 foreach (var item in listEventPlace)
                 {
                     var evt = EventDatabaseHelper.Instance.GetEventByID(item.EventID);
-                    listEventSamePlace.Add(evt);
+                    if (categoryID == -1) {
+                        listEventSamePlace.Add(evt);
+                    }
+                    else if (evt.CategoryID == categoryID) {
+                        listEventSamePlace.Add(evt);
+                    }
                 }
                listEventSamePlace = listEventSamePlace.Distinct().ToList();
                 List<ViewThumbEventModel> listThumb = EventDatabaseHelper.Instance.GetThumbEventListByListEvent(listEventSamePlace);

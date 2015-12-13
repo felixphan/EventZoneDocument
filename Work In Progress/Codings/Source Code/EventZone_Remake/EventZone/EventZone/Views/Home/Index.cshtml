@@ -132,6 +132,8 @@
         </div>
     </div>
 </div>
+
+
 <script src="~/Scripts/Home/myJS_index.js"></script>
 <script src="~/Scripts/shareFacebook.js"></script>
 <script src="~/Scripts/Home/jquery.bxslider.js"></script>
@@ -172,18 +174,21 @@
             }
         });
     });
+   
 
 </script>
 <script>
 
 
     function LoadCateInfo(categoryID) {
+        $("#cate-info-" + categoryID).html('<img src="../img/loading-icon.jpg" style="width:100px;height:100px"/>');
         $.ajax({
             url: "/Home/LoadCateInfo",
             type: "get",
             dataType: "html",
             data: {categoryID:categoryID},
             success: function (data) {
+               
                 $("#cate-info-" + categoryID).html(data);
                
             }
@@ -192,7 +197,6 @@
 
 </script>
 <script>
-  
     function followEvent(eventID) {
         @if(user!=null){
             <text>
